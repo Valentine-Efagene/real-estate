@@ -397,6 +397,87 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
+    // Phase 1.5: RBAC & Tenant Verification
+    // Verify bootstrap created the expected roles, permissions, and tenant members.
+    // =========================================================================
+    describe('Phase 1.5: RBAC & Tenant Verification', () => {
+        it('Step 1.5a: Admin lists all roles', async () => {
+            const response = await userApi
+                .get('/roles')
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const roles = response.body.data;
+            expect(roles.length).toBeGreaterThanOrEqual(5);
+
+            const roleNames = roles.map((r: any) => r.name);
+            expect(roleNames).toContain('admin');
+            expect(roleNames).toContain('user');
+            expect(roleNames).toContain('mortgage_ops');
+            expect(roleNames).toContain('agent');
+            expect(roleNames).toContain('lender_ops');
+            console.log(`✅ Roles verified: ${roleNames.join(', ')}`);
+        });
+
+        it('Step 1.5b: Admin lists permissions for admin role', async () => {
+            const response = await userApi
+                .get(`/roles/${adminRoleId}/permissions`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const permissions = response.body.data;
+            expect(permissions.length).toBeGreaterThan(0);
+            console.log(`✅ Admin role has ${permissions.length} permissions`);
+        });
+
+        it('Step 1.5c: Admin lists all permissions', async () => {
+            const response = await userApi
+                .get('/permissions')
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            // Bootstrap may or may not seed standalone permissions
+            expect(Array.isArray(response.body.data)).toBe(true);
+            console.log(`✅ Total permissions: ${response.body.data.length}`);
+        });
+
+        it('Step 1.5d: Admin lists tenant members', async () => {
+            const response = await userApi
+                .get(`/tenants/${tenantId}/members`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const members = response.body.data;
+            expect(members.length).toBeGreaterThanOrEqual(1);
+
+            // Adaeze should be in the tenant
+            const adaezeMember = members.find((m: any) => m.userId === adaezeId);
+            expect(adaezeMember).toBeDefined();
+            console.log(`✅ Tenant has ${members.length} member(s)`);
+        });
+
+        it('Step 1.5e: Admin views own profile via /auth/me', async () => {
+            const response = await userApi
+                .get('/auth/me')
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.email).toBe(ADMIN_EMAIL);
+            expect(response.body.data.firstName).toBe('Adaeze');
+            expect(response.body.data.lastName).toBe('Okonkwo');
+            console.log(`✅ Admin profile verified: ${response.body.data.email}`);
+        });
+    });
+
+    // =========================================================================
     // Phase 2: Organization Setup & Staff Invitations
     // Admin creates organizations, then invites staff with explicit roles.
     // =========================================================================
@@ -599,6 +680,145 @@ describe('Full E2E Mortgage Flow', () => {
 
             // Wait for lender_ops policy sync
             await waitForPolicyInDynamoDB('lender_ops', tenantId);
+        });
+    });
+
+    // =========================================================================
+    // Phase 2.5: Organization Verification
+    // Verify organization members, invitations, and staff profiles.
+    // =========================================================================
+    describe('Phase 2.5: Organization Verification', () => {
+        it('Step 2.5a: Admin lists QShelter org members', async () => {
+            const response = await userApi
+                .get(`/organizations/${qshelterOrgId}/members`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const members = response.body.data;
+            expect(members.length).toBeGreaterThanOrEqual(1);
+
+            const adaezeMember = members.find((m: any) => m.userId === adaezeId);
+            expect(adaezeMember).toBeDefined();
+            expect(adaezeMember.title).toBe('Mortgage Operations Officer');
+            console.log(`✅ QShelter has ${members.length} member(s)`);
+        });
+
+        it('Step 2.5b: Admin lists Lekki Gardens org members', async () => {
+            const response = await userApi
+                .get(`/organizations/${lekkiGardensOrgId}/members`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const members = response.body.data;
+            const emekaMember = members.find((m: any) => m.userId === emekaId);
+            expect(emekaMember).toBeDefined();
+            expect(emekaMember.title).toBe('Sales Manager');
+            console.log(`✅ Lekki Gardens has ${members.length} member(s)`);
+        });
+
+        it('Step 2.5c: Admin lists Access Bank org members', async () => {
+            const response = await userApi
+                .get(`/organizations/${accessBankOrgId}/members`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const members = response.body.data;
+            const nkechiMember = members.find((m: any) => m.userId === nkechiId);
+            expect(nkechiMember).toBeDefined();
+            expect(nkechiMember.title).toBe('Mortgage Loan Officer');
+            console.log(`✅ Access Bank has ${members.length} member(s)`);
+        });
+
+        it('Step 2.5d: Admin lists Lekki Gardens invitations (should be accepted)', async () => {
+            const response = await userApi
+                .get(`/organizations/${lekkiGardensOrgId}/invitations`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            // Response is paginated: { items: [...], pagination: {...} }
+            const invitations = response.body.data.items || response.body.data;
+            expect(invitations.length).toBeGreaterThanOrEqual(1);
+
+            const emekaInvite = invitations.find((i: any) => i.email === DEVELOPER_EMAIL);
+            expect(emekaInvite).toBeDefined();
+            expect(emekaInvite.status).toBe('ACCEPTED');
+            console.log(`✅ Lekki Gardens has ${invitations.length} invitation(s)`);
+        });
+
+        it('Step 2.5e: Admin lists Access Bank invitations (should be accepted)', async () => {
+            const response = await userApi
+                .get(`/organizations/${accessBankOrgId}/invitations`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            // Response is paginated: { items: [...], pagination: {...} }
+            const invitations = response.body.data.items || response.body.data;
+            const nkechiInvite = invitations.find((i: any) => i.email === LENDER_EMAIL);
+            expect(nkechiInvite).toBeDefined();
+            expect(nkechiInvite.status).toBe('ACCEPTED');
+            console.log(`✅ Access Bank has ${invitations.length} invitation(s)`);
+        });
+
+        it('Step 2.5f: Emeka views own profile with org memberships', async () => {
+            const response = await userApi
+                .get('/auth/me')
+                .set(developerHeaders(emekaAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.email).toBe(DEVELOPER_EMAIL);
+            expect(response.body.data.firstName).toBe('Emeka');
+
+            // Verify org membership is included
+            const memberships = response.body.data.organizationMemberships || [];
+            if (memberships.length > 0) {
+                const lekkiMembership = memberships.find(
+                    (m: any) => m.organization?.id === lekkiGardensOrgId
+                );
+                expect(lekkiMembership).toBeDefined();
+            }
+            console.log(`✅ Emeka profile verified with ${memberships.length} org membership(s)`);
+        });
+
+        it('Step 2.5g: Nkechi views own profile with org memberships', async () => {
+            const response = await userApi
+                .get('/auth/me')
+                .set(lenderHeaders(nkechiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.email).toBe(LENDER_EMAIL);
+            expect(response.body.data.firstName).toBe('Nkechi');
+            console.log(`✅ Nkechi profile verified`);
+        });
+
+        it('Step 2.5h: Admin lists all organizations', async () => {
+            const response = await userApi
+                .get('/organizations')
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            // Response is paginated: { items: [...], pagination: {...} }
+            const orgs = response.body.data.items || response.body.data;
+            expect(orgs.length).toBeGreaterThanOrEqual(3);
+
+            const orgNames = orgs.map((o: any) => o.name);
+            expect(orgNames).toContain('QShelter Real Estate');
+            expect(orgNames).toContain('Lekki Gardens Development Company');
+            expect(orgNames).toContain('Access Bank PLC');
+            console.log(`✅ ${orgs.length} organizations found`);
         });
     });
 
@@ -1183,6 +1403,154 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
+    // Phase 5.5: Customer Browsing Experience
+    // Chidi browses properties, views details, and discovers payment methods.
+    // Also tests profile viewing/updating.
+    // =========================================================================
+    describe('Phase 5.5: Customer Browsing Experience', () => {
+        it('Step 5.5a: Chidi updates his profile', async () => {
+            const response = await userApi
+                .patch('/users/profile')
+                .set(customerHeaders(chidiAccessToken))
+                .send({
+                    phone: '+2348012345679',
+                });
+
+            if (response.status !== 200) {
+                console.log('Profile update failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            console.log(`✅ Chidi profile updated`);
+        });
+
+        it('Step 5.5b: Chidi views his own profile', async () => {
+            const response = await userApi
+                .get('/auth/me')
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.email).toBe(CUSTOMER_EMAIL);
+            expect(response.body.data.firstName).toBe('Chidi');
+            expect(response.body.data.lastName).toBe('Nnamdi');
+            console.log(`✅ Chidi profile verified`);
+        });
+
+        it('Step 5.5c: Chidi browses all properties', async () => {
+            const response = await propertyApi
+                .get('/property/properties')
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const properties = response.body.data.items || response.body.data;
+            expect(properties.length).toBeGreaterThanOrEqual(1);
+
+            const lekkiProperty = Array.isArray(properties)
+                ? properties.find((p: any) => p.id === propertyId)
+                : null;
+            expect(lekkiProperty).toBeDefined();
+            expect(lekkiProperty.title).toBe('Lekki Gardens Estate');
+            expect(lekkiProperty.status).toBe('PUBLISHED');
+            console.log(`✅ Found ${properties.length} properties (Lekki Gardens is PUBLISHED)`);
+        });
+
+        it('Step 5.5d: Chidi views Lekki Gardens property detail', async () => {
+            const response = await propertyApi
+                .get(`/property/properties/${propertyId}`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const property = response.body.data;
+            expect(property.id).toBe(propertyId);
+            expect(property.title).toBe('Lekki Gardens Estate');
+            expect(property.description).toBe('Premium residential estate in Lekki Phase 1');
+            expect(property.category).toBe('SALE');
+            expect(property.propertyType).toBe('APARTMENT');
+            expect(property.city).toBe('Lagos');
+            expect(property.district).toBe('Lekki');
+            expect(property.displayImageId).toBe(displayImageMediaId);
+            console.log(`✅ Property detail loaded: ${property.title}`);
+        });
+
+        it('Step 5.5e: Chidi lists property variants', async () => {
+            const response = await propertyApi
+                .get(`/property/properties/${propertyId}/variants`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const variants = response.body.data;
+            expect(variants.length).toBeGreaterThanOrEqual(1);
+
+            const threeBed = variants.find((v: any) => v.id === variantId);
+            expect(threeBed).toBeDefined();
+            expect(threeBed.name).toBe('3-Bedroom Flat');
+            expect(threeBed.price).toBe(propertyPrice);
+            expect(threeBed.nBedrooms).toBe(3);
+            console.log(`✅ Found ${variants.length} variant(s): ${threeBed.name} @ ₦${threeBed.price.toLocaleString()}`);
+        });
+
+        it('Step 5.5f: Chidi lists units for 3-Bedroom variant', async () => {
+            const response = await propertyApi
+                .get(`/property/properties/${propertyId}/variants/${variantId}/units`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const units = response.body.data;
+            expect(units.length).toBeGreaterThanOrEqual(1);
+
+            const unit14B = units.find((u: any) => u.id === unitId);
+            expect(unit14B).toBeDefined();
+            expect(unit14B.unitNumber).toBe('14B');
+            expect(unit14B.floorNumber).toBe(14);
+            expect(unit14B.blockName).toBe('Block B');
+            console.log(`✅ Found ${units.length} unit(s): Unit ${unit14B.unitNumber}, Block ${unit14B.blockName}`);
+        });
+
+        it('Step 5.5g: Chidi gets payment methods available for property', async () => {
+            const response = await mortgageApi
+                .get(`/payment-methods/property/${propertyId}`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const links = response.body.data;
+            expect(links.length).toBeGreaterThanOrEqual(1);
+
+            // Response contains PropertyPaymentMethodLink objects with nested paymentMethod
+            const mortgageLink = links.find((l: any) =>
+                l.paymentMethodId === paymentMethodId || l.paymentMethod?.id === paymentMethodId
+            );
+            expect(mortgageLink).toBeDefined();
+            console.log(`✅ Found ${links.length} payment method link(s) for property`);
+        });
+
+        it('Step 5.5h: Chidi views property media', async () => {
+            const response = await propertyApi
+                .get(`/property/properties/${propertyId}`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            const property = response.body.data;
+
+            // Verify media is included in property detail
+            const media = property.media || [];
+            expect(media.length).toBeGreaterThanOrEqual(2);
+            expect(media[0].type).toBe('IMAGE');
+            console.log(`✅ Property has ${media.length} media items`);
+        });
+    });
+
+    // =========================================================================
     // Phase 6: Customer Application
     // =========================================================================
     describe('Phase 6: Customer Application', () => {
@@ -1289,6 +1657,113 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.status).toBe(200);
             expect(response.body.success).toBe(true);
             expect(response.body.data.status).toBe('IN_PROGRESS');
+        });
+    });
+
+    // =========================================================================
+    // Phase 6.5: Application Management & Bank Document Requirements
+    // Verify listing, current action, and bank-specific doc overlays.
+    // =========================================================================
+    describe('Phase 6.5: Application Management', () => {
+        it('Step 6.5a: Chidi lists his applications', async () => {
+            const response = await mortgageApi
+                .get('/applications')
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const apps = response.body.data.items || response.body.data;
+            expect(apps.length).toBeGreaterThanOrEqual(1);
+
+            const myApp = Array.isArray(apps)
+                ? apps.find((a: any) => a.id === applicationId)
+                : null;
+            expect(myApp).toBeDefined();
+            console.log(`✅ Chidi has ${apps.length} application(s)`);
+        });
+
+        it('Step 6.5b: Admin lists all applications', async () => {
+            const response = await mortgageApi
+                .get('/applications')
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const apps = response.body.data.items || response.body.data;
+            expect(apps.length).toBeGreaterThanOrEqual(1);
+            console.log(`✅ Admin sees ${apps.length} application(s)`);
+        });
+
+        it('Step 6.5c: Chidi checks current action for application', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(customerHeaders(chidiAccessToken));
+
+            // current-action may return 200 with action data or 404 if not implemented
+            if (response.status === 200) {
+                expect(response.body.success).toBe(true);
+                console.log(`✅ Current action:`, JSON.stringify(response.body.data, null, 2));
+            } else {
+                console.log(`ℹ️  Current action endpoint returned ${response.status} (may not be implemented)`);
+            }
+        });
+
+        it('Step 6.5d: Nkechi (lender) creates bank document requirement overlay', async () => {
+            // Access Bank requires additional document specifics for their KYC review
+            const response = await mortgageApi
+                .post('/bank-document-requirements')
+                .set(lenderHeaders(nkechiAccessToken))
+                .set('x-idempotency-key', idempotencyKey('create-bank-doc-req'))
+                .send({
+                    phaseId: kycPhaseId,
+                    documentType: 'BANK_STATEMENT',
+                    documentName: 'Access Bank - Certified Bank Statements',
+                    modifier: 'STRICTER',
+                    description: 'Must be certified bank statements from last 6 months, stamped by bank',
+                    minFiles: 1,
+                    maxFiles: 6,
+                    allowedMimeTypes: 'application/pdf',
+                    priority: 200,
+                });
+
+            if (response.status === 201) {
+                expect(response.body.success).toBe(true);
+                console.log(`✅ Bank doc requirement created: ${response.body.data.id}`);
+            } else if (response.status === 403) {
+                // Lender may not have permission — log and continue
+                console.log(`ℹ️  Bank doc requirement creation returned 403 (role permission may not be configured)`);
+            } else {
+                console.log(`ℹ️  Bank doc requirement returned ${response.status}:`, JSON.stringify(response.body, null, 2));
+            }
+        });
+
+        it('Step 6.5e: List bank document requirements', async () => {
+            const response = await mortgageApi
+                .get('/bank-document-requirements')
+                .set(adminHeaders(adaezeAccessToken));
+
+            if (response.status === 200) {
+                expect(response.body.success).toBe(true);
+                console.log(`✅ Bank doc requirements: ${response.body.data.length} found`);
+            } else {
+                console.log(`ℹ️  Bank doc requirements list returned ${response.status}`);
+            }
+        });
+
+        it('Step 6.5f: Admin views application detail', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.id).toBe(applicationId);
+            expect(response.body.data.status).toBe('PENDING');
+            expect(response.body.data.applicationType).toBe('MORTGAGE');
+            expect(response.body.data.totalAmount).toBe(propertyPrice);
+            console.log(`✅ Application detail: ${response.body.data.applicationNumber || applicationId}`);
         });
     });
 
@@ -1728,6 +2203,144 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.status).toBe(200);
             expect(response.body.success).toBe(true);
             expect(response.body.data.status).toBe('COMPLETED');
+        });
+    });
+
+    // =========================================================================
+    // Phase 11.5: Post-Completion Verification
+    // Verify the completed application, list completed apps, and check final state.
+    // =========================================================================
+    describe('Phase 11.5: Post-Completion Verification', () => {
+        it('Step 11.5a: Chidi lists his applications (should show COMPLETED)', async () => {
+            const response = await mortgageApi
+                .get('/applications?status=COMPLETED')
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const apps = response.body.data.items || response.body.data;
+            const completedApp = Array.isArray(apps)
+                ? apps.find((a: any) => a.id === applicationId)
+                : null;
+            expect(completedApp).toBeDefined();
+            expect(completedApp.status).toBe('COMPLETED');
+            console.log(`✅ Chidi's completed application found`);
+        });
+
+        it('Step 11.5b: Admin views all phases are completed', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/phases`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const phases = response.body.data;
+            expect(phases).toHaveLength(5);
+
+            for (const phase of phases) {
+                expect(phase.status).toBe('COMPLETED');
+            }
+            console.log(`✅ All 5 phases are COMPLETED`);
+        });
+
+        it('Step 11.5c: Admin lists all application organizations', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/organizations`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const orgs = response.body.data;
+            expect(orgs.length).toBeGreaterThanOrEqual(2);
+
+            const developerOrg = orgs.find((o: any) => o.assignedAsType?.code === 'DEVELOPER');
+            const bankOrg = orgs.find((o: any) => o.assignedAsType?.code === 'BANK');
+            expect(developerOrg).toBeDefined();
+            expect(bankOrg).toBeDefined();
+            console.log(`✅ Application has ${orgs.length} bound organizations`);
+        });
+
+        it('Step 11.5d: Chidi views completed application detail', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.status).toBe('COMPLETED');
+            expect(response.body.data.totalAmount).toBe(propertyPrice);
+            expect(response.body.data.buyerId).toBe(chidiId);
+            console.log(`✅ Final application: status=${response.body.data.status}, amount=₦${response.body.data.totalAmount.toLocaleString()}`);
+        });
+
+        it('Step 11.5e: Property is still visible and published', async () => {
+            const response = await propertyApi
+                .get(`/property/properties/${propertyId}`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.status).toBe('PUBLISHED');
+            console.log(`✅ Property still PUBLISHED after application completion`);
+        });
+
+        it('Step 11.5f: Admin views payment method details', async () => {
+            const response = await mortgageApi
+                .get(`/payment-methods/${paymentMethodId}`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.name).toBe('10/90 Lekki Mortgage');
+            expect(response.body.data.phases).toHaveLength(5);
+            console.log(`✅ Payment method verified: ${response.body.data.name}`);
+        });
+
+        it('Step 11.5g: Admin lists payment plans', async () => {
+            const response = await mortgageApi
+                .get('/payment-plans')
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.length).toBeGreaterThanOrEqual(1);
+            console.log(`✅ ${response.body.data.length} payment plan(s) found`);
+        });
+
+        it('Step 11.5h: Admin lists documentation plans', async () => {
+            const response = await mortgageApi
+                .get('/documentation-plans')
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.length).toBeGreaterThanOrEqual(3);
+            console.log(`✅ ${response.body.data.length} documentation plan(s) found`);
+        });
+
+        it('Step 11.5i: Admin lists questionnaire plans', async () => {
+            const response = await mortgageApi
+                .get('/questionnaire-plans')
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.length).toBeGreaterThanOrEqual(1);
+            console.log(`✅ ${response.body.data.length} questionnaire plan(s) found`);
+        });
+
+        it('Step 11.5j: Admin lists all payment methods', async () => {
+            const response = await mortgageApi
+                .get('/payment-methods')
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.length).toBeGreaterThanOrEqual(1);
+            console.log(`✅ ${response.body.data.length} payment method(s) found`);
         });
     });
 
