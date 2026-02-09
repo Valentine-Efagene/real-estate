@@ -38,16 +38,15 @@ export function PropertyImage({
             return;
         }
 
-        // Check if it's an S3 URL that needs a presigned URL
-        const isS3Url = src.includes('s3.') || src.includes('amazonaws.com');
+        // If it's already a full non-S3 URL (e.g. external CDN), use as-is
+        const isExternalUrl = src.startsWith('http') && !src.includes('s3.') && !src.includes('amazonaws.com');
 
-        if (!isS3Url) {
-            // Direct URL, use as-is
+        if (isExternalUrl) {
             setPresignedUrl(src);
             return;
         }
 
-        // Fetch presigned URL for S3 objects
+        // S3 key or S3 URL — fetch a presigned URL for display
         setIsLoading(true);
         setError(false);
 

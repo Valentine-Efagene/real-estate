@@ -126,7 +126,7 @@ function CreatePropertyWizardPage() {
                 const mediaData = wizardData.media
                     .filter((m) => m.key) // Only uploaded media
                     .map((m, idx) => ({
-                        url: m.downloadUrl,
+                        url: m.key!, // Store S3 key, not presigned URL (presign at display time)
                         type: m.type,
                         caption: m.caption,
                         order: idx,
@@ -135,19 +135,16 @@ function CreatePropertyWizardPage() {
                 if (mediaData.length > 0) {
                     const mediaResponse = await propertyApi.post<Array<{ id: string; url: string; type: string }>>(`/property/properties/${propertyId}/media`, { media: mediaData });
 
-                    // Set display image if selected - use media record ID (not URL)
+                    // Set display image if one was selected
                     if (wizardData.displayImageKey && mediaResponse.data) {
-                        const displayMedia = wizardData.media.find((m) => m.key === wizardData.displayImageKey);
-                        if (displayMedia?.downloadUrl) {
-                            // Find the created media record matching the display image URL
-                            const displayMediaRecord = mediaResponse.data.find(
-                                (m) => m.url === displayMedia.downloadUrl
-                            );
-                            if (displayMediaRecord) {
-                                await propertyApi.put(`/property/properties/${propertyId}`, {
-                                    displayImageId: displayMediaRecord.id,
-                                });
-                            }
+                        // Match by S3 key (stored in url field)
+                        const displayMediaRecord = mediaResponse.data.find(
+                            (m) => m.url === wizardData.displayImageKey
+                        );
+                        if (displayMediaRecord) {
+                            await propertyApi.put(`/property/properties/${propertyId}`, {
+                                displayImageId: displayMediaRecord.id,
+                            });
                         }
                     }
                 }
