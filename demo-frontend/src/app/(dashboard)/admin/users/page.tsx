@@ -44,14 +44,14 @@ function useUsers() {
       const users = json.data?.data || json.data || [];
       // Map backend format to frontend format
       return users.map((u: Record<string, unknown>) => {
-        const userRoles = (u.userRoles as Array<{ role?: { id?: string; name?: string } }> || []);
+        const memberships = (u.tenantMemberships as Array<{ role?: { id?: string; name?: string } }> || []);
         return {
           id: u.id,
           email: u.email,
           name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || u.email,
           phone: u.phone,
-          roles: userRoles.map(r => r.role?.name || 'user'),
-          roleIds: userRoles.map(r => r.role?.id || '').filter(Boolean),
+          roles: memberships.map(m => m.role?.name || 'user'),
+          roleIds: memberships.map(m => m.role?.id || '').filter(Boolean),
           status: u.isActive ? 'ACTIVE' : 'INACTIVE',
           emailVerifiedAt: u.emailVerifiedAt as string | null,
           createdAt: u.createdAt,

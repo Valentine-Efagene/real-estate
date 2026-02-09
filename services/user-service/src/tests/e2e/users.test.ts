@@ -208,8 +208,8 @@ describe('User E2E Tests', () => {
                 .expect(200);
 
             expect(response.body.success).toBe(true);
-            // userRoles is an array of { role: { id, name, description } }
-            expect(response.body.data.userRoles).toContainEqual(
+            // tenantMemberships is an array of { role: { id, name, description } }
+            expect(response.body.data.tenantMemberships).toContainEqual(
                 expect.objectContaining({
                     role: expect.objectContaining({ id: testRole.id })
                 })
@@ -233,8 +233,8 @@ describe('User E2E Tests', () => {
                 .expect(200);
 
             expect(response.body.success).toBe(true);
-            expect(response.body.data.userRoles).toHaveLength(1);
-            expect(response.body.data.userRoles[0].role.id).toBe(adminRole!.id);
+            expect(response.body.data.tenantMemberships).toHaveLength(1);
+            expect(response.body.data.tenantMemberships[0].role.id).toBe(adminRole!.id);
         });
     });
 

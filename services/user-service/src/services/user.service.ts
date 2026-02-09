@@ -60,7 +60,8 @@ class UserService {
                 lastLoginAt: true,
                 createdAt: true,
                 updatedAt: true,
-                userRoles: {
+                tenantMemberships: {
+                    where: { isActive: true },
                     include: {
                         role: {
                             select: {
@@ -85,7 +86,8 @@ class UserService {
         return prisma.user.findUnique({
             where: { email },
             include: {
-                userRoles: {
+                tenantMemberships: {
+                    where: { isActive: true },
                     include: {
                         role: {
                             include: {
@@ -145,7 +147,8 @@ class UserService {
                     lastLoginAt: true,
                     createdAt: true,
                     updatedAt: true,
-                    userRoles: {
+                    tenantMemberships: {
+                        where: { isActive: true },
                         include: {
                             role: {
                                 select: {
@@ -269,18 +272,26 @@ class UserService {
             throw new NotFoundError('User not found');
         }
 
-        // Delete existing user roles
-        await prisma.userRole.deleteMany({
-            where: { userId },
+        // Get user's default tenant membership to determine tenantId
+        const existingMembership = await prisma.tenantMembership.findFirst({
+            where: { userId, isActive: true },
+            orderBy: { isDefault: 'desc' },
         });
 
-        // Create new user role associations
-        await prisma.userRole.createMany({
-            data: roleIds.map((roleId) => ({
-                userId,
-                roleId,
-            })),
-        });
+        if (!existingMembership) {
+            throw new NotFoundError('User has no tenant membership');
+        }
+
+        const tenantId = existingMembership.tenantId;
+
+        // For now, update the single tenant membership with the first role
+        // (TenantMembership has @@unique([userId, tenantId]) — one role per tenant)
+        if (roleIds.length > 0) {
+            await prisma.tenantMembership.update({
+                where: { id: existingMembership.id },
+                data: { roleId: roleIds[0] },
+            });
+        }
 
         return this.findById(userId);
     }

@@ -31,7 +31,7 @@ const ROLE_COLORS: Record<string, string> = {
     lender_ops: 'bg-orange-500',
 };
 
-interface UserRole {
+interface TenantMembership {
     role: {
         id: string;
         name: string;
@@ -49,7 +49,7 @@ interface UserFromApi {
     lastLoginAt: string | null;
     createdAt: string;
     updatedAt: string;
-    userRoles: UserRole[];
+    tenantMemberships?: TenantMembership[];
 }
 
 interface UsersResponse {
@@ -84,11 +84,18 @@ export function PersonaSwitcher() {
 
     const users = usersResponse?.data || [];
 
-    const getPrimaryRole = (userRoles: UserRole[]): string => {
-        if (!userRoles || userRoles.length === 0) return 'user';
+    const getUserRoleNames = (u: UserFromApi): string[] => {
+        if (u.tenantMemberships && u.tenantMemberships.length > 0) {
+            return [...new Set(u.tenantMemberships.map(m => m.role.name))];
+        }
+        return [];
+    };
+
+    const getPrimaryRole = (u: UserFromApi): string => {
+        const roles = getUserRoleNames(u);
+        if (roles.length === 0) return 'user';
         // Prefer 'admin' role, otherwise take the first one
-        const adminRole = userRoles.find(ur => ur.role.name === 'admin');
-        return adminRole ? 'admin' : userRoles[0].role.name;
+        return roles.includes('admin') ? 'admin' : roles[0];
     };
 
     const getRoleColor = (roleName: string): string => {
@@ -118,7 +125,7 @@ export function PersonaSwitcher() {
             await login(targetUser.email, DEMO_PASSWORD);
 
             // Redirect based on role
-            const primaryRole = getPrimaryRole(targetUser.userRoles);
+            const primaryRole = getPrimaryRole(targetUser);
             if (primaryRole === 'admin') {
                 router.push('/admin/applications');
             } else {
@@ -170,7 +177,7 @@ export function PersonaSwitcher() {
                 ) : (
                     users.map(u => {
                         const isActive = u.email === user?.email;
-                        const allRoles = u.userRoles?.map(ur => ur.role.name) || [];
+                        const allRoles = getUserRoleNames(u);
 
                         return (
                             <DropdownMenuItem

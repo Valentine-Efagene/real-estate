@@ -45,6 +45,12 @@ interface UserProfile {
             name: string;
         };
     }>;
+    tenantMemberships?: Array<{
+        role: {
+            id: string;
+            name: string;
+        };
+    }>;
 }
 
 function ProfileContent() {
@@ -65,7 +71,9 @@ function ProfileContent() {
     });
 
     const profile = profileResponse;
-    const roles = profile?.userRoles?.map((ur) => ur.role.name) || [];
+    const roles = profile?.tenantMemberships?.map((m) => m.role.name)
+        || profile?.userRoles?.map((ur) => ur.role.name)
+        || [];
 
     // Profile form state
     const [profileData, setProfileData] = useState<ProfileFormData>({

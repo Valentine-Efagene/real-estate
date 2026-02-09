@@ -479,8 +479,6 @@ model User {
   tenant                 Tenant?            @relation(fields: [tenantId], references: [id], onDelete: SetNull)
   // Federated: User can belong to multiple tenants with different roles
   tenantMemberships      TenantMembership[]
-  // Legacy: Support multiple roles via explicit join table `UserRole`
-  userRoles              UserRole[]
   walletId               String?            @unique
   wallet                 Wallet?            @relation(fields: [walletId], references: [id])
   createdAt              DateTime           @default(now())
@@ -562,9 +560,7 @@ model Role {
   // System roles cannot be deleted (admin, user, etc.)
   isSystem    Boolean            @default(false)
   isActive    Boolean            @default(true)
-  // Legacy: UserRole for backward compatibility
-  userRoles   UserRole[]
-  // New: TenantMembership for federated users
+  // TenantMembership for federated users
   memberships TenantMembership[]
   permissions RolePermission[]
 
@@ -614,19 +610,6 @@ model RolePermission {
 
   @@id([roleId, permissionId])
   @@map("role_permissions")
-}
-
-/// Legacy: Direct user-role assignment (global, not tenant-scoped)
-/// @deprecated Use TenantMembership for tenant-scoped role assignments
-model UserRole {
-  userId    String
-  roleId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-
-  @@id([userId, roleId])
-  @@map("user_roles")
 }
 
 /// Tenant Membership: Links users to tenants with specific roles
@@ -730,7 +713,7 @@ model Organization {
 }
 
 /// OrganizationMember: Links users to organizations
-/// User's own roles (via UserRole) determine their abilities within the org
+/// User's roles are determined by TenantMembership (tenant-scoped RBAC)
 model OrganizationMember {
   id             String @id @default(cuid())
   organizationId String

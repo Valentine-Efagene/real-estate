@@ -136,6 +136,13 @@ export interface UserProfile {
             description: string;
         };
     }>;
+    tenantMemberships?: Array<{
+        role: {
+            id: string;
+            name: string;
+            description: string;
+        };
+    }>;
     organizationMemberships: UserOrganizationMembership[];
 }
 

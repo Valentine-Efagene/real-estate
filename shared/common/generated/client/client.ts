@@ -72,12 +72,6 @@ export type Permission = Prisma.PermissionModel
  */
 export type RolePermission = Prisma.RolePermissionModel
 /**
- * Model UserRole
- * Legacy: Direct user-role assignment (global, not tenant-scoped)
- * @deprecated Use TenantMembership for tenant-scoped role assignments
- */
-export type UserRole = Prisma.UserRoleModel
-/**
  * Model TenantMembership
  * Tenant Membership: Links users to tenants with specific roles
  * Enables federated users across multiple tenants with different roles per tenant
@@ -91,7 +85,7 @@ export type Organization = Prisma.OrganizationModel
 /**
  * Model OrganizationMember
  * OrganizationMember: Links users to organizations
- * User's own roles (via UserRole) determine their abilities within the org
+ * User's roles are determined by TenantMembership (tenant-scoped RBAC)
  */
 export type OrganizationMember = Prisma.OrganizationMemberModel
 /**

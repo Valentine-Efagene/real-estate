@@ -112,11 +112,6 @@ class AuthService {
         const user = await prisma.user.findUnique({
             where: { email: data.email },
             include: {
-                userRoles: {
-                    include: {
-                        role: true,
-                    },
-                },
                 // Include tenant memberships for federated authentication
                 tenantMemberships: {
                     where: { isActive: true },
@@ -153,19 +148,16 @@ class AuthService {
             data: { lastLoginAt: new Date() },
         });
 
-        // Get roles from tenant memberships (federated model)
-        // Fall back to legacy userRoles if no memberships exist
+        // Get roles from tenant memberships
         const defaultMembership = user.tenantMemberships?.[0];
         let roleNames: string[];
         let tenantId: string | null = null;
 
         if (defaultMembership) {
-            // Federated: Use ALL roles from tenant memberships (not just first)
             roleNames = [...new Set(user.tenantMemberships!.map((m) => m.role.name))];
             tenantId = defaultMembership.tenantId;
         } else {
-            // Legacy: Use user-level roles and tenantId
-            roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
+            roleNames = [];
             tenantId = user.tenantId;
         }
 
@@ -359,11 +351,6 @@ class AuthService {
                 include: {
                     user: {
                         include: {
-                            userRoles: {
-                                include: {
-                                    role: true,
-                                },
-                            },
                             // Include tenant memberships for federated authentication
                             tenantMemberships: {
                                 where: { isActive: true },
@@ -395,19 +382,16 @@ class AuthService {
                 where: { jti: payload.jti },
             });
 
-            // Get roles from tenant memberships (federated model)
-            // Fall back to legacy userRoles if no memberships exist
+            // Get roles from tenant memberships
             const defaultMembership = user.tenantMemberships?.[0];
             let roleNames: string[];
             let tenantId: string | null = null;
 
             if (defaultMembership) {
-                // Federated: Use ALL roles from tenant memberships (not just first)
                 roleNames = [...new Set(user.tenantMemberships!.map((m) => m.role.name))];
                 tenantId = defaultMembership.tenantId;
             } else {
-                // Legacy: Use user-level roles and tenantId
-                roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
+                roleNames = [];
                 tenantId = user.tenantId;
             }
 
@@ -434,10 +418,9 @@ class AuthService {
             let user = await prisma.user.findUnique({
                 where: { email },
                 include: {
-                    userRoles: {
-                        include: {
-                            role: true,
-                        },
+                    tenantMemberships: {
+                        where: { isActive: true },
+                        include: { role: true },
                     },
                 },
             });
@@ -448,8 +431,8 @@ class AuthService {
                     data: { lastLoginAt: new Date() },
                 });
 
-                const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-                return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
+                const roleNames = user.tenantMemberships?.map((m) => m.role.name) || [];
+                return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId);
             }
 
             // Create new user
@@ -468,16 +451,15 @@ class AuthService {
                     isActive: true,
                 },
                 include: {
-                    userRoles: {
-                        include: {
-                            role: true,
-                        },
+                    tenantMemberships: {
+                        where: { isActive: true },
+                        include: { role: true },
                     },
                 },
             });
 
-            const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-            return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
+            const roleNames = user.tenantMemberships?.map((m) => m.role.name) || [];
+            return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId);
         } catch (error) {
             throw new UnauthorizedError('Invalid Google token');
         }
@@ -540,10 +522,9 @@ class AuthService {
             let user = await prisma.user.findUnique({
                 where: { email },
                 include: {
-                    userRoles: {
-                        include: {
-                            role: true,
-                        },
+                    tenantMemberships: {
+                        where: { isActive: true },
+                        include: { role: true },
                     },
                 },
             });
@@ -555,8 +536,8 @@ class AuthService {
                     data: { lastLoginAt: new Date() },
                 });
 
-                const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-                return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
+                const roleNames = user.tenantMemberships?.map((m) => m.role.name) || [];
+                return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId);
             }
 
             // Create new user
@@ -575,16 +556,15 @@ class AuthService {
                     isActive: true,
                 },
                 include: {
-                    userRoles: {
-                        include: {
-                            role: true,
-                        },
+                    tenantMemberships: {
+                        where: { isActive: true },
+                        include: { role: true },
                     },
                 },
             });
 
-            const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-            return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
+            const roleNames = user.tenantMemberships?.map((m) => m.role.name) || [];
+            return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId);
         } catch (error) {
             throw new UnauthorizedError('Failed to authenticate with Google');
         }
@@ -605,7 +585,8 @@ class AuthService {
                 lastLoginAt: true,
                 createdAt: true,
                 updatedAt: true,
-                userRoles: {
+                tenantMemberships: {
+                    where: { isActive: true },
                     include: {
                         role: {
                             select: {

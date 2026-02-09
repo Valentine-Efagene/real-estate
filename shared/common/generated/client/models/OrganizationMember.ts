@@ -15,7 +15,7 @@ import type * as Prisma from "../internal/prismaNamespace.js"
 /**
  * Model OrganizationMember
  * OrganizationMember: Links users to organizations
- * User's own roles (via UserRole) determine their abilities within the org
+ * User's roles are determined by TenantMembership (tenant-scoped RBAC)
  */
 export type OrganizationMemberModel = runtime.Types.Result.DefaultSelection<Prisma.$OrganizationMemberPayload>
 

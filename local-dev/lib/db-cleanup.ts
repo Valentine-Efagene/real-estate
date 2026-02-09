@@ -39,7 +39,7 @@ const MODEL_DELEGATES_IN_DELETION_ORDER = [
     'userSuspension',
     'passwordReset',
     'refreshToken',
-    'userRole',
+    'tenantMembership',
     'rolePermission',
 
     // Core tables (parents)

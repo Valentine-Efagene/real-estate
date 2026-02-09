@@ -470,7 +470,6 @@ router.post(
                 'deviceEndpoint',
                 'social',
                 'rolePermission',
-                'userRole',
                 'tenantMembership',
                 'transaction',
                 'wallet',
