@@ -5,11 +5,15 @@ import {
     useDocumentationPlans,
     useCreateDocumentationPlan,
     useDeleteDocumentationPlan,
+    useQuestionnairePlans,
     type DocumentationPlan,
     type CreateDocumentationPlanInput,
     type DocumentDefinition,
     type ApprovalStage,
     type UploaderType,
+    type StepCondition,
+    type QuestionnairePlan,
+    type QuestionDefinition,
 } from '@/lib/hooks/use-payment-config';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -35,7 +39,7 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Trash2, FileText, CheckCircle, Upload } from 'lucide-react';
+import { Plus, Trash2, FileText, CheckCircle, Upload, Filter } from 'lucide-react';
 import { toast } from 'sonner';
 
 const UPLOADER_TYPES: { value: UploaderType; label: string; color: string }[] = [
@@ -66,12 +70,260 @@ const REJECTION_ACTIONS = [
     { value: 'HOLD', label: 'Hold for Review' },
 ];
 
+const CONDITION_OPERATORS = [
+    { value: 'EQUALS', label: '= Equals' },
+    { value: 'NOT_EQUALS', label: '≠ Not Equals' },
+    { value: 'IN', label: '∈ In (any of)' },
+    { value: 'NOT_IN', label: '∉ Not In' },
+    { value: 'GREATER_THAN', label: '> Greater Than' },
+    { value: 'LESS_THAN', label: '< Less Than' },
+    { value: 'EXISTS', label: '∃ Exists (has answer)' },
+] as const;
+
+type ConditionOperator = typeof CONDITION_OPERATORS[number]['value'];
+
+/** Human-readable summary of a condition */
+function describeCondition(condition: StepCondition): string {
+    if (condition.all && condition.all.length > 0) {
+        return `ALL of: (${condition.all.map(describeCondition).join(' AND ')})`;
+    }
+    if (condition.any && condition.any.length > 0) {
+        return `ANY of: (${condition.any.map(describeCondition).join(' OR ')})`;
+    }
+    const key = condition.questionKey || '?';
+    const op = condition.operator || '?';
+    if (op === 'EXISTS') return `${key} has an answer`;
+    if (op === 'IN' || op === 'NOT_IN') {
+        return `${key} ${op === 'IN' ? 'in' : 'not in'} [${(condition.values || []).join(', ')}]`;
+    }
+    const opSymbols: Record<string, string> = { EQUALS: '=', NOT_EQUALS: '≠', GREATER_THAN: '>', LESS_THAN: '<' };
+    const opSymbol = opSymbols[op] || op;
+    return `${key} ${opSymbol} ${condition.value ?? '?'}`;
+}
+
+// ============================================================================
+// Condition Editor — inline condition builder for a single document
+// ============================================================================
+
+interface ConditionEditorProps {
+    condition?: StepCondition;
+    onChange: (condition: StepCondition | undefined) => void;
+    questionnairePlans: QuestionnairePlan[];
+}
+
+function ConditionEditor({ condition, onChange, questionnairePlans }: ConditionEditorProps) {
+    // Flatten all questions from all plans for the question key picker
+    const allQuestions: (QuestionDefinition & { planName: string })[] = questionnairePlans.flatMap(
+        (plan) => plan.questions.map((q) => ({ ...q, planName: plan.name }))
+    );
+
+    // Find the selected question to show its options
+    const selectedQuestion = condition?.questionKey
+        ? allQuestions.find((q) => q.questionKey === condition.questionKey)
+        : undefined;
+
+    const hasOptions = selectedQuestion?.options && selectedQuestion.options.length > 0;
+    const operator = condition?.operator ?? 'EQUALS';
+    const isMultiValue = operator === 'IN' || operator === 'NOT_IN';
+
+    const updateCondition = (updates: Partial<StepCondition>) => {
+        const updated = { ...condition, ...updates };
+        // Clear value fields when switching operators
+        if (updates.operator) {
+            if (updates.operator === 'EXISTS') {
+                delete updated.value;
+                delete updated.values;
+            } else if (updates.operator === 'IN' || updates.operator === 'NOT_IN') {
+                delete updated.value;
+                if (!updated.values) updated.values = [];
+            } else {
+                delete updated.values;
+            }
+        }
+        onChange(updated);
+    };
+
+    if (!condition) {
+        return (
+            <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-xs gap-1"
+                onClick={() => onChange({ questionKey: '', operator: 'EQUALS', value: '' })}
+            >
+                <Filter className="h-3 w-3" />
+                Add Condition
+            </Button>
+        );
+    }
+
+    return (
+        <div className="border rounded-md p-2 bg-amber-50 dark:bg-amber-950/20 space-y-2">
+            <div className="flex items-center justify-between">
+                <Label className="text-xs font-medium text-amber-700 dark:text-amber-400 flex items-center gap-1">
+                    <Filter className="h-3 w-3" />
+                    Conditional — only required when:
+                </Label>
+                <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-5 px-1 text-xs text-destructive"
+                    onClick={() => onChange(undefined)}
+                >
+                    Remove
+                </Button>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2">
+                {/* Question Key Picker */}
+                <div>
+                    <Label className="text-xs">Question Key</Label>
+                    {allQuestions.length > 0 ? (
+                        <Select
+                            value={condition.questionKey || ''}
+                            onValueChange={(val) => updateCondition({ questionKey: val })}
+                        >
+                            <SelectTrigger className="text-xs h-8">
+                                <SelectValue placeholder="Select question..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {questionnairePlans.map((plan) => (
+                                    <div key={plan.id}>
+                                        <div className="px-2 py-1 text-xs font-semibold text-muted-foreground bg-muted">
+                                            {plan.name}
+                                        </div>
+                                        {plan.questions.map((q) => (
+                                            <SelectItem key={q.questionKey} value={q.questionKey} className="text-xs">
+                                                <span className="font-mono">{q.questionKey}</span>
+                                                <span className="ml-1 text-muted-foreground">— {q.questionText}</span>
+                                            </SelectItem>
+                                        ))}
+                                    </div>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    ) : (
+                        <Input
+                            value={condition.questionKey || ''}
+                            onChange={(e) => updateCondition({ questionKey: e.target.value })}
+                            placeholder="mortgage_type"
+                            className="text-xs h-8 font-mono"
+                        />
+                    )}
+                </div>
+
+                <div className='flex gap-4'>
+                    {/* Operator */}
+                    <div>
+                        <Label className="text-xs">Operator</Label>
+                        <Select
+                            value={operator}
+                            onValueChange={(val: ConditionOperator) => updateCondition({ operator: val })}
+                        >
+                            <SelectTrigger className="text-xs h-8">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {CONDITION_OPERATORS.map((op) => (
+                                    <SelectItem key={op.value} value={op.value} className="text-xs">
+                                        {op.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {/* Value */}
+                    <div>
+                        <Label className="text-xs">
+                            {operator === 'EXISTS' ? '(no value needed)' : isMultiValue ? 'Values (comma-separated)' : 'Value'}
+                        </Label>
+                        {operator === 'EXISTS' ? (
+                            <div className="h-8 flex items-center text-xs text-muted-foreground italic">Auto-detected</div>
+                        ) : isMultiValue ? (
+                            hasOptions ? (
+                                <div className="flex flex-wrap gap-1 max-h-16 overflow-y-auto">
+                                    {selectedQuestion!.options!.map((opt) => {
+                                        const isSelected = (condition.values || []).includes(opt.value);
+                                        return (
+                                            <Badge
+                                                key={opt.value}
+                                                variant={isSelected ? 'default' : 'outline'}
+                                                className="cursor-pointer text-xs"
+                                                onClick={() => {
+                                                    const current = condition.values || [];
+                                                    const next = isSelected
+                                                        ? current.filter((v) => v !== opt.value)
+                                                        : [...current, opt.value];
+                                                    updateCondition({ values: next });
+                                                }}
+                                            >
+                                                {opt.label}
+                                            </Badge>
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                <Input
+                                    value={(condition.values || []).join(', ')}
+                                    onChange={(e) =>
+                                        updateCondition({
+                                            values: e.target.value.split(',').map((v) => v.trim()).filter(Boolean),
+                                        })
+                                    }
+                                    placeholder="VALUE_1, VALUE_2"
+                                    className="text-xs h-8 font-mono"
+                                />
+                            )
+                        ) : hasOptions ? (
+                            <Select
+                                value={String(condition.value ?? '')}
+                                onValueChange={(val) => updateCondition({ value: val })}
+                            >
+                                <SelectTrigger className="text-xs h-8">
+                                    <SelectValue placeholder="Select..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {selectedQuestion!.options!.map((opt) => (
+                                        <SelectItem key={opt.value} value={opt.value} className="text-xs">
+                                            {opt.label}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        ) : (
+                            <Input
+                                value={String(condition.value ?? '')}
+                                onChange={(e) => {
+                                    const v = e.target.value;
+                                    // Auto-detect number
+                                    const num = Number(v);
+                                    updateCondition({ value: v !== '' && !isNaN(num) ? num : v });
+                                }}
+                                placeholder="JOINT"
+                                className="text-xs h-8 font-mono"
+                            />
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ============================================================================
+// Document Editor
+// ============================================================================
+
 interface DocumentEditorProps {
     documents: DocumentDefinition[];
     onChange: (documents: DocumentDefinition[]) => void;
+    questionnairePlans: QuestionnairePlan[];
 }
 
-function DocumentEditor({ documents, onChange }: DocumentEditorProps) {
+function DocumentEditor({ documents, onChange, questionnairePlans }: DocumentEditorProps) {
     const addDocument = () => {
         const newDoc: DocumentDefinition = {
             documentType: '',
@@ -110,11 +362,11 @@ function DocumentEditor({ documents, onChange }: DocumentEditorProps) {
                     No documents defined. Add documents that applicants must upload.
                 </p>
             ) : (
-                <div className="space-y-2 max-h-[250px] overflow-y-auto">
+                <div className="space-y-2 max-h-[400px] overflow-y-auto">
                     {documents.map((doc, index) => (
                         <Card key={index} className="p-3">
                             <div className="flex items-start gap-3">
-                                <div className="flex-1 grid gap-2">
+                                <div className="flex-1 space-y-2">
                                     <div className="grid grid-cols-3 gap-2">
                                         <div>
                                             <Label className="text-xs">Document Type *</Label>
@@ -173,6 +425,12 @@ function DocumentEditor({ documents, onChange }: DocumentEditorProps) {
                                             </div>
                                         </div>
                                     </div>
+                                    {/* Condition Editor */}
+                                    <ConditionEditor
+                                        condition={doc.condition}
+                                        onChange={(condition) => updateDocument(index, { condition })}
+                                        questionnairePlans={questionnairePlans}
+                                    />
                                 </div>
                                 <Button
                                     type="button"
@@ -352,6 +610,7 @@ function CreateDocumentationPlanDialog() {
     });
 
     const createMutation = useCreateDocumentationPlan();
+    const { data: questionnairePlans } = useQuestionnairePlans();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -434,6 +693,7 @@ function CreateDocumentationPlanDialog() {
                         <DocumentEditor
                             documents={formData.documentDefinitions}
                             onChange={(docs) => setFormData({ ...formData, documentDefinitions: docs })}
+                            questionnairePlans={questionnairePlans || []}
                         />
 
                         <hr className="my-2" />
@@ -510,6 +770,11 @@ function DocumentationPlanCard({ plan }: { plan: DocumentationPlan }) {
                                 <Upload className="h-3 w-3 mr-1" />
                                 {doc.documentName}
                                 <span className="ml-1 opacity-60">({doc.uploadedBy})</span>
+                                {doc.condition && (
+                                    <span className="ml-1 text-amber-600" title={describeCondition(doc.condition)}>
+                                        ⚡ conditional
+                                    </span>
+                                )}
                             </Badge>
                         ))}
                     </div>
@@ -618,6 +883,13 @@ export default function DocumentationPlansPage() {
                     <div>
                         <strong>Auto-Transition:</strong> When enabled, documents uploaded by the stage&apos;s own
                         organization type are auto-approved.
+                    </div>
+                    <div>
+                        <strong>Conditional Documents:</strong> Documents can be tied to questionnaire answers.
+                        For example, a &quot;Spouse ID&quot; document can be configured to only be required when
+                        the <code className="text-xs bg-muted px-1 rounded">mortgage_type</code> question answer
+                        equals <code className="text-xs bg-muted px-1 rounded">JOINT</code>. Conditions are
+                        evaluated automatically when a documentation phase activates after a questionnaire phase.
                     </div>
                 </CardContent>
             </Card>

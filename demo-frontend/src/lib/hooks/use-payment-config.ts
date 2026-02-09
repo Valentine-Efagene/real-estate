@@ -559,6 +559,15 @@ export function useDeleteQuestionnairePlan() {
 
 export type UploaderType = 'CUSTOMER' | 'PLATFORM' | 'DEVELOPER' | 'LENDER' | 'LEGAL' | 'INSURER' | 'GOVERNMENT';
 
+export interface StepCondition {
+    questionKey?: string;
+    operator?: 'EQUALS' | 'NOT_EQUALS' | 'IN' | 'NOT_IN' | 'GREATER_THAN' | 'LESS_THAN' | 'EXISTS';
+    value?: string | number | boolean;
+    values?: (string | number)[];
+    all?: StepCondition[];
+    any?: StepCondition[];
+}
+
 export interface DocumentDefinition {
     documentType: string;
     documentName: string;
@@ -568,6 +577,7 @@ export interface DocumentDefinition {
     description?: string;
     maxSizeBytes?: number;
     allowedMimeTypes?: string[];
+    condition?: StepCondition;
 }
 
 export interface ApprovalStage {
