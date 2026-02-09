@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BootstrapButton } from "@/components/demo/BootstrapButton";
+import { ResetButton } from "@/components/demo/ResetButton";
 
 export default function Home() {
   return (
@@ -175,10 +176,12 @@ export default function Home() {
             </span>
           </div>
           <p className="text-sm text-amber-700 dark:text-amber-300 mb-4">
-            Use these tools to set up and test the platform. Bootstrap creates the initial tenant,
+            Use these tools to set up and test the platform. <strong>Reset</strong> wipes the
+            database for a clean slate. <strong>Bootstrap</strong> creates the initial tenant,
             admin user (Adaeze), and platform organization.
           </p>
           <div className="flex gap-4">
+            <ResetButton />
             <BootstrapButton />
           </div>
         </div>
