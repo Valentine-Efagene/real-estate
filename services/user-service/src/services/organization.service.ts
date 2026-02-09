@@ -44,6 +44,10 @@ export interface CreateOrganizationInput {
 
 export interface UpdateOrganizationInput {
     name?: string;
+    /** Replace organization type codes (e.g., ['PLATFORM', 'DEVELOPER']) */
+    typeCodes?: string[];
+    /** Which type is primary for display purposes */
+    primaryTypeCode?: string;
     email?: string;
     phone?: string;
     address?: string;
@@ -317,9 +321,74 @@ class OrganizationService {
             }
         }
 
+        // Separate typeCodes/primaryTypeCode from scalar fields
+        const { typeCodes, primaryTypeCode, ...scalarData } = data;
+
+        // If typeCodes provided, replace all type assignments in a transaction
+        if (typeCodes && typeCodes.length > 0) {
+            // Resolve type codes to IDs
+            const orgTypes = await prisma.organizationType.findMany({
+                where: { tenantId, code: { in: typeCodes } },
+            });
+
+            const missingCodes = typeCodes.filter(
+                (code) => !orgTypes.some((t) => t.code === code)
+            );
+            if (missingCodes.length > 0) {
+                throw new ValidationError(`Unknown organization type codes: ${missingCodes.join(', ')}`);
+            }
+
+            const primaryCode = primaryTypeCode || typeCodes[0];
+            const primaryType = orgTypes.find((t) => t.code === primaryCode);
+            if (!primaryType) {
+                throw new ValidationError(`Primary type code ${primaryCode} not found in type codes`);
+            }
+
+            return prisma.$transaction(async (tx) => {
+                // Update scalar fields
+                await tx.organization.update({
+                    where: { id },
+                    data: scalarData,
+                });
+
+                // Delete existing type assignments
+                await tx.organizationTypeAssignment.deleteMany({
+                    where: { organizationId: id },
+                });
+
+                // Create new type assignments
+                await tx.organizationTypeAssignment.createMany({
+                    data: orgTypes.map((type) => ({
+                        organizationId: id,
+                        typeId: type.id,
+                        isPrimary: type.id === primaryType.id,
+                    })),
+                });
+
+                return tx.organization.findUnique({
+                    where: { id },
+                    include: {
+                        types: {
+                            include: {
+                                orgType: { select: { id: true, code: true, name: true } },
+                            },
+                        },
+                        members: {
+                            include: {
+                                user: {
+                                    select: { id: true, email: true, firstName: true, lastName: true },
+                                },
+                            },
+                        },
+                    },
+                });
+            });
+        }
+
+        // No type changes — just update scalar fields
         return prisma.organization.update({
             where: { id },
-            data,
+            data: scalarData,
             include: {
                 types: {
                     include: {

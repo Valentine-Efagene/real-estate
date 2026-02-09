@@ -4,33 +4,69 @@ import type { CreatePropertyInput, UpdatePropertyInput } from '../validators/pro
 
 class PropertyService {
     async createProperty(data: CreatePropertyInput, userId: string, tenantId: string) {
-        // If organizationId is provided, verify user is a member of that organization
-        if (data.organizationId) {
+        let organizationId = data.organizationId;
+
+        // Look up the DEVELOPER organization type for this tenant
+        const developerType = await prisma.organizationType.findFirst({
+            where: { tenantId, code: 'DEVELOPER' },
+        });
+
+        if (organizationId) {
+            // Explicit org provided — verify membership
             const membership = await prisma.organizationMember.findFirst({
-                where: {
-                    userId,
-                    organizationId: data.organizationId,
-                },
+                where: { userId, organizationId },
             });
             if (!membership) {
                 throw new AppError(403, 'You must be a member of the organization to create a property for it');
             }
 
-            // Verify the organization belongs to the tenant
+            // Verify org belongs to this tenant
             const org = await prisma.organization.findFirst({
-                where: {
-                    id: data.organizationId,
-                    tenantId,
-                },
+                where: { id: organizationId, tenantId },
             });
             if (!org) {
                 throw new AppError(404, 'Organization not found');
+            }
+
+            // Verify the org has DEVELOPER type
+            if (developerType) {
+                const hasDevType = await prisma.organizationTypeAssignment.findFirst({
+                    where: { organizationId, typeId: developerType.id },
+                });
+                if (!hasDevType) {
+                    throw new AppError(400, 'Organization must have the DEVELOPER type to own properties');
+                }
+            }
+        } else {
+            // No org provided — auto-detect user's DEVELOPER org
+            if (!developerType) {
+                throw new AppError(500, 'DEVELOPER organization type not configured for this tenant');
+            }
+
+            // Find any org the user belongs to that has the DEVELOPER type
+            // (an org can have multiple types, e.g. QShelter can be PLATFORM + DEVELOPER)
+            const devMembership = await prisma.organizationMember.findFirst({
+                where: {
+                    userId,
+                    organization: {
+                        types: {
+                            some: { typeId: developerType.id },
+                        },
+                    },
+                },
+            });
+
+            if (devMembership) {
+                organizationId = devMembership.organizationId;
+            } else {
+                throw new AppError(403, 'You must belong to a DEVELOPER organization to create a property');
             }
         }
 
         const property = await prisma.property.create({
             data: {
                 ...data,
+                organizationId,
                 userId,
                 tenantId,
                 // If status is PUBLISHED, set publishedAt

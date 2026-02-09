@@ -16,7 +16,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query';
-import { Plus, UserPlus, Mail, RefreshCw, X, Clock, User } from 'lucide-react';
+import { Plus, UserPlus, Mail, RefreshCw, X, Clock, User, Pencil } from 'lucide-react';
 
 interface Organization {
   id: string;
@@ -102,6 +102,32 @@ function useCreateOrganization() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.organizations.all });
       toast.success('Organization created successfully');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+}
+
+function useUpdateOrganization() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: { typeCodes: string[]; primaryTypeCode?: string } }) => {
+      const res = await fetch(`/api/proxy/user/organizations/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || error.error?.message || 'Failed to update organization');
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.organizations.all });
+      toast.success('Organization types updated successfully');
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -866,6 +892,120 @@ function StaffMembersList({ organization }: { organization: Organization }) {
   );
 }
 
+// Edit Organization Types Dialog
+function EditTypesDialog({ organization }: { organization: Organization }) {
+  const [open, setOpen] = useState(false);
+  const currentCodes = (organization.types || []).map((t) => t.orgType?.code).filter(Boolean) as string[];
+  const currentPrimary = organization.types?.find((t) => t.isPrimary)?.orgType?.code || currentCodes[0] || '';
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(currentCodes);
+  const [primaryType, setPrimaryType] = useState<string>(currentPrimary);
+
+  const updateOrg = useUpdateOrganization();
+
+  // Reset state when dialog opens
+  const handleOpenChange = (isOpen: boolean) => {
+    if (isOpen) {
+      const codes = (organization.types || []).map((t) => t.orgType?.code).filter(Boolean) as string[];
+      setSelectedTypes(codes);
+      setPrimaryType(organization.types?.find((t) => t.isPrimary)?.orgType?.code || codes[0] || '');
+    }
+    setOpen(isOpen);
+  };
+
+  const toggleType = (code: string) => {
+    setSelectedTypes((prev) =>
+      prev.includes(code) ? prev.filter((t) => t !== code) : [...prev, code]
+    );
+    if (primaryType === code) {
+      setPrimaryType('');
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedTypes.length === 0) {
+      toast.error('At least one organization type is required');
+      return;
+    }
+
+    await updateOrg.mutateAsync({
+      id: organization.id,
+      data: {
+        typeCodes: selectedTypes,
+        primaryTypeCode: primaryType || selectedTypes[0],
+      },
+    });
+    setOpen(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="sm">
+          <Pencil className="h-3 w-3" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-sm">
+        <DialogHeader>
+          <DialogTitle>Edit Types — {organization.name}</DialogTitle>
+          <DialogDescription>
+            Select which types apply to this organization
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label>Organization Types *</Label>
+            <div className="grid grid-cols-2 gap-2">
+              {ORGANIZATION_TYPES.map((type) => (
+                <div key={type.code} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`edit-type-${organization.id}-${type.code}`}
+                    checked={selectedTypes.includes(type.code)}
+                    onCheckedChange={() => toggleType(type.code)}
+                  />
+                  <Label
+                    htmlFor={`edit-type-${organization.id}-${type.code}`}
+                    className="text-sm cursor-pointer"
+                  >
+                    {type.name}
+                  </Label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {selectedTypes.length > 1 && (
+            <div className="space-y-2">
+              <Label>Primary Type</Label>
+              <Select value={primaryType} onValueChange={setPrimaryType}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select primary type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {selectedTypes.map((code) => (
+                    <SelectItem key={code} value={code}>
+                      {ORGANIZATION_TYPES.find((t) => t.code === code)?.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={updateOrg.isPending || selectedTypes.length === 0}>
+              {updateOrg.isPending ? 'Saving...' : 'Save Types'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function getOrgTypeColor(code: string): 'default' | 'secondary' | 'outline' | 'destructive' {
   switch (code) {
     case 'PLATFORM':
@@ -973,7 +1113,10 @@ function OrganizationsTable({
                           <div className="font-medium text-xs">{org.id}</div>
                         </div>
                         <div className="space-y-2">
-                          <Label>Organization Types</Label>
+                          <div className="flex items-center justify-between">
+                            <Label>Organization Types</Label>
+                            <EditTypesDialog organization={org} />
+                          </div>
                           <div className="flex flex-wrap gap-2">
                             {(org.types || []).map((ot) => (
                               <Badge key={ot.id} variant="secondary" className="text-sm">

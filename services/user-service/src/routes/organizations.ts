@@ -41,6 +41,9 @@ const CreateOrganizationSchema = z.object({
 
 const UpdateOrganizationSchema = z.object({
     name: z.string().min(2).max(200).optional(),
+    // Organization type management
+    typeCodes: z.array(z.string()).min(1).optional(),
+    primaryTypeCode: z.string().optional(),
     email: z.string().email().optional(),
     phone: z.string().optional(),
     address: z.string().optional(),
