@@ -24,6 +24,7 @@ import {
   useReviewQuestionnaire,
   useApplicationOrganizations,
   useBindOrganization,
+  useCancelApplication,
   type QuestionnaireField
 } from '@/lib/hooks';
 import { useOrganizations, useUserProfile, getUserOrganizationTypeCode } from '@/lib/hooks/use-organizations';
@@ -59,6 +60,11 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
   const reviewDocument = useReviewDocument();
   const reviewQuestionnaire = useReviewQuestionnaire();
   const bindOrganization = useBindOrganization();
+  const cancelApplication = useCancelApplication();
+
+  // Cancel application state
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
 
   // Get user's organization type from their membership (dynamic from backend)
   const userOrgTypeCode = getUserOrganizationTypeCode(userProfile);
@@ -252,18 +258,71 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             Application ID: {application.id}
           </p>
         </div>
-        <Badge
-          variant={
-            application.status === 'COMPLETED'
-              ? 'default'
-              : application.status === 'ACTIVE'
-                ? 'secondary'
-                : 'outline'
-          }
-          className="text-lg px-4 py-1"
-        >
-          {application.status}
-        </Badge>
+        <div className="flex items-center gap-3">
+          {application.status !== 'CANCELLED' && application.status !== 'COMPLETED' && (
+            <Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+              <DialogTrigger asChild>
+                <Button variant="destructive" size="sm">Cancel Application</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Cancel Application</DialogTitle>
+                  <DialogDescription>
+                    This will cancel the application permanently. This action cannot be undone.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="cancel-reason">Reason for cancellation</Label>
+                    <Textarea
+                      id="cancel-reason"
+                      value={cancelReason}
+                      onChange={(e) => setCancelReason(e.target.value)}
+                      placeholder="e.g., Customer requested cancellation, duplicate application..."
+                      rows={3}
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setShowCancelDialog(false)}>Go Back</Button>
+                  <Button
+                    variant="destructive"
+                    disabled={cancelApplication.isPending}
+                    onClick={async () => {
+                      try {
+                        await cancelApplication.mutateAsync({
+                          applicationId,
+                          reason: cancelReason || undefined,
+                        });
+                        toast.success('Application cancelled');
+                        setShowCancelDialog(false);
+                        setCancelReason('');
+                      } catch (error) {
+                        toast.error(error instanceof Error ? error.message : 'Failed to cancel application');
+                      }
+                    }}
+                  >
+                    {cancelApplication.isPending ? 'Cancelling...' : 'Confirm Cancellation'}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          )}
+          <Badge
+            variant={
+              application.status === 'COMPLETED'
+                ? 'default'
+                : application.status === 'ACTIVE'
+                  ? 'secondary'
+                  : application.status === 'CANCELLED'
+                    ? 'destructive'
+                    : 'outline'
+            }
+            className="text-lg px-4 py-1"
+          >
+            {application.status}
+          </Badge>
+        </div>
       </div>
 
       {/* Application Overview */}

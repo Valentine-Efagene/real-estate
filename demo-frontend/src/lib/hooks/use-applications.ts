@@ -628,6 +628,37 @@ export interface PhaseDocument {
   createdAt: string;
 }
 
+export function useCancelApplication() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      applicationId,
+      reason,
+    }: {
+      applicationId: string;
+      reason?: string;
+    }) => {
+      const response = await mortgageApi.post<Application>(
+        `/applications/${applicationId}/cancel`,
+        { reason }
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to cancel application');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.detail(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.all,
+      });
+    },
+  });
+}
+
 export function useUploadPhaseDocument() {
   const queryClient = useQueryClient();
 

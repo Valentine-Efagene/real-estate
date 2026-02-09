@@ -10,7 +10,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
-import { useApplication, useCurrentAction, useApplicationPhases, useReviewDocument, type Phase } from '@/lib/hooks';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from 'sonner';
+import { useApplication, useCurrentAction, useApplicationPhases, useReviewDocument, useCancelApplication, useApplicationOrganizations, type Phase } from '@/lib/hooks';
 import { DocumentUploadSection } from '@/components/applications/document-upload-section';
 import { PhaseProgress } from '@/components/applications/phase-progress';
 import { QuestionnaireForm, type QuestionnaireField } from '@/components/applications/questionnaire-form';
@@ -32,8 +36,12 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
   const { data: application, isLoading: appLoading, refetch: refetchApplication } = useApplication(applicationId);
   const { data: currentAction, isLoading: actionLoading, refetch: refetchCurrentAction } = useCurrentAction(applicationId);
   const { data: phases } = useApplicationPhases(applicationId);
+  const { data: boundOrganizations } = useApplicationOrganizations(applicationId);
   const reviewDocumentMutation = useReviewDocument();
+  const cancelApplication = useCancelApplication();
   const [reviewingDocId, setReviewingDocId] = useState<string | null>(null);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
 
   // Check if user is staff
   const isStaff = user?.roles?.some(role => STAFF_ROLES.includes(role)) ?? false;
@@ -126,18 +134,71 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
             Application ID: {application.id}
           </p>
         </div>
-        <Badge
-          variant={
-            application.status === 'COMPLETED'
-              ? 'default'
-              : application.status === 'ACTIVE'
-                ? 'secondary'
-                : 'outline'
-          }
-          className="text-lg px-4 py-1"
-        >
-          {application.status}
-        </Badge>
+        <div className="flex items-center gap-3">
+          {isApplicant && application.status !== 'CANCELLED' && application.status !== 'COMPLETED' && (
+            <Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+              <DialogTrigger asChild>
+                <Button variant="destructive" size="sm">Cancel Application</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Cancel Application</DialogTitle>
+                  <DialogDescription>
+                    Are you sure you want to cancel this application? This action cannot be undone.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="cancel-reason-customer">Reason (optional)</Label>
+                    <Textarea
+                      id="cancel-reason-customer"
+                      value={cancelReason}
+                      onChange={(e) => setCancelReason(e.target.value)}
+                      placeholder="Why are you cancelling this application?"
+                      rows={3}
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setShowCancelDialog(false)}>Go Back</Button>
+                  <Button
+                    variant="destructive"
+                    disabled={cancelApplication.isPending}
+                    onClick={async () => {
+                      try {
+                        await cancelApplication.mutateAsync({
+                          applicationId,
+                          reason: cancelReason || undefined,
+                        });
+                        toast.success('Application cancelled');
+                        setShowCancelDialog(false);
+                        setCancelReason('');
+                      } catch (error) {
+                        toast.error(error instanceof Error ? error.message : 'Failed to cancel application');
+                      }
+                    }}
+                  >
+                    {cancelApplication.isPending ? 'Cancelling...' : 'Confirm Cancellation'}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          )}
+          <Badge
+            variant={
+              application.status === 'COMPLETED'
+                ? 'default'
+                : application.status === 'ACTIVE'
+                  ? 'secondary'
+                  : application.status === 'CANCELLED'
+                    ? 'destructive'
+                    : 'outline'
+            }
+            className="text-lg px-4 py-1"
+          >
+            {application.status}
+          </Badge>
+        </div>
       </div>
 
       {/* Application Overview */}
@@ -234,6 +295,46 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
           </CardContent>
         </Card>
       </div>
+
+      {/* Bound Organizations */}
+      {boundOrganizations && boundOrganizations.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Organizations Involved</CardTitle>
+            <CardDescription>Partner organizations working on your application</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {boundOrganizations.map((binding) => (
+                <div
+                  key={binding.id}
+                  className="flex items-start gap-3 p-3 border rounded-lg"
+                >
+                  <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center shrink-0">
+                    <span className="text-sm font-semibold">
+                      {(binding.organization?.name || '?')[0].toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-medium truncate">{binding.organization?.name || 'Unknown'}</p>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      <Badge variant="outline" className="text-xs">
+                        {binding.assignedAsType?.name || binding.assignedAsType?.code || 'N/A'}
+                      </Badge>
+                      <Badge
+                        variant={binding.status === 'ACTIVE' ? 'default' : 'secondary'}
+                        className="text-xs"
+                      >
+                        {binding.status}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Separator />
 
