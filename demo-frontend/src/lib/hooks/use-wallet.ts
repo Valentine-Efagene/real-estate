@@ -25,13 +25,19 @@ export type TransactionStatus = (typeof TransactionStatus)[keyof typeof Transact
 // Wallet Types
 // ============================================================================
 
+export interface WalletUser {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+}
+
 export interface Wallet {
     id: string;
-    userId: string;
     tenantId: string;
     currency: string;
     balance: number;
-    status: string;
+    user?: WalletUser;
     createdAt: string;
     updatedAt: string;
 }

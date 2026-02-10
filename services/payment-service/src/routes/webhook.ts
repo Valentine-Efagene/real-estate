@@ -33,7 +33,7 @@ router.post('/budpay', async (req: Request, res: Response, next: NextFunction) =
         // Always return 200 to acknowledge receipt
         // This prevents BudPay from retrying
         return res.status(200).json({
-            status: 'success',
+            success: true,
             message: 'Webhook processed',
             data: result,
         });

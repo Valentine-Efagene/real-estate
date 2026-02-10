@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { walletService } from '../services/wallet.service';
-import { AppError } from '@valentine-efagene/qshelter-common';
+import { AppError, successResponse } from '@valentine-efagene/qshelter-common';
 import { z } from 'zod';
 
 // =============================================================================
@@ -54,10 +54,7 @@ router.get('/me', async (req: Request, res: Response, next: NextFunction) => {
 
         const wallet = await walletService.findByUserId(userId);
 
-        return res.status(200).json({
-            status: 'success',
-            data: wallet,
-        });
+        return res.status(200).json(successResponse(wallet));
     } catch (error) {
         next(error);
     }
@@ -78,11 +75,7 @@ router.post('/me', async (req: Request, res: Response, next: NextFunction) => {
         const { currency } = createWalletSchema.parse(req.body);
         const wallet = await walletService.createForUser(userId, tenantId, currency);
 
-        return res.status(201).json({
-            status: 'success',
-            message: 'Wallet created successfully',
-            data: wallet,
-        });
+        return res.status(201).json(successResponse(wallet, 'Wallet created successfully'));
     } catch (error) {
         next(error);
     }
@@ -104,16 +97,13 @@ router.get('/me/transactions', async (req: Request, res: Response, next: NextFun
         const result = await walletService.getTransactions(wallet.id, limit, offset);
         const page = Math.floor(offset / limit) + 1;
 
-        return res.status(200).json({
-            status: 'success',
-            data: {
-                data: result.transactions,
-                total: result.total,
-                page,
-                pageSize: limit,
-                totalPages: Math.ceil(result.total / limit),
-            },
-        });
+        return res.status(200).json(successResponse({
+            data: result.transactions,
+            total: result.total,
+            page,
+            pageSize: limit,
+            totalPages: Math.ceil(result.total / limit),
+        }));
     } catch (error) {
         next(error);
     }
@@ -132,10 +122,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
         const id = req.params.id as string;
         const wallet = await walletService.findById(id);
 
-        return res.status(200).json({
-            status: 'success',
-            data: wallet,
-        });
+        return res.status(200).json(successResponse(wallet));
     } catch (error) {
         next(error);
     }
@@ -150,10 +137,7 @@ router.get('/user/:userId', async (req: Request, res: Response, next: NextFuncti
         const userId = req.params.userId as string;
         const wallet = await walletService.findByUserId(userId);
 
-        return res.status(200).json({
-            status: 'success',
-            data: wallet,
-        });
+        return res.status(200).json(successResponse(wallet));
     } catch (error) {
         next(error);
     }
@@ -174,11 +158,7 @@ router.post('/user/:userId', async (req: Request, res: Response, next: NextFunct
         const { currency } = createWalletSchema.parse(req.body);
         const wallet = await walletService.createForUser(userId, tenantId, currency);
 
-        return res.status(201).json({
-            status: 'success',
-            message: 'Wallet created successfully',
-            data: wallet,
-        });
+        return res.status(201).json(successResponse(wallet, 'Wallet created successfully'));
     } catch (error) {
         next(error);
     }
@@ -198,14 +178,10 @@ router.post('/:id/credit', async (req: Request, res: Response, next: NextFunctio
             ...input,
         });
 
-        return res.status(200).json({
-            status: 'success',
-            message: 'Wallet credited successfully',
-            data: {
-                wallet: result.wallet,
-                transaction: result.transaction,
-            },
-        });
+        return res.status(200).json(successResponse({
+            wallet: result.wallet,
+            transaction: result.transaction,
+        }, 'Wallet credited successfully'));
     } catch (error) {
         next(error);
     }
@@ -225,14 +201,10 @@ router.post('/:id/debit', async (req: Request, res: Response, next: NextFunction
             ...input,
         });
 
-        return res.status(200).json({
-            status: 'success',
-            message: 'Wallet debited successfully',
-            data: {
-                wallet: result.wallet,
-                transaction: result.transaction,
-            },
-        });
+        return res.status(200).json(successResponse({
+            wallet: result.wallet,
+            transaction: result.transaction,
+        }, 'Wallet debited successfully'));
     } catch (error) {
         next(error);
     }
@@ -252,16 +224,13 @@ router.get('/:id/transactions', async (req: Request, res: Response, next: NextFu
         const result = await walletService.getTransactions(walletId, limit, offset);
         const page = Math.floor(offset / limit) + 1;
 
-        return res.status(200).json({
-            status: 'success',
-            data: {
-                data: result.transactions,
-                total: result.total,
-                page,
-                pageSize: limit,
-                totalPages: Math.ceil(result.total / limit),
-            },
-        });
+        return res.status(200).json(successResponse({
+            data: result.transactions,
+            total: result.total,
+            page,
+            pageSize: limit,
+            totalPages: Math.ceil(result.total / limit),
+        }));
     } catch (error) {
         next(error);
     }

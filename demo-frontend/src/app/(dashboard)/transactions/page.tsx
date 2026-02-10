@@ -6,9 +6,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useWallet, useCreateWallet, useTransactions, TransactionType, TransactionStatus, type Transaction } from '@/lib/hooks/use-wallet';
+import { useWallet, useCreateWallet, useCreditWallet, useTransactions, TransactionType, TransactionStatus, type Transaction } from '@/lib/hooks/use-wallet';
 import { toast } from 'sonner';
-import { ArrowDownCircle, ArrowUpCircle, Wallet } from 'lucide-react';
+import { ArrowDownCircle, ArrowUpCircle, Wallet, Plus } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 function formatCurrency(amount: number, currency: string = 'NGN') {
     return new Intl.NumberFormat('en-NG', {
@@ -65,9 +68,13 @@ function TransactionRow({ transaction }: { transaction: Transaction }) {
 
 function TransactionsContent() {
     const [page, setPage] = useState(1);
+    const [showFundDialog, setShowFundDialog] = useState(false);
+    const [fundAmount, setFundAmount] = useState('');
+    const [fundDescription, setFundDescription] = useState('');
     const limit = 20;
     const { data: wallet, isLoading: walletLoading, error: walletError } = useWallet();
     const createWallet = useCreateWallet();
+    const creditWallet = useCreditWallet();
     const { data: txData, isLoading: txLoading } = useTransactions({ page, limit });
 
     const hasWallet = !!wallet && !walletError;
@@ -115,6 +122,72 @@ function TransactionsContent() {
                             >
                                 {createWallet.isPending ? 'Creating...' : 'Create Wallet'}
                             </Button>
+                        )}
+                        {hasWallet && (
+                            <Dialog open={showFundDialog} onOpenChange={setShowFundDialog}>
+                                <DialogTrigger asChild>
+                                    <Button>
+                                        <Plus className="h-4 w-4 mr-2" />
+                                        Fund Wallet
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Fund Wallet</DialogTitle>
+                                        <DialogDescription>
+                                            Simulate a bank transfer to your wallet (testing only).
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <div className="space-y-4 py-4">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="fund-amount">Amount (₦)</Label>
+                                            <Input
+                                                id="fund-amount"
+                                                type="number"
+                                                placeholder="e.g. 8500000"
+                                                value={fundAmount}
+                                                onChange={(e) => setFundAmount(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="fund-description">Description (optional)</Label>
+                                            <Input
+                                                id="fund-description"
+                                                placeholder="e.g. Downpayment funding"
+                                                value={fundDescription}
+                                                onChange={(e) => setFundDescription(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <DialogFooter>
+                                        <Button variant="outline" onClick={() => setShowFundDialog(false)}>
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            disabled={!fundAmount || creditWallet.isPending}
+                                            onClick={async () => {
+                                                try {
+                                                    await creditWallet.mutateAsync({
+                                                        walletId: wallet.id,
+                                                        amount: Number(fundAmount),
+                                                        reference: `FUND-${Date.now()}`,
+                                                        description: fundDescription || 'Manual wallet funding',
+                                                        source: 'BANK_TRANSFER',
+                                                    });
+                                                    toast.success(`₦${Number(fundAmount).toLocaleString()} added to wallet`);
+                                                    setShowFundDialog(false);
+                                                    setFundAmount('');
+                                                    setFundDescription('');
+                                                } catch (error) {
+                                                    toast.error(error instanceof Error ? error.message : 'Failed to fund wallet');
+                                                }
+                                            }}
+                                        >
+                                            {creditWallet.isPending ? 'Funding...' : 'Fund Wallet'}
+                                        </Button>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
                         )}
                     </div>
                 </CardContent>
