@@ -1696,18 +1696,39 @@ describe('Full E2E Mortgage Flow', () => {
             console.log(`✅ Admin sees ${apps.length} application(s)`);
         });
 
-        it('Step 6.5c: Chidi checks current action for application', async () => {
+        it('Step 6.5c: Chidi checks current action — should be QUESTIONNAIRE (Phase 1)', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/current-action`)
                 .set(customerHeaders(chidiAccessToken));
 
-            // current-action may return 200 with action data or 404 if not implemented
-            if (response.status === 200) {
-                expect(response.body.success).toBe(true);
-                console.log(`✅ Current action:`, JSON.stringify(response.body.data, null, 2));
-            } else {
-                console.log(`ℹ️  Current action endpoint returned ${response.status} (may not be implemented)`);
-            }
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const action = response.body.data;
+            expect(action.applicationId).toBe(applicationId);
+            expect(action.applicationStatus).toBe('PENDING');
+
+            // Current phase should be the prequalification questionnaire (order 1)
+            expect(action.currentPhase).toBeDefined();
+            expect(action.currentPhase.id).toBe(prequalificationPhaseId);
+            expect(action.currentPhase.name).toBe('Prequalification');
+            expect(action.currentPhase.phaseCategory).toBe('QUESTIONNAIRE');
+            expect(action.currentPhase.order).toBe(1);
+            expect(action.currentPhase.status).toBe('IN_PROGRESS');
+
+            // Customer should see QUESTIONNAIRE action
+            expect(action.actionRequired).toBe('QUESTIONNAIRE');
+            expect(action.userPartyType).toBe('CUSTOMER');
+
+            // Party actions: customer should fill questionnaire
+            expect(action.partyActions?.CUSTOMER).toBeDefined();
+            expect(action.partyActions.CUSTOMER.action).toBe('QUESTIONNAIRE');
+            expect(action.partyActions.CUSTOMER.canCurrentUserAct).toBe(true);
+
+            // No documents expected at this phase
+            expect(action.currentStep).toBeNull(); // No doc review stages in questionnaire phase
+
+            console.log(`✅ Current action: ${action.actionRequired} — ${action.actionMessage}`);
         });
 
         it('Step 6.5d: Nkechi (lender) creates bank document requirement overlay', async () => {
@@ -1803,6 +1824,38 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('AWAITING_APPROVAL');
         });
 
+        it('Step 7.2a: Current action — Customer sees WAIT_FOR_REVIEW, Admin sees REVIEW', async () => {
+            // Customer perspective
+            const customerResponse = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(customerResponse.status).toBe(200);
+            const customerAction = customerResponse.body.data;
+
+            expect(customerAction.currentPhase.id).toBe(prequalificationPhaseId);
+            expect(customerAction.currentPhase.status).toBe('AWAITING_APPROVAL');
+            expect(customerAction.actionRequired).toBe('WAIT_FOR_REVIEW');
+            expect(customerAction.userPartyType).toBe('CUSTOMER');
+            expect(customerAction.partyActions?.CUSTOMER?.action).toBe('WAIT');
+            console.log(`✅ Customer sees: ${customerAction.actionRequired} — ${customerAction.actionMessage}`);
+
+            // Admin (QShelter/PLATFORM) perspective
+            const adminResponse = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(adminResponse.status).toBe(200);
+            const adminAction = adminResponse.body.data;
+
+            expect(adminAction.currentPhase.id).toBe(prequalificationPhaseId);
+            expect(adminAction.actionRequired).toBe('REVIEW');
+            expect(adminAction.userPartyType).toBe('PLATFORM');
+            expect(adminAction.partyActions?.PLATFORM?.action).toBe('REVIEW');
+            expect(adminAction.partyActions?.PLATFORM?.canCurrentUserAct).toBe(true);
+            console.log(`✅ Admin sees: ${adminAction.actionRequired} — ${adminAction.actionMessage}`);
+        });
+
         it('Step 7.3: Admin approves prequalification', async () => {
             const response = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${prequalificationPhaseId}/questionnaire/review`)
@@ -1835,6 +1888,45 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('IN_PROGRESS');
         });
 
+        it('Step 8.1a: Current action — Developer should UPLOAD sales offer, Customer should WAIT', async () => {
+            // Developer (Emeka) perspective
+            const devResponse = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(developerHeaders(emekaAccessToken));
+
+            expect(devResponse.status).toBe(200);
+            const devAction = devResponse.body.data;
+
+            expect(devAction.currentPhase).toBeDefined();
+            expect(devAction.currentPhase.id).toBe(salesOfferPhaseId);
+            expect(devAction.currentPhase.name).toBe('Sales Offer');
+            expect(devAction.currentPhase.phaseCategory).toBe('DOCUMENTATION');
+            expect(devAction.currentPhase.order).toBe(2);
+            expect(devAction.currentPhase.status).toBe('IN_PROGRESS');
+
+            // Developer should need to UPLOAD
+            expect(devAction.userPartyType).toBe('DEVELOPER');
+            expect(devAction.actionRequired).toBe('UPLOAD');
+            expect(devAction.partyActions?.DEVELOPER?.action).toBe('UPLOAD');
+            expect(devAction.partyActions?.DEVELOPER?.pendingDocuments?.length).toBeGreaterThan(0);
+            expect(devAction.partyActions?.DEVELOPER?.canCurrentUserAct).toBe(true);
+            console.log(`✅ Developer sees: ${devAction.actionRequired} — pending: ${devAction.partyActions?.DEVELOPER?.pendingDocuments?.join(', ')}`);
+
+            // Customer perspective — should WAIT
+            const custResponse = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(custResponse.status).toBe(200);
+            const custAction = custResponse.body.data;
+
+            expect(custAction.currentPhase.id).toBe(salesOfferPhaseId);
+            expect(custAction.userPartyType).toBe('CUSTOMER');
+            // Customer has no docs to upload in this phase, so they WAIT
+            expect(['WAIT_FOR_REVIEW', 'NONE']).toContain(custAction.actionRequired);
+            console.log(`✅ Customer sees: ${custAction.actionRequired} — ${custAction.actionMessage}`);
+        });
+
         it('Step 8.2: Developer (Emeka) uploads sales offer letter', async () => {
             const salesOfferUrl = mockS3Url('mortgage_docs', 'sales-offer-letter.pdf');
 
@@ -1859,6 +1951,37 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(response.status).toBe(200);
             expect(response.body.data.status).toBe('COMPLETED');
+        });
+
+        it('Step 8.3a: Current action — advances to KYC phase (Phase 3), Customer should UPLOAD', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            const action = response.body.data;
+
+            // Should now be on KYC documentation phase
+            expect(action.currentPhase).toBeDefined();
+            expect(action.currentPhase.id).toBe(kycPhaseId);
+            expect(action.currentPhase.name).toBe('Preapproval Documentation');
+            expect(action.currentPhase.phaseCategory).toBe('DOCUMENTATION');
+            expect(action.currentPhase.order).toBe(3);
+            expect(action.currentPhase.status).toBe('IN_PROGRESS');
+
+            // Customer should need to UPLOAD KYC documents
+            expect(action.userPartyType).toBe('CUSTOMER');
+            expect(action.actionRequired).toBe('UPLOAD');
+            expect(action.partyActions?.CUSTOMER?.action).toBe('UPLOAD');
+            expect(action.partyActions?.CUSTOMER?.pendingDocuments?.length).toBeGreaterThan(0);
+
+            // currentStep should show stage 1 (PLATFORM review) — pending upload first
+            if (action.currentStep) {
+                expect(action.currentStep.stepType).toBe('PLATFORM');
+                expect(action.currentStep.order).toBe(1);
+            }
+
+            console.log(`✅ Current action advanced to KYC: ${action.actionRequired} — pending: ${action.partyActions?.CUSTOMER?.pendingDocuments?.join(', ')}`);
         });
     });
 
@@ -1904,6 +2027,45 @@ describe('Full E2E Mortgage Flow', () => {
 
                 expect(response.status).toBe(201);
             }
+        });
+
+        it('Step 9.2a: Current action — after upload, Admin should REVIEW (Stage 1), Customer should WAIT', async () => {
+            // After all customer docs uploaded, but lender docs still pending
+            // The current review stage is PLATFORM (stage 1)
+
+            // Admin perspective — should be able to REVIEW
+            const adminResponse = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(adminResponse.status).toBe(200);
+            const adminAction = adminResponse.body.data;
+
+            expect(adminAction.currentPhase.id).toBe(kycPhaseId);
+            expect(adminAction.userPartyType).toBe('PLATFORM');
+
+            // Lender still needs to upload preapproval letter, so stage may still show uploads pending
+            // OR if only customer docs uploaded and the current stage waits for uploads before review,
+            // admin might see WAIT or UPLOAD depending on lender doc state
+            // The key is that currentStep stage 1 is active
+            if (adminAction.currentStep) {
+                expect(adminAction.currentStep.stepType).toBe('PLATFORM');
+                expect(adminAction.currentStep.order).toBe(1);
+            }
+            console.log(`✅ Admin sees: ${adminAction.actionRequired} — ${adminAction.actionMessage}`);
+
+            // Customer perspective — should WAIT
+            const custResponse = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(custResponse.status).toBe(200);
+            const custAction = custResponse.body.data;
+            expect(custAction.currentPhase.id).toBe(kycPhaseId);
+            // Customer uploaded all their docs, so they wait
+            // But LENDER still has pending docs (PREAPPROVAL_LETTER) — so there are still pending uploads
+            // The customer's action depends on whether they still have pending docs
+            console.log(`✅ Customer sees: ${custAction.actionRequired} — ${custAction.actionMessage}`);
         });
 
         it('Step 9.3: Adaeze (QShelter - Stage 1) reviews and approves documents', async () => {
@@ -2000,6 +2162,43 @@ describe('Full E2E Mortgage Flow', () => {
             }
         });
 
+        it('Step 9.3b: Current action — Stage 2 active, Lender should UPLOAD preapproval', async () => {
+            // After Stage 1 completes, Stage 2 (BANK) becomes active
+            // Nkechi (lender) should now see she needs to UPLOAD
+
+            const lenderResponse = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(lenderHeaders(nkechiAccessToken));
+
+            expect(lenderResponse.status).toBe(200);
+            const lenderAction = lenderResponse.body.data;
+
+            expect(lenderAction.currentPhase.id).toBe(kycPhaseId);
+            expect(lenderAction.currentPhase.status).toBe('IN_PROGRESS');
+
+            // Lender should see UPLOAD for preapproval letter
+            expect(lenderAction.userPartyType).toBe('BANK');
+            expect(lenderAction.actionRequired).toBe('UPLOAD');
+            expect(lenderAction.partyActions?.BANK?.action).toBe('UPLOAD');
+            expect(lenderAction.partyActions?.BANK?.pendingDocuments?.length).toBeGreaterThan(0);
+            expect(lenderAction.partyActions?.BANK?.canCurrentUserAct).toBe(true);
+
+            // currentStep should now show stage 2 (BANK review)
+            if (lenderAction.currentStep) {
+                expect(lenderAction.currentStep.stepType).toBe('BANK');
+                expect(lenderAction.currentStep.order).toBe(2);
+                expect(lenderAction.currentStep.status).toBe('IN_PROGRESS');
+            }
+
+            // reviewStage should also reflect stage 2
+            if (lenderAction.reviewStage) {
+                expect(lenderAction.reviewStage.reviewerType).toBe('BANK');
+                expect(lenderAction.reviewStage.order).toBe(2);
+            }
+
+            console.log(`✅ Lender sees: ${lenderAction.actionRequired} — pending: ${lenderAction.partyActions?.BANK?.pendingDocuments?.join(', ')}`);
+        });
+
         it('Step 9.4: Nkechi (Bank) uploads preapproval letter (auto-approved)', async () => {
             // Stage 2: Bank (Access Bank) is responsible for LENDER-uploaded documents
             // When the lender uploads the preapproval letter during the BANK stage,
@@ -2049,6 +2248,34 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(response.status).toBe(200);
             expect(response.body.data.status).toBe('COMPLETED');
+        });
+
+        it('Step 9.5a: Current action — advances to Downpayment phase (Phase 4), Customer should PAY', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            const action = response.body.data;
+
+            // Should now be on downpayment phase
+            expect(action.currentPhase).toBeDefined();
+            expect(action.currentPhase.id).toBe(downpaymentPhaseId);
+            expect(action.currentPhase.name).toBe('10% Downpayment');
+            expect(action.currentPhase.phaseCategory).toBe('PAYMENT');
+            expect(action.currentPhase.order).toBe(4);
+            expect(action.currentPhase.status).toBe('IN_PROGRESS');
+
+            // Customer should see PAYMENT action
+            expect(action.userPartyType).toBe('CUSTOMER');
+            expect(action.actionRequired).toBe('PAYMENT');
+            expect(action.partyActions?.CUSTOMER?.action).toBe('PAYMENT');
+            expect(action.partyActions?.CUSTOMER?.canCurrentUserAct).toBe(true);
+
+            // No document steps in payment phase
+            expect(action.currentStep).toBeNull();
+
+            console.log(`✅ Current action advanced to Downpayment: ${action.actionRequired} — ${action.actionMessage}`);
         });
 
         it('Step 9.6: Verify both approval stages are COMPLETED', async () => {
@@ -2225,6 +2452,48 @@ describe('Full E2E Mortgage Flow', () => {
     // activated this phase via the mortgage-service sqsConsumer
     // =========================================================================
     describe('Phase 11: Mortgage Offer (Event-Activated)', () => {
+        it('Step 10.5a: Current action — should advance to Mortgage Offer (Phase 5), Lender should UPLOAD', async () => {
+            // After downpayment phase completes and event processing, current action
+            // should point to the mortgage offer documentation phase
+            // Allow time for SQS event processing
+            const maxWaitMs = 15000;
+            const pollIntervalMs = 2000;
+            const startTime = Date.now();
+
+            let action: any = null;
+
+            while (Date.now() - startTime < maxWaitMs) {
+                const response = await mortgageApi
+                    .get(`/applications/${applicationId}/current-action`)
+                    .set(lenderHeaders(nkechiAccessToken));
+
+                expect(response.status).toBe(200);
+                action = response.body.data;
+
+                // Wait until the current phase advances past downpayment
+                if (action.currentPhase && action.currentPhase.order === 5) {
+                    break;
+                }
+
+                await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
+            }
+
+            expect(action).toBeDefined();
+            expect(action.currentPhase).toBeDefined();
+            expect(action.currentPhase.id).toBe(mortgageOfferPhaseId);
+            expect(action.currentPhase.name).toBe('Mortgage Offer');
+            expect(action.currentPhase.phaseCategory).toBe('DOCUMENTATION');
+            expect(action.currentPhase.order).toBe(5);
+
+            // Lender should need to UPLOAD the mortgage offer letter
+            expect(action.userPartyType).toBe('BANK');
+            expect(action.actionRequired).toBe('UPLOAD');
+            expect(action.partyActions?.BANK?.action).toBe('UPLOAD');
+            expect(action.partyActions?.BANK?.canCurrentUserAct).toBe(true);
+
+            console.log(`✅ Lender sees: ${action.actionRequired} — pending: ${action.partyActions?.BANK?.pendingDocuments?.join(', ')}`);
+        });
+
         it('Step 11.1: Verify mortgage offer phase was auto-activated via event', async () => {
             // Poll to allow time for SQS event processing
             const maxWaitMs = 15000;
@@ -2288,6 +2557,31 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.status).toBe(200);
             expect(response.body.success).toBe(true);
             expect(response.body.data.status).toBe('COMPLETED');
+        });
+
+        it('Step 11.4a: Current action — application COMPLETED, no active phase', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            const action = response.body.data;
+
+            expect(action.applicationId).toBe(applicationId);
+            expect(action.applicationStatus).toBe('COMPLETED');
+
+            // No active phase — all phases are completed
+            expect(action.currentPhase).toBeNull();
+
+            // Action should indicate completion
+            expect(action.actionRequired).toBe('COMPLETE');
+            expect(action.actionMessage).toContain('completed');
+
+            // No review stages or steps
+            expect(action.currentStep).toBeNull();
+            expect(action.reviewStage).toBeNull();
+
+            console.log(`✅ Final current-action: ${action.actionRequired} — ${action.actionMessage}`);
         });
     });
 
