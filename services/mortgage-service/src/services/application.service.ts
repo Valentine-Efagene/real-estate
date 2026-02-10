@@ -617,9 +617,23 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             // If the property has an organizationId, automatically bind that organization
             // to this application as DEVELOPER. This allows the developer's team members
             // to upload documents and participate in the application workflow.
+            // Only bind if the organization is ACTIVE (completed onboarding if required).
             // =========================================================================
             if (propertyUnit.variant.property.organizationId) {
                 const devOrgId = propertyUnit.variant.property.organizationId;
+
+                // Verify the developer organization is ACTIVE
+                const devOrg = await tx.organization.findUnique({
+                    where: { id: devOrgId },
+                    select: { id: true, status: true, name: true },
+                });
+
+                if (devOrg && devOrg.status !== 'ACTIVE') {
+                    throw new AppError(400,
+                        `Developer organization "${devOrg.name}" is not active (status: ${devOrg.status}). ` +
+                        `Organization must complete onboarding before properties can be sold.`
+                    );
+                }
 
                 // Look up the DEVELOPER organization type
                 const developerType = await tx.organizationType.findFirst({

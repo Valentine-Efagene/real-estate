@@ -701,22 +701,6 @@ export type EnumBankDocumentModifierFieldUpdateOperationsInput = {
   set?: $Enums.BankDocumentModifier
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type BankDocumentRequirementCreateNestedManyWithoutTenantInput = {
   create?: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutTenantInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutTenantInput> | Prisma.BankDocumentRequirementCreateWithoutTenantInput[] | Prisma.BankDocumentRequirementUncheckedCreateWithoutTenantInput[]
   connectOrCreate?: Prisma.BankDocumentRequirementCreateOrConnectWithoutTenantInput | Prisma.BankDocumentRequirementCreateOrConnectWithoutTenantInput[]

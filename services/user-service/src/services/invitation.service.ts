@@ -11,6 +11,7 @@ import {
     OrganizationInvitationAcceptedPayload,
 } from '@valentine-efagene/qshelter-common';
 import { authService } from './auth.service';
+import { onboardingService } from './onboarding.service';
 
 // Initialize event publisher for notifications
 const eventPublisher = getEventPublisher('user-service', {
@@ -32,6 +33,8 @@ export interface CreateInvitationInput {
     department?: string;
     /** Days until invitation expires (default: 7) */
     expiresInDays?: number;
+    /** Whether this invitee becomes the organization onboarder (default: false) */
+    isOnboarder?: boolean;
 }
 
 export interface ListInvitationsParams {
@@ -136,6 +139,7 @@ class InvitationService {
                 roleId: data.roleId,
                 title: data.title,
                 department: data.department,
+                isOnboarder: data.isOnboarder ?? false,
                 token,
                 expiresAt,
                 status: 'PENDING',
@@ -287,6 +291,21 @@ class InvitationService {
 
             return { user, member };
         });
+
+        // If this invitation marks the invitee as the onboarder, set them as assignee
+        if (invitation.isOnboarder) {
+            try {
+                await onboardingService.setOnboarder(
+                    invitation.tenantId,
+                    invitation.organizationId,
+                    result.user.id,
+                );
+                console.log(`[InvitationService] Set ${result.user.email} as onboarder for org ${invitation.organizationId}`);
+            } catch (error) {
+                console.error('[InvitationService] Failed to set onboarder:', error);
+                // Don't fail the invitation acceptance
+            }
+        }
 
         // Notify inviter that invitation was accepted
         if (invitation.invitedBy?.email) {

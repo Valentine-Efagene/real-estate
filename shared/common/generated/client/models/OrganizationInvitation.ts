@@ -35,6 +35,7 @@ export type OrganizationInvitationMinAggregateOutputType = {
   roleId: string | null
   title: string | null
   department: string | null
+  isOnboarder: boolean | null
   token: string | null
   expiresAt: Date | null
   status: $Enums.InvitationStatus | null
@@ -54,6 +55,7 @@ export type OrganizationInvitationMaxAggregateOutputType = {
   roleId: string | null
   title: string | null
   department: string | null
+  isOnboarder: boolean | null
   token: string | null
   expiresAt: Date | null
   status: $Enums.InvitationStatus | null
@@ -73,6 +75,7 @@ export type OrganizationInvitationCountAggregateOutputType = {
   roleId: number
   title: number
   department: number
+  isOnboarder: number
   token: number
   expiresAt: number
   status: number
@@ -94,6 +97,7 @@ export type OrganizationInvitationMinAggregateInputType = {
   roleId?: true
   title?: true
   department?: true
+  isOnboarder?: true
   token?: true
   expiresAt?: true
   status?: true
@@ -113,6 +117,7 @@ export type OrganizationInvitationMaxAggregateInputType = {
   roleId?: true
   title?: true
   department?: true
+  isOnboarder?: true
   token?: true
   expiresAt?: true
   status?: true
@@ -132,6 +137,7 @@ export type OrganizationInvitationCountAggregateInputType = {
   roleId?: true
   title?: true
   department?: true
+  isOnboarder?: true
   token?: true
   expiresAt?: true
   status?: true
@@ -224,6 +230,7 @@ export type OrganizationInvitationGroupByOutputType = {
   roleId: string | null
   title: string | null
   department: string | null
+  isOnboarder: boolean
   token: string
   expiresAt: Date
   status: $Enums.InvitationStatus
@@ -264,6 +271,7 @@ export type OrganizationInvitationWhereInput = {
   roleId?: Prisma.StringNullableFilter<"OrganizationInvitation"> | string | null
   title?: Prisma.StringNullableFilter<"OrganizationInvitation"> | string | null
   department?: Prisma.StringNullableFilter<"OrganizationInvitation"> | string | null
+  isOnboarder?: Prisma.BoolFilter<"OrganizationInvitation"> | boolean
   token?: Prisma.StringFilter<"OrganizationInvitation"> | string
   expiresAt?: Prisma.DateTimeFilter<"OrganizationInvitation"> | Date | string
   status?: Prisma.EnumInvitationStatusFilter<"OrganizationInvitation"> | $Enums.InvitationStatus
@@ -287,6 +295,7 @@ export type OrganizationInvitationOrderByWithRelationInput = {
   roleId?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   department?: Prisma.SortOrderInput | Prisma.SortOrder
+  isOnboarder?: Prisma.SortOrder
   token?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -316,6 +325,7 @@ export type OrganizationInvitationWhereUniqueInput = Prisma.AtLeast<{
   roleId?: Prisma.StringNullableFilter<"OrganizationInvitation"> | string | null
   title?: Prisma.StringNullableFilter<"OrganizationInvitation"> | string | null
   department?: Prisma.StringNullableFilter<"OrganizationInvitation"> | string | null
+  isOnboarder?: Prisma.BoolFilter<"OrganizationInvitation"> | boolean
   expiresAt?: Prisma.DateTimeFilter<"OrganizationInvitation"> | Date | string
   status?: Prisma.EnumInvitationStatusFilter<"OrganizationInvitation"> | $Enums.InvitationStatus
   invitedById?: Prisma.StringFilter<"OrganizationInvitation"> | string
@@ -338,6 +348,7 @@ export type OrganizationInvitationOrderByWithAggregationInput = {
   roleId?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   department?: Prisma.SortOrderInput | Prisma.SortOrder
+  isOnboarder?: Prisma.SortOrder
   token?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -363,6 +374,7 @@ export type OrganizationInvitationScalarWhereWithAggregatesInput = {
   roleId?: Prisma.StringNullableWithAggregatesFilter<"OrganizationInvitation"> | string | null
   title?: Prisma.StringNullableWithAggregatesFilter<"OrganizationInvitation"> | string | null
   department?: Prisma.StringNullableWithAggregatesFilter<"OrganizationInvitation"> | string | null
+  isOnboarder?: Prisma.BoolWithAggregatesFilter<"OrganizationInvitation"> | boolean
   token?: Prisma.StringWithAggregatesFilter<"OrganizationInvitation"> | string
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"OrganizationInvitation"> | Date | string
   status?: Prisma.EnumInvitationStatusWithAggregatesFilter<"OrganizationInvitation"> | $Enums.InvitationStatus
@@ -379,6 +391,7 @@ export type OrganizationInvitationCreateInput = {
   lastName?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -401,6 +414,7 @@ export type OrganizationInvitationUncheckedCreateInput = {
   roleId?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -417,6 +431,7 @@ export type OrganizationInvitationUpdateInput = {
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -439,6 +454,7 @@ export type OrganizationInvitationUncheckedUpdateInput = {
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -458,6 +474,7 @@ export type OrganizationInvitationCreateManyInput = {
   roleId?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -474,6 +491,7 @@ export type OrganizationInvitationUpdateManyMutationInput = {
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -492,6 +510,7 @@ export type OrganizationInvitationUncheckedUpdateManyInput = {
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -532,6 +551,7 @@ export type OrganizationInvitationCountOrderByAggregateInput = {
   roleId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   department?: Prisma.SortOrder
+  isOnboarder?: Prisma.SortOrder
   token?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -551,6 +571,7 @@ export type OrganizationInvitationMaxOrderByAggregateInput = {
   roleId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   department?: Prisma.SortOrder
+  isOnboarder?: Prisma.SortOrder
   token?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -570,6 +591,7 @@ export type OrganizationInvitationMinOrderByAggregateInput = {
   roleId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   department?: Prisma.SortOrder
+  isOnboarder?: Prisma.SortOrder
   token?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -758,6 +780,7 @@ export type OrganizationInvitationCreateWithoutInvitedByInput = {
   lastName?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -779,6 +802,7 @@ export type OrganizationInvitationUncheckedCreateWithoutInvitedByInput = {
   roleId?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -826,6 +850,7 @@ export type OrganizationInvitationScalarWhereInput = {
   roleId?: Prisma.StringNullableFilter<"OrganizationInvitation"> | string | null
   title?: Prisma.StringNullableFilter<"OrganizationInvitation"> | string | null
   department?: Prisma.StringNullableFilter<"OrganizationInvitation"> | string | null
+  isOnboarder?: Prisma.BoolFilter<"OrganizationInvitation"> | boolean
   token?: Prisma.StringFilter<"OrganizationInvitation"> | string
   expiresAt?: Prisma.DateTimeFilter<"OrganizationInvitation"> | Date | string
   status?: Prisma.EnumInvitationStatusFilter<"OrganizationInvitation"> | $Enums.InvitationStatus
@@ -842,6 +867,7 @@ export type OrganizationInvitationCreateWithoutRoleInput = {
   lastName?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -862,6 +888,7 @@ export type OrganizationInvitationUncheckedCreateWithoutRoleInput = {
   lastName?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -904,6 +931,7 @@ export type OrganizationInvitationCreateWithoutOrganizationInput = {
   lastName?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -924,6 +952,7 @@ export type OrganizationInvitationUncheckedCreateWithoutOrganizationInput = {
   roleId?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -966,6 +995,7 @@ export type OrganizationInvitationCreateWithoutTenantInput = {
   lastName?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -986,6 +1016,7 @@ export type OrganizationInvitationUncheckedCreateWithoutTenantInput = {
   roleId?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -1031,6 +1062,7 @@ export type OrganizationInvitationCreateManyInvitedByInput = {
   roleId?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -1046,6 +1078,7 @@ export type OrganizationInvitationUpdateWithoutInvitedByInput = {
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1067,6 +1100,7 @@ export type OrganizationInvitationUncheckedUpdateWithoutInvitedByInput = {
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1085,6 +1119,7 @@ export type OrganizationInvitationUncheckedUpdateManyWithoutInvitedByInput = {
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1102,6 +1137,7 @@ export type OrganizationInvitationCreateManyRoleInput = {
   lastName?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -1118,6 +1154,7 @@ export type OrganizationInvitationUpdateWithoutRoleInput = {
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1138,6 +1175,7 @@ export type OrganizationInvitationUncheckedUpdateWithoutRoleInput = {
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1156,6 +1194,7 @@ export type OrganizationInvitationUncheckedUpdateManyWithoutRoleInput = {
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1174,6 +1213,7 @@ export type OrganizationInvitationCreateManyOrganizationInput = {
   roleId?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -1190,6 +1230,7 @@ export type OrganizationInvitationUpdateWithoutOrganizationInput = {
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1210,6 +1251,7 @@ export type OrganizationInvitationUncheckedUpdateWithoutOrganizationInput = {
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1228,6 +1270,7 @@ export type OrganizationInvitationUncheckedUpdateManyWithoutOrganizationInput = 
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1246,6 +1289,7 @@ export type OrganizationInvitationCreateManyTenantInput = {
   roleId?: string | null
   title?: string | null
   department?: string | null
+  isOnboarder?: boolean
   token?: string
   expiresAt: Date | string
   status?: $Enums.InvitationStatus
@@ -1262,6 +1306,7 @@ export type OrganizationInvitationUpdateWithoutTenantInput = {
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1282,6 +1327,7 @@ export type OrganizationInvitationUncheckedUpdateWithoutTenantInput = {
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1300,6 +1346,7 @@ export type OrganizationInvitationUncheckedUpdateManyWithoutTenantInput = {
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isOnboarder?: Prisma.BoolFieldUpdateOperationsInput | boolean
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
@@ -1321,6 +1368,7 @@ export type OrganizationInvitationSelect<ExtArgs extends runtime.Types.Extension
   roleId?: boolean
   title?: boolean
   department?: boolean
+  isOnboarder?: boolean
   token?: boolean
   expiresAt?: boolean
   status?: boolean
@@ -1346,6 +1394,7 @@ export type OrganizationInvitationSelectScalar = {
   roleId?: boolean
   title?: boolean
   department?: boolean
+  isOnboarder?: boolean
   token?: boolean
   expiresAt?: boolean
   status?: boolean
@@ -1355,7 +1404,7 @@ export type OrganizationInvitationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrganizationInvitationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "organizationId" | "email" | "firstName" | "lastName" | "roleId" | "title" | "department" | "token" | "expiresAt" | "status" | "invitedById" | "acceptedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["organizationInvitation"]>
+export type OrganizationInvitationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "organizationId" | "email" | "firstName" | "lastName" | "roleId" | "title" | "department" | "isOnboarder" | "token" | "expiresAt" | "status" | "invitedById" | "acceptedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["organizationInvitation"]>
 export type OrganizationInvitationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -1381,6 +1430,7 @@ export type $OrganizationInvitationPayload<ExtArgs extends runtime.Types.Extensi
     roleId: string | null
     title: string | null
     department: string | null
+    isOnboarder: boolean
     token: string
     expiresAt: Date
     status: $Enums.InvitationStatus
@@ -1770,6 +1820,7 @@ export interface OrganizationInvitationFieldRefs {
   readonly roleId: Prisma.FieldRef<"OrganizationInvitation", 'String'>
   readonly title: Prisma.FieldRef<"OrganizationInvitation", 'String'>
   readonly department: Prisma.FieldRef<"OrganizationInvitation", 'String'>
+  readonly isOnboarder: Prisma.FieldRef<"OrganizationInvitation", 'Boolean'>
   readonly token: Prisma.FieldRef<"OrganizationInvitation", 'String'>
   readonly expiresAt: Prisma.FieldRef<"OrganizationInvitation", 'DateTime'>
   readonly status: Prisma.FieldRef<"OrganizationInvitation", 'InvitationStatus'>

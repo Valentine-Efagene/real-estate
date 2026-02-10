@@ -451,6 +451,17 @@ class BootstrapService {
             }
         }
 
+        // 8. Seed onboarding templates for BANK and DEVELOPER org types (outside transaction, idempotent)
+        if (isNewTenant) {
+            try {
+                await this.seedOnboardingTemplates(tenant!.id);
+                console.log(`[Bootstrap] Seeded onboarding templates`);
+            } catch (error) {
+                console.error(`[Bootstrap] Failed to seed onboarding templates:`, error);
+                // Non-critical — templates can be created manually
+            }
+        }
+
         return {
             tenant: {
                 id: tenant!.id,
@@ -591,6 +602,265 @@ class BootstrapService {
             password += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return password;
+    }
+
+    // =========================================================================
+    // ONBOARDING TEMPLATE SEEDING
+    // =========================================================================
+
+    /**
+     * Seed onboarding templates for BANK and DEVELOPER organization types.
+     * Creates QuestionnairePlans, DocumentationPlans, GatePlans, and OnboardingMethods.
+     * Idempotent — checks for existing records by name before creating.
+     */
+    private async seedOnboardingTemplates(tenantId: string): Promise<void> {
+        // Get PLATFORM org type (needed for gate plan reviewer and approval stages)
+        const platformType = await prisma.organizationType.findFirst({
+            where: { tenantId, code: 'PLATFORM' },
+        });
+
+        if (!platformType) {
+            console.warn('[Bootstrap] PLATFORM org type not found, skipping onboarding seed');
+            return;
+        }
+
+        // Seed Bank Onboarding
+        const bankType = await prisma.organizationType.findFirst({
+            where: { tenantId, code: 'BANK' },
+        });
+        if (bankType) {
+            await this.seedBankOnboarding(tenantId, bankType.id, platformType.id);
+        }
+
+        // Seed Developer Onboarding
+        const developerType = await prisma.organizationType.findFirst({
+            where: { tenantId, code: 'DEVELOPER' },
+        });
+        if (developerType) {
+            await this.seedDeveloperOnboarding(tenantId, developerType.id, platformType.id);
+        }
+    }
+
+    /**
+     * Seed BANK onboarding: KYB questionnaire → KYB docs → Platform approval gate
+     */
+    private async seedBankOnboarding(tenantId: string, bankTypeId: string, platformTypeId: string): Promise<void> {
+        // Check if already seeded
+        const existing = await prisma.onboardingMethod.findFirst({
+            where: { tenantId, name: 'Bank Onboarding' },
+        });
+        if (existing) return;
+
+        // 1. Bank KYB Questionnaire Plan
+        const questionnairePlan = await prisma.questionnairePlan.create({
+            data: {
+                tenantId,
+                name: 'Bank KYB Questionnaire',
+                description: 'Know-Your-Business questionnaire for financial institutions',
+                category: 'COMPLIANCE',
+                isActive: true,
+                questions: {
+                    createMany: {
+                        data: [
+                            { questionKey: 'bank_name', questionText: 'Registered bank name', questionType: 'TEXT', order: 1, isRequired: true, category: 'ORGANIZATION' },
+                            { questionKey: 'cbn_license_no', questionText: 'CBN license number', questionType: 'TEXT', order: 2, isRequired: true, category: 'KYB' },
+                            { questionKey: 'year_established', questionText: 'Year of establishment', questionType: 'NUMBER', order: 3, isRequired: true, category: 'KYB' },
+                            { questionKey: 'swift_code', questionText: 'SWIFT/BIC code', questionType: 'TEXT', order: 4, isRequired: false, category: 'ORGANIZATION' },
+                            { questionKey: 'sort_code', questionText: 'Sort code', questionType: 'TEXT', order: 5, isRequired: false, category: 'ORGANIZATION' },
+                            { questionKey: 'branch_count', questionText: 'Number of branches in Nigeria', questionType: 'NUMBER', order: 6, isRequired: true, category: 'KYB' },
+                            { questionKey: 'mortgage_portfolio_size', questionText: 'Current mortgage portfolio size (NGN)', questionType: 'CURRENCY', order: 7, isRequired: true, category: 'KYB' },
+                            { questionKey: 'primary_contact_name', questionText: 'Primary contact person name', questionType: 'TEXT', order: 8, isRequired: true, category: 'CONTACTS' },
+                            { questionKey: 'primary_contact_email', questionText: 'Primary contact email', questionType: 'EMAIL', order: 9, isRequired: true, category: 'CONTACTS' },
+                            { questionKey: 'primary_contact_phone', questionText: 'Primary contact phone', questionType: 'PHONE', order: 10, isRequired: true, category: 'CONTACTS' },
+                        ],
+                    },
+                },
+            },
+        });
+
+        // 2. Bank KYB Documentation Plan
+        const documentationPlan = await prisma.documentationPlan.create({
+            data: {
+                tenantId,
+                name: 'Bank KYB Documentation',
+                description: 'Required documents for bank onboarding verification',
+                isActive: true,
+                documentDefinitions: {
+                    createMany: {
+                        data: [
+                            { documentType: 'CBN_LICENSE', documentName: 'CBN Banking License', uploadedBy: 'ORGANIZATION_ONBOARDER', order: 1, isRequired: true, description: 'Current CBN banking license certificate' },
+                            { documentType: 'CAC_CERTIFICATE', documentName: 'CAC Registration Certificate', uploadedBy: 'ORGANIZATION_ONBOARDER', order: 2, isRequired: true, description: 'Corporate Affairs Commission registration certificate' },
+                            { documentType: 'AUDITED_FINANCIALS', documentName: 'Audited Financial Statements', uploadedBy: 'ORGANIZATION_ONBOARDER', order: 3, isRequired: true, description: 'Audited financial statements for the last 2 years', maxFiles: 2 },
+                            { documentType: 'BOARD_RESOLUTION', documentName: 'Board Resolution', uploadedBy: 'ORGANIZATION_ONBOARDER', order: 4, isRequired: true, description: 'Board resolution authorizing mortgage operations on the platform' },
+                            { documentType: 'AML_POLICY', documentName: 'Anti-Money Laundering Policy', uploadedBy: 'ORGANIZATION_ONBOARDER', order: 5, isRequired: false, description: 'AML/CFT compliance policy document' },
+                        ],
+                    },
+                },
+                approvalStages: {
+                    create: {
+                        name: 'Platform Review',
+                        order: 1,
+                        organizationTypeId: platformTypeId,
+                        autoTransition: false,
+                        waitForAllDocuments: true,
+                        slaHours: 48,
+                        description: 'QShelter staff reviews bank KYB documents',
+                    },
+                },
+            },
+        });
+
+        // 3. Platform Approval Gate Plan
+        const gatePlan = await prisma.gatePlan.create({
+            data: {
+                tenantId,
+                name: 'Bank Approval Gate',
+                description: 'Final approval gate for bank onboarding',
+                requiredApprovals: 1,
+                reviewerOrganizationTypeId: platformTypeId,
+                reviewerInstructions: 'Review all bank KYB information and documents. Approve if the bank meets all compliance requirements for mortgage operations.',
+                isActive: true,
+            },
+        });
+
+        // 4. Create OnboardingMethod linking everything together
+        const method = await prisma.onboardingMethod.create({
+            data: {
+                tenantId,
+                name: 'Bank Onboarding',
+                description: 'Standard onboarding workflow for banks and financial institutions joining the platform',
+                expiresInDays: 30,
+                isActive: true,
+                phases: {
+                    createMany: {
+                        data: [
+                            { tenantId, name: 'Bank KYB Questionnaire', phaseCategory: 'QUESTIONNAIRE', phaseType: 'ORG_KYB', order: 1, questionnairePlanId: questionnairePlan.id },
+                            { tenantId, name: 'Bank Document Verification', phaseCategory: 'DOCUMENTATION', phaseType: 'ORG_VERIFICATION', order: 2, documentationPlanId: documentationPlan.id },
+                            { tenantId, name: 'Platform Approval', phaseCategory: 'GATE', phaseType: 'APPROVAL_GATE', order: 3, gatePlanId: gatePlan.id },
+                        ],
+                    },
+                },
+            },
+        });
+
+        // 5. Link the onboarding method to the BANK org type
+        await prisma.organizationType.update({
+            where: { id: bankTypeId },
+            data: { onboardingMethodId: method.id },
+        });
+
+        console.log(`[Bootstrap] Seeded Bank Onboarding: ${method.id}`);
+    }
+
+    /**
+     * Seed DEVELOPER onboarding: KYB questionnaire → KYB docs → Platform approval gate
+     */
+    private async seedDeveloperOnboarding(tenantId: string, developerTypeId: string, platformTypeId: string): Promise<void> {
+        // Check if already seeded
+        const existing = await prisma.onboardingMethod.findFirst({
+            where: { tenantId, name: 'Developer Onboarding' },
+        });
+        if (existing) return;
+
+        // 1. Developer KYB Questionnaire Plan
+        const questionnairePlan = await prisma.questionnairePlan.create({
+            data: {
+                tenantId,
+                name: 'Developer KYB Questionnaire',
+                description: 'Know-Your-Business questionnaire for property developers',
+                category: 'COMPLIANCE',
+                isActive: true,
+                questions: {
+                    createMany: {
+                        data: [
+                            { questionKey: 'company_name', questionText: 'Registered company name', questionType: 'TEXT', order: 1, isRequired: true, category: 'ORGANIZATION' },
+                            { questionKey: 'cac_number', questionText: 'CAC registration number', questionType: 'TEXT', order: 2, isRequired: true, category: 'KYB' },
+                            { questionKey: 'tax_id', questionText: 'Tax identification number (TIN)', questionType: 'TEXT', order: 3, isRequired: true, category: 'KYB' },
+                            { questionKey: 'year_established', questionText: 'Year of establishment', questionType: 'NUMBER', order: 4, isRequired: true, category: 'KYB' },
+                            { questionKey: 'completed_projects', questionText: 'Number of completed projects', questionType: 'NUMBER', order: 5, isRequired: true, category: 'KYB' },
+                            { questionKey: 'ongoing_projects', questionText: 'Number of ongoing projects', questionType: 'NUMBER', order: 6, isRequired: false, category: 'KYB' },
+                            { questionKey: 'office_address', questionText: 'Registered office address', questionType: 'ADDRESS', order: 7, isRequired: true, category: 'ORGANIZATION' },
+                            { questionKey: 'primary_contact_name', questionText: 'Primary contact person name', questionType: 'TEXT', order: 8, isRequired: true, category: 'CONTACTS' },
+                            { questionKey: 'primary_contact_email', questionText: 'Primary contact email', questionType: 'EMAIL', order: 9, isRequired: true, category: 'CONTACTS' },
+                            { questionKey: 'primary_contact_phone', questionText: 'Primary contact phone', questionType: 'PHONE', order: 10, isRequired: true, category: 'CONTACTS' },
+                        ],
+                    },
+                },
+            },
+        });
+
+        // 2. Developer KYB Documentation Plan
+        const documentationPlan = await prisma.documentationPlan.create({
+            data: {
+                tenantId,
+                name: 'Developer KYB Documentation',
+                description: 'Required documents for property developer onboarding',
+                isActive: true,
+                documentDefinitions: {
+                    createMany: {
+                        data: [
+                            { documentType: 'CAC_CERTIFICATE', documentName: 'CAC Registration Certificate', uploadedBy: 'ORGANIZATION_ONBOARDER', order: 1, isRequired: true, description: 'Corporate Affairs Commission registration certificate' },
+                            { documentType: 'TAX_CLEARANCE', documentName: 'Tax Clearance Certificate', uploadedBy: 'ORGANIZATION_ONBOARDER', order: 2, isRequired: true, description: 'Tax clearance certificate (current year)' },
+                            { documentType: 'COMPANY_PROFILE', documentName: 'Company Profile', uploadedBy: 'ORGANIZATION_ONBOARDER', order: 3, isRequired: true, description: 'Company profile or brochure with past projects' },
+                            { documentType: 'PROJECT_PORTFOLIO', documentName: 'Portfolio of Completed Projects', uploadedBy: 'ORGANIZATION_ONBOARDER', order: 4, isRequired: false, description: 'Photos and details of completed developments', maxFiles: 10 },
+                            { documentType: 'INSURANCE_CERTIFICATE', documentName: 'Insurance Certificate', uploadedBy: 'ORGANIZATION_ONBOARDER', order: 5, isRequired: false, description: 'Professional indemnity or liability insurance' },
+                        ],
+                    },
+                },
+                approvalStages: {
+                    create: {
+                        name: 'Platform Review',
+                        order: 1,
+                        organizationTypeId: platformTypeId,
+                        autoTransition: false,
+                        waitForAllDocuments: true,
+                        slaHours: 48,
+                        description: 'QShelter staff reviews developer KYB documents',
+                    },
+                },
+            },
+        });
+
+        // 3. Platform Approval Gate Plan
+        const gatePlan = await prisma.gatePlan.create({
+            data: {
+                tenantId,
+                name: 'Developer Approval Gate',
+                description: 'Final approval gate for developer onboarding',
+                requiredApprovals: 1,
+                reviewerOrganizationTypeId: platformTypeId,
+                reviewerInstructions: 'Review all developer KYB information and documents. Approve if the developer meets all requirements for listing properties on the platform.',
+                isActive: true,
+            },
+        });
+
+        // 4. Create OnboardingMethod linking everything together
+        const method = await prisma.onboardingMethod.create({
+            data: {
+                tenantId,
+                name: 'Developer Onboarding',
+                description: 'Standard onboarding workflow for property developers joining the platform',
+                expiresInDays: 30,
+                isActive: true,
+                phases: {
+                    createMany: {
+                        data: [
+                            { tenantId, name: 'Developer KYB Questionnaire', phaseCategory: 'QUESTIONNAIRE', phaseType: 'ORG_KYB', order: 1, questionnairePlanId: questionnairePlan.id },
+                            { tenantId, name: 'Developer Document Verification', phaseCategory: 'DOCUMENTATION', phaseType: 'ORG_VERIFICATION', order: 2, documentationPlanId: documentationPlan.id },
+                            { tenantId, name: 'Platform Approval', phaseCategory: 'GATE', phaseType: 'APPROVAL_GATE', order: 3, gatePlanId: gatePlan.id },
+                        ],
+                    },
+                },
+            },
+        });
+
+        // 5. Link the onboarding method to the DEVELOPER org type
+        await prisma.organizationType.update({
+            where: { id: developerTypeId },
+            data: { onboardingMethodId: method.id },
+        });
+
+        console.log(`[Bootstrap] Seeded Developer Onboarding: ${method.id}`);
     }
 }
 

@@ -95,6 +95,28 @@ export type OrganizationMember = Prisma.OrganizationMemberModel
  */
 export type OrganizationInvitation = Prisma.OrganizationInvitationModel
 /**
+ * Model OnboardingMethod
+ * 
+ */
+export type OnboardingMethod = Prisma.OnboardingMethodModel
+/**
+ * Model OnboardingMethodPhase
+ * Phase template within an OnboardingMethod
+ * Supports QUESTIONNAIRE, DOCUMENTATION, and GATE phases (no PAYMENT)
+ */
+export type OnboardingMethodPhase = Prisma.OnboardingMethodPhaseModel
+/**
+ * Model OrganizationOnboarding
+ * 
+ */
+export type OrganizationOnboarding = Prisma.OrganizationOnboardingModel
+/**
+ * Model OnboardingPhase
+ * Phase instance within an OrganizationOnboarding
+ * Mirrors ApplicationPhase but scoped to org onboarding (no PAYMENT phases)
+ */
+export type OnboardingPhase = Prisma.OnboardingPhaseModel
+/**
  * Model BankDocumentRequirement
  * Bank Document Requirement - Bank-specific document rules per phase
  */
@@ -230,6 +252,11 @@ export type QuestionnairePlan = Prisma.QuestionnairePlanModel
  */
 export type QuestionnairePlanQuestion = Prisma.QuestionnairePlanQuestionModel
 /**
+ * Model GatePlan
+ * 
+ */
+export type GatePlan = Prisma.GatePlanModel
+/**
  * Model PaymentPlan
  * 
  */
@@ -306,6 +333,16 @@ export type QuestionnairePhase = Prisma.QuestionnairePhaseModel
  * 
  */
 export type QuestionnairePhaseReview = Prisma.QuestionnairePhaseReviewModel
+/**
+ * Model GatePhase
+ * 
+ */
+export type GatePhase = Prisma.GatePhaseModel
+/**
+ * Model GatePhaseReview
+ * 
+ */
+export type GatePhaseReview = Prisma.GatePhaseReviewModel
 /**
  * Model DocumentationPhase
  * 

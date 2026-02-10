@@ -350,6 +350,7 @@ export type OrganizationWhereInput = {
   documentRequirements?: Prisma.BankDocumentRequirementListRelationFilter
   documentReviews?: Prisma.DocumentReviewListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
+  onboarding?: Prisma.XOR<Prisma.OrganizationOnboardingNullableScalarRelationFilter, Prisma.OrganizationOnboardingWhereInput> | null
 }
 
 export type OrganizationOrderByWithRelationInput = {
@@ -386,6 +387,7 @@ export type OrganizationOrderByWithRelationInput = {
   documentRequirements?: Prisma.BankDocumentRequirementOrderByRelationAggregateInput
   documentReviews?: Prisma.DocumentReviewOrderByRelationAggregateInput
   properties?: Prisma.PropertyOrderByRelationAggregateInput
+  onboarding?: Prisma.OrganizationOnboardingOrderByWithRelationInput
   _relevance?: Prisma.OrganizationOrderByRelevanceInput
 }
 
@@ -428,6 +430,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   documentRequirements?: Prisma.BankDocumentRequirementListRelationFilter
   documentReviews?: Prisma.DocumentReviewListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
+  onboarding?: Prisma.XOR<Prisma.OrganizationOnboardingNullableScalarRelationFilter, Prisma.OrganizationOnboardingWhereInput> | null
 }, "id" | "tenantId_bankCode" | "tenantId_cacNumber">
 
 export type OrganizationOrderByWithAggregationInput = {
@@ -525,6 +528,7 @@ export type OrganizationCreateInput = {
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateInput = {
@@ -560,6 +564,7 @@ export type OrganizationUncheckedCreateInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationUpdateInput = {
@@ -595,6 +600,7 @@ export type OrganizationUpdateInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateInput = {
@@ -630,6 +636,7 @@ export type OrganizationUncheckedUpdateInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyInput = {
@@ -881,6 +888,20 @@ export type OrganizationUpdateOneRequiredWithoutInvitationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutInvitationsInput, Prisma.OrganizationUpdateWithoutInvitationsInput>, Prisma.OrganizationUncheckedUpdateWithoutInvitationsInput>
 }
 
+export type OrganizationCreateNestedOneWithoutOnboardingInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutOnboardingInput, Prisma.OrganizationUncheckedCreateWithoutOnboardingInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutOnboardingInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutOnboardingNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutOnboardingInput, Prisma.OrganizationUncheckedCreateWithoutOnboardingInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutOnboardingInput
+  upsert?: Prisma.OrganizationUpsertWithoutOnboardingInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutOnboardingInput, Prisma.OrganizationUpdateWithoutOnboardingInput>, Prisma.OrganizationUncheckedUpdateWithoutOnboardingInput>
+}
+
 export type OrganizationCreateNestedOneWithoutDocumentRequirementsInput = {
   create?: Prisma.XOR<Prisma.OrganizationCreateWithoutDocumentRequirementsInput, Prisma.OrganizationUncheckedCreateWithoutDocumentRequirementsInput>
   connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutDocumentRequirementsInput
@@ -1015,6 +1036,7 @@ export type OrganizationCreateWithoutTypesInput = {
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTypesInput = {
@@ -1049,6 +1071,7 @@ export type OrganizationUncheckedCreateWithoutTypesInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTypesInput = {
@@ -1099,6 +1122,7 @@ export type OrganizationUpdateWithoutTypesInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTypesInput = {
@@ -1133,6 +1157,7 @@ export type OrganizationUncheckedUpdateWithoutTypesInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutMembersInput = {
@@ -1167,6 +1192,7 @@ export type OrganizationCreateWithoutMembersInput = {
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutMembersInput = {
@@ -1201,6 +1227,7 @@ export type OrganizationUncheckedCreateWithoutMembersInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutMembersInput = {
@@ -1251,6 +1278,7 @@ export type OrganizationUpdateWithoutMembersInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutMembersInput = {
@@ -1285,6 +1313,7 @@ export type OrganizationUncheckedUpdateWithoutMembersInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutInvitationsInput = {
@@ -1319,6 +1348,7 @@ export type OrganizationCreateWithoutInvitationsInput = {
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutInvitationsInput = {
@@ -1353,6 +1383,7 @@ export type OrganizationUncheckedCreateWithoutInvitationsInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutInvitationsInput = {
@@ -1403,6 +1434,7 @@ export type OrganizationUpdateWithoutInvitationsInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutInvitationsInput = {
@@ -1433,6 +1465,163 @@ export type OrganizationUncheckedUpdateWithoutInvitationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   types?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
   members?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutOnboardingInput = {
+  id?: string
+  name: string
+  status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
+  email?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  website?: string | null
+  logoUrl?: string | null
+  description?: string | null
+  bankCode?: string | null
+  bankLicenseNo?: string | null
+  swiftCode?: string | null
+  sortCode?: string | null
+  cacNumber?: string | null
+  cacCertificateUrl?: string | null
+  taxId?: string | null
+  approvedAt?: Date | string | null
+  approvedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrganizationInput
+  tenant: Prisma.TenantCreateNestedOneWithoutOrganizationsInput
+  members?: Prisma.OrganizationMemberCreateNestedManyWithoutOrganizationInput
+  invitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutOrganizationInput
+  applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
+  documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutOnboardingInput = {
+  id?: string
+  tenantId: string
+  name: string
+  status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
+  email?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  website?: string | null
+  logoUrl?: string | null
+  description?: string | null
+  bankCode?: string | null
+  bankLicenseNo?: string | null
+  swiftCode?: string | null
+  sortCode?: string | null
+  cacNumber?: string | null
+  cacCertificateUrl?: string | null
+  taxId?: string | null
+  approvedAt?: Date | string | null
+  approvedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
+  members?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+  invitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutOrganizationInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
+  documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutOnboardingInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutOnboardingInput, Prisma.OrganizationUncheckedCreateWithoutOnboardingInput>
+}
+
+export type OrganizationUpsertWithoutOnboardingInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutOnboardingInput, Prisma.OrganizationUncheckedUpdateWithoutOnboardingInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutOnboardingInput, Prisma.OrganizationUncheckedCreateWithoutOnboardingInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutOnboardingInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutOnboardingInput, Prisma.OrganizationUncheckedUpdateWithoutOnboardingInput>
+}
+
+export type OrganizationUpdateWithoutOnboardingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrganizationNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationsNestedInput
+  members?: Prisma.OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+  invitations?: Prisma.OrganizationInvitationUpdateManyWithoutOrganizationNestedInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
+  documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutOnboardingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  members?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  invitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutOrganizationNestedInput
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1471,6 +1660,7 @@ export type OrganizationCreateWithoutDocumentRequirementsInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDocumentRequirementsInput = {
@@ -1505,6 +1695,7 @@ export type OrganizationUncheckedCreateWithoutDocumentRequirementsInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDocumentRequirementsInput = {
@@ -1555,6 +1746,7 @@ export type OrganizationUpdateWithoutDocumentRequirementsInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDocumentRequirementsInput = {
@@ -1589,6 +1781,7 @@ export type OrganizationUncheckedUpdateWithoutDocumentRequirementsInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutTenantInput = {
@@ -1623,6 +1816,7 @@ export type OrganizationCreateWithoutTenantInput = {
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTenantInput = {
@@ -1657,6 +1851,7 @@ export type OrganizationUncheckedCreateWithoutTenantInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTenantInput = {
@@ -1748,6 +1943,7 @@ export type OrganizationCreateWithoutPropertiesInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutPropertiesInput = {
@@ -1782,6 +1978,7 @@ export type OrganizationUncheckedCreateWithoutPropertiesInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutPropertiesInput = {
@@ -1832,6 +2029,7 @@ export type OrganizationUpdateWithoutPropertiesInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutPropertiesInput = {
@@ -1866,6 +2064,7 @@ export type OrganizationUncheckedUpdateWithoutPropertiesInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutApplicationAssignmentsInput = {
@@ -1900,6 +2099,7 @@ export type OrganizationCreateWithoutApplicationAssignmentsInput = {
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutApplicationAssignmentsInput = {
@@ -1934,6 +2134,7 @@ export type OrganizationUncheckedCreateWithoutApplicationAssignmentsInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutApplicationAssignmentsInput = {
@@ -1984,6 +2185,7 @@ export type OrganizationUpdateWithoutApplicationAssignmentsInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutApplicationAssignmentsInput = {
@@ -2018,6 +2220,7 @@ export type OrganizationUncheckedUpdateWithoutApplicationAssignmentsInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutDocumentReviewsInput = {
@@ -2052,6 +2255,7 @@ export type OrganizationCreateWithoutDocumentReviewsInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDocumentReviewsInput = {
@@ -2086,6 +2290,7 @@ export type OrganizationUncheckedCreateWithoutDocumentReviewsInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDocumentReviewsInput = {
@@ -2136,6 +2341,7 @@ export type OrganizationUpdateWithoutDocumentReviewsInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDocumentReviewsInput = {
@@ -2170,6 +2376,7 @@ export type OrganizationUncheckedUpdateWithoutDocumentReviewsInput = {
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyTenantInput = {
@@ -2231,6 +2438,7 @@ export type OrganizationUpdateWithoutTenantInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTenantInput = {
@@ -2265,6 +2473,7 @@ export type OrganizationUncheckedUpdateWithoutTenantInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateManyWithoutTenantInput = {
@@ -2413,6 +2622,7 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   documentRequirements?: boolean | Prisma.Organization$documentRequirementsArgs<ExtArgs>
   documentReviews?: boolean | Prisma.Organization$documentReviewsArgs<ExtArgs>
   properties?: boolean | Prisma.Organization$propertiesArgs<ExtArgs>
+  onboarding?: boolean | Prisma.Organization$onboardingArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organization"]>
 
@@ -2456,6 +2666,7 @@ export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   documentRequirements?: boolean | Prisma.Organization$documentRequirementsArgs<ExtArgs>
   documentReviews?: boolean | Prisma.Organization$documentReviewsArgs<ExtArgs>
   properties?: boolean | Prisma.Organization$propertiesArgs<ExtArgs>
+  onboarding?: boolean | Prisma.Organization$onboardingArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -2470,6 +2681,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     documentRequirements: Prisma.$BankDocumentRequirementPayload<ExtArgs>[]
     documentReviews: Prisma.$DocumentReviewPayload<ExtArgs>[]
     properties: Prisma.$PropertyPayload<ExtArgs>[]
+    onboarding: Prisma.$OrganizationOnboardingPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2845,6 +3057,7 @@ export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends run
   documentRequirements<T extends Prisma.Organization$documentRequirementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$documentRequirementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BankDocumentRequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documentReviews<T extends Prisma.Organization$documentReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$documentReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   properties<T extends Prisma.Organization$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  onboarding<T extends Prisma.Organization$onboardingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$onboardingArgs<ExtArgs>>): Prisma.Prisma__OrganizationOnboardingClient<runtime.Types.Result.GetResult<Prisma.$OrganizationOnboardingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3407,6 +3620,25 @@ export type Organization$propertiesArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.PropertyScalarFieldEnum | Prisma.PropertyScalarFieldEnum[]
+}
+
+/**
+ * Organization.onboarding
+ */
+export type Organization$onboardingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrganizationOnboarding
+   */
+  select?: Prisma.OrganizationOnboardingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrganizationOnboarding
+   */
+  omit?: Prisma.OrganizationOnboardingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationOnboardingInclude<ExtArgs> | null
+  where?: Prisma.OrganizationOnboardingWhereInput
 }
 
 /**

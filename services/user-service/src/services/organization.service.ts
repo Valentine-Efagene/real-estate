@@ -6,6 +6,7 @@ import {
     PolicyEventPublisher,
     OrganizationStatus,
 } from '@valentine-efagene/qshelter-common';
+import { onboardingService } from './onboarding.service';
 
 // Initialize policy event publisher for DynamoDB sync (when org members get roles)
 const policyPublisher = new PolicyEventPublisher('user-service', {
@@ -168,12 +169,17 @@ class OrganizationService {
         }
 
         // Create organization with type assignments in a transaction
-        return prisma.$transaction(async (tx) => {
+        const orgResult = await prisma.$transaction(async (tx) => {
+            // Check if any org type requires onboarding
+            const typesWithOnboarding = orgTypes.filter((t) => t.onboardingMethodId);
+            const requiresOnboarding = typesWithOnboarding.length > 0;
+
             const org = await tx.organization.create({
                 data: {
                     tenantId,
                     ...normalizedData,
-                    status: 'ACTIVE', // Auto-activate for now
+                    // If any type requires onboarding, start as PENDING; otherwise ACTIVE
+                    status: requiresOnboarding ? 'PENDING' : 'ACTIVE',
                 },
             });
 
@@ -187,7 +193,7 @@ class OrganizationService {
             });
 
             // Return with relations
-            return tx.organization.findUnique({
+            const result = await tx.organization.findUnique({
                 where: { id: org.id },
                 include: {
                     types: {
@@ -204,7 +210,32 @@ class OrganizationService {
                     },
                 },
             });
+
+            return {
+                org: result,
+                requiresOnboarding,
+                typesWithOnboarding,
+            };
         });
+
+        // Create onboarding AFTER transaction commits (so org exists in DB)
+        if (orgResult.requiresOnboarding && orgResult.org) {
+            const onboardingType = orgResult.typesWithOnboarding.find((t) => t.id === primaryType.id)
+                || orgResult.typesWithOnboarding[0];
+            try {
+                await onboardingService.createOnboarding(
+                    tenantId,
+                    orgResult.org.id,
+                    onboardingType.onboardingMethodId!,
+                );
+                console.log(`[OrganizationService] Created onboarding for org ${orgResult.org.name} (type: ${onboardingType.code})`);
+            } catch (error) {
+                console.error('[OrganizationService] Failed to create onboarding:', error);
+                // Don't fail org creation — onboarding can be created manually
+            }
+        }
+
+        return orgResult.org;
     }
 
     /**

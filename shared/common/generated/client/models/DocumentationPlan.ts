@@ -202,6 +202,7 @@ export type DocumentationPlanWhereInput = {
   documentDefinitions?: Prisma.DocumentDefinitionListRelationFilter
   approvalStages?: Prisma.ApprovalStageListRelationFilter
   methodPhases?: Prisma.PropertyPaymentMethodPhaseListRelationFilter
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseListRelationFilter
   documentationPhases?: Prisma.DocumentationPhaseListRelationFilter
 }
 
@@ -217,6 +218,7 @@ export type DocumentationPlanOrderByWithRelationInput = {
   documentDefinitions?: Prisma.DocumentDefinitionOrderByRelationAggregateInput
   approvalStages?: Prisma.ApprovalStageOrderByRelationAggregateInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseOrderByRelationAggregateInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseOrderByRelationAggregateInput
   documentationPhases?: Prisma.DocumentationPhaseOrderByRelationAggregateInput
   _relevance?: Prisma.DocumentationPlanOrderByRelevanceInput
 }
@@ -237,6 +239,7 @@ export type DocumentationPlanWhereUniqueInput = Prisma.AtLeast<{
   documentDefinitions?: Prisma.DocumentDefinitionListRelationFilter
   approvalStages?: Prisma.ApprovalStageListRelationFilter
   methodPhases?: Prisma.PropertyPaymentMethodPhaseListRelationFilter
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseListRelationFilter
   documentationPhases?: Prisma.DocumentationPhaseListRelationFilter
 }, "id" | "tenantId_name">
 
@@ -277,6 +280,7 @@ export type DocumentationPlanCreateInput = {
   documentDefinitions?: Prisma.DocumentDefinitionCreateNestedManyWithoutPlanInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutPlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
   documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutDocumentationPlanInput
 }
 
@@ -291,6 +295,7 @@ export type DocumentationPlanUncheckedCreateInput = {
   documentDefinitions?: Prisma.DocumentDefinitionUncheckedCreateNestedManyWithoutPlanInput
   approvalStages?: Prisma.ApprovalStageUncheckedCreateNestedManyWithoutPlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
   documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
 }
 
@@ -305,6 +310,7 @@ export type DocumentationPlanUpdateInput = {
   documentDefinitions?: Prisma.DocumentDefinitionUpdateManyWithoutPlanNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutPlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
   documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutDocumentationPlanNestedInput
 }
 
@@ -319,6 +325,7 @@ export type DocumentationPlanUncheckedUpdateInput = {
   documentDefinitions?: Prisma.DocumentDefinitionUncheckedUpdateManyWithoutPlanNestedInput
   approvalStages?: Prisma.ApprovalStageUncheckedUpdateManyWithoutPlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
   documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
 }
 
@@ -349,6 +356,11 @@ export type DocumentationPlanUncheckedUpdateManyInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DocumentationPlanNullableScalarRelationFilter = {
+  is?: Prisma.DocumentationPlanWhereInput | null
+  isNot?: Prisma.DocumentationPlanWhereInput | null
 }
 
 export type DocumentationPlanListRelationFilter = {
@@ -407,9 +419,20 @@ export type DocumentationPlanScalarRelationFilter = {
   isNot?: Prisma.DocumentationPlanWhereInput
 }
 
-export type DocumentationPlanNullableScalarRelationFilter = {
-  is?: Prisma.DocumentationPlanWhereInput | null
-  isNot?: Prisma.DocumentationPlanWhereInput | null
+export type DocumentationPlanCreateNestedOneWithoutOnboardingMethodPhasesInput = {
+  create?: Prisma.XOR<Prisma.DocumentationPlanCreateWithoutOnboardingMethodPhasesInput, Prisma.DocumentationPlanUncheckedCreateWithoutOnboardingMethodPhasesInput>
+  connectOrCreate?: Prisma.DocumentationPlanCreateOrConnectWithoutOnboardingMethodPhasesInput
+  connect?: Prisma.DocumentationPlanWhereUniqueInput
+}
+
+export type DocumentationPlanUpdateOneWithoutOnboardingMethodPhasesNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationPlanCreateWithoutOnboardingMethodPhasesInput, Prisma.DocumentationPlanUncheckedCreateWithoutOnboardingMethodPhasesInput>
+  connectOrCreate?: Prisma.DocumentationPlanCreateOrConnectWithoutOnboardingMethodPhasesInput
+  upsert?: Prisma.DocumentationPlanUpsertWithoutOnboardingMethodPhasesInput
+  disconnect?: Prisma.DocumentationPlanWhereInput | boolean
+  delete?: Prisma.DocumentationPlanWhereInput | boolean
+  connect?: Prisma.DocumentationPlanWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentationPlanUpdateToOneWithWhereWithoutOnboardingMethodPhasesInput, Prisma.DocumentationPlanUpdateWithoutOnboardingMethodPhasesInput>, Prisma.DocumentationPlanUncheckedUpdateWithoutOnboardingMethodPhasesInput>
 }
 
 export type DocumentationPlanCreateNestedManyWithoutTenantInput = {
@@ -514,6 +537,78 @@ export type DocumentationPlanUpdateOneWithoutDocumentationPhasesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentationPlanUpdateToOneWithWhereWithoutDocumentationPhasesInput, Prisma.DocumentationPlanUpdateWithoutDocumentationPhasesInput>, Prisma.DocumentationPlanUncheckedUpdateWithoutDocumentationPhasesInput>
 }
 
+export type DocumentationPlanCreateWithoutOnboardingMethodPhasesInput = {
+  id?: string
+  name: string
+  description?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant?: Prisma.TenantCreateNestedOneWithoutDocumentationPlansInput
+  documentDefinitions?: Prisma.DocumentDefinitionCreateNestedManyWithoutPlanInput
+  approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutPlanInput
+  methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
+  documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutDocumentationPlanInput
+}
+
+export type DocumentationPlanUncheckedCreateWithoutOnboardingMethodPhasesInput = {
+  id?: string
+  tenantId?: string | null
+  name: string
+  description?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  documentDefinitions?: Prisma.DocumentDefinitionUncheckedCreateNestedManyWithoutPlanInput
+  approvalStages?: Prisma.ApprovalStageUncheckedCreateNestedManyWithoutPlanInput
+  methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
+}
+
+export type DocumentationPlanCreateOrConnectWithoutOnboardingMethodPhasesInput = {
+  where: Prisma.DocumentationPlanWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentationPlanCreateWithoutOnboardingMethodPhasesInput, Prisma.DocumentationPlanUncheckedCreateWithoutOnboardingMethodPhasesInput>
+}
+
+export type DocumentationPlanUpsertWithoutOnboardingMethodPhasesInput = {
+  update: Prisma.XOR<Prisma.DocumentationPlanUpdateWithoutOnboardingMethodPhasesInput, Prisma.DocumentationPlanUncheckedUpdateWithoutOnboardingMethodPhasesInput>
+  create: Prisma.XOR<Prisma.DocumentationPlanCreateWithoutOnboardingMethodPhasesInput, Prisma.DocumentationPlanUncheckedCreateWithoutOnboardingMethodPhasesInput>
+  where?: Prisma.DocumentationPlanWhereInput
+}
+
+export type DocumentationPlanUpdateToOneWithWhereWithoutOnboardingMethodPhasesInput = {
+  where?: Prisma.DocumentationPlanWhereInput
+  data: Prisma.XOR<Prisma.DocumentationPlanUpdateWithoutOnboardingMethodPhasesInput, Prisma.DocumentationPlanUncheckedUpdateWithoutOnboardingMethodPhasesInput>
+}
+
+export type DocumentationPlanUpdateWithoutOnboardingMethodPhasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneWithoutDocumentationPlansNestedInput
+  documentDefinitions?: Prisma.DocumentDefinitionUpdateManyWithoutPlanNestedInput
+  approvalStages?: Prisma.ApprovalStageUpdateManyWithoutPlanNestedInput
+  methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutDocumentationPlanNestedInput
+}
+
+export type DocumentationPlanUncheckedUpdateWithoutOnboardingMethodPhasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documentDefinitions?: Prisma.DocumentDefinitionUncheckedUpdateManyWithoutPlanNestedInput
+  approvalStages?: Prisma.ApprovalStageUncheckedUpdateManyWithoutPlanNestedInput
+  methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
+}
+
 export type DocumentationPlanCreateWithoutTenantInput = {
   id?: string
   name: string
@@ -524,6 +619,7 @@ export type DocumentationPlanCreateWithoutTenantInput = {
   documentDefinitions?: Prisma.DocumentDefinitionCreateNestedManyWithoutPlanInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutPlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
   documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutDocumentationPlanInput
 }
 
@@ -537,6 +633,7 @@ export type DocumentationPlanUncheckedCreateWithoutTenantInput = {
   documentDefinitions?: Prisma.DocumentDefinitionUncheckedCreateNestedManyWithoutPlanInput
   approvalStages?: Prisma.ApprovalStageUncheckedCreateNestedManyWithoutPlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
   documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
 }
 
@@ -589,6 +686,7 @@ export type DocumentationPlanCreateWithoutDocumentDefinitionsInput = {
   tenant?: Prisma.TenantCreateNestedOneWithoutDocumentationPlansInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutPlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
   documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutDocumentationPlanInput
 }
 
@@ -602,6 +700,7 @@ export type DocumentationPlanUncheckedCreateWithoutDocumentDefinitionsInput = {
   updatedAt?: Date | string
   approvalStages?: Prisma.ApprovalStageUncheckedCreateNestedManyWithoutPlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
   documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
 }
 
@@ -631,6 +730,7 @@ export type DocumentationPlanUpdateWithoutDocumentDefinitionsInput = {
   tenant?: Prisma.TenantUpdateOneWithoutDocumentationPlansNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutPlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
   documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutDocumentationPlanNestedInput
 }
 
@@ -644,6 +744,7 @@ export type DocumentationPlanUncheckedUpdateWithoutDocumentDefinitionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   approvalStages?: Prisma.ApprovalStageUncheckedUpdateManyWithoutPlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
   documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
 }
 
@@ -657,6 +758,7 @@ export type DocumentationPlanCreateWithoutApprovalStagesInput = {
   tenant?: Prisma.TenantCreateNestedOneWithoutDocumentationPlansInput
   documentDefinitions?: Prisma.DocumentDefinitionCreateNestedManyWithoutPlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
   documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutDocumentationPlanInput
 }
 
@@ -670,6 +772,7 @@ export type DocumentationPlanUncheckedCreateWithoutApprovalStagesInput = {
   updatedAt?: Date | string
   documentDefinitions?: Prisma.DocumentDefinitionUncheckedCreateNestedManyWithoutPlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
   documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
 }
 
@@ -699,6 +802,7 @@ export type DocumentationPlanUpdateWithoutApprovalStagesInput = {
   tenant?: Prisma.TenantUpdateOneWithoutDocumentationPlansNestedInput
   documentDefinitions?: Prisma.DocumentDefinitionUpdateManyWithoutPlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
   documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutDocumentationPlanNestedInput
 }
 
@@ -712,6 +816,7 @@ export type DocumentationPlanUncheckedUpdateWithoutApprovalStagesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documentDefinitions?: Prisma.DocumentDefinitionUncheckedUpdateManyWithoutPlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
   documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
 }
 
@@ -725,6 +830,7 @@ export type DocumentationPlanCreateWithoutMethodPhasesInput = {
   tenant?: Prisma.TenantCreateNestedOneWithoutDocumentationPlansInput
   documentDefinitions?: Prisma.DocumentDefinitionCreateNestedManyWithoutPlanInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
   documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutDocumentationPlanInput
 }
 
@@ -738,6 +844,7 @@ export type DocumentationPlanUncheckedCreateWithoutMethodPhasesInput = {
   updatedAt?: Date | string
   documentDefinitions?: Prisma.DocumentDefinitionUncheckedCreateNestedManyWithoutPlanInput
   approvalStages?: Prisma.ApprovalStageUncheckedCreateNestedManyWithoutPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
   documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
 }
 
@@ -767,6 +874,7 @@ export type DocumentationPlanUpdateWithoutMethodPhasesInput = {
   tenant?: Prisma.TenantUpdateOneWithoutDocumentationPlansNestedInput
   documentDefinitions?: Prisma.DocumentDefinitionUpdateManyWithoutPlanNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
   documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutDocumentationPlanNestedInput
 }
 
@@ -780,6 +888,7 @@ export type DocumentationPlanUncheckedUpdateWithoutMethodPhasesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documentDefinitions?: Prisma.DocumentDefinitionUncheckedUpdateManyWithoutPlanNestedInput
   approvalStages?: Prisma.ApprovalStageUncheckedUpdateManyWithoutPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
   documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
 }
 
@@ -794,6 +903,7 @@ export type DocumentationPlanCreateWithoutDocumentationPhasesInput = {
   documentDefinitions?: Prisma.DocumentDefinitionCreateNestedManyWithoutPlanInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutPlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutDocumentationPlanInput
 }
 
 export type DocumentationPlanUncheckedCreateWithoutDocumentationPhasesInput = {
@@ -807,6 +917,7 @@ export type DocumentationPlanUncheckedCreateWithoutDocumentationPhasesInput = {
   documentDefinitions?: Prisma.DocumentDefinitionUncheckedCreateNestedManyWithoutPlanInput
   approvalStages?: Prisma.ApprovalStageUncheckedCreateNestedManyWithoutPlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutDocumentationPlanInput
 }
 
 export type DocumentationPlanCreateOrConnectWithoutDocumentationPhasesInput = {
@@ -836,6 +947,7 @@ export type DocumentationPlanUpdateWithoutDocumentationPhasesInput = {
   documentDefinitions?: Prisma.DocumentDefinitionUpdateManyWithoutPlanNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutPlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
 }
 
 export type DocumentationPlanUncheckedUpdateWithoutDocumentationPhasesInput = {
@@ -849,6 +961,7 @@ export type DocumentationPlanUncheckedUpdateWithoutDocumentationPhasesInput = {
   documentDefinitions?: Prisma.DocumentDefinitionUncheckedUpdateManyWithoutPlanNestedInput
   approvalStages?: Prisma.ApprovalStageUncheckedUpdateManyWithoutPlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
 }
 
 export type DocumentationPlanCreateManyTenantInput = {
@@ -870,6 +983,7 @@ export type DocumentationPlanUpdateWithoutTenantInput = {
   documentDefinitions?: Prisma.DocumentDefinitionUpdateManyWithoutPlanNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutPlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutDocumentationPlanNestedInput
   documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutDocumentationPlanNestedInput
 }
 
@@ -883,6 +997,7 @@ export type DocumentationPlanUncheckedUpdateWithoutTenantInput = {
   documentDefinitions?: Prisma.DocumentDefinitionUncheckedUpdateManyWithoutPlanNestedInput
   approvalStages?: Prisma.ApprovalStageUncheckedUpdateManyWithoutPlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
+  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
   documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutDocumentationPlanNestedInput
 }
 
@@ -904,6 +1019,7 @@ export type DocumentationPlanCountOutputType = {
   documentDefinitions: number
   approvalStages: number
   methodPhases: number
+  onboardingMethodPhases: number
   documentationPhases: number
 }
 
@@ -911,6 +1027,7 @@ export type DocumentationPlanCountOutputTypeSelect<ExtArgs extends runtime.Types
   documentDefinitions?: boolean | DocumentationPlanCountOutputTypeCountDocumentDefinitionsArgs
   approvalStages?: boolean | DocumentationPlanCountOutputTypeCountApprovalStagesArgs
   methodPhases?: boolean | DocumentationPlanCountOutputTypeCountMethodPhasesArgs
+  onboardingMethodPhases?: boolean | DocumentationPlanCountOutputTypeCountOnboardingMethodPhasesArgs
   documentationPhases?: boolean | DocumentationPlanCountOutputTypeCountDocumentationPhasesArgs
 }
 
@@ -948,6 +1065,13 @@ export type DocumentationPlanCountOutputTypeCountMethodPhasesArgs<ExtArgs extend
 /**
  * DocumentationPlanCountOutputType without action
  */
+export type DocumentationPlanCountOutputTypeCountOnboardingMethodPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OnboardingMethodPhaseWhereInput
+}
+
+/**
+ * DocumentationPlanCountOutputType without action
+ */
 export type DocumentationPlanCountOutputTypeCountDocumentationPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DocumentationPhaseWhereInput
 }
@@ -965,6 +1089,7 @@ export type DocumentationPlanSelect<ExtArgs extends runtime.Types.Extensions.Int
   documentDefinitions?: boolean | Prisma.DocumentationPlan$documentDefinitionsArgs<ExtArgs>
   approvalStages?: boolean | Prisma.DocumentationPlan$approvalStagesArgs<ExtArgs>
   methodPhases?: boolean | Prisma.DocumentationPlan$methodPhasesArgs<ExtArgs>
+  onboardingMethodPhases?: boolean | Prisma.DocumentationPlan$onboardingMethodPhasesArgs<ExtArgs>
   documentationPhases?: boolean | Prisma.DocumentationPlan$documentationPhasesArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentationPlanCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentationPlan"]>
@@ -987,6 +1112,7 @@ export type DocumentationPlanInclude<ExtArgs extends runtime.Types.Extensions.In
   documentDefinitions?: boolean | Prisma.DocumentationPlan$documentDefinitionsArgs<ExtArgs>
   approvalStages?: boolean | Prisma.DocumentationPlan$approvalStagesArgs<ExtArgs>
   methodPhases?: boolean | Prisma.DocumentationPlan$methodPhasesArgs<ExtArgs>
+  onboardingMethodPhases?: boolean | Prisma.DocumentationPlan$onboardingMethodPhasesArgs<ExtArgs>
   documentationPhases?: boolean | Prisma.DocumentationPlan$documentationPhasesArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentationPlanCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -998,6 +1124,7 @@ export type $DocumentationPlanPayload<ExtArgs extends runtime.Types.Extensions.I
     documentDefinitions: Prisma.$DocumentDefinitionPayload<ExtArgs>[]
     approvalStages: Prisma.$ApprovalStagePayload<ExtArgs>[]
     methodPhases: Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>[]
+    onboardingMethodPhases: Prisma.$OnboardingMethodPhasePayload<ExtArgs>[]
     documentationPhases: Prisma.$DocumentationPhasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1352,6 +1479,7 @@ export interface Prisma__DocumentationPlanClient<T, Null = never, ExtArgs extend
   documentDefinitions<T extends Prisma.DocumentationPlan$documentDefinitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPlan$documentDefinitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvalStages<T extends Prisma.DocumentationPlan$approvalStagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPlan$approvalStagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovalStagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   methodPhases<T extends Prisma.DocumentationPlan$methodPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPlan$methodPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  onboardingMethodPhases<T extends Prisma.DocumentationPlan$onboardingMethodPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPlan$onboardingMethodPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnboardingMethodPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documentationPhases<T extends Prisma.DocumentationPlan$documentationPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPlan$documentationPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1820,6 +1948,30 @@ export type DocumentationPlan$methodPhasesArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.PropertyPaymentMethodPhaseScalarFieldEnum | Prisma.PropertyPaymentMethodPhaseScalarFieldEnum[]
+}
+
+/**
+ * DocumentationPlan.onboardingMethodPhases
+ */
+export type DocumentationPlan$onboardingMethodPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OnboardingMethodPhase
+   */
+  select?: Prisma.OnboardingMethodPhaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OnboardingMethodPhase
+   */
+  omit?: Prisma.OnboardingMethodPhaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OnboardingMethodPhaseInclude<ExtArgs> | null
+  where?: Prisma.OnboardingMethodPhaseWhereInput
+  orderBy?: Prisma.OnboardingMethodPhaseOrderByWithRelationInput | Prisma.OnboardingMethodPhaseOrderByWithRelationInput[]
+  cursor?: Prisma.OnboardingMethodPhaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OnboardingMethodPhaseScalarFieldEnum | Prisma.OnboardingMethodPhaseScalarFieldEnum[]
 }
 
 /**

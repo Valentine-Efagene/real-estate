@@ -23,6 +23,7 @@ enum PhaseCategory {
   QUESTIONNAIRE // Configurable form fields with validation
   DOCUMENTATION // Document upload and approval workflow
   PAYMENT // Installment-based payment collection
+  GATE // Standalone approval checkpoint - reviewer decision only
 }
 
 enum PhaseType {
@@ -38,6 +39,11 @@ enum PhaseType {
   DOWNPAYMENT
   MORTGAGE
   BALLOON
+
+  // GATE phases
+  APPROVAL_GATE // Standalone approval checkpoint (e.g., final sign-off)
+  ORG_KYB // Organization Know-Your-Business verification gate
+  ORG_VERIFICATION // Organization verification gate
 
   // Generic
   CUSTOM
@@ -221,6 +227,10 @@ model OrganizationType {
   // System types are seeded during bootstrap and cannot be deleted
   isSystemType Boolean @default(false)
 
+  // Optional onboarding workflow — if set, orgs of this type must complete onboarding
+  onboardingMethodId String?
+  onboardingMethod   OnboardingMethod? @relation(fields: [onboardingMethodId], references: [id], onDelete: SetNull)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -242,9 +252,16 @@ model OrganizationType {
   // Document approvals
   documentApprovals DocumentApproval[]
 
+  // Gate plans that require this type as reviewer
+  gatePlans GatePlan[]
+
+  // Gate phases that require this type as reviewer
+  gatePhases GatePhase[]
+
   @@unique([tenantId, code])
   @@index([tenantId])
   @@index([code])
+  @@index([onboardingMethodId])
   @@map("organization_types")
 }
 
@@ -274,6 +291,15 @@ enum OrganizationStatus {
   ACTIVE // Fully operational
   SUSPENDED // Temporarily suspended
   INACTIVE // No longer active
+}
+
+/// Status of an organization onboarding process
+enum OnboardingStatus {
+  PENDING // Created but assignee not yet set
+  IN_PROGRESS // Assignee is working through phases
+  COMPLETED // All phases done, org approved → ACTIVE
+  REJECTED // Platform admin rejected the onboarding
+  EXPIRED // Onboarding window expired (configurable deadline)
 }
 
 // =============================================================================
@@ -364,6 +390,7 @@ enum UploadedBy {
   LEGAL
   INSURER
   PLATFORM // QShelter staff
+  ORGANIZATION_ONBOARDER // Org representative completing onboarding
 }
 
 /// What happens when a later stage rejects a document
@@ -545,6 +572,15 @@ model User {
   // Applications where this user is assigned as the staff handler for an org
   assignedApplicationOrgs ApplicationOrganization[] @relation("ApplicationOrgAssignedStaff")
 
+  // Gate phase reviews by this user
+  gatePhaseReviews GatePhaseReview[] @relation("GatePhaseReviewer")
+
+  // Organization onboardings where this user is the assignee
+  assignedOnboardings OrganizationOnboarding[] @relation("OnboardingAssignee")
+
+  // Organization onboardings approved by this user
+  approvedOnboardings OrganizationOnboarding[] @relation("OnboardingApprover")
+
   @@index([email])
   @@index([tenantId])
   @@map("users")
@@ -705,6 +741,9 @@ model Organization {
   // Properties owned/developed by this organization
   properties Property[]
 
+  // Onboarding workflow instance (one per org, if org type requires onboarding)
+  onboarding OrganizationOnboarding?
+
   @@unique([tenantId, bankCode]) // Bank codes unique within tenant
   @@unique([tenantId, cacNumber]) // CAC numbers unique within tenant
   @@index([tenantId])
@@ -762,6 +801,9 @@ model OrganizationInvitation {
   title      String? // Job title
   department String? // Department
 
+  // Onboarding designation — if true, this invitee becomes the org onboarder on accept
+  isOnboarder Boolean @default(false)
+
   // Invitation token
   token     String   @unique @default(cuid())
   expiresAt DateTime
@@ -794,6 +836,202 @@ enum InvitationStatus {
   ACCEPTED
   EXPIRED
   CANCELLED
+}
+
+// =============================================================================
+// ONBOARDING METHOD - Configurable org onboarding workflow templates
+// =============================================================================
+// OnboardingMethod = reusable workflow template for org verification/KYB
+// Linked to OrganizationType — when an org of that type is created, this
+// template defines the onboarding phases the org must complete.
+// Mirrors PropertyPaymentMethod but for org onboarding (no PAYMENT phases).
+// Examples: "Bank Onboarding", "Developer Verification"
+// =============================================================================
+
+model OnboardingMethod {
+  id          String  @id @default(cuid())
+  tenantId    String
+  tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
+  description String? @db.Text
+  isActive    Boolean @default(true)
+
+  // Whether phases auto-activate sequentially (default: yes)
+  autoActivatePhases Boolean @default(true)
+
+  // Onboarding expiry — how many days the onboarder has to complete
+  // NULL = no expiry (unlimited time)
+  expiresInDays Int? @default(30)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Ordered phases in this onboarding workflow
+  phases OnboardingMethodPhase[]
+
+  // Organization types that use this onboarding method
+  organizationTypes OrganizationType[]
+
+  // Instances created from this template
+  onboardings OrganizationOnboarding[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+  @@map("onboarding_methods")
+}
+
+/// Phase template within an OnboardingMethod
+/// Supports QUESTIONNAIRE, DOCUMENTATION, and GATE phases (no PAYMENT)
+model OnboardingMethodPhase {
+  id                 String           @id @default(cuid())
+  tenantId           String
+  tenant             Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  onboardingMethodId String
+  onboardingMethod   OnboardingMethod @relation(fields: [onboardingMethodId], references: [id], onDelete: Cascade)
+
+  // Plan references (only one set based on phaseCategory)
+  questionnairePlanId String? // Only for QUESTIONNAIRE phases
+  questionnairePlan   QuestionnairePlan? @relation(fields: [questionnairePlanId], references: [id])
+  documentationPlanId String? // Only for DOCUMENTATION phases
+  documentationPlan   DocumentationPlan? @relation(fields: [documentationPlanId], references: [id])
+  gatePlanId          String? // Only for GATE phases
+  gatePlan            GatePlan?          @relation(fields: [gatePlanId], references: [id])
+
+  name        String
+  description String? @db.Text
+
+  // Phase classification (only QUESTIONNAIRE, DOCUMENTATION, GATE — not PAYMENT)
+  phaseCategory PhaseCategory
+  phaseType     PhaseType
+  order         Int
+
+  // Activation rules
+  requiresPreviousPhaseCompletion Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Onboarding phase instances created from this template
+  onboardingPhases OnboardingPhase[]
+
+  @@unique([onboardingMethodId, order])
+  @@index([tenantId])
+  @@index([onboardingMethodId])
+  @@index([questionnairePlanId])
+  @@index([documentationPlanId])
+  @@index([gatePlanId])
+  @@index([phaseCategory])
+  @@map("onboarding_method_phases")
+}
+
+// =============================================================================
+// ORGANIZATION ONBOARDING - Instance of an onboarding workflow for an org
+// =============================================================================
+// Created when an organization with an onboarding-required type is registered.
+// The assignee (invited staff member) walks through phases to verify the org.
+// Platform admin gives final approval via the GATE phase → org becomes ACTIVE.
+// =============================================================================
+
+model OrganizationOnboarding {
+  id             String       @id @default(cuid())
+  tenantId       String
+  tenant         Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  organizationId String       @unique // One onboarding per org
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Template this was created from
+  onboardingMethodId String
+  onboardingMethod   OnboardingMethod @relation(fields: [onboardingMethodId], references: [id])
+
+  // Snapshot of the template at creation time (immutable audit trail)
+  templateSnapshot Json?
+
+  // The person walking through onboarding (set when invitation is accepted)
+  assigneeId String?
+  assignee   User?   @relation("OnboardingAssignee", fields: [assigneeId], references: [id])
+
+  // Status tracking
+  status OnboardingStatus @default(PENDING)
+
+  // Current phase pointer for UX navigation
+  currentPhaseId String?          @unique
+  currentPhase   OnboardingPhase? @relation("CurrentOnboardingPhase", fields: [currentPhaseId], references: [id])
+
+  // Timing
+  startedAt   DateTime? // When assignee begins (first phase activated)
+  completedAt DateTime? // When final gate phase approved
+  expiresAt   DateTime? // Calculated from onboardingMethod.expiresInDays
+
+  // Outcome
+  approvedAt      DateTime?
+  approvedById    String?
+  approvedBy      User?     @relation("OnboardingApprover", fields: [approvedById], references: [id])
+  rejectionReason String?   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Ordered phases in this onboarding instance
+  phases OnboardingPhase[]
+
+  @@index([tenantId])
+  @@index([organizationId])
+  @@index([onboardingMethodId])
+  @@index([assigneeId])
+  @@index([status])
+  @@map("organization_onboardings")
+}
+
+/// Phase instance within an OrganizationOnboarding
+/// Mirrors ApplicationPhase but scoped to org onboarding (no PAYMENT phases)
+model OnboardingPhase {
+  id           String                 @id @default(cuid())
+  tenantId     String
+  tenant       Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  onboardingId String
+  onboarding   OrganizationOnboarding @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
+
+  // Reference to the phase template this was instantiated from
+  phaseTemplateId String?
+  phaseTemplate   OnboardingMethodPhase? @relation(fields: [phaseTemplateId], references: [id], onDelete: SetNull)
+
+  // Admin-defined naming
+  name        String
+  description String? @db.Text
+
+  // Phase classification
+  phaseCategory PhaseCategory
+  phaseType     PhaseType
+  order         Int
+
+  // FSM state (reuses PhaseStatus: PENDING → IN_PROGRESS → AWAITING_APPROVAL → COMPLETED)
+  status PhaseStatus @default(PENDING)
+
+  // Timing
+  activatedAt DateTime?
+  completedAt DateTime?
+
+  // Activation rules
+  requiresPreviousPhaseCompletion Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Polymorphic extensions (exactly one populated based on phaseCategory)
+  questionnairePhase QuestionnairePhase?
+  documentationPhase DocumentationPhase?
+  gatePhase          GatePhase?
+
+  // Back-relation for onboarding where this is the current phase
+  currentForOnboardings OrganizationOnboarding[] @relation("CurrentOnboardingPhase")
+
+  @@unique([onboardingId, order])
+  @@index([tenantId])
+  @@index([onboardingId])
+  @@index([phaseTemplateId])
+  @@index([phaseCategory])
+  @@index([status])
+  @@map("onboarding_phases")
 }
 
 // =============================================================================
@@ -970,6 +1208,17 @@ model Tenant {
 
   // Organization invitations
   organizationInvitations OrganizationInvitation[]
+
+  // Organization onboarding workflow
+  onboardingMethods       OnboardingMethod[]
+  onboardingMethodPhases  OnboardingMethodPhase[]
+  organizationOnboardings OrganizationOnboarding[]
+  onboardingPhases        OnboardingPhase[]
+
+  // Gate phase (standalone approval checkpoints)
+  gatePlans        GatePlan[]
+  gatePhases       GatePhase[]
+  gatePhaseReviews GatePhaseReview[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -1472,9 +1721,11 @@ model DocumentationPlan {
   approvalStages ApprovalStage[]
 
   // Used by property payment method phases (templates)
-  methodPhases        PropertyPaymentMethodPhase[]
+  methodPhases           PropertyPaymentMethodPhase[]
+  // Used by onboarding method phases (templates)
+  onboardingMethodPhases OnboardingMethodPhase[]
   // Used by instantiated documentation phases
-  documentationPhases DocumentationPhase[]
+  documentationPhases    DocumentationPhase[]
 
   @@unique([tenantId, name]) // Unique per tenant, or globally if tenantId is null
   @@index([tenantId])
@@ -1601,6 +1852,9 @@ model QuestionnairePlan {
   // Used by property payment method phases (templates)
   methodPhases PropertyPaymentMethodPhase[]
 
+  // Used by onboarding method phases (templates)
+  onboardingMethodPhases OnboardingMethodPhase[]
+
   // Used by instantiated questionnaire phases
   questionnairePhases QuestionnairePhase[]
 
@@ -1654,6 +1908,50 @@ model QuestionnairePlanQuestion {
   @@unique([questionnairePlanId, questionKey])
   @@index([questionnairePlanId])
   @@map("questionnaire_plan_questions")
+}
+
+// =============================================================================
+// GATE PLAN DOMAIN - Reusable approval checkpoint templates
+// =============================================================================
+// GatePlan = reusable template for standalone approval gates
+// A gate phase collects a reviewer decision — no documents, no questions.
+// Examples: "Final Platform Approval", "Compliance Sign-off", "KYB Approval"
+// =============================================================================
+
+model GatePlan {
+  id          String  @id @default(cuid())
+  tenantId    String? // NULL = global template available to all tenants
+  tenant      Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
+  description String? @db.Text
+  isActive    Boolean @default(true)
+
+  // How many approvals are required (default 1, e.g., 2 for dual sign-off)
+  requiredApprovals Int @default(1)
+
+  // Which organization type should review (e.g., PLATFORM for admin review)
+  reviewerOrganizationTypeId String
+  reviewerOrganizationType   OrganizationType @relation(fields: [reviewerOrganizationTypeId], references: [id])
+
+  // Instructions for reviewers
+  reviewerInstructions String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Used by property payment method phases (templates)
+  methodPhases PropertyPaymentMethodPhase[]
+
+  // Used by onboarding method phases (templates)
+  onboardingMethodPhases OnboardingMethodPhase[]
+
+  // Used by instantiated gate phases
+  gatePhases GatePhase[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+  @@index([reviewerOrganizationTypeId])
+  @@map("gate_plans")
 }
 
 // =============================================================================
@@ -1783,6 +2081,8 @@ model PropertyPaymentMethodPhase {
   documentationPlan   DocumentationPlan? @relation(fields: [documentationPlanId], references: [id])
   questionnairePlanId String? // Only for QUESTIONNAIRE phases
   questionnairePlan   QuestionnairePlan? @relation(fields: [questionnairePlanId], references: [id])
+  gatePlanId          String? // Only for GATE phases
+  gatePlan            GatePlan?          @relation(fields: [gatePlanId], references: [id])
 
   name        String
   description String? @db.Text
@@ -1837,6 +2137,7 @@ model PropertyPaymentMethodPhase {
   @@index([paymentPlanId])
   @@index([documentationPlanId])
   @@index([questionnairePlanId])
+  @@index([gatePlanId])
   @@index([phaseCategory])
   @@map("property_payment_method_phases")
 }
@@ -2024,6 +2325,10 @@ enum QuestionCategory {
   CREDIT // Credit history, existing loans
   ASSETS // Savings, investments, other assets
   CUSTOM // Custom/uncategorized questions
+  CONTACTS // Contact persons, phone numbers, roles (for org onboarding UI sections)
+  ORGANIZATION // Company name, registration, structure
+  COMPLIANCE // AML policy, risk appetite, regulatory details
+  KYB // Know-Your-Business: years in operation, projects, financials
 }
 
 // Questionnaire field template within a QUESTIONNAIRE phase
@@ -2379,6 +2684,7 @@ model ApplicationPhase {
   questionnairePhase QuestionnairePhase?
   documentationPhase DocumentationPhase?
   paymentPhase       PaymentPhase?
+  gatePhase          GatePhase?
 
   // Payments can be linked to any phase type (for tracking)
   payments ApplicationPayment[]
@@ -2402,11 +2708,15 @@ model ApplicationPhase {
 // =============================================================================
 
 model QuestionnairePhase {
-  id       String           @id @default(cuid())
+  id       String @id @default(cuid())
   tenantId String
-  tenant   Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  phaseId  String           @unique
-  phase    ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Polymorphic parent — exactly one is set
+  phaseId           String?           @unique // ApplicationPhase (mortgage workflows)
+  phase             ApplicationPhase? @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  onboardingPhaseId String?           @unique // OnboardingPhase (org onboarding workflows)
+  onboardingPhase   OnboardingPhase?  @relation(fields: [onboardingPhaseId], references: [id], onDelete: Cascade)
 
   // Questionnaire plan reference (if created from a plan)
   questionnairePlanId String?
@@ -2445,6 +2755,7 @@ model QuestionnairePhase {
 
   @@index([tenantId])
   @@index([phaseId])
+  @@index([onboardingPhaseId])
   @@index([questionnairePlanId])
   @@map("questionnaire_phases")
 }
@@ -2483,17 +2794,101 @@ model QuestionnairePhaseReview {
 }
 
 // =============================================================================
+// GATE PHASE DATA - Extension for GATE phases
+// =============================================================================
+// Standalone approval checkpoint. No documents, no questions — just a reviewer
+// decision. Used for final sign-offs, compliance gates, KYB approvals.
+// Can be attached to both ApplicationPhase (mortgage flows) and OnboardingPhase.
+// =============================================================================
+
+model GatePhase {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Polymorphic parent — exactly one is set
+  applicationPhaseId String?           @unique
+  applicationPhase   ApplicationPhase? @relation(fields: [applicationPhaseId], references: [id], onDelete: Cascade)
+  onboardingPhaseId  String?           @unique
+  onboardingPhase    OnboardingPhase?  @relation(fields: [onboardingPhaseId], references: [id], onDelete: Cascade)
+
+  // Gate plan reference (if created from a plan)
+  gatePlanId String?
+  gatePlan   GatePlan? @relation(fields: [gatePlanId], references: [id])
+
+  // Gate configuration (copied from plan at creation, or set directly)
+  requiredApprovals          Int              @default(1)
+  reviewerOrganizationTypeId String
+  reviewerOrganizationType   OrganizationType @relation(fields: [reviewerOrganizationTypeId], references: [id])
+  reviewerInstructions       String?          @db.Text
+
+  // Progress
+  approvalCount  Int @default(0)
+  rejectionCount Int @default(0)
+
+  // Outcome
+  rejectionReason String? @db.Text
+
+  // Snapshot of plan at creation time (for audit)
+  gatePlanSnapshot Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Review audit trail
+  reviews GatePhaseReview[]
+
+  @@index([tenantId])
+  @@index([applicationPhaseId])
+  @@index([onboardingPhaseId])
+  @@index([gatePlanId])
+  @@map("gate_phases")
+}
+
+// =============================================================================
+// GATE PHASE REVIEW - Audit trail for gate phase decisions
+// =============================================================================
+// Records every review action taken on a gate phase.
+// Supports multi-approval gates (e.g., requires 2 reviewers to approve).
+// =============================================================================
+
+model GatePhaseReview {
+  id          String    @id @default(cuid())
+  tenantId    String
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  gatePhaseId String
+  gatePhase   GatePhase @relation(fields: [gatePhaseId], references: [id], onDelete: Cascade)
+
+  // Review details
+  reviewerId String
+  reviewer   User           @relation("GatePhaseReviewer", fields: [reviewerId], references: [id])
+  decision   ReviewDecision // APPROVED, REJECTED, CHANGES_REQUESTED
+  notes      String?        @db.Text
+
+  createdAt DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([gatePhaseId])
+  @@index([reviewerId])
+  @@map("gate_phase_reviews")
+}
+
+// =============================================================================
 // DOCUMENTATION PHASE DATA - Extension for DOCUMENTATION phases
 // =============================================================================
 // Manages document upload/approval workflow with sequential approval stages
 // =============================================================================
 
 model DocumentationPhase {
-  id       String           @id @default(cuid())
+  id       String @id @default(cuid())
   tenantId String
-  tenant   Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  phaseId  String           @unique
-  phase    ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Polymorphic parent — exactly one is set
+  phaseId           String?           @unique // ApplicationPhase (mortgage workflows)
+  phase             ApplicationPhase? @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  onboardingPhaseId String?           @unique // OnboardingPhase (org onboarding workflows)
+  onboardingPhase   OnboardingPhase?  @relation(fields: [onboardingPhaseId], references: [id], onDelete: Cascade)
 
   // Documentation plan reference (if created from a plan)
   documentationPlanId String?
@@ -2523,6 +2918,7 @@ model DocumentationPhase {
 
   @@index([tenantId])
   @@index([phaseId])
+  @@index([onboardingPhaseId])
   @@index([sourceQuestionnairePhaseId])
   @@map("documentation_phases")
 }

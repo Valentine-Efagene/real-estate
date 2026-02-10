@@ -12,7 +12,8 @@
 export const PhaseCategory = {
   QUESTIONNAIRE: 'QUESTIONNAIRE',
   DOCUMENTATION: 'DOCUMENTATION',
-  PAYMENT: 'PAYMENT'
+  PAYMENT: 'PAYMENT',
+  GATE: 'GATE'
 } as const
 
 export type PhaseCategory = (typeof PhaseCategory)[keyof typeof PhaseCategory]
@@ -26,6 +27,9 @@ export const PhaseType = {
   DOWNPAYMENT: 'DOWNPAYMENT',
   MORTGAGE: 'MORTGAGE',
   BALLOON: 'BALLOON',
+  APPROVAL_GATE: 'APPROVAL_GATE',
+  ORG_KYB: 'ORG_KYB',
+  ORG_VERIFICATION: 'ORG_VERIFICATION',
   CUSTOM: 'CUSTOM'
 } as const
 
@@ -245,6 +249,17 @@ export const OrganizationStatus = {
 export type OrganizationStatus = (typeof OrganizationStatus)[keyof typeof OrganizationStatus]
 
 
+export const OnboardingStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type OnboardingStatus = (typeof OnboardingStatus)[keyof typeof OnboardingStatus]
+
+
 export const TerminationType = {
   BUYER_WITHDRAWAL: 'BUYER_WITHDRAWAL',
   SELLER_WITHDRAWAL: 'SELLER_WITHDRAWAL',
@@ -339,7 +354,8 @@ export const UploadedBy = {
   DEVELOPER: 'DEVELOPER',
   LEGAL: 'LEGAL',
   INSURER: 'INSURER',
-  PLATFORM: 'PLATFORM'
+  PLATFORM: 'PLATFORM',
+  ORGANIZATION_ONBOARDER: 'ORGANIZATION_ONBOARDER'
 } as const
 
 export type UploadedBy = (typeof UploadedBy)[keyof typeof UploadedBy]
@@ -566,7 +582,11 @@ export const QuestionCategory = {
   PROPERTY: 'PROPERTY',
   CREDIT: 'CREDIT',
   ASSETS: 'ASSETS',
-  CUSTOM: 'CUSTOM'
+  CUSTOM: 'CUSTOM',
+  CONTACTS: 'CONTACTS',
+  ORGANIZATION: 'ORGANIZATION',
+  COMPLIANCE: 'COMPLIANCE',
+  KYB: 'KYB'
 } as const
 
 export type QuestionCategory = (typeof QuestionCategory)[keyof typeof QuestionCategory]

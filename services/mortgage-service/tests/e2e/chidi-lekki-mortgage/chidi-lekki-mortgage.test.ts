@@ -896,14 +896,22 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // - Credit report is REQUIRED (not in base plan)
             // These overlays apply when Access Bank is the lending partner.
 
+            // Find the KYC phase in the payment method
+            const paymentMethod = await prisma.propertyPaymentMethod.findUnique({
+                where: { id: paymentMethodId },
+                include: { phases: { orderBy: { order: 'asc' } } },
+            });
+            const kycPhase = paymentMethod?.phases.find((p: any) => p.phaseType === 'KYC');
+            expect(kycPhase).toBeDefined();
+            const kycPhaseId = kycPhase!.id;
+
             // STRICTER: Bank statements - require 12 months instead of 6
             await prisma.bankDocumentRequirement.create({
                 data: {
                     id: faker.string.uuid(),
                     tenantId,
                     organizationId: accessBankId,
-                    paymentMethodId,
-                    phaseType: 'KYC',
+                    phaseId: kycPhaseId,
                     documentType: 'BANK_STATEMENT',
                     documentName: '12 Months Bank Statements (Access Bank)',
                     modifier: 'STRICTER',
@@ -920,8 +928,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     id: faker.string.uuid(),
                     tenantId,
                     organizationId: accessBankId,
-                    paymentMethodId,
-                    phaseType: 'KYC',
+                    phaseId: kycPhaseId,
                     documentType: 'TAX_CLEARANCE',
                     documentName: 'Tax Clearance Certificate',
                     modifier: 'REQUIRED',
@@ -931,7 +938,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             // Verify the requirements were created
             const requirements = await prisma.bankDocumentRequirement.findMany({
-                where: { organizationId: accessBankId, paymentMethodId },
+                where: { organizationId: accessBankId, phaseId: kycPhaseId },
             });
             expect(requirements.length).toBe(2);
 

@@ -394,6 +394,10 @@ export const ModelName = {
   Organization: 'Organization',
   OrganizationMember: 'OrganizationMember',
   OrganizationInvitation: 'OrganizationInvitation',
+  OnboardingMethod: 'OnboardingMethod',
+  OnboardingMethodPhase: 'OnboardingMethodPhase',
+  OrganizationOnboarding: 'OrganizationOnboarding',
+  OnboardingPhase: 'OnboardingPhase',
   BankDocumentRequirement: 'BankDocumentRequirement',
   Tenant: 'Tenant',
   ApiKey: 'ApiKey',
@@ -421,6 +425,7 @@ export const ModelName = {
   ApprovalStage: 'ApprovalStage',
   QuestionnairePlan: 'QuestionnairePlan',
   QuestionnairePlanQuestion: 'QuestionnairePlanQuestion',
+  GatePlan: 'GatePlan',
   PaymentPlan: 'PaymentPlan',
   PropertyPaymentMethod: 'PropertyPaymentMethod',
   PropertyPaymentMethodLink: 'PropertyPaymentMethodLink',
@@ -436,6 +441,8 @@ export const ModelName = {
   ApplicationPhase: 'ApplicationPhase',
   QuestionnairePhase: 'QuestionnairePhase',
   QuestionnairePhaseReview: 'QuestionnairePhaseReview',
+  GatePhase: 'GatePhase',
+  GatePhaseReview: 'GatePhaseReview',
   DocumentationPhase: 'DocumentationPhase',
   PaymentPhase: 'PaymentPhase',
   QuestionnaireField: 'QuestionnaireField',
@@ -475,7 +482,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning"
+    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingMethod" | "onboardingMethodPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1136,6 +1143,270 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.OrganizationInvitationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.OrganizationInvitationCountAggregateOutputType> | number
+        }
+      }
+    }
+    OnboardingMethod: {
+      payload: Prisma.$OnboardingMethodPayload<ExtArgs>
+      fields: Prisma.OnboardingMethodFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OnboardingMethodFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OnboardingMethodFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+        }
+        findFirst: {
+          args: Prisma.OnboardingMethodFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OnboardingMethodFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+        }
+        findMany: {
+          args: Prisma.OnboardingMethodFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>[]
+        }
+        create: {
+          args: Prisma.OnboardingMethodCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+        }
+        createMany: {
+          args: Prisma.OnboardingMethodCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OnboardingMethodDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+        }
+        update: {
+          args: Prisma.OnboardingMethodUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+        }
+        deleteMany: {
+          args: Prisma.OnboardingMethodDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OnboardingMethodUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OnboardingMethodUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+        }
+        aggregate: {
+          args: Prisma.OnboardingMethodAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOnboardingMethod>
+        }
+        groupBy: {
+          args: Prisma.OnboardingMethodGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnboardingMethodGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OnboardingMethodCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnboardingMethodCountAggregateOutputType> | number
+        }
+      }
+    }
+    OnboardingMethodPhase: {
+      payload: Prisma.$OnboardingMethodPhasePayload<ExtArgs>
+      fields: Prisma.OnboardingMethodPhaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OnboardingMethodPhaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OnboardingMethodPhaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+        }
+        findFirst: {
+          args: Prisma.OnboardingMethodPhaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OnboardingMethodPhaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+        }
+        findMany: {
+          args: Prisma.OnboardingMethodPhaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>[]
+        }
+        create: {
+          args: Prisma.OnboardingMethodPhaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+        }
+        createMany: {
+          args: Prisma.OnboardingMethodPhaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OnboardingMethodPhaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+        }
+        update: {
+          args: Prisma.OnboardingMethodPhaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+        }
+        deleteMany: {
+          args: Prisma.OnboardingMethodPhaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OnboardingMethodPhaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OnboardingMethodPhaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+        }
+        aggregate: {
+          args: Prisma.OnboardingMethodPhaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOnboardingMethodPhase>
+        }
+        groupBy: {
+          args: Prisma.OnboardingMethodPhaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnboardingMethodPhaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OnboardingMethodPhaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnboardingMethodPhaseCountAggregateOutputType> | number
+        }
+      }
+    }
+    OrganizationOnboarding: {
+      payload: Prisma.$OrganizationOnboardingPayload<ExtArgs>
+      fields: Prisma.OrganizationOnboardingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrganizationOnboardingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationOnboardingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrganizationOnboardingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationOnboardingPayload>
+        }
+        findFirst: {
+          args: Prisma.OrganizationOnboardingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationOnboardingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrganizationOnboardingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationOnboardingPayload>
+        }
+        findMany: {
+          args: Prisma.OrganizationOnboardingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationOnboardingPayload>[]
+        }
+        create: {
+          args: Prisma.OrganizationOnboardingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationOnboardingPayload>
+        }
+        createMany: {
+          args: Prisma.OrganizationOnboardingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OrganizationOnboardingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationOnboardingPayload>
+        }
+        update: {
+          args: Prisma.OrganizationOnboardingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationOnboardingPayload>
+        }
+        deleteMany: {
+          args: Prisma.OrganizationOnboardingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrganizationOnboardingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OrganizationOnboardingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationOnboardingPayload>
+        }
+        aggregate: {
+          args: Prisma.OrganizationOnboardingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganizationOnboarding>
+        }
+        groupBy: {
+          args: Prisma.OrganizationOnboardingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationOnboardingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrganizationOnboardingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationOnboardingCountAggregateOutputType> | number
+        }
+      }
+    }
+    OnboardingPhase: {
+      payload: Prisma.$OnboardingPhasePayload<ExtArgs>
+      fields: Prisma.OnboardingPhaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OnboardingPhaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingPhasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OnboardingPhaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingPhasePayload>
+        }
+        findFirst: {
+          args: Prisma.OnboardingPhaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingPhasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OnboardingPhaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingPhasePayload>
+        }
+        findMany: {
+          args: Prisma.OnboardingPhaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingPhasePayload>[]
+        }
+        create: {
+          args: Prisma.OnboardingPhaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingPhasePayload>
+        }
+        createMany: {
+          args: Prisma.OnboardingPhaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OnboardingPhaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingPhasePayload>
+        }
+        update: {
+          args: Prisma.OnboardingPhaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingPhasePayload>
+        }
+        deleteMany: {
+          args: Prisma.OnboardingPhaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OnboardingPhaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OnboardingPhaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingPhasePayload>
+        }
+        aggregate: {
+          args: Prisma.OnboardingPhaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOnboardingPhase>
+        }
+        groupBy: {
+          args: Prisma.OnboardingPhaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnboardingPhaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OnboardingPhaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnboardingPhaseCountAggregateOutputType> | number
         }
       }
     }
@@ -2921,6 +3192,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GatePlan: {
+      payload: Prisma.$GatePlanPayload<ExtArgs>
+      fields: Prisma.GatePlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GatePlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GatePlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePlanPayload>
+        }
+        findFirst: {
+          args: Prisma.GatePlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GatePlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePlanPayload>
+        }
+        findMany: {
+          args: Prisma.GatePlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePlanPayload>[]
+        }
+        create: {
+          args: Prisma.GatePlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePlanPayload>
+        }
+        createMany: {
+          args: Prisma.GatePlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.GatePlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePlanPayload>
+        }
+        update: {
+          args: Prisma.GatePlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.GatePlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GatePlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.GatePlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePlanPayload>
+        }
+        aggregate: {
+          args: Prisma.GatePlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGatePlan>
+        }
+        groupBy: {
+          args: Prisma.GatePlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GatePlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GatePlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GatePlanCountAggregateOutputType> | number
+        }
+      }
+    }
     PaymentPlan: {
       payload: Prisma.$PaymentPlanPayload<ExtArgs>
       fields: Prisma.PaymentPlanFieldRefs
@@ -3908,6 +4245,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.QuestionnairePhaseReviewCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.QuestionnairePhaseReviewCountAggregateOutputType> | number
+        }
+      }
+    }
+    GatePhase: {
+      payload: Prisma.$GatePhasePayload<ExtArgs>
+      fields: Prisma.GatePhaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GatePhaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GatePhaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhasePayload>
+        }
+        findFirst: {
+          args: Prisma.GatePhaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GatePhaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhasePayload>
+        }
+        findMany: {
+          args: Prisma.GatePhaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhasePayload>[]
+        }
+        create: {
+          args: Prisma.GatePhaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhasePayload>
+        }
+        createMany: {
+          args: Prisma.GatePhaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.GatePhaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhasePayload>
+        }
+        update: {
+          args: Prisma.GatePhaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhasePayload>
+        }
+        deleteMany: {
+          args: Prisma.GatePhaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GatePhaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.GatePhaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhasePayload>
+        }
+        aggregate: {
+          args: Prisma.GatePhaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGatePhase>
+        }
+        groupBy: {
+          args: Prisma.GatePhaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GatePhaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GatePhaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GatePhaseCountAggregateOutputType> | number
+        }
+      }
+    }
+    GatePhaseReview: {
+      payload: Prisma.$GatePhaseReviewPayload<ExtArgs>
+      fields: Prisma.GatePhaseReviewFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GatePhaseReviewFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhaseReviewPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GatePhaseReviewFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhaseReviewPayload>
+        }
+        findFirst: {
+          args: Prisma.GatePhaseReviewFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhaseReviewPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GatePhaseReviewFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhaseReviewPayload>
+        }
+        findMany: {
+          args: Prisma.GatePhaseReviewFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhaseReviewPayload>[]
+        }
+        create: {
+          args: Prisma.GatePhaseReviewCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhaseReviewPayload>
+        }
+        createMany: {
+          args: Prisma.GatePhaseReviewCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.GatePhaseReviewDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhaseReviewPayload>
+        }
+        update: {
+          args: Prisma.GatePhaseReviewUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhaseReviewPayload>
+        }
+        deleteMany: {
+          args: Prisma.GatePhaseReviewDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GatePhaseReviewUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.GatePhaseReviewUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GatePhaseReviewPayload>
+        }
+        aggregate: {
+          args: Prisma.GatePhaseReviewAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGatePhaseReview>
+        }
+        groupBy: {
+          args: Prisma.GatePhaseReviewGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GatePhaseReviewGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GatePhaseReviewCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GatePhaseReviewCountAggregateOutputType> | number
         }
       }
     }
@@ -5541,6 +6010,7 @@ export const OrganizationTypeScalarFieldEnum = {
   name: 'name',
   description: 'description',
   isSystemType: 'isSystemType',
+  onboardingMethodId: 'onboardingMethodId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -5695,6 +6165,7 @@ export const OrganizationInvitationScalarFieldEnum = {
   roleId: 'roleId',
   title: 'title',
   department: 'department',
+  isOnboarder: 'isOnboarder',
   token: 'token',
   expiresAt: 'expiresAt',
   status: 'status',
@@ -5705,6 +6176,84 @@ export const OrganizationInvitationScalarFieldEnum = {
 } as const
 
 export type OrganizationInvitationScalarFieldEnum = (typeof OrganizationInvitationScalarFieldEnum)[keyof typeof OrganizationInvitationScalarFieldEnum]
+
+
+export const OnboardingMethodScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  autoActivatePhases: 'autoActivatePhases',
+  expiresInDays: 'expiresInDays',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OnboardingMethodScalarFieldEnum = (typeof OnboardingMethodScalarFieldEnum)[keyof typeof OnboardingMethodScalarFieldEnum]
+
+
+export const OnboardingMethodPhaseScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  onboardingMethodId: 'onboardingMethodId',
+  questionnairePlanId: 'questionnairePlanId',
+  documentationPlanId: 'documentationPlanId',
+  gatePlanId: 'gatePlanId',
+  name: 'name',
+  description: 'description',
+  phaseCategory: 'phaseCategory',
+  phaseType: 'phaseType',
+  order: 'order',
+  requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OnboardingMethodPhaseScalarFieldEnum = (typeof OnboardingMethodPhaseScalarFieldEnum)[keyof typeof OnboardingMethodPhaseScalarFieldEnum]
+
+
+export const OrganizationOnboardingScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  onboardingMethodId: 'onboardingMethodId',
+  templateSnapshot: 'templateSnapshot',
+  assigneeId: 'assigneeId',
+  status: 'status',
+  currentPhaseId: 'currentPhaseId',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  expiresAt: 'expiresAt',
+  approvedAt: 'approvedAt',
+  approvedById: 'approvedById',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationOnboardingScalarFieldEnum = (typeof OrganizationOnboardingScalarFieldEnum)[keyof typeof OrganizationOnboardingScalarFieldEnum]
+
+
+export const OnboardingPhaseScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  onboardingId: 'onboardingId',
+  phaseTemplateId: 'phaseTemplateId',
+  name: 'name',
+  description: 'description',
+  phaseCategory: 'phaseCategory',
+  phaseType: 'phaseType',
+  order: 'order',
+  status: 'status',
+  activatedAt: 'activatedAt',
+  completedAt: 'completedAt',
+  requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OnboardingPhaseScalarFieldEnum = (typeof OnboardingPhaseScalarFieldEnum)[keyof typeof OnboardingPhaseScalarFieldEnum]
 
 
 export const BankDocumentRequirementScalarFieldEnum = {
@@ -6138,6 +6687,22 @@ export const QuestionnairePlanQuestionScalarFieldEnum = {
 export type QuestionnairePlanQuestionScalarFieldEnum = (typeof QuestionnairePlanQuestionScalarFieldEnum)[keyof typeof QuestionnairePlanQuestionScalarFieldEnum]
 
 
+export const GatePlanScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  requiredApprovals: 'requiredApprovals',
+  reviewerOrganizationTypeId: 'reviewerOrganizationTypeId',
+  reviewerInstructions: 'reviewerInstructions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GatePlanScalarFieldEnum = (typeof GatePlanScalarFieldEnum)[keyof typeof GatePlanScalarFieldEnum]
+
+
 export const PaymentPlanScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -6198,6 +6763,7 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   paymentPlanId: 'paymentPlanId',
   documentationPlanId: 'documentationPlanId',
   questionnairePlanId: 'questionnairePlanId',
+  gatePlanId: 'gatePlanId',
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
@@ -6427,6 +6993,7 @@ export const QuestionnairePhaseScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  onboardingPhaseId: 'onboardingPhaseId',
   questionnairePlanId: 'questionnairePlanId',
   completedFieldsCount: 'completedFieldsCount',
   totalFieldsCount: 'totalFieldsCount',
@@ -6461,10 +7028,44 @@ export const QuestionnairePhaseReviewScalarFieldEnum = {
 export type QuestionnairePhaseReviewScalarFieldEnum = (typeof QuestionnairePhaseReviewScalarFieldEnum)[keyof typeof QuestionnairePhaseReviewScalarFieldEnum]
 
 
+export const GatePhaseScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationPhaseId: 'applicationPhaseId',
+  onboardingPhaseId: 'onboardingPhaseId',
+  gatePlanId: 'gatePlanId',
+  requiredApprovals: 'requiredApprovals',
+  reviewerOrganizationTypeId: 'reviewerOrganizationTypeId',
+  reviewerInstructions: 'reviewerInstructions',
+  approvalCount: 'approvalCount',
+  rejectionCount: 'rejectionCount',
+  rejectionReason: 'rejectionReason',
+  gatePlanSnapshot: 'gatePlanSnapshot',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GatePhaseScalarFieldEnum = (typeof GatePhaseScalarFieldEnum)[keyof typeof GatePhaseScalarFieldEnum]
+
+
+export const GatePhaseReviewScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  gatePhaseId: 'gatePhaseId',
+  reviewerId: 'reviewerId',
+  decision: 'decision',
+  notes: 'notes',
+  createdAt: 'createdAt'
+} as const
+
+export type GatePhaseReviewScalarFieldEnum = (typeof GatePhaseReviewScalarFieldEnum)[keyof typeof GatePhaseReviewScalarFieldEnum]
+
+
 export const DocumentationPhaseScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  onboardingPhaseId: 'onboardingPhaseId',
   documentationPlanId: 'documentationPlanId',
   sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId',
   currentStageOrder: 'currentStageOrder',
@@ -7075,7 +7676,8 @@ export const OrganizationTypeOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   code: 'code',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  onboardingMethodId: 'onboardingMethodId'
 } as const
 
 export type OrganizationTypeOrderByRelevanceFieldEnum = (typeof OrganizationTypeOrderByRelevanceFieldEnum)[keyof typeof OrganizationTypeOrderByRelevanceFieldEnum]
@@ -7217,6 +7819,56 @@ export const OrganizationInvitationOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrganizationInvitationOrderByRelevanceFieldEnum = (typeof OrganizationInvitationOrderByRelevanceFieldEnum)[keyof typeof OrganizationInvitationOrderByRelevanceFieldEnum]
+
+
+export const OnboardingMethodOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type OnboardingMethodOrderByRelevanceFieldEnum = (typeof OnboardingMethodOrderByRelevanceFieldEnum)[keyof typeof OnboardingMethodOrderByRelevanceFieldEnum]
+
+
+export const OnboardingMethodPhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  onboardingMethodId: 'onboardingMethodId',
+  questionnairePlanId: 'questionnairePlanId',
+  documentationPlanId: 'documentationPlanId',
+  gatePlanId: 'gatePlanId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type OnboardingMethodPhaseOrderByRelevanceFieldEnum = (typeof OnboardingMethodPhaseOrderByRelevanceFieldEnum)[keyof typeof OnboardingMethodPhaseOrderByRelevanceFieldEnum]
+
+
+export const OrganizationOnboardingOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  onboardingMethodId: 'onboardingMethodId',
+  assigneeId: 'assigneeId',
+  currentPhaseId: 'currentPhaseId',
+  approvedById: 'approvedById',
+  rejectionReason: 'rejectionReason'
+} as const
+
+export type OrganizationOnboardingOrderByRelevanceFieldEnum = (typeof OrganizationOnboardingOrderByRelevanceFieldEnum)[keyof typeof OrganizationOnboardingOrderByRelevanceFieldEnum]
+
+
+export const OnboardingPhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  onboardingId: 'onboardingId',
+  phaseTemplateId: 'phaseTemplateId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type OnboardingPhaseOrderByRelevanceFieldEnum = (typeof OnboardingPhaseOrderByRelevanceFieldEnum)[keyof typeof OnboardingPhaseOrderByRelevanceFieldEnum]
 
 
 export const BankDocumentRequirementOrderByRelevanceFieldEnum = {
@@ -7519,6 +8171,18 @@ export const QuestionnairePlanQuestionOrderByRelevanceFieldEnum = {
 export type QuestionnairePlanQuestionOrderByRelevanceFieldEnum = (typeof QuestionnairePlanQuestionOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePlanQuestionOrderByRelevanceFieldEnum]
 
 
+export const GatePlanOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  reviewerOrganizationTypeId: 'reviewerOrganizationTypeId',
+  reviewerInstructions: 'reviewerInstructions'
+} as const
+
+export type GatePlanOrderByRelevanceFieldEnum = (typeof GatePlanOrderByRelevanceFieldEnum)[keyof typeof GatePlanOrderByRelevanceFieldEnum]
+
+
 export const PaymentPlanOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -7555,6 +8219,7 @@ export const PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = {
   paymentPlanId: 'paymentPlanId',
   documentationPlanId: 'documentationPlanId',
   questionnairePlanId: 'questionnairePlanId',
+  gatePlanId: 'gatePlanId',
   name: 'name',
   description: 'description'
 } as const
@@ -7690,6 +8355,7 @@ export const QuestionnairePhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  onboardingPhaseId: 'onboardingPhaseId',
   questionnairePlanId: 'questionnairePlanId',
   underwritingDecision: 'underwritingDecision',
   underwritingNotes: 'underwritingNotes'
@@ -7709,10 +8375,36 @@ export const QuestionnairePhaseReviewOrderByRelevanceFieldEnum = {
 export type QuestionnairePhaseReviewOrderByRelevanceFieldEnum = (typeof QuestionnairePhaseReviewOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePhaseReviewOrderByRelevanceFieldEnum]
 
 
+export const GatePhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationPhaseId: 'applicationPhaseId',
+  onboardingPhaseId: 'onboardingPhaseId',
+  gatePlanId: 'gatePlanId',
+  reviewerOrganizationTypeId: 'reviewerOrganizationTypeId',
+  reviewerInstructions: 'reviewerInstructions',
+  rejectionReason: 'rejectionReason'
+} as const
+
+export type GatePhaseOrderByRelevanceFieldEnum = (typeof GatePhaseOrderByRelevanceFieldEnum)[keyof typeof GatePhaseOrderByRelevanceFieldEnum]
+
+
+export const GatePhaseReviewOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  gatePhaseId: 'gatePhaseId',
+  reviewerId: 'reviewerId',
+  notes: 'notes'
+} as const
+
+export type GatePhaseReviewOrderByRelevanceFieldEnum = (typeof GatePhaseReviewOrderByRelevanceFieldEnum)[keyof typeof GatePhaseReviewOrderByRelevanceFieldEnum]
+
+
 export const DocumentationPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  onboardingPhaseId: 'onboardingPhaseId',
   documentationPlanId: 'documentationPlanId',
   sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId'
 } as const
@@ -8109,16 +8801,44 @@ export type EnumInvitationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
- * Reference to a field of type 'BankDocumentModifier'
+ * Reference to a field of type 'Int'
  */
-export type EnumBankDocumentModifierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BankDocumentModifier'>
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
 /**
- * Reference to a field of type 'Int'
+ * Reference to a field of type 'PhaseCategory'
  */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+export type EnumPhaseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'PhaseType'
+ */
+export type EnumPhaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseType'>
+    
+
+
+/**
+ * Reference to a field of type 'OnboardingStatus'
+ */
+export type EnumOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OnboardingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PhaseStatus'
+ */
+export type EnumPhaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'BankDocumentModifier'
+ */
+export type EnumBankDocumentModifierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BankDocumentModifier'>
     
 
 
@@ -8200,20 +8920,6 @@ export type EnumPaymentFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
- * Reference to a field of type 'PhaseCategory'
- */
-export type EnumPhaseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseCategory'>
-    
-
-
-/**
- * Reference to a field of type 'PhaseType'
- */
-export type EnumPhaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseType'>
-    
-
-
-/**
  * Reference to a field of type 'CompletionCriterion'
  */
 export type EnumCompletionCriterionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompletionCriterion'>
@@ -8266,13 +8972,6 @@ export type EnumApplicationOrganizationStatusFieldRefInput<$PrismaModel> = Field
  * Reference to a field of type 'RefundStatus'
  */
 export type EnumRefundStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RefundStatus'>
-    
-
-
-/**
- * Reference to a field of type 'PhaseStatus'
- */
-export type EnumPhaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseStatus'>
     
 
 
@@ -8562,6 +9261,10 @@ export type GlobalOmitConfig = {
   organization?: Prisma.OrganizationOmit
   organizationMember?: Prisma.OrganizationMemberOmit
   organizationInvitation?: Prisma.OrganizationInvitationOmit
+  onboardingMethod?: Prisma.OnboardingMethodOmit
+  onboardingMethodPhase?: Prisma.OnboardingMethodPhaseOmit
+  organizationOnboarding?: Prisma.OrganizationOnboardingOmit
+  onboardingPhase?: Prisma.OnboardingPhaseOmit
   bankDocumentRequirement?: Prisma.BankDocumentRequirementOmit
   tenant?: Prisma.TenantOmit
   apiKey?: Prisma.ApiKeyOmit
@@ -8589,6 +9292,7 @@ export type GlobalOmitConfig = {
   approvalStage?: Prisma.ApprovalStageOmit
   questionnairePlan?: Prisma.QuestionnairePlanOmit
   questionnairePlanQuestion?: Prisma.QuestionnairePlanQuestionOmit
+  gatePlan?: Prisma.GatePlanOmit
   paymentPlan?: Prisma.PaymentPlanOmit
   propertyPaymentMethod?: Prisma.PropertyPaymentMethodOmit
   propertyPaymentMethodLink?: Prisma.PropertyPaymentMethodLinkOmit
@@ -8604,6 +9308,8 @@ export type GlobalOmitConfig = {
   applicationPhase?: Prisma.ApplicationPhaseOmit
   questionnairePhase?: Prisma.QuestionnairePhaseOmit
   questionnairePhaseReview?: Prisma.QuestionnairePhaseReviewOmit
+  gatePhase?: Prisma.GatePhaseOmit
+  gatePhaseReview?: Prisma.GatePhaseReviewOmit
   documentationPhase?: Prisma.DocumentationPhaseOmit
   paymentPhase?: Prisma.PaymentPhaseOmit
   questionnaireField?: Prisma.QuestionnaireFieldOmit

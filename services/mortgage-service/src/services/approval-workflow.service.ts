@@ -239,6 +239,10 @@ export function createApprovalWorkflowService() {
                 throw new AppError(404, 'Documentation phase not found');
             }
 
+            if (!docPhase.phase) {
+                throw new AppError(400, 'Documentation phase is not linked to an application phase');
+            }
+
             if (docPhase.phase.status !== 'IN_PROGRESS' && docPhase.phase.status !== 'ACTIVE') {
                 throw new AppError(400, 'Cannot upload documents to an inactive phase');
             }
@@ -974,6 +978,10 @@ export function createApprovalWorkflowService() {
 
             if (!docPhase) {
                 throw new AppError(404, 'Documentation phase not found');
+            }
+
+            if (!docPhase.phase) {
+                throw new AppError(400, 'Documentation phase is not linked to an application phase');
             }
 
             const definitions = (docPhase.documentDefinitionsSnapshot as unknown as DocumentDefinitionSnapshot[]) || [];

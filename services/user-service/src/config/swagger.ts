@@ -854,6 +854,195 @@ registry.registerPath({
     },
 });
 
+// =============================================================================
+// Onboarding Schemas
+// =============================================================================
+
+const OnboardingPhaseSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    phaseCategory: z.enum(['QUESTIONNAIRE', 'DOCUMENTATION', 'GATE']),
+    phaseType: z.string(),
+    order: z.number(),
+    status: z.enum(['PENDING', 'IN_PROGRESS', 'AWAITING_APPROVAL', 'COMPLETED', 'SKIPPED', 'FAILED']),
+    activatedAt: z.string().datetime().optional(),
+    completedAt: z.string().datetime().optional(),
+}).openapi('OnboardingPhase');
+
+const OnboardingSchema = z.object({
+    id: z.string(),
+    organizationId: z.string(),
+    status: z.enum(['PENDING', 'IN_PROGRESS', 'COMPLETED', 'REJECTED', 'EXPIRED']),
+    assignee: z.object({
+        id: z.string(),
+        email: z.string(),
+        firstName: z.string().optional(),
+        lastName: z.string().optional(),
+    }).optional(),
+    phases: z.array(OnboardingPhaseSchema),
+    expiresAt: z.string().datetime().optional(),
+    completedAt: z.string().datetime().optional(),
+    createdAt: z.string().datetime(),
+}).openapi('Onboarding');
+
+const SubmitQuestionnaireFieldsSchema = z.object({
+    fields: z.array(z.object({
+        fieldId: z.string(),
+        value: z.any(),
+    })).min(1),
+}).openapi('SubmitQuestionnaireFields');
+
+const ReviewGateSchema = z.object({
+    decision: z.enum(['APPROVED', 'REJECTED', 'CHANGES_REQUESTED']),
+    notes: z.string().optional(),
+}).openapi('ReviewGate');
+
+const ReassignOnboarderSchema = z.object({
+    newAssigneeId: z.string(),
+}).openapi('ReassignOnboarder');
+
+registry.register('Onboarding', OnboardingSchema);
+registry.register('OnboardingPhase', OnboardingPhaseSchema);
+
+// =============================================================================
+// Onboarding Endpoints
+// =============================================================================
+
+registry.registerPath({
+    method: 'get',
+    path: '/organizations/{id}/onboarding',
+    tags: ['Onboarding'],
+    summary: 'Get organization onboarding status',
+    description: 'Retrieve the full onboarding workflow status for an organization, including all phases and their extensions.',
+    security: [{ bearerAuth: [] }],
+    request: {
+        params: z.object({
+            id: z.string().openapi({ description: 'Organization ID' }),
+        }),
+    },
+    responses: {
+        200: {
+            description: 'Onboarding details',
+            content: {
+                'application/json': {
+                    schema: z.object({ success: z.literal(true), data: OnboardingSchema }),
+                },
+            },
+        },
+        404: { description: 'Onboarding not found' },
+    },
+});
+
+registry.registerPath({
+    method: 'post',
+    path: '/organizations/{id}/onboarding/start',
+    tags: ['Onboarding'],
+    summary: 'Start onboarding workflow',
+    description: 'Start the onboarding workflow when an assignee has been set. Activates the first phase.',
+    security: [{ bearerAuth: [] }],
+    request: {
+        params: z.object({
+            id: z.string().openapi({ description: 'Organization ID' }),
+        }),
+    },
+    responses: {
+        200: {
+            description: 'Onboarding started',
+            content: {
+                'application/json': {
+                    schema: z.object({ success: z.literal(true), data: OnboardingSchema }),
+                },
+            },
+        },
+        400: { description: 'Cannot start (missing assignee or wrong status)' },
+    },
+});
+
+registry.registerPath({
+    method: 'post',
+    path: '/organizations/{id}/onboarding/phases/{phaseId}/questionnaire',
+    tags: ['Onboarding'],
+    summary: 'Submit questionnaire fields',
+    description: 'Submit values for questionnaire fields in an onboarding phase. Auto-completes the phase when all required fields are filled.',
+    security: [{ bearerAuth: [] }],
+    request: {
+        params: z.object({
+            id: z.string().openapi({ description: 'Organization ID' }),
+            phaseId: z.string().openapi({ description: 'Onboarding Phase ID' }),
+        }),
+        body: {
+            content: { 'application/json': { schema: SubmitQuestionnaireFieldsSchema } },
+        },
+    },
+    responses: {
+        200: {
+            description: 'Fields submitted, onboarding status updated',
+            content: {
+                'application/json': {
+                    schema: z.object({ success: z.literal(true), data: OnboardingSchema }),
+                },
+            },
+        },
+    },
+});
+
+registry.registerPath({
+    method: 'post',
+    path: '/organizations/{id}/onboarding/phases/{phaseId}/gate/review',
+    tags: ['Onboarding'],
+    summary: 'Review gate phase',
+    description: 'Admin reviews a gate phase (approve/reject). If approved and required approvals met, advances to next phase or completes onboarding.',
+    security: [{ bearerAuth: [] }],
+    request: {
+        params: z.object({
+            id: z.string().openapi({ description: 'Organization ID' }),
+            phaseId: z.string().openapi({ description: 'Onboarding Phase ID' }),
+        }),
+        body: {
+            content: { 'application/json': { schema: ReviewGateSchema } },
+        },
+    },
+    responses: {
+        200: {
+            description: 'Review recorded',
+            content: {
+                'application/json': {
+                    schema: z.object({ success: z.literal(true), data: OnboardingSchema }),
+                },
+            },
+        },
+        403: { description: 'Admin access required' },
+    },
+});
+
+registry.registerPath({
+    method: 'patch',
+    path: '/organizations/{id}/onboarding/reassign',
+    tags: ['Onboarding'],
+    summary: 'Reassign onboarder',
+    description: 'Admin reassigns the onboarding to a different organization member.',
+    security: [{ bearerAuth: [] }],
+    request: {
+        params: z.object({
+            id: z.string().openapi({ description: 'Organization ID' }),
+        }),
+        body: {
+            content: { 'application/json': { schema: ReassignOnboarderSchema } },
+        },
+    },
+    responses: {
+        200: {
+            description: 'Onboarder reassigned',
+            content: {
+                'application/json': {
+                    schema: z.object({ success: z.literal(true), data: OnboardingSchema }),
+                },
+            },
+        },
+        403: { description: 'Admin access required' },
+    },
+});
+
 // Generate OpenAPI document
 export function generateOpenAPIDocument(): OpenAPIObject {
     const generator = new OpenApiGeneratorV3(registry.definitions);
@@ -883,6 +1072,7 @@ export function generateOpenAPIDocument(): OpenAPIObject {
             { name: 'Auth', description: 'Authentication endpoints' },
             { name: 'Users', description: 'User management endpoints' },
             { name: 'Organizations', description: 'Organization management endpoints' },
+            { name: 'Onboarding', description: 'Organization onboarding workflow endpoints' },
             { name: 'Tenants', description: 'Tenant management endpoints' },
             { name: 'Health', description: 'Health check endpoints' },
         ],

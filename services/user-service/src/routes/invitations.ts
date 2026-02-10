@@ -22,6 +22,7 @@ const CreateInvitationSchema = z.object({
     title: z.string().optional(),
     department: z.string().optional(),
     expiresInDays: z.number().int().min(1).max(30).optional().openapi({ description: 'Days until invitation expires. Default: 7' }),
+    isOnboarder: z.boolean().optional().openapi({ description: 'Whether this invitee becomes the organization onboarder. Default: false' }),
 });
 
 const AcceptInvitationSchema = z.object({
