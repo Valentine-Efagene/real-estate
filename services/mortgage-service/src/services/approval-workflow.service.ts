@@ -575,7 +575,10 @@ export function createApprovalWorkflowService() {
                 return;
             }
 
-            // All stage documents approved - transition to next stage
+            // All stage documents approved (or no documents to review) - transition to next stage
+            if (stageDocuments.length === 0) {
+                console.log(`[ApprovalWorkflow] Auto-completing stage "${stage.name}" (order ${stage.order}) - no documents to review for ${orgTypeCode}`);
+            }
             await this.transitionToNextStage(tx, documentationPhaseId, null, null);
         },
 
@@ -744,6 +747,23 @@ export function createApprovalWorkflowService() {
                     nextStage,
                     activatedAt
                 );
+
+                // Auto-complete the new stage if it has no documents to review.
+                // This handles cases where a stage's responsible document types
+                // (e.g., LENDER uploads for BANK stage) don't exist in this phase.
+                await this.evaluateStageCompletion(tx, documentationPhaseId, nextStage.id);
+
+                // Check if the stage was auto-completed (evaluateStageCompletion
+                // calls transitionToNextStage recursively if all docs are approved)
+                const refreshedStage = await tx.approvalStageProgress.findUnique({
+                    where: { id: nextStage.id },
+                    select: { status: true },
+                });
+
+                if (refreshedStage?.status === 'COMPLETED') {
+                    // Stage was auto-completed, return the final state
+                    return { completed: true, nextStage: null };
+                }
 
                 return { completed: false, nextStage };
             } else {
