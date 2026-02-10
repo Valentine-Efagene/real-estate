@@ -453,6 +453,7 @@ export interface ScoringRule {
 }
 
 export interface QuestionDefinition {
+    id?: string;
     questionKey: string;
     questionText: string;
     questionType: QuestionType;
@@ -464,6 +465,17 @@ export interface QuestionDefinition {
     scoreWeight?: number;
     category?: string;
     helpText?: string;
+}
+
+export interface UpdateQuestionnairePlanInput {
+    name?: string;
+    description?: string;
+    isActive?: boolean;
+    passingScore?: number | null;
+    scoringStrategy?: ScoringStrategy;
+    autoDecisionEnabled?: boolean;
+    estimatedMinutes?: number | null;
+    category?: string;
 }
 
 export interface QuestionnairePlan {
@@ -548,6 +560,77 @@ export function useDeleteQuestionnairePlan() {
             }
         },
         onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.all });
+        },
+    });
+}
+
+export function useUpdateQuestionnairePlan() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ id, data }: { id: string; data: UpdateQuestionnairePlanInput }) => {
+            const response = await mortgageApi.patch<QuestionnairePlan>(`/questionnaire-plans/${id}`, data);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to update questionnaire plan');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.all });
+            queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.detail(variables.id) });
+        },
+    });
+}
+
+export function useAddQuestionToPlan() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ planId, data }: { planId: string; data: Omit<QuestionDefinition, 'id'> }) => {
+            const response = await mortgageApi.post<QuestionDefinition>(`/questionnaire-plans/${planId}/questions`, data);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to add question');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.detail(variables.planId) });
+            queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.all });
+        },
+    });
+}
+
+export function useUpdateQuestion() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ planId, questionId, data }: { planId: string; questionId: string; data: Partial<QuestionDefinition> }) => {
+            const response = await mortgageApi.patch<QuestionDefinition>(`/questionnaire-plans/${planId}/questions/${questionId}`, data);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to update question');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.detail(variables.planId) });
+            queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.all });
+        },
+    });
+}
+
+export function useRemoveQuestion() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ planId, questionId }: { planId: string; questionId: string }) => {
+            const response = await mortgageApi.delete(`/questionnaire-plans/${planId}/questions/${questionId}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to remove question');
+            }
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.detail(variables.planId) });
             queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.all });
         },
     });

@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { useSubmitQuestionnaire, type QuestionnaireField } from '@/lib/hooks';
@@ -194,7 +195,7 @@ export function QuestionnaireForm({
                 );
 
             case 'SELECT':
-                const options = (field.validation as { options?: string[] })?.options || [];
+                const selectOptions = field.options || [];
                 return (
                     <div key={field.id} className="space-y-2">
                         <Label htmlFor={field.name} className="flex items-center gap-1">
@@ -212,13 +213,80 @@ export function QuestionnaireForm({
                                 <SelectValue placeholder={field.placeholder || 'Select an option'} />
                             </SelectTrigger>
                             <SelectContent>
-                                {options.map((option) => (
-                                    <SelectItem key={option} value={option}>
-                                        {option.replace(/_/g, ' ')}
+                                {selectOptions.map((option) => (
+                                    <SelectItem key={option.value} value={option.value}>
+                                        {option.label || option.value.replace(/_/g, ' ')}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
+                        {error && <p className="text-sm text-red-500">{error}</p>}
+                    </div>
+                );
+
+            case 'RADIO':
+                const radioOptions = field.options || [];
+                return (
+                    <div key={field.id} className="space-y-2">
+                        <Label className="flex items-center gap-1">
+                            {field.label}
+                            {field.isRequired && <span className="text-red-500">*</span>}
+                        </Label>
+                        {field.description && (
+                            <p className="text-sm text-gray-500">{field.description}</p>
+                        )}
+                        <RadioGroup
+                            value={String(value || '')}
+                            onValueChange={(val) => updateAnswer(field.name, val)}
+                            className="space-y-2"
+                        >
+                            {radioOptions.map((option) => (
+                                <div key={option.value} className="flex items-center space-x-2">
+                                    <RadioGroupItem value={option.value} id={`${field.name}-${option.value}`} />
+                                    <Label htmlFor={`${field.name}-${option.value}`} className="font-normal cursor-pointer">
+                                        {option.label || option.value.replace(/_/g, ' ')}
+                                    </Label>
+                                </div>
+                            ))}
+                        </RadioGroup>
+                        {error && <p className="text-sm text-red-500">{error}</p>}
+                    </div>
+                );
+
+            case 'MULTI_SELECT':
+                const multiOptions = field.options || [];
+                const selectedValues = Array.isArray(value) ? value as string[] : [];
+                return (
+                    <div key={field.id} className="space-y-2">
+                        <Label className="flex items-center gap-1">
+                            {field.label}
+                            {field.isRequired && <span className="text-red-500">*</span>}
+                        </Label>
+                        {field.description && (
+                            <p className="text-sm text-gray-500">{field.description}</p>
+                        )}
+                        <div className="space-y-2 rounded-md border p-3">
+                            {multiOptions.map((option) => (
+                                <div key={option.value} className="flex items-center space-x-2">
+                                    <Checkbox
+                                        id={`${field.name}-${option.value}`}
+                                        checked={selectedValues.includes(option.value)}
+                                        onCheckedChange={(checked) => {
+                                            const newValues = checked
+                                                ? [...selectedValues, option.value]
+                                                : selectedValues.filter((v) => v !== option.value);
+                                            updateAnswer(field.name, newValues);
+                                        }}
+                                    />
+                                    <Label htmlFor={`${field.name}-${option.value}`} className="font-normal cursor-pointer">
+                                        {option.label || option.value.replace(/_/g, ' ')}
+                                    </Label>
+                                </div>
+                            ))}
+                            {multiOptions.length === 0 && (
+                                <p className="text-sm text-gray-500">No options available</p>
+                            )}
+                        </div>
                         {error && <p className="text-sm text-red-500">{error}</p>}
                     </div>
                 );

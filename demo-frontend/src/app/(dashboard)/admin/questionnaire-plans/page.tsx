@@ -35,8 +35,9 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Trash2, ClipboardList, HelpCircle } from 'lucide-react';
+import { Plus, Trash2, ClipboardList, HelpCircle, Pencil } from 'lucide-react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 const QUESTION_TYPES: { value: QuestionType; label: string }[] = [
     { value: 'TEXT', label: 'Text' },
@@ -765,6 +766,11 @@ function QuestionnairePlanCard({ plan }: { plan: QuestionnairePlan }) {
                         <Badge variant={plan.isActive ? 'default' : 'secondary'}>
                             {plan.isActive ? 'Active' : 'Inactive'}
                         </Badge>
+                        <Link href={`/admin/questionnaire-plans/${plan.id}/edit`}>
+                            <Button variant="ghost" size="icon">
+                                <Pencil className="h-4 w-4" />
+                            </Button>
+                        </Link>
                         <Button
                             variant="ghost"
                             size="icon"
