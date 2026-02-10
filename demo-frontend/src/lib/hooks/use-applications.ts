@@ -700,3 +700,48 @@ export function useUploadPhaseDocument() {
     },
   });
 }
+
+// ============================================================================
+// Reopen Phase Hook
+// ============================================================================
+
+export function useReopenPhase() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      applicationId,
+      phaseId,
+      reason,
+      resetDependentPhases = true,
+    }: {
+      applicationId: string;
+      phaseId: string;
+      reason?: string;
+      resetDependentPhases?: boolean;
+    }) => {
+      const response = await mortgageApi.post<Phase>(
+        `/applications/${applicationId}/phases/${phaseId}/reopen`,
+        { reason, resetDependentPhases }
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to reopen phase');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.detail(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.phases(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.currentAction(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.all,
+      });
+    },
+  });
+}

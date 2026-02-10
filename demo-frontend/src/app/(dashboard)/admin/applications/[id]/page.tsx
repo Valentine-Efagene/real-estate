@@ -410,7 +410,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
       <Separator />
 
       {/* Phase Progress */}
-      <PhaseProgress applicationId={applicationId} phases={application.phases || []} />
+      <PhaseProgress applicationId={applicationId} phases={application.phases || []} isAdmin />
 
       <Separator />
 

@@ -536,9 +536,15 @@ export function createApprovalWorkflowService() {
 
             // Get document definitions from snapshot to find which document types this stage reviews
             const documentDefinitions = (docPhase.documentDefinitionsSnapshot as unknown as DocumentDefinitionSnapshot[]) || [];
-            const stageDocumentTypes = documentDefinitions
-                .filter(def => uploadedByValues.includes(def.uploadedBy))
-                .map(def => def.documentType);
+            const stageDocDefs = documentDefinitions
+                .filter(def => uploadedByValues.includes(def.uploadedBy));
+            const stageDocumentTypes = stageDocDefs.map(def => def.documentType);
+
+            // Check if there are REQUIRED document definitions for this stage
+            // (unconditional ones — conditional docs that weren't triggered won't be uploaded)
+            const requiredStageDocDefs = stageDocDefs.filter(def => def.isRequired && !def.condition);
+            // Also include conditional docs whose conditions were met (they'll have been uploaded)
+            const conditionalStageDocDefs = stageDocDefs.filter(def => def.isRequired && def.condition);
 
             // Get documents for this phase that this stage is responsible for
             const stageDocuments = await tx.applicationDocument.findMany({
@@ -548,6 +554,35 @@ export function createApprovalWorkflowService() {
                     documentType: { in: stageDocumentTypes },
                 },
             });
+
+            // If there are required document definitions but no documents uploaded yet,
+            // the stage must wait for uploads. This prevents premature auto-completion
+            // when Stage N+1 activates but its documents haven't been uploaded yet.
+            // For example: BANK stage expects PREAPPROVAL_LETTER (uploadedBy: LENDER),
+            // but the lender hasn't uploaded it yet → stage must wait.
+            if (stageDocuments.length === 0 && requiredStageDocDefs.length > 0) {
+                // Check if any conditional docs for this stage were actually uploaded
+                // (meaning the condition was met and they're expected)
+                const conditionalTypes = conditionalStageDocDefs.map(def => def.documentType);
+                const conditionalDocsUploaded = conditionalTypes.length > 0
+                    ? await tx.applicationDocument.count({
+                        where: {
+                            applicationId: docPhase.phase.applicationId,
+                            phaseId: docPhase.phaseId,
+                            documentType: { in: conditionalTypes },
+                        },
+                    })
+                    : 0;
+
+                if (conditionalDocsUploaded === 0) {
+                    console.log(
+                        `[ApprovalWorkflow] Stage "${stage.name}" (order ${stage.order}) waiting for ` +
+                        `${requiredStageDocDefs.length} required document(s) to be uploaded ` +
+                        `[${requiredStageDocDefs.map(d => d.documentType).join(', ')}]`
+                    );
+                    return;
+                }
+            }
 
             // Get all approvals for this stage (including the one just created)
             const stageApprovals = await tx.documentApproval.findMany({
@@ -575,9 +610,12 @@ export function createApprovalWorkflowService() {
                 return;
             }
 
-            // All stage documents approved (or no documents to review) - transition to next stage
-            if (stageDocuments.length === 0) {
-                console.log(`[ApprovalWorkflow] Auto-completing stage "${stage.name}" (order ${stage.order}) - no documents to review for ${orgTypeCode}`);
+            // All stage documents approved (or truly no documents defined for this stage) - transition to next stage
+            if (stageDocuments.length === 0 && stageDocDefs.length === 0) {
+                console.log(`[ApprovalWorkflow] Auto-completing stage "${stage.name}" (order ${stage.order}) - no document definitions for ${orgTypeCode}`);
+            } else if (stageDocuments.length === 0) {
+                // All required docs were conditional and conditions weren't met
+                console.log(`[ApprovalWorkflow] Auto-completing stage "${stage.name}" (order ${stage.order}) - all documents for ${orgTypeCode} were conditional and not required`);
             }
             await this.transitionToNextStage(tx, documentationPhaseId, null, null);
         },

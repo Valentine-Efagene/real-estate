@@ -1867,6 +1867,10 @@ describe('Full E2E Mortgage Flow', () => {
     // Stage 1: QShelter Review (Adaeze - Mortgage Operations Officer)
     // Stage 2: Bank Review (Nkechi - Access Bank Loan Officer)
     // Note: Chidi answered mortgage_type=SINGLE so conditional SPOUSE_ID doc is NOT required
+    //
+    // REGRESSION CHECK (Step 9.3a): After Stage 1 completes, the phase must
+    // remain IN_PROGRESS until Stage 2 also completes. Previously, Stage 1
+    // completion would prematurely mark the entire phase as COMPLETED.
     // =========================================================================
     describe('Phase 9: KYC Documentation', () => {
         it('Step 9.1: KYC phase is auto-activated', async () => {
@@ -1932,6 +1936,70 @@ describe('Full E2E Mortgage Flow', () => {
             }
         });
 
+        it('Step 9.3a: Verify KYC phase is still IN_PROGRESS after Stage 1 approval (multi-stage check)', async () => {
+            // CRITICAL REGRESSION TEST for "one approval covering everything" bug.
+            //
+            // Root cause: When Stage 1 (PLATFORM) approved customer docs, the document's
+            // global `status` became APPROVED. When Stage 2 (BANK) activated and
+            // evaluateStageCompletion looked for unapproved LENDER documents, it found
+            // zero uploaded documents (lender hasn't acted yet). With 0 uploads and 0
+            // approvals, the comparison (0 >= 0) passed, causing Stage 2 to auto-complete
+            // immediately — skipping the lender's upload entirely.
+            //
+            // Fix: evaluateStageCompletion now checks if required document definitions
+            // exist for the stage but haven't been uploaded yet, and waits for uploads.
+            //
+            // Expected behavior:
+            // - Phase status: still IN_PROGRESS (Stage 2 hasn't completed yet)
+            // - Stage 1 (QShelter Staff Review): COMPLETED
+            // - Stage 2 (Bank Review): IN_PROGRESS (waiting for lender to upload preapproval)
+            // - currentStageOrder: 2 (advanced from 1 to 2)
+
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const phase = response.body.data;
+
+            // THE KEY ASSERTION: Phase must NOT be completed yet!
+            expect(phase.status).toBe('IN_PROGRESS');
+            console.log(`✅ KYC phase is still IN_PROGRESS after Stage 1 approval (not prematurely completed)`);
+
+            // Verify stage progression details
+            const docPhase = phase.documentationPhase;
+            expect(docPhase).toBeDefined();
+            expect(docPhase.currentStageOrder).toBe(2);
+            console.log(`   currentStageOrder: ${docPhase.currentStageOrder} (advanced to Bank Review)`);
+
+            // Verify individual stage statuses
+            const stageProgress = docPhase.stageProgress || [];
+            expect(stageProgress.length).toBe(2);
+
+            const stage1 = stageProgress.find((s: any) => s.order === 1);
+            const stage2 = stageProgress.find((s: any) => s.order === 2);
+
+            expect(stage1).toBeDefined();
+            expect(stage1.status).toBe('COMPLETED');
+            console.log(`   Stage 1 (${stage1.name}): ${stage1.status}`);
+
+            expect(stage2).toBeDefined();
+            expect(stage2.status).toBe('IN_PROGRESS');
+            console.log(`   Stage 2 (${stage2.name}): ${stage2.status}`);
+
+            // Verify preapproval letter is not yet uploaded (lender hasn't acted)
+            const docs = phase.phaseDocuments?.documents || [];
+            const preapprovalDoc = docs.find((d: any) => d.documentType === 'PREAPPROVAL_LETTER');
+            if (!preapprovalDoc) {
+                console.log(`   PREAPPROVAL_LETTER: not yet uploaded (waiting for lender)`);
+            } else {
+                // If it somehow exists, it should not be approved yet
+                console.log(`   PREAPPROVAL_LETTER: status=${preapprovalDoc.status}`);
+            }
+        });
+
         it('Step 9.4: Nkechi (Bank) uploads preapproval letter (auto-approved)', async () => {
             // Stage 2: Bank (Access Bank) is responsible for LENDER-uploaded documents
             // When the lender uploads the preapproval letter during the BANK stage,
@@ -1983,13 +2051,30 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('COMPLETED');
         });
 
-        it('Step 9.6: KYC phase completes after both stages approved', async () => {
+        it('Step 9.6: Verify both approval stages are COMPLETED', async () => {
+            // Final verification: both stages should be COMPLETED and all docs APPROVED
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
-                .set(customerHeaders(chidiAccessToken));
+                .set(adminHeaders(adaezeAccessToken));
 
             expect(response.status).toBe(200);
-            expect(response.body.data.status).toBe('COMPLETED');
+            const phase = response.body.data;
+            expect(phase.status).toBe('COMPLETED');
+
+            const stageProgress = phase.documentationPhase?.stageProgress || [];
+            expect(stageProgress.length).toBe(2);
+
+            for (const stage of stageProgress) {
+                expect(stage.status).toBe('COMPLETED');
+                console.log(`   Stage ${stage.order} (${stage.name}): ${stage.status}`);
+            }
+
+            // Verify all documents are approved
+            const docs = phase.phaseDocuments?.documents || [];
+            const approvedDocs = docs.filter((d: any) => d.status === 'APPROVED');
+            console.log(`   ${approvedDocs.length}/${docs.length} documents approved`);
+            expect(approvedDocs.length).toBe(docs.length);
+            console.log(`✅ Both approval stages COMPLETED, all documents APPROVED`);
         });
     });
 
@@ -2021,12 +2106,8 @@ describe('Full E2E Mortgage Flow', () => {
                     currency: 'NGN',
                 });
 
-            if (response.status !== 201 && response.status !== 200 && response.status !== 409) {
-                console.log('Wallet creation failed:', response.status, JSON.stringify(response.body, null, 2));
-            }
-
-            // Might already exist, check for 200 or 201
-            if (response.status === 409) {
+            // Wallet might already exist (400 or 409)
+            if (response.status === 409 || response.status === 400) {
                 // Wallet already exists, get it
                 const getResponse = await paymentApi
                     .get('/wallets/me')
@@ -2034,13 +2115,17 @@ describe('Full E2E Mortgage Flow', () => {
 
                 expect(getResponse.status).toBe(200);
                 chidiWalletId = getResponse.body.data.id;
+                console.log(`Chidi's wallet already exists: ${chidiWalletId}`);
             } else {
+                if (response.status !== 201 && response.status !== 200) {
+                    console.log('Wallet creation failed:', response.status, JSON.stringify(response.body, null, 2));
+                }
                 expect([200, 201]).toContain(response.status);
                 chidiWalletId = response.body.data.id;
+                console.log(`Chidi's wallet created: ${chidiWalletId}`);
             }
 
             expect(chidiWalletId).toBeDefined();
-            console.log(`Chidi's wallet ID: ${chidiWalletId}`);
         });
 
         it('Step 10.3: Generate downpayment installment', async () => {
@@ -2093,7 +2178,7 @@ describe('Full E2E Mortgage Flow', () => {
                 console.log('Wallet credit failed:', JSON.stringify(response.body, null, 2));
             }
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('success');
+            expect(response.body.success).toBe(true);
 
             console.log('Wallet credited, waiting for event processing...');
         });
