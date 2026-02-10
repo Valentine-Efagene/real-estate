@@ -10,6 +10,7 @@ import {
 import { walletService } from '../services/wallet.service';
 import { allocationService } from '../services/allocation.service';
 import { installmentGenerationService } from '../services/installment-generation.service';
+import { prisma } from '../lib/prisma';
 
 /**
  * Parse SNS-wrapped SQS message body
@@ -104,7 +105,7 @@ async function handleProcessInstallmentPayment(event: PaymentEvent<ProcessInstal
 
 /**
  * Handle PAYMENT_PHASE_ACTIVATED event
- * Triggers automatic installment generation for the phase
+ * Ensures the buyer has a wallet and triggers automatic installment generation
  */
 async function handlePaymentPhaseActivated(event: PaymentEvent<PaymentPhaseActivatedPayload>): Promise<void> {
     const payload = event.payload;
@@ -115,6 +116,32 @@ async function handlePaymentPhaseActivated(event: PaymentEvent<PaymentPhaseActiv
         totalAmount: payload.totalAmount,
         correlationId: event.meta.correlationId,
     });
+
+    // Auto-create wallet for the buyer if they don't have one yet.
+    // This makes the payment flow seamless — customers don't need to
+    // manually create a wallet before they can start paying.
+    // Note: payload.userId may be the admin who triggered phase activation,
+    // so we look up the actual buyer from the application.
+    try {
+        const application = await prisma.application.findUnique({
+            where: { id: payload.applicationId },
+            select: { buyerId: true },
+        });
+
+        if (application?.buyerId) {
+            await walletService.ensureWalletExists(
+                application.buyerId,
+                payload.tenantId,
+            );
+        }
+    } catch (error) {
+        // Log but don't fail — installment generation can still proceed.
+        // The customer can always create a wallet manually later.
+        console.warn('[SQS Handler] Failed to ensure wallet exists for buyer', {
+            applicationId: payload.applicationId,
+            error: error instanceof Error ? error.message : error,
+        });
+    }
 
     await installmentGenerationService.generateInstallments({
         phaseId: payload.phaseId,

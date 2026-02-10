@@ -19,7 +19,7 @@ interface TransactionResponse {
     walletId: string;
     amount: number;
     type: 'CREDIT' | 'DEBIT';
-    status: string;
+    status: 'PENDING' | 'COMPLETED' | 'FAILED';
     reference: string;
     description?: string;
     createdAt: string;

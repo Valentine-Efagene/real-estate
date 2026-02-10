@@ -21,6 +21,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Properties', href: '/properties' },
   { name: 'My Applications', href: '/applications' },
+  { name: 'Transactions', href: '/transactions' },
 ];
 
 const adminNavigation = [
@@ -28,6 +29,7 @@ const adminNavigation = [
   { name: 'Properties', href: '/admin/properties' },
   { name: 'Users', href: '/admin/users' },
   { name: 'Organizations', href: '/admin/organizations' },
+  { name: 'Transactions', href: '/admin/transactions' },
   { name: 'Questionnaire Plans', href: '/admin/questionnaire-plans' },
   { name: 'Documentation Plans', href: '/admin/documentation-plans' },
   { name: 'Payment Plans', href: '/admin/payment-plans' },

@@ -1945,8 +1945,6 @@ export const TransactionOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   walletId: 'walletId',
-  type: 'type',
-  status: 'status',
   reference: 'reference',
   description: 'description'
 } as const

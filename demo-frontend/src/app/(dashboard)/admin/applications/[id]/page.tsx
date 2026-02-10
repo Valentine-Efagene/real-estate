@@ -28,6 +28,7 @@ import {
   type QuestionnaireField
 } from '@/lib/hooks';
 import { useOrganizations, useUserProfile, getUserOrganizationTypeCode } from '@/lib/hooks/use-organizations';
+import { useUserWallet, useCreateUserWallet, useCreditWallet } from '@/lib/hooks/use-wallet';
 import { PhaseProgress } from '@/components/applications/phase-progress';
 import { PartnerDocumentUpload } from '@/components/applications/partner-document-upload';
 
@@ -61,6 +62,9 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
   const reviewQuestionnaire = useReviewQuestionnaire();
   const bindOrganization = useBindOrganization();
   const cancelApplication = useCancelApplication();
+  const { data: buyerWallet, isLoading: walletLoading, error: walletError } = useUserWallet(application?.buyerId);
+  const createUserWallet = useCreateUserWallet();
+  const creditWallet = useCreditWallet();
 
   // Cancel application state
   const [showCancelDialog, setShowCancelDialog] = useState(false);
@@ -83,6 +87,9 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
   const [selectedOrgId, setSelectedOrgId] = useState('');
   const [selectedOrgType, setSelectedOrgType] = useState('BANK');
   const [slaHours, setSlaHours] = useState('48');
+  const [showCreditDialog, setShowCreditDialog] = useState(false);
+  const [creditAmount, setCreditAmount] = useState('');
+  const [creditDescription, setCreditDescription] = useState('');
   const [presignedUrls, setPresignedUrls] = useState<Record<string, string>>({});
   const [loadingPresignedUrl, setLoadingPresignedUrl] = useState<string | null>(null);
 
@@ -517,9 +524,134 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
         </CardContent>
       </Card>
 
-      <Separator />
+      {/* Buyer Wallet Management */}
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle>Buyer Wallet</CardTitle>
+              <CardDescription>
+                {application.buyer
+                  ? `${application.buyer.firstName} ${application.buyer.lastName}'s wallet`
+                  : 'Buyer wallet'}
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {walletLoading ? (
+            <Skeleton className="h-16" />
+          ) : buyerWallet && !walletError ? (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 rounded-lg border bg-gray-50">
+                <div>
+                  <p className="text-sm text-gray-500">Balance</p>
+                  <p className="text-2xl font-bold">
+                    {formatCurrency(buyerWallet.balance, application.currency)}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline">{buyerWallet.currency}</Badge>
+                  <Link href="/admin/transactions">
+                    <Button variant="outline" size="sm">View Transactions</Button>
+                  </Link>
+                  <Dialog open={showCreditDialog} onOpenChange={setShowCreditDialog}>
+                    <DialogTrigger asChild>
+                      <Button size="sm">Credit Wallet</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Credit Buyer Wallet</DialogTitle>
+                        <DialogDescription>
+                          Add funds to the buyer&apos;s wallet. Funds will be auto-allocated to pending installments.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                          <p className="text-sm text-blue-800">
+                            Current balance: <span className="font-semibold">{formatCurrency(buyerWallet.balance, application.currency)}</span>
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="admin-credit-amount">Amount</Label>
+                          <Input
+                            id="admin-credit-amount"
+                            type="number"
+                            placeholder="Enter amount..."
+                            value={creditAmount}
+                            onChange={(e) => setCreditAmount(e.target.value)}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="admin-credit-desc">Description (optional)</Label>
+                          <Input
+                            id="admin-credit-desc"
+                            placeholder="e.g. Bank transfer received"
+                            value={creditDescription}
+                            onChange={(e) => setCreditDescription(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button
+                          disabled={creditWallet.isPending || !creditAmount}
+                          onClick={async () => {
+                            const amount = parseFloat(creditAmount);
+                            if (isNaN(amount) || amount <= 0) {
+                              toast.error('Enter a valid positive amount');
+                              return;
+                            }
+                            try {
+                              await creditWallet.mutateAsync({
+                                walletId: buyerWallet.id,
+                                amount,
+                                reference: `ADMIN-${applicationId.slice(0, 8)}-${Date.now()}`,
+                                description: creditDescription || `Admin credit for application ${applicationId.slice(0, 8)}`,
+                              });
+                              toast.success('Wallet credited — funds will auto-allocate to installments');
+                              setShowCreditDialog(false);
+                              setCreditAmount('');
+                              setCreditDescription('');
+                            } catch (error) {
+                              toast.error(error instanceof Error ? error.message : 'Failed to credit wallet');
+                            }
+                          }}
+                        >
+                          {creditWallet.isPending ? 'Processing...' : `Credit ${creditAmount ? formatCurrency(parseFloat(creditAmount) || 0, application.currency) : 'Wallet'}`}
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between p-4 rounded-lg border bg-gray-50">
+              <div>
+                <p className="text-sm text-gray-500">No wallet created yet</p>
+                <p className="text-xs text-gray-400">A wallet is auto-created when a payment phase starts. You can also create one manually.</p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={createUserWallet.isPending}
+                onClick={async () => {
+                  try {
+                    await createUserWallet.mutateAsync({ userId: application.buyerId, currency: application.currency || 'NGN' });
+                    toast.success('Wallet created successfully');
+                  } catch (error) {
+                    toast.error(error instanceof Error ? error.message : 'Failed to create wallet');
+                  }
+                }}
+              >
+                {createUserWallet.isPending ? 'Creating...' : 'Create Wallet'}
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
-      {/* Party Actions Status - Shows what each party needs to do */}
+      <Separator />
       {actionLoading ? (
         <Skeleton className="h-48" />
       ) : currentAction?.partyActions && Object.keys(currentAction.partyActions).length > 0 ? (

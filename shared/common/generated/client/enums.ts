@@ -476,6 +476,23 @@ export const BankDocumentModifier = {
 export type BankDocumentModifier = (typeof BankDocumentModifier)[keyof typeof BankDocumentModifier]
 
 
+export const TransactionType = {
+  CREDIT: 'CREDIT',
+  DEBIT: 'DEBIT'
+} as const
+
+export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
+
+
+export const TransactionStatus = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus]
+
+
 export const FieldType = {
   TEXT: 'TEXT',
   TEXTAREA: 'TEXTAREA',

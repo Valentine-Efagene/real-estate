@@ -1,5 +1,6 @@
 import { prisma } from '../lib/prisma';
 import { AppError, PaymentEventPublisher } from '@valentine-efagene/qshelter-common';
+import { TransactionType, TransactionStatus } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 
 // =============================================================================
@@ -129,6 +130,27 @@ class WalletService {
     }
 
     /**
+     * Ensure a user has a wallet — creates one if they don't.
+     * Idempotent: safe to call multiple times.
+     * Used by PAYMENT_PHASE_ACTIVATED handler so customers don't have to
+     * manually create wallets before they can receive payments.
+     */
+    async ensureWalletExists(userId: string, tenantId: string, currency: string = 'NGN') {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { walletId: true },
+        });
+
+        if (user?.walletId) {
+            // Already has a wallet — return it
+            return this.findById(user.walletId);
+        }
+
+        console.log('[Wallet] Auto-creating wallet for user', { userId, tenantId, currency });
+        return this.createForUser(userId, tenantId, currency);
+    }
+
+    /**
      * Credit wallet (add funds)
      * Called when:
      * - BudPay webhook receives virtual account funding
@@ -182,8 +204,8 @@ class WalletService {
                     tenantId,
                     walletId,
                     amount,
-                    type: 'CREDIT',
-                    status: 'COMPLETED',
+                    type: TransactionType.CREDIT,
+                    status: TransactionStatus.COMPLETED,
                     reference,
                     description: description || 'Wallet credited',
                 },
@@ -260,7 +282,7 @@ class WalletService {
 
         // Check for duplicate reference (idempotency)
         const existingTx = await prisma.transaction.findFirst({
-            where: { reference, walletId, type: 'DEBIT' },
+            where: { reference, walletId, type: TransactionType.DEBIT },
         });
 
         if (existingTx) {
@@ -284,8 +306,8 @@ class WalletService {
                     tenantId,
                     walletId,
                     amount,
-                    type: 'DEBIT',
-                    status: 'COMPLETED',
+                    type: TransactionType.DEBIT,
+                    status: TransactionStatus.COMPLETED,
                     reference,
                     description: description || 'Wallet debited',
                 },

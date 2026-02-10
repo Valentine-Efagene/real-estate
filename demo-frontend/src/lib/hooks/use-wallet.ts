@@ -5,6 +5,23 @@ import { queryKeys } from '@/lib/query/query-keys';
 import { paymentApi } from '@/lib/api/client';
 
 // ============================================================================
+// Wallet & Transaction Enums (mirrors Prisma enums from schema)
+// ============================================================================
+
+export const TransactionType = {
+    CREDIT: 'CREDIT',
+    DEBIT: 'DEBIT',
+} as const;
+export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType];
+
+export const TransactionStatus = {
+    PENDING: 'PENDING',
+    COMPLETED: 'COMPLETED',
+    FAILED: 'FAILED',
+} as const;
+export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus];
+
+// ============================================================================
 // Wallet Types
 // ============================================================================
 
@@ -25,6 +42,27 @@ export interface CreditWalletInput {
     reference: string;
     description?: string;
     source?: string;
+}
+
+export interface Transaction {
+    id: string;
+    walletId: string;
+    tenantId: string;
+    amount: number;
+    type: TransactionType;
+    status: TransactionStatus;
+    reference: string | null;
+    description: string | null;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface TransactionsResponse {
+    data: Transaction[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
 }
 
 // ============================================================================
@@ -50,6 +88,25 @@ export function useWallet() {
 }
 
 /**
+ * Get a specific user's wallet (for admin views)
+ * Calls: GET /wallets/user/:userId via payment-service
+ */
+export function useUserWallet(userId: string | undefined) {
+    return useQuery({
+        queryKey: queryKeys.wallets.detail(userId || ''),
+        queryFn: async () => {
+            const response = await paymentApi.get<Wallet>(`/wallets/user/${userId}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch user wallet');
+            }
+            return response.data!;
+        },
+        enabled: !!userId,
+        retry: false,
+    });
+}
+
+/**
  * Create a wallet for the current user
  * Calls: POST /wallets/me via payment-service
  */
@@ -66,6 +123,27 @@ export function useCreateWallet() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: queryKeys.wallets.me });
+        },
+    });
+}
+
+/**
+ * Create a wallet for a specific user (admin operation)
+ * Calls: POST /wallets/user/:userId via payment-service
+ */
+export function useCreateUserWallet() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ userId, currency = 'NGN' }: { userId: string; currency?: string }) => {
+            const response = await paymentApi.post<Wallet>(`/wallets/user/${userId}`, { currency });
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to create wallet');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.wallets.detail(variables.userId) });
         },
     });
 }
@@ -106,10 +184,59 @@ export function useCreditWallet() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: queryKeys.wallets.me });
+            queryClient.invalidateQueries({ queryKey: ['wallets', 'detail'] });
             // Wallet credit triggers auto-allocation which pays installments,
             // so invalidate application & payment queries too
             queryClient.invalidateQueries({ queryKey: queryKeys.applications.all });
             queryClient.invalidateQueries({ queryKey: queryKeys.payments.all });
+            queryClient.invalidateQueries({ queryKey: ['wallets', 'transactions'] });
         },
+    });
+}
+
+/**
+ * Get the current user's transaction history
+ * Calls: GET /wallets/me/transactions via payment-service
+ */
+export function useTransactions(filters?: { page?: number; limit?: number }) {
+    const limit = filters?.limit ?? 20;
+    const page = filters?.page ?? 1;
+    const offset = (page - 1) * limit;
+
+    return useQuery({
+        queryKey: queryKeys.wallets.transactions({ page, limit }),
+        queryFn: async () => {
+            const response = await paymentApi.get<TransactionsResponse>(
+                `/wallets/me/transactions?limit=${limit}&offset=${offset}`
+            );
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch transactions');
+            }
+            return response.data!;
+        },
+    });
+}
+
+/**
+ * Get transactions for a specific wallet (admin view)
+ * Calls: GET /wallets/:id/transactions via payment-service
+ */
+export function useWalletTransactions(walletId: string | undefined, filters?: { page?: number; limit?: number }) {
+    const limit = filters?.limit ?? 20;
+    const page = filters?.page ?? 1;
+    const offset = (page - 1) * limit;
+
+    return useQuery({
+        queryKey: ['wallets', 'transactions', walletId, { page, limit }] as const,
+        queryFn: async () => {
+            const response = await paymentApi.get<TransactionsResponse>(
+                `/wallets/${walletId}/transactions?limit=${limit}&offset=${offset}`
+            );
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch transactions');
+            }
+            return response.data!;
+        },
+        enabled: !!walletId,
     });
 }

@@ -71,6 +71,7 @@ export const queryKeys = {
   wallets: {
     me: ['wallets', 'me'] as const,
     detail: (id: string) => ['wallets', 'detail', id] as const,
+    transactions: (filters?: Record<string, unknown>) => ['wallets', 'transactions', filters] as const,
   },
 
   // Payment Plans

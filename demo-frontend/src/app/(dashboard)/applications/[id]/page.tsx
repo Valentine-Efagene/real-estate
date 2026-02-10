@@ -1,8 +1,8 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ProtectedRoute } from '@/components/auth';
 import { useAuth } from '@/lib/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -33,6 +33,7 @@ const STAFF_ROLES = ['admin', 'mortgage_ops', 'finance', 'legal', 'lender_ops', 
 
 function ApplicationDetailContent({ applicationId }: { applicationId: string }) {
   const { user } = useAuth();
+  const router = useRouter();
   const { data: application, isLoading: appLoading, refetch: refetchApplication } = useApplication(applicationId);
   const { data: currentAction, isLoading: actionLoading, refetch: refetchCurrentAction } = useCurrentAction(applicationId);
   const { data: phases } = useApplicationPhases(applicationId);
@@ -48,6 +49,14 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
 
   // Check if user is the actual applicant (owner) of this application
   const isApplicant = application?.buyerId === user?.userId;
+
+  // Redirect staff to admin view via effect (not during render)
+  const shouldRedirectToAdmin = !appLoading && !!application && isStaff && !isApplicant;
+  useEffect(() => {
+    if (shouldRedirectToAdmin) {
+      router.replace(`/admin/applications/${applicationId}`);
+    }
+  }, [shouldRedirectToAdmin, applicationId, router]);
 
   // Get current phase details
   const currentPhase = phases?.find(
@@ -116,7 +125,13 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
   // Staff members who are NOT the applicant should be redirected to the review page
   // This prevents staff from accidentally using customer controls on someone else's application
   if (isStaff && !isApplicant) {
-    redirect(`/admin/applications/${applicationId}`);
+    return (
+      <div className="space-y-8">
+        <Skeleton className="h-8 w-1/2" />
+        <Skeleton className="h-64" />
+        <Skeleton className="h-48" />
+      </div>
+    );
   }
 
   return (
