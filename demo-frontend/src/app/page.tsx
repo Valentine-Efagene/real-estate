@@ -7,8 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BootstrapButton } from "@/components/demo/BootstrapButton";
-import { ResetButton } from "@/components/demo/ResetButton";
+import { BootstrapButton } from "@/components/demo/BootstrapButton"; import { DemoBootstrapButton } from '@/components/demo/DemoBootstrapButton'; import { ResetButton } from "@/components/demo/ResetButton";
 
 export default function Home() {
   return (
@@ -178,11 +177,13 @@ export default function Home() {
           <p className="text-sm text-amber-700 dark:text-amber-300 mb-4">
             Use these tools to set up and test the platform. <strong>Reset</strong> wipes the
             database for a clean slate. <strong>Bootstrap</strong> creates the initial tenant,
-            admin user (Adaeze), and platform organization.
+            admin user (Adaeze), and platform organization. <strong>Demo Bootstrap</strong> does
+            a full reset + creates all actors, organizations, property, and payment method.
           </p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             <ResetButton />
             <BootstrapButton />
+            <DemoBootstrapButton />
           </div>
         </div>
 

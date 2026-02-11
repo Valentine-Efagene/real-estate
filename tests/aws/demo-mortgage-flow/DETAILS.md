@@ -17,3 +17,4 @@ These are the requirements for the demo bootstrap:
     - A payment phase where the customer pays 10% of the property price at 0 interest in a one-time payment
     - A documentation phase where the bank sends a mortgage offer for the customer to accept.
 - Yinka links the payment method to the property Nneka created.
+- The password for all the accounts must be 'password'
