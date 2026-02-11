@@ -21,6 +21,7 @@ interface DemoBootstrapResult {
         organizations: Array<{ name: string; type: string; status: string; id: string }>;
         property: { title: string; id: string; variant: string; unit: string };
         paymentMethod: { name: string; id: string; phases: number };
+        application?: { id: string; status: string; phases: number };
     };
     error?: string;
 }
@@ -826,6 +827,339 @@ export async function POST(request: NextRequest) {
         log('Link MREIF to property');
 
         // =====================================================================
+        // Step 13: Emeka creates mortgage application
+        // =====================================================================
+        // Refresh Emeka token
+        const emekaLoginRes = await fetchJson(`${env.userServiceUrl}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: 'emeka@mailsac.com', password: 'password' }),
+        });
+        if (emekaLoginRes.status !== 200) throw new Error(`Emeka login failed: ${emekaLoginRes.status}`);
+        let currentEmekaToken = emekaLoginRes.data.data.accessToken;
+
+        const createAppRes = await fetchJson(`${env.mortgageServiceUrl}/applications`, {
+            method: 'POST',
+            headers: { ...authHeaders(currentEmekaToken), 'x-idempotency-key': idempotencyKey('create-application') },
+            body: JSON.stringify({
+                propertyUnitId: unitId,
+                paymentMethodId,
+                title: 'Purchase Agreement - Sunrise Heights A-201',
+                applicationType: 'MORTGAGE',
+                totalAmount: PROPERTY_PRICE,
+                monthlyIncome: 2_500_000,
+                monthlyExpenses: 800_000,
+                applicantAge: 35,
+            }),
+        });
+        if (createAppRes.status !== 201) throw new Error(`Application creation failed: ${createAppRes.status} — ${JSON.stringify(createAppRes.data)}`);
+
+        const applicationId = createAppRes.data.data.id;
+        const phases = createAppRes.data.data.phases;
+        const prequalificationPhaseId = phases.find((p: any) => p.order === 1).id;
+        const salesOfferPhaseId = phases.find((p: any) => p.order === 2).id;
+        const kycPhaseId = phases.find((p: any) => p.order === 3).id;
+        const downpaymentPhaseId = phases.find((p: any) => p.order === 4).id;
+        const mortgageOfferPhaseId = phases.find((p: any) => p.order === 5).id;
+        log('Create application', `${applicationId} (${phases.length} phases)`);
+
+        // =====================================================================
+        // Step 14: Admin binds Access Bank as lender
+        // =====================================================================
+        // Refresh admin token
+        const adminLoginRes2 = await fetchJson(`${env.userServiceUrl}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: 'adaeze@mailsac.com', password: 'password' }),
+        });
+        if (adminLoginRes2.status !== 200) throw new Error(`Admin re-login failed: ${adminLoginRes2.status}`);
+        adminToken = adminLoginRes2.data.data.accessToken;
+
+        const bindBankRes = await fetchJson(
+            `${env.mortgageServiceUrl}/applications/${applicationId}/organizations`,
+            {
+                method: 'POST',
+                headers: { ...authHeaders(adminToken), 'x-idempotency-key': idempotencyKey('bind-access-bank') },
+                body: JSON.stringify({
+                    organizationId: bankOrgId,
+                    organizationTypeCode: 'BANK',
+                    isPrimary: true,
+                    slaHours: 48,
+                }),
+            },
+        );
+        if (bindBankRes.status !== 201) throw new Error(`Bank binding failed: ${bindBankRes.status}`);
+        log('Bind Access Bank as lender');
+
+        // =====================================================================
+        // Step 15: Prequalification — Emeka submits, Adaeze approves
+        // =====================================================================
+        const submitQRes = await fetchJson(
+            `${env.mortgageServiceUrl}/applications/${applicationId}/phases/${prequalificationPhaseId}/questionnaire/submit`,
+            {
+                method: 'POST',
+                headers: { ...authHeaders(currentEmekaToken), 'x-idempotency-key': idempotencyKey('submit-prequalification') },
+                body: JSON.stringify({
+                    answers: [
+                        { fieldName: 'employment_status', value: 'EMPLOYED' },
+                        { fieldName: 'monthly_income', value: '2500000' },
+                        { fieldName: 'years_employed', value: '5' },
+                        { fieldName: 'existing_mortgage', value: 'NO' },
+                        { fieldName: 'property_purpose', value: 'PRIMARY_RESIDENCE' },
+                    ],
+                }),
+            },
+        );
+        if (submitQRes.status !== 200) throw new Error(`Questionnaire submit failed: ${submitQRes.status} — ${JSON.stringify(submitQRes.data)}`);
+
+        const approveQRes = await fetchJson(
+            `${env.mortgageServiceUrl}/applications/${applicationId}/phases/${prequalificationPhaseId}/questionnaire/review`,
+            {
+                method: 'POST',
+                headers: { ...authHeaders(adminToken), 'x-idempotency-key': idempotencyKey('approve-prequalification') },
+                body: JSON.stringify({
+                    decision: 'APPROVE',
+                    notes: 'Emeka meets all eligibility criteria. Approved for mortgage.',
+                }),
+            },
+        );
+        if (approveQRes.status !== 200) throw new Error(`Questionnaire approve failed: ${approveQRes.status}`);
+        log('Prequalification complete', 'Submitted & approved');
+
+        // =====================================================================
+        // Step 16: Sales Offer — Nneka uploads (auto-approved)
+        // =====================================================================
+        // Refresh Nneka's token
+        const nnekaLoginRes2 = await fetchJson(`${env.userServiceUrl}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: 'nneka@mailsac.com', password: 'password' }),
+        });
+        if (nnekaLoginRes2.status !== 200) throw new Error(`Nneka re-login failed: ${nnekaLoginRes2.status}`);
+        nnekaToken = nnekaLoginRes2.data.data.accessToken;
+
+        const uploadSalesOfferRes = await fetchJson(
+            `${env.mortgageServiceUrl}/applications/${applicationId}/phases/${salesOfferPhaseId}/documents`,
+            {
+                method: 'POST',
+                headers: { ...authHeaders(nnekaToken), 'x-idempotency-key': idempotencyKey('upload-sales-offer') },
+                body: JSON.stringify({
+                    documentType: 'SALES_OFFER_LETTER',
+                    url: mockS3Url('mortgage_docs', 'sales-offer-letter.pdf'),
+                    fileName: 'sales-offer-letter.pdf',
+                }),
+            },
+        );
+        if (uploadSalesOfferRes.status !== 201) throw new Error(`Sales offer upload failed: ${uploadSalesOfferRes.status}`);
+        log('Sales offer uploaded', 'Auto-approved (developer → developer stage)');
+
+        // =====================================================================
+        // Step 17: KYC Documentation — Two-stage review
+        // =====================================================================
+        // 17a: Emeka uploads 4 customer documents
+        const customerDocs = [
+            { documentType: 'ID_CARD', fileName: 'emeka-id-card.pdf' },
+            { documentType: 'BANK_STATEMENT', fileName: 'emeka-bank-statement.pdf' },
+            { documentType: 'EMPLOYMENT_LETTER', fileName: 'emeka-employment-letter.pdf' },
+            { documentType: 'PROOF_OF_ADDRESS', fileName: 'emeka-proof-of-address.pdf' },
+        ];
+
+        for (const doc of customerDocs) {
+            const { status } = await fetchJson(
+                `${env.mortgageServiceUrl}/applications/${applicationId}/phases/${kycPhaseId}/documents`,
+                {
+                    method: 'POST',
+                    headers: { ...authHeaders(currentEmekaToken), 'x-idempotency-key': idempotencyKey(`upload-${doc.documentType}`) },
+                    body: JSON.stringify({
+                        documentType: doc.documentType,
+                        url: mockS3Url('kyc_documents', doc.fileName),
+                        fileName: doc.fileName,
+                    }),
+                },
+            );
+            if (status !== 201) throw new Error(`Upload ${doc.documentType} failed (${status})`);
+        }
+        log('Upload 4 customer KYC docs', 'ID, bank statement, employment letter, proof of address');
+
+        // 17b: Adaeze reviews and approves customer documents (Stage 1 — PLATFORM)
+        const kycDocsRes = await fetchJson(
+            `${env.mortgageServiceUrl}/applications/${applicationId}/phases/${kycPhaseId}/documents`,
+            { headers: authHeaders(adminToken) },
+        );
+        if (kycDocsRes.status !== 200) throw new Error(`Get KYC docs failed: ${kycDocsRes.status}`);
+
+        const customerDocsToReview = kycDocsRes.data.data.filter(
+            (d: any) => ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER', 'PROOF_OF_ADDRESS'].includes(d.documentType),
+        );
+
+        for (const doc of customerDocsToReview) {
+            const { status } = await fetchJson(
+                `${env.mortgageServiceUrl}/applications/${applicationId}/documents/${doc.id}/review`,
+                {
+                    method: 'POST',
+                    headers: { ...authHeaders(adminToken), 'x-idempotency-key': idempotencyKey(`approve-${doc.documentType}`) },
+                    body: JSON.stringify({
+                        status: 'APPROVED',
+                        organizationTypeCode: 'PLATFORM',
+                        comment: `Document verified: ${doc.documentType}`,
+                    }),
+                },
+            );
+            if (status !== 200) throw new Error(`Review ${doc.documentType} failed (${status})`);
+        }
+        log('Stage 1 review complete', 'Platform approved 4 customer docs');
+
+        // 17c: Eniola uploads preapproval letter (Stage 2 — BANK, auto-approved)
+        // Refresh Eniola's token
+        const eniolaLoginRes2 = await fetchJson(`${env.userServiceUrl}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: 'eniola@mailsac.com', password: 'password' }),
+        });
+        if (eniolaLoginRes2.status !== 200) throw new Error(`Eniola re-login failed: ${eniolaLoginRes2.status}`);
+        let currentEniolaToken = eniolaLoginRes2.data.data.accessToken;
+
+        const uploadPreapprovalRes = await fetchJson(
+            `${env.mortgageServiceUrl}/applications/${applicationId}/phases/${kycPhaseId}/documents`,
+            {
+                method: 'POST',
+                headers: { ...authHeaders(currentEniolaToken), 'x-idempotency-key': idempotencyKey('upload-preapproval') },
+                body: JSON.stringify({
+                    documentType: 'PREAPPROVAL_LETTER',
+                    url: mockS3Url('mortgage_docs', 'preapproval-letter.pdf'),
+                    fileName: 'preapproval-letter.pdf',
+                }),
+            },
+        );
+        if (uploadPreapprovalRes.status !== 201) throw new Error(`Preapproval upload failed: ${uploadPreapprovalRes.status}`);
+        log('Stage 2 complete', 'Bank preapproval letter uploaded (auto-approved)');
+
+        // =====================================================================
+        // Step 18: 10% Downpayment — wallet + credit + event-based completion
+        // =====================================================================
+        const downpaymentAmount = Math.round(PROPERTY_PRICE * DOWNPAYMENT_PERCENT / 100);
+
+        // Create wallet
+        let emekaWalletId: string;
+        const createWalletRes = await fetchJson(`${env.paymentServiceUrl}/wallets/me`, {
+            method: 'POST',
+            headers: { ...authHeaders(currentEmekaToken), 'x-idempotency-key': idempotencyKey('create-emeka-wallet') },
+            body: JSON.stringify({ currency: 'NGN' }),
+        });
+        if (createWalletRes.status === 409 || createWalletRes.status === 400) {
+            const getWalletRes = await fetchJson(`${env.paymentServiceUrl}/wallets/me`, {
+                headers: authHeaders(currentEmekaToken),
+            });
+            if (getWalletRes.status !== 200) throw new Error(`Get wallet failed: ${getWalletRes.status}`);
+            emekaWalletId = getWalletRes.data.data.id;
+        } else if (createWalletRes.status === 200 || createWalletRes.status === 201) {
+            emekaWalletId = createWalletRes.data.data.id;
+        } else {
+            throw new Error(`Wallet creation failed: ${createWalletRes.status}`);
+        }
+        log('Create wallet', emekaWalletId);
+
+        // Generate installments
+        const genInstRes = await fetchJson(
+            `${env.mortgageServiceUrl}/applications/${applicationId}/phases/${downpaymentPhaseId}/installments`,
+            {
+                method: 'POST',
+                headers: { ...authHeaders(adminToken), 'x-idempotency-key': idempotencyKey('generate-downpayment') },
+                body: JSON.stringify({ startDate: new Date().toISOString() }),
+            },
+        );
+        if (genInstRes.status !== 200 && !(genInstRes.status === 400 && genInstRes.data.message?.includes('already'))) {
+            throw new Error(`Generate installments failed: ${genInstRes.status}`);
+        }
+        log('Generate downpayment installment', `₦${downpaymentAmount.toLocaleString()}`);
+
+        // Credit wallet (triggers auto-allocation → payment phase completion)
+        const creditRes = await fetchJson(`${env.paymentServiceUrl}/wallets/${emekaWalletId}/credit`, {
+            method: 'POST',
+            headers: { ...authHeaders(adminToken), 'x-idempotency-key': idempotencyKey('credit-emeka-downpayment') },
+            body: JSON.stringify({
+                amount: downpaymentAmount,
+                reference: `DOWNPAYMENT-${randomUUID().slice(0, 8)}`,
+                description: 'Downpayment for Sunrise Heights A-201',
+                source: 'manual',
+            }),
+        });
+        if (creditRes.status !== 200) throw new Error(`Wallet credit failed: ${creditRes.status}`);
+        log('Credit wallet', `₦${downpaymentAmount.toLocaleString()}`);
+
+        // Poll for downpayment phase completion (event-driven)
+        const maxWaitMs = 30000;
+        const pollIntervalMs = 2000;
+        let startTime = Date.now();
+        let phaseStatus = 'IN_PROGRESS';
+
+        while (Date.now() - startTime < maxWaitMs) {
+            const phaseRes = await fetchJson(
+                `${env.mortgageServiceUrl}/applications/${applicationId}/phases/${downpaymentPhaseId}`,
+                { headers: authHeaders(currentEmekaToken) },
+            );
+            if (phaseRes.status === 200) {
+                phaseStatus = phaseRes.data.data.status;
+                if (phaseStatus === 'COMPLETED') break;
+            }
+            await new Promise((r) => setTimeout(r, pollIntervalMs));
+        }
+        if (phaseStatus !== 'COMPLETED') throw new Error(`Downpayment phase did not complete within ${maxWaitMs / 1000}s`);
+        log('Downpayment complete', 'Event-based auto-completion');
+
+        // =====================================================================
+        // Step 19: Mortgage Offer — Eniola uploads (auto-approved)
+        // =====================================================================
+        // Wait for mortgage offer phase activation (event-driven)
+        startTime = Date.now();
+        phaseStatus = 'PENDING';
+        while (Date.now() - startTime < 15000) {
+            const phaseRes = await fetchJson(
+                `${env.mortgageServiceUrl}/applications/${applicationId}/phases/${mortgageOfferPhaseId}`,
+                { headers: authHeaders(currentEmekaToken) },
+            );
+            if (phaseRes.status === 200) {
+                phaseStatus = phaseRes.data.data.status;
+                if (phaseStatus === 'IN_PROGRESS') break;
+            }
+            await new Promise((r) => setTimeout(r, pollIntervalMs));
+        }
+        if (phaseStatus !== 'IN_PROGRESS') throw new Error('Mortgage offer phase not activated');
+
+        // Refresh Eniola token
+        const eniolaLoginRes3 = await fetchJson(`${env.userServiceUrl}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: 'eniola@mailsac.com', password: 'password' }),
+        });
+        if (eniolaLoginRes3.status !== 200) throw new Error(`Eniola re-login failed: ${eniolaLoginRes3.status}`);
+        currentEniolaToken = eniolaLoginRes3.data.data.accessToken;
+
+        const uploadMortgageOfferRes = await fetchJson(
+            `${env.mortgageServiceUrl}/applications/${applicationId}/phases/${mortgageOfferPhaseId}/documents`,
+            {
+                method: 'POST',
+                headers: { ...authHeaders(currentEniolaToken), 'x-idempotency-key': idempotencyKey('upload-mortgage-offer') },
+                body: JSON.stringify({
+                    documentType: 'MORTGAGE_OFFER_LETTER',
+                    url: mockS3Url('mortgage_docs', 'mortgage-offer-letter.pdf'),
+                    fileName: 'mortgage-offer-letter.pdf',
+                }),
+            },
+        );
+        if (uploadMortgageOfferRes.status !== 201) throw new Error(`Mortgage offer upload failed: ${uploadMortgageOfferRes.status}`);
+        log('Mortgage offer uploaded', 'Auto-approved (bank → bank stage)');
+
+        // Verify application completed
+        const appRes = await fetchJson(
+            `${env.mortgageServiceUrl}/applications/${applicationId}`,
+            { headers: authHeaders(currentEmekaToken) },
+        );
+        if (appRes.status !== 200) throw new Error(`Get application failed: ${appRes.status}`);
+        if (appRes.data.data.status !== 'COMPLETED') throw new Error(`Application not COMPLETED: ${appRes.data.data.status}`);
+        log('Application COMPLETED', '🎉 Full mortgage flow finished');
+
+        // =====================================================================
         // Done — return summary
         // =====================================================================
         const result: DemoBootstrapResult = {
@@ -847,6 +1181,7 @@ export async function POST(request: NextRequest) {
                 ],
                 property: { title: 'Sunrise Heights Estate', id: propertyId, variant: '3-Bedroom Luxury Apartment', unit: 'A-201' },
                 paymentMethod: { name: 'MREIF 10/90 Mortgage', id: paymentMethodId, phases: phaseCount },
+                application: { id: applicationId, status: 'COMPLETED', phases: 5 },
             },
         };
 

@@ -8,7 +8,7 @@ These are the requirements for the demo bootstrap:
 - A developer organisation with onboarding completed by an agent staff Nneka
 - All user emails are their first name @mailsac.com, like nneka@mailsac.com
 - A bank organisation with onboarding completed by a mortgage_ops staff, Eniola
-- The Nneka creates a property in published state
+- The Nneka creates a property in published state. The property should have enough units for multiple tests (maybe 20)
 - The 10/90 mortgage payment method, called MREIF.
   - Phases
     - Questionaire phase just asking no more than 5 questions, to be answered by the customer, and reviewed by qshelter

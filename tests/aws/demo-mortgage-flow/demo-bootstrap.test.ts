@@ -1,10 +1,10 @@
 /**
- * Demo Bootstrap: Mortgage Flow Environment Setup
+ * Demo Bootstrap: Full Mortgage Flow (Environment Setup → Application → Completion)
  *
- * Sets up the complete demo environment for showcasing the mortgage application flow.
- * All operations are performed via REST APIs only — NO DATABASE ACCESS.
+ * Sets up the complete demo environment AND runs through the full mortgage application
+ * flow to completion. All operations are performed via REST APIs only — NO DATABASE ACCESS.
  *
- * What this creates:
+ * Environment Setup (Steps 1–11):
  * 1. Tenant & Admin (Adaeze) via bootstrap
  * 2. QShelter mortgage_ops staff (Yinka)
  * 3. Developer org (Lekki Gardens) with completed onboarding by agent Nneka
@@ -12,6 +12,16 @@
  * 5. Customer (Emeka Okoro)
  * 6. Property (Sunrise Heights) created by Nneka, published
  * 7. MREIF 10/90 payment method with 5 phases, linked to property by Yinka
+ *
+ * Application Flow (Steps 12–18):
+ * 12. Emeka creates mortgage application
+ * 13. Admin binds Access Bank as lender
+ * 14. Prequalification: Emeka answers questionnaire → Adaeze approves
+ * 15. Sales Offer: Nneka (developer) uploads sales offer → auto-approved
+ * 16. KYC Documentation: Emeka uploads 4 docs → Adaeze reviews (Stage 1) →
+ *     Eniola uploads preapproval letter (Stage 2, auto-approved)
+ * 17. Downpayment: Emeka pays 10% via wallet → event-based auto-completion
+ * 18. Mortgage Offer: Eniola uploads mortgage offer → auto-approved → Application COMPLETED
  *
  * Actors:
  * - Adaeze (adaeze@mailsac.com) — QShelter admin
@@ -302,6 +312,15 @@ describe('Demo Bootstrap: Mortgage Flow Environment Setup', () => {
     let variantId: string;
     let unitId: string;
 
+    // Application flow
+    let applicationId: string;
+    let prequalificationPhaseId: string;
+    let salesOfferPhaseId: string;
+    let kycPhaseId: string;
+    let downpaymentPhaseId: string;
+    let mortgageOfferPhaseId: string;
+    let emekaWalletId: string;
+
     beforeAll(() => {
         console.log('=== Demo Bootstrap: Mortgage Flow Setup ===');
         console.log(`Test Run ID: ${TEST_RUN_ID}`);
@@ -324,6 +343,7 @@ describe('Demo Bootstrap: Mortgage Flow Environment Setup', () => {
         console.log(`Bank Org (Access Bank): ${bankOrgId}`);
         console.log(`Property: ${propertyId}`);
         console.log(`Payment Method (MREIF): ${paymentMethodId}`);
+        console.log(`Application: ${applicationId}`);
         console.log('==============================');
     });
 
@@ -1360,6 +1380,817 @@ describe('Demo Bootstrap: Mortgage Flow Environment Setup', () => {
 
             console.log(`✅ Emeka can browse property and see ${paymentMethods.length} payment method(s)`);
             console.log(`\n🎉 Demo environment is fully set up and ready!`);
+            console.log(`\n=== Starting Full Application Flow ===`);
+        });
+    });
+
+    // =========================================================================
+    // Step 12: Emeka Creates Mortgage Application
+    // =========================================================================
+    describe('Step 12: Emeka Creates Mortgage Application', () => {
+        it('12.1: Emeka logs in with fresh token', async () => {
+            const loginRes = await userApi
+                .post('/auth/login')
+                .set('Content-Type', 'application/json')
+                .send({ email: 'emeka@mailsac.com', password: 'password' });
+            expect(loginRes.status).toBe(200);
+            emekaToken = loginRes.body.data.accessToken;
+            console.log(`✅ Emeka logged in`);
+        });
+
+        it('12.2: Emeka creates application for Sunrise Heights', async () => {
+            const res = await mortgageApi
+                .post('/applications')
+                .set(authHeaders(emekaToken))
+                .set('x-idempotency-key', idempotencyKey('create-application'))
+                .send({
+                    propertyUnitId: unitId,
+                    paymentMethodId,
+                    title: 'Purchase Agreement - Sunrise Heights A-201',
+                    applicationType: 'MORTGAGE',
+                    totalAmount: propertyPrice,
+                    monthlyIncome: 2_500_000,
+                    monthlyExpenses: 800_000,
+                    applicantAge: 35,
+                });
+
+            if (res.status !== 201) {
+                console.error('Application creation failed:', JSON.stringify(res.body, null, 2));
+            }
+            expect(res.status).toBe(201);
+            expect(res.body.data.phases).toHaveLength(5);
+            expect(res.body.data.status).toBe('PENDING');
+
+            applicationId = res.body.data.id;
+
+            const phases = res.body.data.phases;
+            prequalificationPhaseId = phases.find((p: any) => p.order === 1).id;
+            salesOfferPhaseId = phases.find((p: any) => p.order === 2).id;
+            kycPhaseId = phases.find((p: any) => p.order === 3).id;
+            downpaymentPhaseId = phases.find((p: any) => p.order === 4).id;
+            mortgageOfferPhaseId = phases.find((p: any) => p.order === 5).id;
+
+            console.log(`✅ Application: ${applicationId}`);
+            console.log(`   Phases: ${phases.map((p: any) => `${p.order}:${p.name}`).join(' → ')}`);
+        });
+    });
+
+    // =========================================================================
+    // Step 13: Admin Binds Access Bank as Lender
+    // =========================================================================
+    describe('Step 13: Bind Access Bank to Application', () => {
+        it('13.1: Refresh admin token', async () => {
+            const loginRes = await userApi
+                .post('/auth/login')
+                .set('Content-Type', 'application/json')
+                .send({ email: 'adaeze@mailsac.com', password: 'password' });
+            expect(loginRes.status).toBe(200);
+            adminToken = loginRes.body.data.accessToken;
+        });
+
+        it('13.2: Verify Lekki Gardens auto-bound as developer', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/organizations`)
+                .set(authHeaders(adminToken));
+
+            expect(res.status).toBe(200);
+            const devBinding = res.body.data.find(
+                (b: any) => b.assignedAsType?.code === 'DEVELOPER',
+            );
+            expect(devBinding).toBeDefined();
+            expect(devBinding.organizationId).toBe(developerOrgId);
+            console.log(`✅ Lekki Gardens auto-bound as DEVELOPER`);
+        });
+
+        it('13.3: Admin binds Access Bank as BANK', async () => {
+            const res = await mortgageApi
+                .post(`/applications/${applicationId}/organizations`)
+                .set(authHeaders(adminToken))
+                .set('x-idempotency-key', idempotencyKey('bind-access-bank'))
+                .send({
+                    organizationId: bankOrgId,
+                    organizationTypeCode: 'BANK',
+                    isPrimary: true,
+                    slaHours: 48,
+                });
+
+            if (res.status !== 201) {
+                console.error('Bank binding failed:', JSON.stringify(res.body, null, 2));
+            }
+            expect(res.status).toBe(201);
+            console.log(`✅ Access Bank bound as BANK`);
+        });
+    });
+
+    // =========================================================================
+    // Step 14: Prequalification Questionnaire (Phase 1)
+    // =========================================================================
+    describe('Step 14: Prequalification Questionnaire', () => {
+        it('14.1: Phase 1 is auto-activated IN_PROGRESS', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${prequalificationPhaseId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('IN_PROGRESS');
+            console.log(`✅ Prequalification phase: IN_PROGRESS`);
+        });
+
+        it('14.2: Emeka checks current-action — should be QUESTIONNAIRE', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            const action = res.body.data;
+
+            expect(action.currentPhase.id).toBe(prequalificationPhaseId);
+            expect(action.currentPhase.phaseCategory).toBe('QUESTIONNAIRE');
+            expect(action.actionRequired).toBe('QUESTIONNAIRE');
+            expect(action.userPartyType).toBe('CUSTOMER');
+            expect(action.partyActions?.CUSTOMER?.action).toBe('QUESTIONNAIRE');
+            expect(action.partyActions?.CUSTOMER?.canCurrentUserAct).toBe(true);
+            console.log(`✅ Current action: ${action.actionRequired} — ${action.actionMessage}`);
+        });
+
+        it('14.3: Emeka submits questionnaire answers', async () => {
+            const res = await mortgageApi
+                .post(`/applications/${applicationId}/phases/${prequalificationPhaseId}/questionnaire/submit`)
+                .set(authHeaders(emekaToken))
+                .set('x-idempotency-key', idempotencyKey('submit-prequalification'))
+                .send({
+                    answers: [
+                        { fieldName: 'employment_status', value: 'EMPLOYED' },
+                        { fieldName: 'monthly_income', value: '2500000' },
+                        { fieldName: 'years_employed', value: '5' },
+                        { fieldName: 'existing_mortgage', value: 'NO' },
+                        { fieldName: 'property_purpose', value: 'PRIMARY_RESIDENCE' },
+                    ],
+                });
+
+            if (res.status !== 200) {
+                console.error('Questionnaire submit failed:', JSON.stringify(res.body, null, 2));
+            }
+            expect(res.status).toBe(200);
+            console.log(`✅ Questionnaire submitted`);
+        });
+
+        it('14.4: Phase is AWAITING_APPROVAL', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${prequalificationPhaseId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('AWAITING_APPROVAL');
+            console.log(`✅ Prequalification: AWAITING_APPROVAL`);
+        });
+
+        it('14.5: Current action — Emeka sees WAIT_FOR_REVIEW, Admin sees REVIEW', async () => {
+            // Customer perspective
+            const custRes = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(emekaToken));
+            expect(custRes.status).toBe(200);
+            expect(custRes.body.data.actionRequired).toBe('WAIT_FOR_REVIEW');
+            expect(custRes.body.data.partyActions?.CUSTOMER?.action).toBe('WAIT');
+
+            // Admin perspective
+            const adminRes = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(adminToken));
+            expect(adminRes.status).toBe(200);
+            expect(adminRes.body.data.actionRequired).toBe('REVIEW');
+            expect(adminRes.body.data.partyActions?.PLATFORM?.action).toBe('REVIEW');
+            expect(adminRes.body.data.partyActions?.PLATFORM?.canCurrentUserAct).toBe(true);
+            console.log(`✅ Customer: WAIT_FOR_REVIEW | Admin: REVIEW`);
+        });
+
+        it('14.6: Adaeze approves prequalification', async () => {
+            const res = await mortgageApi
+                .post(`/applications/${applicationId}/phases/${prequalificationPhaseId}/questionnaire/review`)
+                .set(authHeaders(adminToken))
+                .set('x-idempotency-key', idempotencyKey('approve-prequalification'))
+                .send({
+                    decision: 'APPROVE',
+                    notes: 'Emeka meets all eligibility criteria. Approved for mortgage.',
+                });
+
+            if (res.status !== 200) {
+                console.error('Questionnaire review failed:', JSON.stringify(res.body, null, 2));
+            }
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('COMPLETED');
+            console.log(`✅ Prequalification COMPLETED`);
+        });
+    });
+
+    // =========================================================================
+    // Step 15: Sales Offer Documentation (Phase 2)
+    // =========================================================================
+    describe('Step 15: Sales Offer Documentation', () => {
+        it('15.1: Sales offer phase auto-activated', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${salesOfferPhaseId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('IN_PROGRESS');
+            console.log(`✅ Sales Offer phase: IN_PROGRESS`);
+        });
+
+        it('15.2: Current action — Nneka (developer) should UPLOAD, Emeka should WAIT', async () => {
+            // Refresh Nneka's token
+            const nnekaLoginRes = await userApi
+                .post('/auth/login')
+                .set('Content-Type', 'application/json')
+                .send({ email: 'nneka@mailsac.com', password: 'password' });
+            expect(nnekaLoginRes.status).toBe(200);
+            nnekaToken = nnekaLoginRes.body.data.accessToken;
+
+            // Developer perspective
+            const devRes = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(nnekaToken));
+            expect(devRes.status).toBe(200);
+
+            const devAction = devRes.body.data;
+            expect(devAction.currentPhase.id).toBe(salesOfferPhaseId);
+            expect(devAction.userPartyType).toBe('DEVELOPER');
+            expect(devAction.actionRequired).toBe('UPLOAD');
+            expect(devAction.partyActions?.DEVELOPER?.action).toBe('UPLOAD');
+            expect(devAction.partyActions?.DEVELOPER?.canCurrentUserAct).toBe(true);
+            console.log(`✅ Developer sees: UPLOAD — pending: ${devAction.partyActions?.DEVELOPER?.pendingDocuments?.join(', ')}`);
+
+            // Customer perspective — should WAIT
+            const custRes = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(emekaToken));
+            expect(custRes.status).toBe(200);
+            expect(['WAIT_FOR_REVIEW', 'NONE']).toContain(custRes.body.data.actionRequired);
+            console.log(`✅ Customer sees: ${custRes.body.data.actionRequired}`);
+        });
+
+        it('15.3: Nneka uploads sales offer letter (auto-approved)', async () => {
+            const res = await mortgageApi
+                .post(`/applications/${applicationId}/phases/${salesOfferPhaseId}/documents`)
+                .set(authHeaders(nnekaToken))
+                .set('x-idempotency-key', idempotencyKey('upload-sales-offer'))
+                .send({
+                    documentType: 'SALES_OFFER_LETTER',
+                    url: mockS3Url('mortgage_docs', 'sales-offer-letter.pdf'),
+                    fileName: 'sales-offer-letter.pdf',
+                });
+
+            if (res.status !== 201) {
+                console.error('Sales offer upload failed:', JSON.stringify(res.body, null, 2));
+            }
+            expect(res.status).toBe(201);
+            console.log(`✅ Sales offer letter uploaded (auto-approved)`);
+        });
+
+        it('15.4: Sales offer phase COMPLETED', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${salesOfferPhaseId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('COMPLETED');
+            console.log(`✅ Sales Offer COMPLETED`);
+        });
+    });
+
+    // =========================================================================
+    // Step 16: KYC Preapproval Documentation (Phase 3) — Two-Stage Review
+    // Stage 1: PLATFORM (Adaeze) reviews customer docs
+    // Stage 2: BANK (Eniola) uploads preapproval letter (auto-approved)
+    // =========================================================================
+    describe('Step 16: KYC Documentation (Two-Stage Review)', () => {
+        it('16.1: KYC phase auto-activated', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('IN_PROGRESS');
+            console.log(`✅ KYC phase: IN_PROGRESS`);
+        });
+
+        it('16.2: Current action — Emeka should UPLOAD customer docs', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            const action = res.body.data;
+
+            expect(action.currentPhase.id).toBe(kycPhaseId);
+            expect(action.currentPhase.phaseCategory).toBe('DOCUMENTATION');
+            expect(action.userPartyType).toBe('CUSTOMER');
+            expect(action.actionRequired).toBe('UPLOAD');
+            expect(action.partyActions?.CUSTOMER?.action).toBe('UPLOAD');
+            expect(action.partyActions?.CUSTOMER?.pendingDocuments?.length).toBeGreaterThan(0);
+
+            console.log(`✅ Customer sees: UPLOAD — pending: ${action.partyActions?.CUSTOMER?.pendingDocuments?.join(', ')}`);
+        });
+
+        it('16.3: Emeka uploads 4 customer documents', async () => {
+            const customerDocs = [
+                { documentType: 'ID_CARD', fileName: 'emeka-id-card.pdf' },
+                { documentType: 'BANK_STATEMENT', fileName: 'emeka-bank-statement.pdf' },
+                { documentType: 'EMPLOYMENT_LETTER', fileName: 'emeka-employment-letter.pdf' },
+                { documentType: 'PROOF_OF_ADDRESS', fileName: 'emeka-proof-of-address.pdf' },
+            ];
+
+            for (const doc of customerDocs) {
+                const res = await mortgageApi
+                    .post(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
+                    .set(authHeaders(emekaToken))
+                    .set('x-idempotency-key', idempotencyKey(`upload-${doc.documentType}`))
+                    .send({
+                        documentType: doc.documentType,
+                        url: mockS3Url('kyc_documents', doc.fileName),
+                        fileName: doc.fileName,
+                    });
+
+                if (res.status !== 201) {
+                    console.error(`Upload ${doc.documentType} failed:`, JSON.stringify(res.body, null, 2));
+                }
+                expect(res.status).toBe(201);
+            }
+            console.log(`✅ 4 customer documents uploaded`);
+        });
+
+        it('16.4: Current action — after customer upload, Admin (PLATFORM) should REVIEW, Bank should UPLOAD', async () => {
+            // Admin sees REVIEW (Stage 1 is active, customer docs uploaded)
+            const adminRes = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(adminToken));
+
+            expect(adminRes.status).toBe(200);
+            const adminAction = adminRes.body.data;
+
+            expect(adminAction.currentPhase.id).toBe(kycPhaseId);
+            expect(adminAction.userPartyType).toBe('PLATFORM');
+            if (adminAction.currentStep) {
+                expect(adminAction.currentStep.stepType).toBe('PLATFORM');
+                expect(adminAction.currentStep.order).toBe(1);
+            }
+            console.log(`✅ Admin sees: ${adminAction.actionRequired} — ${adminAction.actionMessage}`);
+
+            // Bank should see UPLOAD (preapproval letter still needed)
+            const eniolaLoginRes = await userApi
+                .post('/auth/login')
+                .set('Content-Type', 'application/json')
+                .send({ email: 'eniola@mailsac.com', password: 'password' });
+            expect(eniolaLoginRes.status).toBe(200);
+            eniolaToken = eniolaLoginRes.body.data.accessToken;
+
+            const bankRes = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(eniolaToken));
+            expect(bankRes.status).toBe(200);
+            const bankAction = bankRes.body.data;
+            expect(bankAction.partyActions?.BANK?.action).toBe('UPLOAD');
+            expect(bankAction.partyActions?.BANK?.pendingDocuments).toContain('PREAPPROVAL_LETTER');
+            console.log(`✅ Bank sees: ${bankAction.partyActions?.BANK?.action} — pending: ${bankAction.partyActions?.BANK?.pendingDocuments?.join(', ')}`);
+
+            // Customer should WAIT
+            const custRes = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(emekaToken));
+            expect(custRes.status).toBe(200);
+            expect(custRes.body.data.partyActions?.CUSTOMER?.action).toBe('WAIT');
+            console.log(`✅ Customer sees: WAIT`);
+        });
+
+        it('16.5: Adaeze (Stage 1 PLATFORM) reviews and approves customer documents', async () => {
+            // Get uploaded documents
+            const docsRes = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
+                .set(authHeaders(adminToken));
+
+            expect(docsRes.status).toBe(200);
+            const customerDocs = docsRes.body.data.filter(
+                (d: any) => ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER', 'PROOF_OF_ADDRESS'].includes(d.documentType),
+            );
+            expect(customerDocs.length).toBe(4);
+
+            for (const doc of customerDocs) {
+                const res = await mortgageApi
+                    .post(`/applications/${applicationId}/documents/${doc.id}/review`)
+                    .set(authHeaders(adminToken))
+                    .set('x-idempotency-key', idempotencyKey(`approve-${doc.documentType}`))
+                    .send({
+                        status: 'APPROVED',
+                        organizationTypeCode: 'PLATFORM',
+                        comment: `Document verified: ${doc.documentType}`,
+                    });
+
+                if (res.status !== 200) {
+                    console.error(`Review ${doc.documentType} failed:`, JSON.stringify(res.body, null, 2));
+                }
+                expect(res.status).toBe(200);
+            }
+            console.log(`✅ Stage 1 (PLATFORM): All 4 customer docs approved`);
+        });
+
+        it('16.6: KYC phase still IN_PROGRESS after Stage 1 (multi-stage regression check)', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
+                .set(authHeaders(adminToken));
+
+            expect(res.status).toBe(200);
+            const phase = res.body.data;
+
+            // CRITICAL: Phase must NOT be completed yet — Stage 2 hasn't finished
+            expect(phase.status).toBe('IN_PROGRESS');
+
+            const docPhase = phase.documentationPhase;
+            expect(docPhase.currentStageOrder).toBe(2);
+
+            const stageProgress = docPhase.stageProgress || [];
+            expect(stageProgress.length).toBe(2);
+
+            const stage1 = stageProgress.find((s: any) => s.order === 1);
+            const stage2 = stageProgress.find((s: any) => s.order === 2);
+            expect(stage1.status).toBe('COMPLETED');
+            expect(stage2.status).toBe('IN_PROGRESS');
+
+            console.log(`✅ Phase still IN_PROGRESS: Stage 1 COMPLETED, Stage 2 IN_PROGRESS`);
+        });
+
+        it('16.7: Current action — Stage 2 active, Eniola (BANK) should UPLOAD preapproval', async () => {
+            const bankRes = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(eniolaToken));
+
+            expect(bankRes.status).toBe(200);
+            const bankAction = bankRes.body.data;
+
+            expect(bankAction.currentPhase.id).toBe(kycPhaseId);
+            expect(bankAction.currentPhase.status).toBe('IN_PROGRESS');
+            expect(bankAction.userPartyType).toBe('BANK');
+            expect(bankAction.actionRequired).toBe('UPLOAD');
+            expect(bankAction.partyActions?.BANK?.action).toBe('UPLOAD');
+            expect(bankAction.partyActions?.BANK?.canCurrentUserAct).toBe(true);
+
+            if (bankAction.currentStep) {
+                expect(bankAction.currentStep.stepType).toBe('BANK');
+                expect(bankAction.currentStep.order).toBe(2);
+            }
+
+            console.log(`✅ Bank sees: UPLOAD — pending: ${bankAction.partyActions?.BANK?.pendingDocuments?.join(', ')}`);
+        });
+
+        it('16.8: Eniola (BANK) uploads preapproval letter (auto-approved)', async () => {
+            const res = await mortgageApi
+                .post(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
+                .set(authHeaders(eniolaToken))
+                .set('x-idempotency-key', idempotencyKey('upload-preapproval'))
+                .send({
+                    documentType: 'PREAPPROVAL_LETTER',
+                    url: mockS3Url('mortgage_docs', 'preapproval-letter.pdf'),
+                    fileName: 'preapproval-letter.pdf',
+                });
+
+            if (res.status !== 201) {
+                console.error('Preapproval upload failed:', JSON.stringify(res.body, null, 2));
+            }
+            expect(res.status).toBe(201);
+
+            // Verify auto-approval
+            const docsRes = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
+                .set(authHeaders(eniolaToken));
+            expect(docsRes.status).toBe(200);
+
+            const preapprovalDoc = docsRes.body.data.find(
+                (d: any) => d.documentType === 'PREAPPROVAL_LETTER',
+            );
+            expect(preapprovalDoc).toBeDefined();
+            expect(preapprovalDoc.status).toBe('APPROVED');
+            console.log(`✅ Preapproval letter uploaded and auto-approved`);
+        });
+
+        it('16.9: KYC phase COMPLETED (both stages done)', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('COMPLETED');
+            console.log(`✅ KYC Documentation COMPLETED`);
+        });
+
+        it('16.10: Both approval stages verified COMPLETED', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
+                .set(authHeaders(adminToken));
+
+            expect(res.status).toBe(200);
+            const stageProgress = res.body.data.documentationPhase?.stageProgress || [];
+            for (const stage of stageProgress) {
+                expect(stage.status).toBe('COMPLETED');
+                console.log(`   Stage ${stage.order} (${stage.name}): ${stage.status}`);
+            }
+
+            // All docs approved
+            const docs = res.body.data.phaseDocuments?.documents || [];
+            const approved = docs.filter((d: any) => d.status === 'APPROVED');
+            expect(approved.length).toBe(docs.length);
+            console.log(`✅ All ${docs.length} documents APPROVED`);
+        });
+    });
+
+    // =========================================================================
+    // Step 17: 10% Downpayment (Phase 4) — Event-Based Payment Flow
+    // =========================================================================
+    describe('Step 17: Downpayment (Event-Based Flow)', () => {
+        it('17.1: Downpayment phase auto-activated', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${downpaymentPhaseId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('IN_PROGRESS');
+            console.log(`✅ Downpayment phase: IN_PROGRESS`);
+        });
+
+        it('17.2: Current action — Emeka should see PAYMENT', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            const action = res.body.data;
+
+            expect(action.currentPhase.id).toBe(downpaymentPhaseId);
+            expect(action.currentPhase.phaseCategory).toBe('PAYMENT');
+            expect(action.actionRequired).toBe('PAYMENT');
+            expect(action.partyActions?.CUSTOMER?.action).toBe('PAYMENT');
+            expect(action.partyActions?.CUSTOMER?.canCurrentUserAct).toBe(true);
+            console.log(`✅ Customer sees: PAYMENT — ${action.actionMessage}`);
+        });
+
+        it('17.3: Create wallet for Emeka', async () => {
+            const res = await paymentApi
+                .post('/wallets/me')
+                .set(authHeaders(emekaToken))
+                .set('x-idempotency-key', idempotencyKey('create-emeka-wallet'))
+                .send({ currency: 'NGN' });
+
+            if (res.status === 409 || res.status === 400) {
+                // Wallet already exists
+                const getRes = await paymentApi
+                    .get('/wallets/me')
+                    .set(authHeaders(emekaToken));
+                expect(getRes.status).toBe(200);
+                emekaWalletId = getRes.body.data.id;
+                console.log(`✅ Wallet already exists: ${emekaWalletId}`);
+            } else {
+                expect([200, 201]).toContain(res.status);
+                emekaWalletId = res.body.data.id;
+                console.log(`✅ Wallet created: ${emekaWalletId}`);
+            }
+        });
+
+        it('17.4: Generate downpayment installment', async () => {
+            const downpaymentAmount = Math.round(propertyPrice * downpaymentPercent / 100);
+
+            const res = await mortgageApi
+                .post(`/applications/${applicationId}/phases/${downpaymentPhaseId}/installments`)
+                .set(authHeaders(adminToken))
+                .set('x-idempotency-key', idempotencyKey('generate-downpayment'))
+                .send({ startDate: new Date().toISOString() });
+
+            if (res.status === 400 && res.body.message?.includes('already')) {
+                console.log('Installments already generated (via event)');
+            } else {
+                expect(res.status).toBe(200);
+                expect(res.body.data.installments).toHaveLength(1);
+                expect(res.body.data.installments[0].amount).toBe(downpaymentAmount);
+                console.log(`✅ Downpayment installment generated: ₦${downpaymentAmount.toLocaleString()}`);
+            }
+        });
+
+        it('17.5: Credit Emeka wallet with downpayment amount (triggers auto-allocation)', async () => {
+            const downpaymentAmount = Math.round(propertyPrice * downpaymentPercent / 100);
+
+            const res = await paymentApi
+                .post(`/wallets/${emekaWalletId}/credit`)
+                .set(authHeaders(adminToken))
+                .set('x-idempotency-key', idempotencyKey('credit-emeka-downpayment'))
+                .send({
+                    amount: downpaymentAmount,
+                    reference: `DOWNPAYMENT-${TEST_RUN_ID.slice(0, 8)}`,
+                    description: 'Downpayment for Sunrise Heights A-201',
+                    source: 'manual',
+                });
+
+            if (res.status !== 200) {
+                console.error('Wallet credit failed:', JSON.stringify(res.body, null, 2));
+            }
+            expect(res.status).toBe(200);
+            console.log(`✅ Wallet credited ₦${downpaymentAmount.toLocaleString()}, waiting for event processing...`);
+        });
+
+        it('17.6: Poll for downpayment phase completion (event-driven)', async () => {
+            const maxWaitMs = 30000;
+            const pollIntervalMs = 2000;
+            const startTime = Date.now();
+            let phaseStatus = 'IN_PROGRESS';
+
+            while (Date.now() - startTime < maxWaitMs) {
+                const res = await mortgageApi
+                    .get(`/applications/${applicationId}/phases/${downpaymentPhaseId}`)
+                    .set(authHeaders(emekaToken));
+
+                expect(res.status).toBe(200);
+                phaseStatus = res.body.data.status;
+
+                console.log(`   Phase status: ${phaseStatus} (${Math.round((Date.now() - startTime) / 1000)}s)`);
+                if (phaseStatus === 'COMPLETED') break;
+
+                await new Promise((r) => setTimeout(r, pollIntervalMs));
+            }
+
+            expect(phaseStatus).toBe('COMPLETED');
+            console.log(`✅ Downpayment COMPLETED via event-based flow`);
+        });
+    });
+
+    // =========================================================================
+    // Step 18: Mortgage Offer Documentation (Phase 5) — Event-Activated
+    // =========================================================================
+    describe('Step 18: Mortgage Offer Documentation', () => {
+        it('18.1: Mortgage offer phase auto-activated via event', async () => {
+            const maxWaitMs = 15000;
+            const pollIntervalMs = 2000;
+            const startTime = Date.now();
+            let phaseStatus = 'PENDING';
+
+            while (Date.now() - startTime < maxWaitMs) {
+                const res = await mortgageApi
+                    .get(`/applications/${applicationId}/phases/${mortgageOfferPhaseId}`)
+                    .set(authHeaders(emekaToken));
+
+                expect(res.status).toBe(200);
+                phaseStatus = res.body.data.status;
+
+                if (phaseStatus === 'IN_PROGRESS') break;
+                await new Promise((r) => setTimeout(r, pollIntervalMs));
+            }
+
+            expect(phaseStatus).toBe('IN_PROGRESS');
+            console.log(`✅ Mortgage Offer phase: IN_PROGRESS (event-activated)`);
+        });
+
+        it('18.2: Current action — Eniola (BANK) should UPLOAD mortgage offer', async () => {
+            // Refresh Eniola token
+            const eniolaLoginRes = await userApi
+                .post('/auth/login')
+                .set('Content-Type', 'application/json')
+                .send({ email: 'eniola@mailsac.com', password: 'password' });
+            expect(eniolaLoginRes.status).toBe(200);
+            eniolaToken = eniolaLoginRes.body.data.accessToken;
+
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(eniolaToken));
+
+            expect(res.status).toBe(200);
+            const action = res.body.data;
+
+            expect(action.currentPhase.id).toBe(mortgageOfferPhaseId);
+            expect(action.currentPhase.name).toBe('Mortgage Offer');
+            expect(action.userPartyType).toBe('BANK');
+            expect(action.actionRequired).toBe('UPLOAD');
+            expect(action.partyActions?.BANK?.action).toBe('UPLOAD');
+            expect(action.partyActions?.BANK?.canCurrentUserAct).toBe(true);
+
+            console.log(`✅ Bank sees: UPLOAD — pending: ${action.partyActions?.BANK?.pendingDocuments?.join(', ')}`);
+        });
+
+        it('18.3: Eniola uploads mortgage offer letter (auto-approved)', async () => {
+            const res = await mortgageApi
+                .post(`/applications/${applicationId}/phases/${mortgageOfferPhaseId}/documents`)
+                .set(authHeaders(eniolaToken))
+                .set('x-idempotency-key', idempotencyKey('upload-mortgage-offer'))
+                .send({
+                    documentType: 'MORTGAGE_OFFER_LETTER',
+                    url: mockS3Url('mortgage_docs', 'mortgage-offer-letter.pdf'),
+                    fileName: 'mortgage-offer-letter.pdf',
+                });
+
+            if (res.status !== 201) {
+                console.error('Mortgage offer upload failed:', JSON.stringify(res.body, null, 2));
+            }
+            expect(res.status).toBe(201);
+            console.log(`✅ Mortgage offer letter uploaded (auto-approved)`);
+        });
+
+        it('18.4: Mortgage offer phase COMPLETED', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${mortgageOfferPhaseId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('COMPLETED');
+            console.log(`✅ Mortgage Offer COMPLETED`);
+        });
+
+        it('18.5: Application status is COMPLETED', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('COMPLETED');
+            console.log(`✅ Application COMPLETED! 🎉`);
+        });
+
+        it('18.6: Current action — application COMPLETED, no active phase', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            const action = res.body.data;
+
+            expect(action.applicationStatus).toBe('COMPLETED');
+            expect(action.currentPhase).toBeNull();
+            expect(action.actionRequired).toBe('COMPLETE');
+            expect(action.currentStep).toBeNull();
+            console.log(`✅ Final: ${action.actionRequired} — ${action.actionMessage}`);
+        });
+    });
+
+    // =========================================================================
+    // Step 19: Post-Completion Verification
+    // =========================================================================
+    describe('Step 19: Post-Completion Verification', () => {
+        it('19.1: All 5 phases are COMPLETED', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/phases`)
+                .set(authHeaders(adminToken));
+
+            expect(res.status).toBe(200);
+            const phases = res.body.data;
+            expect(phases).toHaveLength(5);
+
+            for (const phase of phases) {
+                expect(phase.status).toBe('COMPLETED');
+            }
+            console.log(`✅ All 5 phases COMPLETED`);
+        });
+
+        it('19.2: All organizations bound correctly', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}/organizations`)
+                .set(authHeaders(adminToken));
+
+            expect(res.status).toBe(200);
+            const orgs = res.body.data;
+
+            const developer = orgs.find((o: any) => o.assignedAsType?.code === 'DEVELOPER');
+            const bank = orgs.find((o: any) => o.assignedAsType?.code === 'BANK');
+            expect(developer).toBeDefined();
+            expect(bank).toBeDefined();
+            console.log(`✅ DEVELOPER and BANK organizations bound`);
+        });
+
+        it('19.3: Emeka can view his completed application', async () => {
+            const res = await mortgageApi
+                .get(`/applications/${applicationId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('COMPLETED');
+            expect(res.body.data.totalAmount).toBe(propertyPrice);
+            console.log(`✅ Application verified: COMPLETED, ₦${res.body.data.totalAmount.toLocaleString()}`);
+        });
+
+        it('19.4: Property still PUBLISHED', async () => {
+            const res = await propertyApi
+                .get(`/property/properties/${propertyId}`)
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            expect(res.body.data.status).toBe('PUBLISHED');
+            console.log(`✅ Property still PUBLISHED`);
+        });
+
+        it('19.5: Emeka lists completed applications', async () => {
+            const res = await mortgageApi
+                .get('/applications?status=COMPLETED')
+                .set(authHeaders(emekaToken));
+
+            expect(res.status).toBe(200);
+            const apps = res.body.data.items || res.body.data;
+            const myApp = apps.find((a: any) => a.id === applicationId);
+            expect(myApp).toBeDefined();
+            expect(myApp.status).toBe('COMPLETED');
+            console.log(`\n🎉🎉🎉 Full mortgage flow completed successfully! 🎉🎉🎉`);
         });
     });
 });

@@ -43,6 +43,7 @@ interface DemoBootstrapResponse {
         organizations: DemoOrg[];
         property: { title: string; id: string; variant: string; unit: string };
         paymentMethod: { name: string; id: string; phases: number };
+        application?: { id: string; status: string; phases: number };
     };
     error?: string;
 }
@@ -111,7 +112,7 @@ export function DemoBootstrapButton() {
     };
 
     const completedSteps = result?.steps?.filter((s) => s.status === 'success').length ?? 0;
-    const totalExpectedSteps = 17; // approximate
+    const totalExpectedSteps = 25; // environment setup (17) + application flow (8)
 
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -124,9 +125,9 @@ export function DemoBootstrapButton() {
                 <DialogHeader>
                     <DialogTitle>Demo Bootstrap</DialogTitle>
                     <DialogDescription>
-                        Sets up the <strong>complete demo environment</strong> in one click: resets the database,
-                        creates 5 actors, 3 organizations (with completed onboarding), a published property,
-                        and the MREIF 10/90 mortgage payment method.
+                        Sets up the <strong>complete demo environment</strong> and runs the <strong>full mortgage application</strong> to completion in one click: resets the database,
+                        creates 5 actors, 3 organizations, a published property, the MREIF 10/90 payment method,
+                        then runs Emeka through all 5 phases (prequalification → sales offer → KYC docs → downpayment → mortgage offer).
                     </DialogDescription>
                 </DialogHeader>
 
@@ -266,6 +267,14 @@ export function DemoBootstrapButton() {
                                     <p className="font-semibold">{result.summary.paymentMethod.name}</p>
                                     <p className="text-gray-500">{result.summary.paymentMethod.phases} phases</p>
                                 </div>
+                                {result.summary.application && (
+                                    <div className="border rounded p-2 border-green-300 bg-green-50">
+                                        <p className="font-medium text-gray-500 mb-1">📋 Application</p>
+                                        <p className="font-semibold text-green-700">{result.summary.application.status}</p>
+                                        <p className="text-gray-500">{result.summary.application.phases} phases completed</p>
+                                        <p className="text-xs text-gray-400 truncate">{result.summary.application.id}</p>
+                                    </div>
+                                )}
                             </div>
 
                             <p className="text-sm text-center">
