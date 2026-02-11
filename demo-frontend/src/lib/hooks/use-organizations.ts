@@ -111,6 +111,7 @@ export interface UserOrganizationMembership {
     organization: {
         id: string;
         name: string;
+        status: string;
         types: Array<{
             orgType: {
                 id: string;
@@ -118,6 +119,11 @@ export interface UserOrganizationMembership {
                 name: string;
             };
         }>;
+        onboarding: {
+            id: string;
+            status: string;
+            assigneeId: string | null;
+        } | null;
     };
 }
 

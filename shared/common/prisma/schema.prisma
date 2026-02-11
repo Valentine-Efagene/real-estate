@@ -2270,6 +2270,10 @@ enum FieldType {
   CHECKBOX // Boolean yes/no
   RADIO // Radio button group
   FILE // File upload (single)
+  ADDRESS // Address input
+  PERCENTAGE // Percentage input
+  YEARS_MONTHS // Duration in years/months
+  FILE_UPLOAD // File upload (matches QuestionType)
 }
 
 // =============================================================================

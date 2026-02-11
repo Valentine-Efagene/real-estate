@@ -7,9 +7,11 @@
         "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' jest --config jest.config.js",
         "test:full-mortgage": "npm run test -- full-mortgage-flow",
         "test:incremental": "npm run test -- incremental-debug",
+        "test:demo-bootstrap": "npm run test -- demo-mortgage-flow",
         "test:authorizer": "./scripts/run-authorizer-tests.sh",
         "run:full-e2e": "./scripts/run-full-e2e-staging.sh",
-        "run:incremental": "./scripts/run-incremental-debug.sh"
+        "run:incremental": "./scripts/run-incremental-debug.sh",
+        "run:demo-bootstrap": "./scripts/run-demo-bootstrap.sh"
     },
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.971.0",

@@ -521,7 +521,11 @@ export const FieldType = {
   MULTI_SELECT: 'MULTI_SELECT',
   CHECKBOX: 'CHECKBOX',
   RADIO: 'RADIO',
-  FILE: 'FILE'
+  FILE: 'FILE',
+  ADDRESS: 'ADDRESS',
+  PERCENTAGE: 'PERCENTAGE',
+  YEARS_MONTHS: 'YEARS_MONTHS',
+  FILE_UPLOAD: 'FILE_UPLOAD'
 } as const
 
 export type FieldType = (typeof FieldType)[keyof typeof FieldType]

@@ -172,10 +172,14 @@ export function useOnboarding(organizationId: string | null) {
             );
             if (!response.success) {
                 // 404 means no onboarding exists — that's fine
-                if (response.error?.code === 'NOT_FOUND' || response.error?.message?.includes('not found')) {
+                // Backend may return error as a plain string or as { code, message }
+                const errMsg = typeof response.error === 'string'
+                    ? response.error
+                    : (response.error?.message || '');
+                if (response.error?.code === 'NOT_FOUND' || errMsg.toLowerCase().includes('not found')) {
                     return null;
                 }
-                throw new Error(response.error?.message || 'Failed to fetch onboarding');
+                throw new Error(errMsg || 'Failed to fetch onboarding');
             }
             return response.data!;
         },
@@ -206,6 +210,30 @@ export function useStartOnboarding() {
         },
         onSuccess: (_, variables) => {
             queryClient.invalidateQueries({ queryKey: onboardingKeys.byOrg(variables.organizationId) });
+        },
+    });
+}
+
+/**
+ * Create onboarding for an existing organization that doesn't have one yet.
+ * The backend resolves the onboarding flow from the org's type.
+ */
+export function useCreateOnboarding() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ organizationId }: { organizationId: string }) => {
+            const response = await userApi.post<OrganizationOnboarding>(
+                `/organizations/${organizationId}/onboarding`
+            );
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to create onboarding');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: onboardingKeys.byOrg(variables.organizationId) });
+            queryClient.invalidateQueries({ queryKey: ['organizations'] });
         },
     });
 }
@@ -301,5 +329,98 @@ export function useReassignOnboarder() {
         onSuccess: (_, variables) => {
             queryClient.invalidateQueries({ queryKey: onboardingKeys.byOrg(variables.organizationId) });
         },
+    });
+}
+
+// ============================================================================
+// Current Action
+// ============================================================================
+
+export interface OnboardingCurrentAction {
+    onboardingId: string;
+    organizationId: string;
+    organizationName: string;
+    organizationStatus: string;
+    onboardingStatus: OnboardingStatus;
+    flowName: string;
+    assignee: { id: string; email: string; name: string } | null;
+    progress: {
+        completedPhases: number;
+        totalPhases: number;
+        percentComplete: number;
+    };
+    currentPhase: {
+        id: string;
+        name: string;
+        phaseCategory: PhaseCategory;
+        order: number;
+        status: string;
+    } | null;
+    actionRequired: string;
+    actionMessage: string;
+    actionBy: 'ASSIGNEE' | 'ADMIN' | 'SYSTEM' | 'NONE';
+    blockerDetails: Record<string, unknown> | null;
+    phases: Array<{
+        id: string;
+        name: string;
+        order: number;
+        phaseCategory: PhaseCategory;
+        status: PhaseStatus;
+        isCurrent: boolean;
+        questionnaire?: {
+            totalFields: number;
+            answeredFields: number;
+            requiredFields: number;
+            unansweredRequiredFields: number;
+            isComplete: boolean;
+        };
+        documentation?: {
+            requiredDocumentsCount: number;
+            approvedDocumentsCount: number;
+            currentStageOrder: number;
+            stages: Array<{ name: string; order: number; status: string }>;
+        };
+        gate?: {
+            requiredApprovals: number;
+            approvalCount: number;
+            rejectionCount: number;
+            reviews: Array<{
+                reviewer: { id: string; name: string };
+                decision: ReviewDecision;
+                notes: string | null;
+                createdAt: string;
+            }>;
+        };
+    }>;
+    timeline: {
+        startedAt: string | null;
+        completedAt: string | null;
+        approvedAt: string | null;
+        expiresAt: string | null;
+    };
+}
+
+/**
+ * Fetch the current action / diagnostic snapshot for an organization's onboarding.
+ */
+export function useOnboardingCurrentAction(organizationId: string | null) {
+    return useQuery({
+        queryKey: [...onboardingKeys.byOrg(organizationId || ''), 'current-action'],
+        queryFn: async () => {
+            const response = await userApi.get<OnboardingCurrentAction>(
+                `/organizations/${organizationId}/onboarding/current-action`
+            );
+            if (!response.success) {
+                const errMsg = typeof response.error === 'string'
+                    ? response.error
+                    : (response.error?.message || '');
+                if (errMsg.toLowerCase().includes('not found')) {
+                    return null;
+                }
+                throw new Error(errMsg || 'Failed to fetch onboarding current action');
+            }
+            return response.data!;
+        },
+        enabled: !!organizationId,
     });
 }

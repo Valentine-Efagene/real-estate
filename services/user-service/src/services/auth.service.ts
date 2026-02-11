@@ -603,6 +603,7 @@ class AuthService {
                             select: {
                                 id: true,
                                 name: true,
+                                status: true,
                                 types: {
                                     include: {
                                         orgType: {
@@ -612,6 +613,13 @@ class AuthService {
                                                 name: true,
                                             },
                                         },
+                                    },
+                                },
+                                onboarding: {
+                                    select: {
+                                        id: true,
+                                        status: true,
+                                        assigneeId: true,
                                     },
                                 },
                             },

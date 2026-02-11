@@ -2,7 +2,7 @@
 
 import { use, useState } from 'react';
 import Link from 'next/link';
-import { ProtectedRoute, AdminOnly } from '@/components/auth';
+import { ProtectedRoute } from '@/components/auth';
 import { useAuth } from '@/lib/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -22,13 +22,16 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import {
     useOnboarding,
+    useOnboardingCurrentAction,
     useStartOnboarding,
     useSubmitOnboardingQuestionnaire,
     useReviewGatePhase,
     useReassignOnboarder,
+    useCreateOnboarding,
     type OnboardingPhase,
     type PhaseCategory,
     type OnboardingStatus,
@@ -139,6 +142,119 @@ function PhaseStepper({ phases, currentPhaseId }: { phases: OnboardingPhase[]; c
                 );
             })}
         </div>
+    );
+}
+
+// ============================================================================
+// Action Required Banner (uses current-action endpoint)
+// ============================================================================
+
+function ActionRequiredBanner({
+    organizationId,
+    isAdmin,
+    userId,
+}: {
+    organizationId: string;
+    isAdmin: boolean;
+    userId: string | undefined;
+}) {
+    const { data: action, isLoading } = useOnboardingCurrentAction(organizationId);
+
+    if (isLoading || !action) return null;
+
+    // Terminal states
+    if (action.onboardingStatus === 'COMPLETED') {
+        return (
+            <Card className="border-green-200 bg-green-50">
+                <CardContent className="flex items-center gap-4 p-5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-700 text-lg">✅</div>
+                    <div>
+                        <p className="font-semibold text-green-900">Onboarding Complete</p>
+                        <p className="text-sm text-green-700">
+                            {action.organizationName} has been approved and is now active on the platform.
+                        </p>
+                    </div>
+                    <Badge variant="default" className="shrink-0">
+                        {action.progress.completedPhases}/{action.progress.totalPhases} phases
+                    </Badge>
+                </CardContent>
+            </Card>
+        );
+    }
+
+    if (action.onboardingStatus === 'REJECTED') {
+        return (
+            <Card className="border-red-200 bg-red-50">
+                <CardContent className="flex items-center gap-4 p-5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700 text-lg">❌</div>
+                    <div>
+                        <p className="font-semibold text-red-900">Onboarding Rejected</p>
+                        <p className="text-sm text-red-700">{action.actionMessage}</p>
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    }
+
+    // Determine styling based on who needs to act
+    const isActionForMe =
+        (action.actionBy === 'ADMIN' && isAdmin) ||
+        (action.actionBy === 'ASSIGNEE' && action.assignee?.id === userId);
+
+    let borderColor: string;
+    let bgColor: string;
+    let iconBg: string;
+    let titleColor: string;
+    let descColor: string;
+    let icon: string;
+
+    if (isActionForMe) {
+        // Blue — action is for the current user
+        borderColor = 'border-blue-200';
+        bgColor = 'bg-blue-50';
+        iconBg = 'bg-blue-100 text-blue-700';
+        titleColor = 'text-blue-900';
+        descColor = 'text-blue-700';
+        icon = action.currentPhase?.phaseCategory === 'GATE' ? '🔍' :
+            action.currentPhase?.phaseCategory === 'DOCUMENTATION' ? '📄' :
+                action.currentPhase?.phaseCategory === 'QUESTIONNAIRE' ? '📝' : '📋';
+    } else {
+        // Amber — waiting on someone else
+        borderColor = 'border-amber-200';
+        bgColor = 'bg-amber-50';
+        iconBg = 'bg-amber-100 text-amber-700';
+        titleColor = 'text-amber-900';
+        descColor = 'text-amber-700';
+        icon = '⏳';
+    }
+
+    // Build title
+    const actorLabel = action.actionBy === 'ADMIN' ? 'Admin' : action.assignee?.name || 'Assignee';
+    let title: string;
+    if (isActionForMe) {
+        title = `Your Action Required: ${action.actionRequired.replace(/_/g, ' ')}`;
+    } else if (action.actionBy === 'NONE') {
+        title = action.actionMessage;
+    } else {
+        title = `Waiting on ${actorLabel}`;
+    }
+
+    return (
+        <Card className={`${borderColor} ${bgColor}`}>
+            <CardContent className="flex items-center gap-4 p-5">
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-lg ${iconBg}`}>
+                    {icon}
+                </div>
+                <div className="flex-1">
+                    <p className={`font-semibold ${titleColor}`}>{title}</p>
+                    <p className={`text-sm ${descColor}`}>{action.actionMessage}</p>
+                </div>
+                <Badge variant="outline" className="shrink-0">
+                    Step {action.currentPhase?.order ?? '?'} of {action.progress.totalPhases}
+                    {' · '}{action.progress.percentComplete}%
+                </Badge>
+            </CardContent>
+        </Card>
     );
 }
 
@@ -357,6 +473,16 @@ function DocumentationPhaseCard({ phase }: { phase: OnboardingPhase }) {
                 <Progress value={progressPercent} className="mt-2" />
             </CardHeader>
             <CardContent className="space-y-4">
+                {/* Not yet active banner */}
+                {phase.status === 'PENDING' && (
+                    <div className="flex items-center gap-3 rounded-lg border border-muted bg-muted/30 p-4">
+                        <Clock className="h-5 w-5 text-muted-foreground" />
+                        <p className="text-sm text-muted-foreground">
+                            This phase will become active after the previous step is completed.
+                        </p>
+                    </div>
+                )}
+
                 {/* Stage progress */}
                 {dp.stageProgress.length > 0 && (
                     <div className="space-y-2">
@@ -512,6 +638,37 @@ function GatePhaseCard({
                     <p className="text-sm text-muted-foreground">No reviews yet.</p>
                 )}
 
+                {/* Waiting state for non-admins when gate is active */}
+                {phase.status === 'IN_PROGRESS' && !isAdmin && (
+                    <div className="flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-100">
+                            <Clock className="h-5 w-5 text-amber-600" />
+                        </div>
+                        <div>
+                            <p className="text-sm font-medium text-amber-900">Awaiting Platform Review</p>
+                            <p className="text-xs text-amber-700">
+                                The QShelter team will review your submitted information and documents.
+                                You&apos;ll be notified when a decision is made.
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {/* Admin prompt when gate needs review */}
+                {canReview && gp.reviews.length === 0 && (
+                    <div className="flex items-center gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100">
+                            <span className="text-lg">🔍</span>
+                        </div>
+                        <div className="flex-1">
+                            <p className="text-sm font-medium text-blue-900">Review Required</p>
+                            <p className="text-xs text-blue-700">
+                                Review the organization&apos;s submitted questionnaire and documents, then approve or reject.
+                            </p>
+                        </div>
+                    </div>
+                )}
+
                 {/* Review action */}
                 {canReview && (
                     <>
@@ -577,22 +734,33 @@ function GatePhaseCard({
 // Reassign Onboarder Dialog
 // ============================================================================
 
-function ReassignOnboarderDialog({
+function AssignOnboarderDialog({
     organizationId,
     open,
     onOpenChange,
+    hasAssignee,
 }: {
     organizationId: string;
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    hasAssignee: boolean;
 }) {
     const { data: members } = useOrganizationMembers(organizationId);
     const reassignMutation = useReassignOnboarder();
     const [selectedMemberId, setSelectedMemberId] = useState('');
 
-    const handleReassign = async () => {
+    const isAssign = !hasAssignee;
+    const title = isAssign ? 'Assign Onboarder' : 'Reassign Onboarder';
+    const description = isAssign
+        ? 'Select a staff member from this organization to run the onboarding process. The onboarding will start automatically once assigned.'
+        : 'Select a different member of this organization to take over the onboarding process.';
+    const actionLabel = isAssign ? 'Assign' : 'Reassign';
+    const pendingLabel = isAssign ? 'Assigning...' : 'Reassigning...';
+    const successMessage = isAssign ? 'Onboarder assigned — onboarding started!' : 'Onboarder reassigned successfully';
+
+    const handleSubmit = async () => {
         if (!selectedMemberId) {
-            toast.error('Select a member to reassign to');
+            toast.error(`Select a member to ${isAssign ? 'assign' : 'reassign to'}`);
             return;
         }
         try {
@@ -600,11 +768,11 @@ function ReassignOnboarderDialog({
                 organizationId,
                 newAssigneeId: selectedMemberId,
             });
-            toast.success('Onboarder reassigned successfully');
+            toast.success(successMessage);
             onOpenChange(false);
             setSelectedMemberId('');
         } catch (err) {
-            toast.error(err instanceof Error ? err.message : 'Failed to reassign');
+            toast.error(err instanceof Error ? err.message : `Failed to ${isAssign ? 'assign' : 'reassign'}`);
         }
     };
 
@@ -612,13 +780,11 @@ function ReassignOnboarderDialog({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Reassign Onboarder</DialogTitle>
-                    <DialogDescription>
-                        Select a member of this organization to take over the onboarding process.
-                    </DialogDescription>
+                    <DialogTitle>{title}</DialogTitle>
+                    <DialogDescription>{description}</DialogDescription>
                 </DialogHeader>
                 <div className="py-4">
-                    <Label>New Assignee</Label>
+                    <Label>{isAssign ? 'Staff Member' : 'New Assignee'}</Label>
                     <Select value={selectedMemberId} onValueChange={setSelectedMemberId}>
                         <SelectTrigger className="mt-1.5">
                             <SelectValue placeholder="Select a member..." />
@@ -633,14 +799,14 @@ function ReassignOnboarderDialog({
                     </Select>
                     {(!members || members.length === 0) && (
                         <p className="text-sm text-muted-foreground mt-2">
-                            No members found. Invite staff to this organization first.
+                            No members found. Add staff to this organization first via the Organizations page.
                         </p>
                     )}
                 </div>
                 <DialogFooter>
                     <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-                    <Button onClick={handleReassign} disabled={reassignMutation.isPending || !selectedMemberId}>
-                        {reassignMutation.isPending ? 'Reassigning...' : 'Reassign'}
+                    <Button onClick={handleSubmit} disabled={reassignMutation.isPending || !selectedMemberId}>
+                        {reassignMutation.isPending ? pendingLabel : actionLabel}
                     </Button>
                 </DialogFooter>
             </DialogContent>
@@ -651,6 +817,53 @@ function ReassignOnboarderDialog({
 // ============================================================================
 // Main Page Component
 // ============================================================================
+
+function NoOnboardingState({ organizationId }: { organizationId: string }) {
+    const createOnboarding = useCreateOnboarding();
+
+    const handleCreate = async () => {
+        try {
+            await createOnboarding.mutateAsync({ organizationId });
+            toast.success('Onboarding created successfully!');
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : 'Failed to create onboarding');
+        }
+    };
+
+    return (
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-bold">Organization Onboarding</h1>
+                <Link href="/admin/organizations">
+                    <Button variant="outline">← Back</Button>
+                </Link>
+            </div>
+            <Card className="border-amber-200 bg-amber-50">
+                <CardContent className="p-8 text-center space-y-4">
+                    <div className="h-14 w-14 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 mx-auto text-2xl">
+                        📋
+                    </div>
+                    <div>
+                        <p className="font-semibold text-amber-900 text-lg">No onboarding workflow found</p>
+                        <p className="text-sm text-amber-700 mt-1 max-w-md mx-auto">
+                            This organization doesn&apos;t have an onboarding workflow yet.
+                            If the organization type (BANK, DEVELOPER, etc.) has an onboarding flow configured,
+                            you can create one now.
+                        </p>
+                    </div>
+                    <div className="flex items-center justify-center gap-3">
+                        <Button onClick={handleCreate} disabled={createOnboarding.isPending}>
+                            {createOnboarding.isPending ? 'Creating...' : 'Create Onboarding'}
+                        </Button>
+                        <Link href="/admin/organizations">
+                            <Button variant="outline">← Back to Organizations</Button>
+                        </Link>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+    );
+}
 
 function OnboardingDetailContent({ organizationId }: { organizationId: string }) {
     const { user } = useAuth();
@@ -684,19 +897,7 @@ function OnboardingDetailContent({ organizationId }: { organizationId: string })
     }
 
     if (!onboarding) {
-        return (
-            <Card>
-                <CardContent className="p-6 text-center">
-                    <p className="text-muted-foreground">No onboarding workflow found for this organization.</p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                        Onboarding is automatically created for BANK and DEVELOPER organizations when they have a configured onboarding flow.
-                    </p>
-                    <Link href="/admin/organizations">
-                        <Button variant="outline" className="mt-4">← Back to Organizations</Button>
-                    </Link>
-                </CardContent>
-            </Card>
-        );
+        return <NoOnboardingState organizationId={organizationId} />;
     }
 
     const handleStart = async () => {
@@ -747,10 +948,12 @@ function OnboardingDetailContent({ organizationId }: { organizationId: string })
                         <div>
                             <p className="text-sm text-muted-foreground">Assigned To</p>
                             <div className="flex items-center gap-2 mt-1">
-                                <span className="text-sm font-medium">{getUserDisplayName(onboarding.assignee)}</span>
+                                <span className={`text-sm font-medium ${!onboarding.assignee ? 'text-amber-600' : ''}`}>
+                                    {getUserDisplayName(onboarding.assignee)}
+                                </span>
                                 {isAdmin && (
                                     <Button variant="ghost" size="sm" className="h-6 text-xs px-2" onClick={() => setShowReassignDialog(true)}>
-                                        Reassign
+                                        {onboarding.assignee ? 'Reassign' : 'Assign'}
                                     </Button>
                                 )}
                             </div>
@@ -810,6 +1013,32 @@ function OnboardingDetailContent({ organizationId }: { organizationId: string })
                 </CardContent>
             </Card>
 
+            {/* Assign Staff Banner — shown when onboarding has no assignee */}
+            {!onboarding.assignee && isAdmin && onboarding.status === 'PENDING' && (
+                <Card className="border-amber-200 bg-amber-50">
+                    <CardContent className="flex items-center justify-between p-6">
+                        <div className="flex items-center gap-3">
+                            <div className="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
+                                👤
+                            </div>
+                            <div>
+                                <p className="font-semibold text-amber-900">No staff assigned to run this onboarding</p>
+                                <p className="text-sm text-amber-700">
+                                    Assign a member of {onboarding.organization.name} to begin the onboarding process.
+                                    The onboarding will start automatically once a staff member is assigned.
+                                </p>
+                            </div>
+                        </div>
+                        <Button onClick={() => setShowReassignDialog(true)} className="shrink-0">
+                            Assign Staff
+                        </Button>
+                    </CardContent>
+                </Card>
+            )}
+
+            {/* Action Required Banner */}
+            <ActionRequiredBanner organizationId={onboarding.organizationId} isAdmin={isAdmin} userId={user?.userId} />
+
             {/* Phase Stepper */}
             {sortedPhases.length > 0 && (
                 <Card>
@@ -865,11 +1094,12 @@ function OnboardingDetailContent({ organizationId }: { organizationId: string })
                 })}
             </div>
 
-            {/* Reassign Dialog */}
-            <ReassignOnboarderDialog
+            {/* Assign/Reassign Dialog */}
+            <AssignOnboarderDialog
                 organizationId={organizationId}
                 open={showReassignDialog}
                 onOpenChange={setShowReassignDialog}
+                hasAssignee={!!onboarding?.assignee}
             />
         </div>
     );
@@ -888,11 +1118,9 @@ export default function OrganizationOnboardingPage({
 
     return (
         <ProtectedRoute>
-            <AdminOnly>
-                <div className="container mx-auto py-6 max-w-5xl">
-                    <OnboardingDetailContent organizationId={resolvedParams.id} />
-                </div>
-            </AdminOnly>
+            <div className="container mx-auto py-6 max-w-5xl">
+                <OnboardingDetailContent organizationId={resolvedParams.id} />
+            </div>
         </ProtectedRoute>
     );
 }

@@ -18,7 +18,7 @@ import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query';
 import { Plus, UserPlus, Mail, RefreshCw, X, Clock, User, Pencil, ClipboardCheck } from 'lucide-react';
-import { useOnboarding, type OnboardingStatus } from '@/lib/hooks/use-onboarding';
+import { useOnboarding, useCreateOnboarding, type OnboardingStatus } from '@/lib/hooks/use-onboarding';
 
 interface Organization {
   id: string;
@@ -1033,21 +1033,69 @@ function getOnboardingBadgeVariant(status: OnboardingStatus): 'default' | 'secon
 }
 
 function OnboardingStatusCell({ organizationId }: { organizationId: string }) {
-  const { data: onboarding, isLoading } = useOnboarding(organizationId);
+  const { data: onboarding, isLoading, error } = useOnboarding(organizationId);
+  const createOnboarding = useCreateOnboarding();
 
   if (isLoading) {
     return <Skeleton className="h-5 w-20" />;
   }
 
-  if (!onboarding) {
-    return <span className="text-xs text-muted-foreground">—</span>;
+  if (error && !(error instanceof Error && error.message.includes('not found'))) {
+    return <span className="text-xs text-destructive">Error</span>;
   }
 
+  if (!onboarding) {
+    return (
+      <div className="flex items-center gap-1">
+        <Link href={`/admin/organizations/${organizationId}/onboarding`}>
+          <Badge variant="outline" className="text-xs cursor-pointer hover:opacity-80 text-amber-600 border-amber-300">
+            Not Created
+          </Badge>
+        </Link>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-5 w-5 p-0"
+          title="Create onboarding"
+          disabled={createOnboarding.isPending}
+          onClick={async (e) => {
+            e.stopPropagation();
+            try {
+              await createOnboarding.mutateAsync({ organizationId });
+              toast.success('Onboarding created successfully');
+            } catch (err) {
+              toast.error(err instanceof Error ? err.message : 'Failed to create onboarding');
+            }
+          }}
+        >
+          <Plus className="h-3 w-3" />
+        </Button>
+      </div>
+    );
+  }
+
+  const needsAssignee = !onboarding.assignee && onboarding.status === 'PENDING';
+
   return (
-    <Link href={`/admin/organizations/${organizationId}/onboarding`}>
-      <Badge variant={getOnboardingBadgeVariant(onboarding.status)} className="text-xs cursor-pointer hover:opacity-80">
-        {onboarding.status.replace('_', ' ')}
-      </Badge>
+    <Link href={`/admin/organizations/${organizationId}/onboarding`} className="group block space-y-1">
+      <div className="flex items-center gap-1.5">
+        <Badge variant={getOnboardingBadgeVariant(onboarding.status)} className="text-xs cursor-pointer group-hover:opacity-80">
+          {onboarding.status.replace('_', ' ')}
+        </Badge>
+        {needsAssignee && (
+          <span className="text-xs text-amber-600" title="No staff assigned — click to assign">⚠</span>
+        )}
+      </div>
+      <p className="text-xs text-muted-foreground group-hover:text-foreground truncate max-w-[160px]">
+        {onboarding.onboardingFlow.name}
+      </p>
+      {needsAssignee ? (
+        <p className="text-xs text-amber-600 font-medium">Needs staff →</p>
+      ) : onboarding.assignee ? (
+        <p className="text-xs text-muted-foreground truncate max-w-[160px]">
+          👤 {[onboarding.assignee.firstName, onboarding.assignee.lastName].filter(Boolean).join(' ') || onboarding.assignee.email}
+        </p>
+      ) : null}
     </Link>
   );
 }

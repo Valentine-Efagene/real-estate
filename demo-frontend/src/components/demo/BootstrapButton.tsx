@@ -51,7 +51,7 @@ export function BootstrapButton() {
     const [adminEmail, setAdminEmail] = useState('adaeze@mailsac.com');
     const [adminFirstName, setAdminFirstName] = useState('Adaeze');
     const [adminLastName, setAdminLastName] = useState('Okonkwo');
-    const [adminPassword, setAdminPassword] = useState('SecureP@ssw0rd123!');
+    const [adminPassword, setAdminPassword] = useState('password');
     const [showPassword, setShowPassword] = useState(false);
 
     const handleBootstrap = async () => {
