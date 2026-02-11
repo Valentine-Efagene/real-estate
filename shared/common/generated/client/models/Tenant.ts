@@ -251,8 +251,8 @@ export type TenantWhereInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationListRelationFilter
   organizationTypes?: Prisma.OrganizationTypeListRelationFilter
   organizationInvitations?: Prisma.OrganizationInvitationListRelationFilter
-  onboardingMethods?: Prisma.OnboardingMethodListRelationFilter
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseListRelationFilter
+  onboardingFlows?: Prisma.OnboardingFlowListRelationFilter
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseListRelationFilter
   organizationOnboardings?: Prisma.OrganizationOnboardingListRelationFilter
   onboardingPhases?: Prisma.OnboardingPhaseListRelationFilter
   gatePlans?: Prisma.GatePlanListRelationFilter
@@ -328,8 +328,8 @@ export type TenantOrderByWithRelationInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationOrderByRelationAggregateInput
   organizationTypes?: Prisma.OrganizationTypeOrderByRelationAggregateInput
   organizationInvitations?: Prisma.OrganizationInvitationOrderByRelationAggregateInput
-  onboardingMethods?: Prisma.OnboardingMethodOrderByRelationAggregateInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseOrderByRelationAggregateInput
+  onboardingFlows?: Prisma.OnboardingFlowOrderByRelationAggregateInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseOrderByRelationAggregateInput
   organizationOnboardings?: Prisma.OrganizationOnboardingOrderByRelationAggregateInput
   onboardingPhases?: Prisma.OnboardingPhaseOrderByRelationAggregateInput
   gatePlans?: Prisma.GatePlanOrderByRelationAggregateInput
@@ -409,8 +409,8 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   applicationOrganizations?: Prisma.ApplicationOrganizationListRelationFilter
   organizationTypes?: Prisma.OrganizationTypeListRelationFilter
   organizationInvitations?: Prisma.OrganizationInvitationListRelationFilter
-  onboardingMethods?: Prisma.OnboardingMethodListRelationFilter
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseListRelationFilter
+  onboardingFlows?: Prisma.OnboardingFlowListRelationFilter
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseListRelationFilter
   organizationOnboardings?: Prisma.OrganizationOnboardingListRelationFilter
   onboardingPhases?: Prisma.OnboardingPhaseListRelationFilter
   gatePlans?: Prisma.GatePlanListRelationFilter
@@ -510,8 +510,8 @@ export type TenantCreateInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -587,8 +587,8 @@ export type TenantUncheckedCreateInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -664,8 +664,8 @@ export type TenantUpdateInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -741,8 +741,8 @@ export type TenantUncheckedUpdateInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -924,32 +924,32 @@ export type TenantUpdateOneRequiredWithoutOrganizationInvitationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOrganizationInvitationsInput, Prisma.TenantUpdateWithoutOrganizationInvitationsInput>, Prisma.TenantUncheckedUpdateWithoutOrganizationInvitationsInput>
 }
 
-export type TenantCreateNestedOneWithoutOnboardingMethodsInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingMethodsInput, Prisma.TenantUncheckedCreateWithoutOnboardingMethodsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOnboardingMethodsInput
+export type TenantCreateNestedOneWithoutOnboardingFlowsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingFlowsInput, Prisma.TenantUncheckedCreateWithoutOnboardingFlowsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOnboardingFlowsInput
   connect?: Prisma.TenantWhereUniqueInput
 }
 
-export type TenantUpdateOneRequiredWithoutOnboardingMethodsNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingMethodsInput, Prisma.TenantUncheckedCreateWithoutOnboardingMethodsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOnboardingMethodsInput
-  upsert?: Prisma.TenantUpsertWithoutOnboardingMethodsInput
+export type TenantUpdateOneRequiredWithoutOnboardingFlowsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingFlowsInput, Prisma.TenantUncheckedCreateWithoutOnboardingFlowsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOnboardingFlowsInput
+  upsert?: Prisma.TenantUpsertWithoutOnboardingFlowsInput
   connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOnboardingMethodsInput, Prisma.TenantUpdateWithoutOnboardingMethodsInput>, Prisma.TenantUncheckedUpdateWithoutOnboardingMethodsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOnboardingFlowsInput, Prisma.TenantUpdateWithoutOnboardingFlowsInput>, Prisma.TenantUncheckedUpdateWithoutOnboardingFlowsInput>
 }
 
-export type TenantCreateNestedOneWithoutOnboardingMethodPhasesInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingMethodPhasesInput, Prisma.TenantUncheckedCreateWithoutOnboardingMethodPhasesInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOnboardingMethodPhasesInput
+export type TenantCreateNestedOneWithoutOnboardingFlowPhasesInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingFlowPhasesInput, Prisma.TenantUncheckedCreateWithoutOnboardingFlowPhasesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOnboardingFlowPhasesInput
   connect?: Prisma.TenantWhereUniqueInput
 }
 
-export type TenantUpdateOneRequiredWithoutOnboardingMethodPhasesNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingMethodPhasesInput, Prisma.TenantUncheckedCreateWithoutOnboardingMethodPhasesInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOnboardingMethodPhasesInput
-  upsert?: Prisma.TenantUpsertWithoutOnboardingMethodPhasesInput
+export type TenantUpdateOneRequiredWithoutOnboardingFlowPhasesNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingFlowPhasesInput, Prisma.TenantUncheckedCreateWithoutOnboardingFlowPhasesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOnboardingFlowPhasesInput
+  upsert?: Prisma.TenantUpsertWithoutOnboardingFlowPhasesInput
   connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOnboardingMethodPhasesInput, Prisma.TenantUpdateWithoutOnboardingMethodPhasesInput>, Prisma.TenantUncheckedUpdateWithoutOnboardingMethodPhasesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOnboardingFlowPhasesInput, Prisma.TenantUpdateWithoutOnboardingFlowPhasesInput>, Prisma.TenantUncheckedUpdateWithoutOnboardingFlowPhasesInput>
 }
 
 export type TenantCreateNestedOneWithoutOrganizationOnboardingsInput = {
@@ -1853,8 +1853,8 @@ export type TenantCreateWithoutOrganizationTypesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -1929,8 +1929,8 @@ export type TenantUncheckedCreateWithoutOrganizationTypesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -2021,8 +2021,8 @@ export type TenantUpdateWithoutOrganizationTypesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -2097,8 +2097,8 @@ export type TenantUncheckedUpdateWithoutOrganizationTypesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -2173,8 +2173,8 @@ export type TenantCreateWithoutUsersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -2249,8 +2249,8 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -2341,8 +2341,8 @@ export type TenantUpdateWithoutUsersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -2417,8 +2417,8 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -2493,8 +2493,8 @@ export type TenantCreateWithoutRolesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -2569,8 +2569,8 @@ export type TenantUncheckedCreateWithoutRolesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -2661,8 +2661,8 @@ export type TenantUpdateWithoutRolesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -2737,8 +2737,8 @@ export type TenantUncheckedUpdateWithoutRolesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -2813,8 +2813,8 @@ export type TenantCreateWithoutPermissionsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -2889,8 +2889,8 @@ export type TenantUncheckedCreateWithoutPermissionsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -2981,8 +2981,8 @@ export type TenantUpdateWithoutPermissionsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -3057,8 +3057,8 @@ export type TenantUncheckedUpdateWithoutPermissionsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -3133,8 +3133,8 @@ export type TenantCreateWithoutMembershipsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -3209,8 +3209,8 @@ export type TenantUncheckedCreateWithoutMembershipsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -3301,8 +3301,8 @@ export type TenantUpdateWithoutMembershipsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -3377,8 +3377,8 @@ export type TenantUncheckedUpdateWithoutMembershipsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -3453,8 +3453,8 @@ export type TenantCreateWithoutOrganizationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -3529,8 +3529,8 @@ export type TenantUncheckedCreateWithoutOrganizationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -3621,8 +3621,8 @@ export type TenantUpdateWithoutOrganizationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -3697,8 +3697,8 @@ export type TenantUncheckedUpdateWithoutOrganizationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -3773,8 +3773,8 @@ export type TenantCreateWithoutOrganizationInvitationsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -3849,8 +3849,8 @@ export type TenantUncheckedCreateWithoutOrganizationInvitationsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -3941,8 +3941,8 @@ export type TenantUpdateWithoutOrganizationInvitationsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -4017,8 +4017,8 @@ export type TenantUncheckedUpdateWithoutOrganizationInvitationsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -4026,7 +4026,7 @@ export type TenantUncheckedUpdateWithoutOrganizationInvitationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantCreateWithoutOnboardingMethodsInput = {
+export type TenantCreateWithoutOnboardingFlowsInput = {
   id?: string
   name: string
   subdomain: string
@@ -4094,7 +4094,7 @@ export type TenantCreateWithoutOnboardingMethodsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -4102,7 +4102,7 @@ export type TenantCreateWithoutOnboardingMethodsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
 }
 
-export type TenantUncheckedCreateWithoutOnboardingMethodsInput = {
+export type TenantUncheckedCreateWithoutOnboardingFlowsInput = {
   id?: string
   name: string
   subdomain: string
@@ -4170,7 +4170,7 @@ export type TenantUncheckedCreateWithoutOnboardingMethodsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -4178,23 +4178,23 @@ export type TenantUncheckedCreateWithoutOnboardingMethodsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
 }
 
-export type TenantCreateOrConnectWithoutOnboardingMethodsInput = {
+export type TenantCreateOrConnectWithoutOnboardingFlowsInput = {
   where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingMethodsInput, Prisma.TenantUncheckedCreateWithoutOnboardingMethodsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingFlowsInput, Prisma.TenantUncheckedCreateWithoutOnboardingFlowsInput>
 }
 
-export type TenantUpsertWithoutOnboardingMethodsInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutOnboardingMethodsInput, Prisma.TenantUncheckedUpdateWithoutOnboardingMethodsInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingMethodsInput, Prisma.TenantUncheckedCreateWithoutOnboardingMethodsInput>
+export type TenantUpsertWithoutOnboardingFlowsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutOnboardingFlowsInput, Prisma.TenantUncheckedUpdateWithoutOnboardingFlowsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingFlowsInput, Prisma.TenantUncheckedCreateWithoutOnboardingFlowsInput>
   where?: Prisma.TenantWhereInput
 }
 
-export type TenantUpdateToOneWithWhereWithoutOnboardingMethodsInput = {
+export type TenantUpdateToOneWithWhereWithoutOnboardingFlowsInput = {
   where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutOnboardingMethodsInput, Prisma.TenantUncheckedUpdateWithoutOnboardingMethodsInput>
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutOnboardingFlowsInput, Prisma.TenantUncheckedUpdateWithoutOnboardingFlowsInput>
 }
 
-export type TenantUpdateWithoutOnboardingMethodsInput = {
+export type TenantUpdateWithoutOnboardingFlowsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   subdomain?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4262,7 +4262,7 @@ export type TenantUpdateWithoutOnboardingMethodsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -4270,7 +4270,7 @@ export type TenantUpdateWithoutOnboardingMethodsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantUncheckedUpdateWithoutOnboardingMethodsInput = {
+export type TenantUncheckedUpdateWithoutOnboardingFlowsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   subdomain?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4338,7 +4338,7 @@ export type TenantUncheckedUpdateWithoutOnboardingMethodsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -4346,7 +4346,7 @@ export type TenantUncheckedUpdateWithoutOnboardingMethodsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantCreateWithoutOnboardingMethodPhasesInput = {
+export type TenantCreateWithoutOnboardingFlowPhasesInput = {
   id?: string
   name: string
   subdomain: string
@@ -4414,7 +4414,7 @@ export type TenantCreateWithoutOnboardingMethodPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -4422,7 +4422,7 @@ export type TenantCreateWithoutOnboardingMethodPhasesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
 }
 
-export type TenantUncheckedCreateWithoutOnboardingMethodPhasesInput = {
+export type TenantUncheckedCreateWithoutOnboardingFlowPhasesInput = {
   id?: string
   name: string
   subdomain: string
@@ -4490,7 +4490,7 @@ export type TenantUncheckedCreateWithoutOnboardingMethodPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -4498,23 +4498,23 @@ export type TenantUncheckedCreateWithoutOnboardingMethodPhasesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
 }
 
-export type TenantCreateOrConnectWithoutOnboardingMethodPhasesInput = {
+export type TenantCreateOrConnectWithoutOnboardingFlowPhasesInput = {
   where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingMethodPhasesInput, Prisma.TenantUncheckedCreateWithoutOnboardingMethodPhasesInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingFlowPhasesInput, Prisma.TenantUncheckedCreateWithoutOnboardingFlowPhasesInput>
 }
 
-export type TenantUpsertWithoutOnboardingMethodPhasesInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutOnboardingMethodPhasesInput, Prisma.TenantUncheckedUpdateWithoutOnboardingMethodPhasesInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingMethodPhasesInput, Prisma.TenantUncheckedCreateWithoutOnboardingMethodPhasesInput>
+export type TenantUpsertWithoutOnboardingFlowPhasesInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutOnboardingFlowPhasesInput, Prisma.TenantUncheckedUpdateWithoutOnboardingFlowPhasesInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingFlowPhasesInput, Prisma.TenantUncheckedCreateWithoutOnboardingFlowPhasesInput>
   where?: Prisma.TenantWhereInput
 }
 
-export type TenantUpdateToOneWithWhereWithoutOnboardingMethodPhasesInput = {
+export type TenantUpdateToOneWithWhereWithoutOnboardingFlowPhasesInput = {
   where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutOnboardingMethodPhasesInput, Prisma.TenantUncheckedUpdateWithoutOnboardingMethodPhasesInput>
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutOnboardingFlowPhasesInput, Prisma.TenantUncheckedUpdateWithoutOnboardingFlowPhasesInput>
 }
 
-export type TenantUpdateWithoutOnboardingMethodPhasesInput = {
+export type TenantUpdateWithoutOnboardingFlowPhasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   subdomain?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4582,7 +4582,7 @@ export type TenantUpdateWithoutOnboardingMethodPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -4590,7 +4590,7 @@ export type TenantUpdateWithoutOnboardingMethodPhasesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantUncheckedUpdateWithoutOnboardingMethodPhasesInput = {
+export type TenantUncheckedUpdateWithoutOnboardingFlowPhasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   subdomain?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4658,7 +4658,7 @@ export type TenantUncheckedUpdateWithoutOnboardingMethodPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -4734,8 +4734,8 @@ export type TenantCreateWithoutOrganizationOnboardingsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
@@ -4810,8 +4810,8 @@ export type TenantUncheckedCreateWithoutOrganizationOnboardingsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
@@ -4902,8 +4902,8 @@ export type TenantUpdateWithoutOrganizationOnboardingsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
@@ -4978,8 +4978,8 @@ export type TenantUncheckedUpdateWithoutOrganizationOnboardingsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
@@ -5054,8 +5054,8 @@ export type TenantCreateWithoutOnboardingPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
@@ -5130,8 +5130,8 @@ export type TenantUncheckedCreateWithoutOnboardingPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
@@ -5222,8 +5222,8 @@ export type TenantUpdateWithoutOnboardingPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
@@ -5298,8 +5298,8 @@ export type TenantUncheckedUpdateWithoutOnboardingPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
@@ -5373,8 +5373,8 @@ export type TenantCreateWithoutBankDocumentRequirementsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -5449,8 +5449,8 @@ export type TenantUncheckedCreateWithoutBankDocumentRequirementsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -5541,8 +5541,8 @@ export type TenantUpdateWithoutBankDocumentRequirementsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -5617,8 +5617,8 @@ export type TenantUncheckedUpdateWithoutBankDocumentRequirementsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -5693,8 +5693,8 @@ export type TenantCreateWithoutApiKeysInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -5769,8 +5769,8 @@ export type TenantUncheckedCreateWithoutApiKeysInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -5861,8 +5861,8 @@ export type TenantUpdateWithoutApiKeysInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -5937,8 +5937,8 @@ export type TenantUncheckedUpdateWithoutApiKeysInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -6013,8 +6013,8 @@ export type TenantCreateWithoutSocialsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -6089,8 +6089,8 @@ export type TenantUncheckedCreateWithoutSocialsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -6181,8 +6181,8 @@ export type TenantUpdateWithoutSocialsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -6257,8 +6257,8 @@ export type TenantUncheckedUpdateWithoutSocialsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -6333,8 +6333,8 @@ export type TenantCreateWithoutWalletsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -6409,8 +6409,8 @@ export type TenantUncheckedCreateWithoutWalletsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -6501,8 +6501,8 @@ export type TenantUpdateWithoutWalletsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -6577,8 +6577,8 @@ export type TenantUncheckedUpdateWithoutWalletsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -6653,8 +6653,8 @@ export type TenantCreateWithoutTransactionsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -6729,8 +6729,8 @@ export type TenantUncheckedCreateWithoutTransactionsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -6821,8 +6821,8 @@ export type TenantUpdateWithoutTransactionsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -6897,8 +6897,8 @@ export type TenantUncheckedUpdateWithoutTransactionsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -6973,8 +6973,8 @@ export type TenantCreateWithoutSettingsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -7049,8 +7049,8 @@ export type TenantUncheckedCreateWithoutSettingsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -7141,8 +7141,8 @@ export type TenantUpdateWithoutSettingsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -7217,8 +7217,8 @@ export type TenantUncheckedUpdateWithoutSettingsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -7293,8 +7293,8 @@ export type TenantCreateWithoutPropertiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -7369,8 +7369,8 @@ export type TenantUncheckedCreateWithoutPropertiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -7461,8 +7461,8 @@ export type TenantUpdateWithoutPropertiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -7537,8 +7537,8 @@ export type TenantUncheckedUpdateWithoutPropertiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -7613,8 +7613,8 @@ export type TenantCreateWithoutPropertyMediaInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -7689,8 +7689,8 @@ export type TenantUncheckedCreateWithoutPropertyMediaInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -7781,8 +7781,8 @@ export type TenantUpdateWithoutPropertyMediaInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -7857,8 +7857,8 @@ export type TenantUncheckedUpdateWithoutPropertyMediaInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -7933,8 +7933,8 @@ export type TenantCreateWithoutPropertyDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -8009,8 +8009,8 @@ export type TenantUncheckedCreateWithoutPropertyDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -8101,8 +8101,8 @@ export type TenantUpdateWithoutPropertyDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -8177,8 +8177,8 @@ export type TenantUncheckedUpdateWithoutPropertyDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -8253,8 +8253,8 @@ export type TenantCreateWithoutAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -8329,8 +8329,8 @@ export type TenantUncheckedCreateWithoutAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -8421,8 +8421,8 @@ export type TenantUpdateWithoutAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -8497,8 +8497,8 @@ export type TenantUncheckedUpdateWithoutAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -8573,8 +8573,8 @@ export type TenantCreateWithoutPropertyVariantsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -8649,8 +8649,8 @@ export type TenantUncheckedCreateWithoutPropertyVariantsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -8741,8 +8741,8 @@ export type TenantUpdateWithoutPropertyVariantsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -8817,8 +8817,8 @@ export type TenantUncheckedUpdateWithoutPropertyVariantsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -8893,8 +8893,8 @@ export type TenantCreateWithoutPropertyVariantAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -8969,8 +8969,8 @@ export type TenantUncheckedCreateWithoutPropertyVariantAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -9061,8 +9061,8 @@ export type TenantUpdateWithoutPropertyVariantAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -9137,8 +9137,8 @@ export type TenantUncheckedUpdateWithoutPropertyVariantAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -9213,8 +9213,8 @@ export type TenantCreateWithoutPropertyVariantMediaInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -9289,8 +9289,8 @@ export type TenantUncheckedCreateWithoutPropertyVariantMediaInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -9381,8 +9381,8 @@ export type TenantUpdateWithoutPropertyVariantMediaInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -9457,8 +9457,8 @@ export type TenantUncheckedUpdateWithoutPropertyVariantMediaInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -9533,8 +9533,8 @@ export type TenantCreateWithoutPropertyUnitsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -9609,8 +9609,8 @@ export type TenantUncheckedCreateWithoutPropertyUnitsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -9701,8 +9701,8 @@ export type TenantUpdateWithoutPropertyUnitsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -9777,8 +9777,8 @@ export type TenantUncheckedUpdateWithoutPropertyUnitsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -9853,8 +9853,8 @@ export type TenantCreateWithoutPropertyAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -9929,8 +9929,8 @@ export type TenantUncheckedCreateWithoutPropertyAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -10021,8 +10021,8 @@ export type TenantUpdateWithoutPropertyAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -10097,8 +10097,8 @@ export type TenantUncheckedUpdateWithoutPropertyAmenitiesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -10173,8 +10173,8 @@ export type TenantCreateWithoutDocumentationPlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -10249,8 +10249,8 @@ export type TenantUncheckedCreateWithoutDocumentationPlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -10341,8 +10341,8 @@ export type TenantUpdateWithoutDocumentationPlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -10417,8 +10417,8 @@ export type TenantUncheckedUpdateWithoutDocumentationPlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -10493,8 +10493,8 @@ export type TenantCreateWithoutQuestionnairePlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -10569,8 +10569,8 @@ export type TenantUncheckedCreateWithoutQuestionnairePlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -10661,8 +10661,8 @@ export type TenantUpdateWithoutQuestionnairePlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -10737,8 +10737,8 @@ export type TenantUncheckedUpdateWithoutQuestionnairePlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -10814,8 +10814,8 @@ export type TenantCreateWithoutGatePlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
@@ -10890,8 +10890,8 @@ export type TenantUncheckedCreateWithoutGatePlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
@@ -10982,8 +10982,8 @@ export type TenantUpdateWithoutGatePlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
@@ -11058,8 +11058,8 @@ export type TenantUncheckedUpdateWithoutGatePlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
@@ -11133,8 +11133,8 @@ export type TenantCreateWithoutPaymentPlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -11209,8 +11209,8 @@ export type TenantUncheckedCreateWithoutPaymentPlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -11301,8 +11301,8 @@ export type TenantUpdateWithoutPaymentPlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -11377,8 +11377,8 @@ export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -11453,8 +11453,8 @@ export type TenantCreateWithoutPaymentMethodsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -11529,8 +11529,8 @@ export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -11621,8 +11621,8 @@ export type TenantUpdateWithoutPaymentMethodsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -11697,8 +11697,8 @@ export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -11773,8 +11773,8 @@ export type TenantCreateWithoutPropertyPaymentMethodLinksInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -11849,8 +11849,8 @@ export type TenantUncheckedCreateWithoutPropertyPaymentMethodLinksInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -11941,8 +11941,8 @@ export type TenantUpdateWithoutPropertyPaymentMethodLinksInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -12017,8 +12017,8 @@ export type TenantUncheckedUpdateWithoutPropertyPaymentMethodLinksInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -12093,8 +12093,8 @@ export type TenantCreateWithoutPropertyPaymentMethodPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -12169,8 +12169,8 @@ export type TenantUncheckedCreateWithoutPropertyPaymentMethodPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -12261,8 +12261,8 @@ export type TenantUpdateWithoutPropertyPaymentMethodPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -12337,8 +12337,8 @@ export type TenantUncheckedUpdateWithoutPropertyPaymentMethodPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -12413,8 +12413,8 @@ export type TenantCreateWithoutPhaseEventAttachmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -12489,8 +12489,8 @@ export type TenantUncheckedCreateWithoutPhaseEventAttachmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -12581,8 +12581,8 @@ export type TenantUpdateWithoutPhaseEventAttachmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -12657,8 +12657,8 @@ export type TenantUncheckedUpdateWithoutPhaseEventAttachmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -12733,8 +12733,8 @@ export type TenantCreateWithoutPaymentMethodPhaseStepsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -12809,8 +12809,8 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseStepsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -12901,8 +12901,8 @@ export type TenantUpdateWithoutPaymentMethodPhaseStepsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -12977,8 +12977,8 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseStepsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -13053,8 +13053,8 @@ export type TenantCreateWithoutStepEventAttachmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -13129,8 +13129,8 @@ export type TenantUncheckedCreateWithoutStepEventAttachmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -13221,8 +13221,8 @@ export type TenantUpdateWithoutStepEventAttachmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -13297,8 +13297,8 @@ export type TenantUncheckedUpdateWithoutStepEventAttachmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -13373,8 +13373,8 @@ export type TenantCreateWithoutPaymentMethodPhaseDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -13449,8 +13449,8 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -13541,8 +13541,8 @@ export type TenantUpdateWithoutPaymentMethodPhaseDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -13617,8 +13617,8 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -13693,8 +13693,8 @@ export type TenantCreateWithoutPaymentMethodPhaseFieldsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -13769,8 +13769,8 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseFieldsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -13861,8 +13861,8 @@ export type TenantUpdateWithoutPaymentMethodPhaseFieldsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -13937,8 +13937,8 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseFieldsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -14013,8 +14013,8 @@ export type TenantCreateWithoutApplicationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -14089,8 +14089,8 @@ export type TenantUncheckedCreateWithoutApplicationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -14181,8 +14181,8 @@ export type TenantUpdateWithoutApplicationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -14257,8 +14257,8 @@ export type TenantUncheckedUpdateWithoutApplicationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -14333,8 +14333,8 @@ export type TenantCreateWithoutApplicationOrganizationsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -14409,8 +14409,8 @@ export type TenantUncheckedCreateWithoutApplicationOrganizationsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -14501,8 +14501,8 @@ export type TenantUpdateWithoutApplicationOrganizationsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -14577,8 +14577,8 @@ export type TenantUncheckedUpdateWithoutApplicationOrganizationsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -14653,8 +14653,8 @@ export type TenantCreateWithoutContractRefundsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -14729,8 +14729,8 @@ export type TenantUncheckedCreateWithoutContractRefundsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -14821,8 +14821,8 @@ export type TenantUpdateWithoutContractRefundsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -14897,8 +14897,8 @@ export type TenantUncheckedUpdateWithoutContractRefundsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -14973,8 +14973,8 @@ export type TenantCreateWithoutApplicationPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -15049,8 +15049,8 @@ export type TenantUncheckedCreateWithoutApplicationPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -15141,8 +15141,8 @@ export type TenantUpdateWithoutApplicationPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -15217,8 +15217,8 @@ export type TenantUncheckedUpdateWithoutApplicationPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -15293,8 +15293,8 @@ export type TenantCreateWithoutQuestionnairePhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -15369,8 +15369,8 @@ export type TenantUncheckedCreateWithoutQuestionnairePhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -15461,8 +15461,8 @@ export type TenantUpdateWithoutQuestionnairePhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -15537,8 +15537,8 @@ export type TenantUncheckedUpdateWithoutQuestionnairePhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -15613,8 +15613,8 @@ export type TenantCreateWithoutQuestionnairePhaseReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -15689,8 +15689,8 @@ export type TenantUncheckedCreateWithoutQuestionnairePhaseReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -15781,8 +15781,8 @@ export type TenantUpdateWithoutQuestionnairePhaseReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -15857,8 +15857,8 @@ export type TenantUncheckedUpdateWithoutQuestionnairePhaseReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -15934,8 +15934,8 @@ export type TenantCreateWithoutGatePhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -16010,8 +16010,8 @@ export type TenantUncheckedCreateWithoutGatePhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -16102,8 +16102,8 @@ export type TenantUpdateWithoutGatePhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -16178,8 +16178,8 @@ export type TenantUncheckedUpdateWithoutGatePhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -16254,8 +16254,8 @@ export type TenantCreateWithoutGatePhaseReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -16330,8 +16330,8 @@ export type TenantUncheckedCreateWithoutGatePhaseReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -16422,8 +16422,8 @@ export type TenantUpdateWithoutGatePhaseReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -16498,8 +16498,8 @@ export type TenantUncheckedUpdateWithoutGatePhaseReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -16573,8 +16573,8 @@ export type TenantCreateWithoutDocumentationPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -16649,8 +16649,8 @@ export type TenantUncheckedCreateWithoutDocumentationPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -16741,8 +16741,8 @@ export type TenantUpdateWithoutDocumentationPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -16817,8 +16817,8 @@ export type TenantUncheckedUpdateWithoutDocumentationPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -16893,8 +16893,8 @@ export type TenantCreateWithoutPaymentPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -16969,8 +16969,8 @@ export type TenantUncheckedCreateWithoutPaymentPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -17061,8 +17061,8 @@ export type TenantUpdateWithoutPaymentPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -17137,8 +17137,8 @@ export type TenantUncheckedUpdateWithoutPaymentPhasesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -17213,8 +17213,8 @@ export type TenantCreateWithoutQuestionnaireFieldsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -17289,8 +17289,8 @@ export type TenantUncheckedCreateWithoutQuestionnaireFieldsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -17381,8 +17381,8 @@ export type TenantUpdateWithoutQuestionnaireFieldsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -17457,8 +17457,8 @@ export type TenantUncheckedUpdateWithoutQuestionnaireFieldsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -17533,8 +17533,8 @@ export type TenantCreateWithoutApplicationEventsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -17609,8 +17609,8 @@ export type TenantUncheckedCreateWithoutApplicationEventsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -17701,8 +17701,8 @@ export type TenantUpdateWithoutApplicationEventsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -17777,8 +17777,8 @@ export type TenantUncheckedUpdateWithoutApplicationEventsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -17853,8 +17853,8 @@ export type TenantCreateWithoutPaymentInstallmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -17929,8 +17929,8 @@ export type TenantUncheckedCreateWithoutPaymentInstallmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -18021,8 +18021,8 @@ export type TenantUpdateWithoutPaymentInstallmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -18097,8 +18097,8 @@ export type TenantUncheckedUpdateWithoutPaymentInstallmentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -18173,8 +18173,8 @@ export type TenantCreateWithoutApplicationPaymentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -18249,8 +18249,8 @@ export type TenantUncheckedCreateWithoutApplicationPaymentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -18341,8 +18341,8 @@ export type TenantUpdateWithoutApplicationPaymentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -18417,8 +18417,8 @@ export type TenantUncheckedUpdateWithoutApplicationPaymentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -18493,8 +18493,8 @@ export type TenantCreateWithoutApplicationDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -18569,8 +18569,8 @@ export type TenantUncheckedCreateWithoutApplicationDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -18661,8 +18661,8 @@ export type TenantUpdateWithoutApplicationDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -18737,8 +18737,8 @@ export type TenantUncheckedUpdateWithoutApplicationDocumentsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -18813,8 +18813,8 @@ export type TenantCreateWithoutDocumentReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -18889,8 +18889,8 @@ export type TenantUncheckedCreateWithoutDocumentReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -18981,8 +18981,8 @@ export type TenantUpdateWithoutDocumentReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -19057,8 +19057,8 @@ export type TenantUncheckedUpdateWithoutDocumentReviewsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -19133,8 +19133,8 @@ export type TenantCreateWithoutApprovalStageProgressInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -19209,8 +19209,8 @@ export type TenantUncheckedCreateWithoutApprovalStageProgressInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -19301,8 +19301,8 @@ export type TenantUpdateWithoutApprovalStageProgressInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -19377,8 +19377,8 @@ export type TenantUncheckedUpdateWithoutApprovalStageProgressInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -19453,8 +19453,8 @@ export type TenantCreateWithoutDocumentApprovalsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -19529,8 +19529,8 @@ export type TenantUncheckedCreateWithoutDocumentApprovalsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -19621,8 +19621,8 @@ export type TenantUpdateWithoutDocumentApprovalsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -19697,8 +19697,8 @@ export type TenantUncheckedUpdateWithoutDocumentApprovalsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -19773,8 +19773,8 @@ export type TenantCreateWithoutDocumentTemplatesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -19849,8 +19849,8 @@ export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -19941,8 +19941,8 @@ export type TenantUpdateWithoutDocumentTemplatesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -20017,8 +20017,8 @@ export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -20093,8 +20093,8 @@ export type TenantCreateWithoutOfferLettersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -20169,8 +20169,8 @@ export type TenantUncheckedCreateWithoutOfferLettersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -20261,8 +20261,8 @@ export type TenantUpdateWithoutOfferLettersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -20337,8 +20337,8 @@ export type TenantUncheckedUpdateWithoutOfferLettersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -20413,8 +20413,8 @@ export type TenantCreateWithoutContractTerminationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -20489,8 +20489,8 @@ export type TenantUncheckedCreateWithoutContractTerminationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -20581,8 +20581,8 @@ export type TenantUpdateWithoutContractTerminationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -20657,8 +20657,8 @@ export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -20733,8 +20733,8 @@ export type TenantCreateWithoutPaymentMethodChangeRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -20809,8 +20809,8 @@ export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -20901,8 +20901,8 @@ export type TenantUpdateWithoutPaymentMethodChangeRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -20977,8 +20977,8 @@ export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -21053,8 +21053,8 @@ export type TenantCreateWithoutDocumentRequirementRulesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -21129,8 +21129,8 @@ export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -21221,8 +21221,8 @@ export type TenantUpdateWithoutDocumentRequirementRulesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -21297,8 +21297,8 @@ export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -21373,8 +21373,8 @@ export type TenantCreateWithoutEventChannelsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -21449,8 +21449,8 @@ export type TenantUncheckedCreateWithoutEventChannelsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -21541,8 +21541,8 @@ export type TenantUpdateWithoutEventChannelsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -21617,8 +21617,8 @@ export type TenantUncheckedUpdateWithoutEventChannelsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -21693,8 +21693,8 @@ export type TenantCreateWithoutEventTypesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -21769,8 +21769,8 @@ export type TenantUncheckedCreateWithoutEventTypesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -21861,8 +21861,8 @@ export type TenantUpdateWithoutEventTypesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -21937,8 +21937,8 @@ export type TenantUncheckedUpdateWithoutEventTypesInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -22013,8 +22013,8 @@ export type TenantCreateWithoutEventHandlersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -22089,8 +22089,8 @@ export type TenantUncheckedCreateWithoutEventHandlersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -22181,8 +22181,8 @@ export type TenantUpdateWithoutEventHandlersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -22257,8 +22257,8 @@ export type TenantUncheckedUpdateWithoutEventHandlersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -22333,8 +22333,8 @@ export type TenantCreateWithoutDomainEventsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -22409,8 +22409,8 @@ export type TenantUncheckedCreateWithoutDomainEventsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -22501,8 +22501,8 @@ export type TenantUpdateWithoutDomainEventsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -22577,8 +22577,8 @@ export type TenantUncheckedUpdateWithoutDomainEventsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -22653,8 +22653,8 @@ export type TenantCreateWithoutPropertyTransferRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -22729,8 +22729,8 @@ export type TenantUncheckedCreateWithoutPropertyTransferRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -22821,8 +22821,8 @@ export type TenantUpdateWithoutPropertyTransferRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -22897,8 +22897,8 @@ export type TenantUncheckedUpdateWithoutPropertyTransferRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -22973,8 +22973,8 @@ export type TenantCreateWithoutApprovalRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -23049,8 +23049,8 @@ export type TenantUncheckedCreateWithoutApprovalRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -23141,8 +23141,8 @@ export type TenantUpdateWithoutApprovalRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -23217,8 +23217,8 @@ export type TenantUncheckedUpdateWithoutApprovalRequestsInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -23293,8 +23293,8 @@ export type TenantCreateWithoutWorkflowBlockersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
@@ -23369,8 +23369,8 @@ export type TenantUncheckedCreateWithoutWorkflowBlockersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedCreateNestedManyWithoutTenantInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
@@ -23461,8 +23461,8 @@ export type TenantUpdateWithoutWorkflowBlockersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
@@ -23537,8 +23537,8 @@ export type TenantUncheckedUpdateWithoutWorkflowBlockersInput = {
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
   organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethods?: Prisma.OnboardingMethodUncheckedUpdateManyWithoutTenantNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
   organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
@@ -23613,8 +23613,8 @@ export type TenantCountOutputType = {
   applicationOrganizations: number
   organizationTypes: number
   organizationInvitations: number
-  onboardingMethods: number
-  onboardingMethodPhases: number
+  onboardingFlows: number
+  onboardingFlowPhases: number
   organizationOnboardings: number
   onboardingPhases: number
   gatePlans: number
@@ -23684,8 +23684,8 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   applicationOrganizations?: boolean | TenantCountOutputTypeCountApplicationOrganizationsArgs
   organizationTypes?: boolean | TenantCountOutputTypeCountOrganizationTypesArgs
   organizationInvitations?: boolean | TenantCountOutputTypeCountOrganizationInvitationsArgs
-  onboardingMethods?: boolean | TenantCountOutputTypeCountOnboardingMethodsArgs
-  onboardingMethodPhases?: boolean | TenantCountOutputTypeCountOnboardingMethodPhasesArgs
+  onboardingFlows?: boolean | TenantCountOutputTypeCountOnboardingFlowsArgs
+  onboardingFlowPhases?: boolean | TenantCountOutputTypeCountOnboardingFlowPhasesArgs
   organizationOnboardings?: boolean | TenantCountOutputTypeCountOrganizationOnboardingsArgs
   onboardingPhases?: boolean | TenantCountOutputTypeCountOnboardingPhasesArgs
   gatePlans?: boolean | TenantCountOutputTypeCountGatePlansArgs
@@ -24133,15 +24133,15 @@ export type TenantCountOutputTypeCountOrganizationInvitationsArgs<ExtArgs extend
 /**
  * TenantCountOutputType without action
  */
-export type TenantCountOutputTypeCountOnboardingMethodsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OnboardingMethodWhereInput
+export type TenantCountOutputTypeCountOnboardingFlowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OnboardingFlowWhereInput
 }
 
 /**
  * TenantCountOutputType without action
  */
-export type TenantCountOutputTypeCountOnboardingMethodPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OnboardingMethodPhaseWhereInput
+export type TenantCountOutputTypeCountOnboardingFlowPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OnboardingFlowPhaseWhereInput
 }
 
 /**
@@ -24248,8 +24248,8 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   applicationOrganizations?: boolean | Prisma.Tenant$applicationOrganizationsArgs<ExtArgs>
   organizationTypes?: boolean | Prisma.Tenant$organizationTypesArgs<ExtArgs>
   organizationInvitations?: boolean | Prisma.Tenant$organizationInvitationsArgs<ExtArgs>
-  onboardingMethods?: boolean | Prisma.Tenant$onboardingMethodsArgs<ExtArgs>
-  onboardingMethodPhases?: boolean | Prisma.Tenant$onboardingMethodPhasesArgs<ExtArgs>
+  onboardingFlows?: boolean | Prisma.Tenant$onboardingFlowsArgs<ExtArgs>
+  onboardingFlowPhases?: boolean | Prisma.Tenant$onboardingFlowPhasesArgs<ExtArgs>
   organizationOnboardings?: boolean | Prisma.Tenant$organizationOnboardingsArgs<ExtArgs>
   onboardingPhases?: boolean | Prisma.Tenant$onboardingPhasesArgs<ExtArgs>
   gatePlans?: boolean | Prisma.Tenant$gatePlansArgs<ExtArgs>
@@ -24332,8 +24332,8 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   applicationOrganizations?: boolean | Prisma.Tenant$applicationOrganizationsArgs<ExtArgs>
   organizationTypes?: boolean | Prisma.Tenant$organizationTypesArgs<ExtArgs>
   organizationInvitations?: boolean | Prisma.Tenant$organizationInvitationsArgs<ExtArgs>
-  onboardingMethods?: boolean | Prisma.Tenant$onboardingMethodsArgs<ExtArgs>
-  onboardingMethodPhases?: boolean | Prisma.Tenant$onboardingMethodPhasesArgs<ExtArgs>
+  onboardingFlows?: boolean | Prisma.Tenant$onboardingFlowsArgs<ExtArgs>
+  onboardingFlowPhases?: boolean | Prisma.Tenant$onboardingFlowPhasesArgs<ExtArgs>
   organizationOnboardings?: boolean | Prisma.Tenant$organizationOnboardingsArgs<ExtArgs>
   onboardingPhases?: boolean | Prisma.Tenant$onboardingPhasesArgs<ExtArgs>
   gatePlans?: boolean | Prisma.Tenant$gatePlansArgs<ExtArgs>
@@ -24406,8 +24406,8 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     applicationOrganizations: Prisma.$ApplicationOrganizationPayload<ExtArgs>[]
     organizationTypes: Prisma.$OrganizationTypePayload<ExtArgs>[]
     organizationInvitations: Prisma.$OrganizationInvitationPayload<ExtArgs>[]
-    onboardingMethods: Prisma.$OnboardingMethodPayload<ExtArgs>[]
-    onboardingMethodPhases: Prisma.$OnboardingMethodPhasePayload<ExtArgs>[]
+    onboardingFlows: Prisma.$OnboardingFlowPayload<ExtArgs>[]
+    onboardingFlowPhases: Prisma.$OnboardingFlowPhasePayload<ExtArgs>[]
     organizationOnboardings: Prisma.$OrganizationOnboardingPayload<ExtArgs>[]
     onboardingPhases: Prisma.$OnboardingPhasePayload<ExtArgs>[]
     gatePlans: Prisma.$GatePlanPayload<ExtArgs>[]
@@ -24822,8 +24822,8 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   applicationOrganizations<T extends Prisma.Tenant$applicationOrganizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$applicationOrganizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationOrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizationTypes<T extends Prisma.Tenant$organizationTypesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$organizationTypesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizationInvitations<T extends Prisma.Tenant$organizationInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$organizationInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  onboardingMethods<T extends Prisma.Tenant$onboardingMethodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$onboardingMethodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnboardingMethodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  onboardingMethodPhases<T extends Prisma.Tenant$onboardingMethodPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$onboardingMethodPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnboardingMethodPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  onboardingFlows<T extends Prisma.Tenant$onboardingFlowsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$onboardingFlowsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnboardingFlowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  onboardingFlowPhases<T extends Prisma.Tenant$onboardingFlowPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$onboardingFlowPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnboardingFlowPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizationOnboardings<T extends Prisma.Tenant$organizationOnboardingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$organizationOnboardingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationOnboardingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   onboardingPhases<T extends Prisma.Tenant$onboardingPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$onboardingPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnboardingPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   gatePlans<T extends Prisma.Tenant$gatePlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$gatePlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -26671,51 +26671,51 @@ export type Tenant$organizationInvitationsArgs<ExtArgs extends runtime.Types.Ext
 }
 
 /**
- * Tenant.onboardingMethods
+ * Tenant.onboardingFlows
  */
-export type Tenant$onboardingMethodsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Tenant$onboardingFlowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the OnboardingMethod
+   * Select specific fields to fetch from the OnboardingFlow
    */
-  select?: Prisma.OnboardingMethodSelect<ExtArgs> | null
+  select?: Prisma.OnboardingFlowSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the OnboardingMethod
+   * Omit specific fields from the OnboardingFlow
    */
-  omit?: Prisma.OnboardingMethodOmit<ExtArgs> | null
+  omit?: Prisma.OnboardingFlowOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.OnboardingMethodInclude<ExtArgs> | null
-  where?: Prisma.OnboardingMethodWhereInput
-  orderBy?: Prisma.OnboardingMethodOrderByWithRelationInput | Prisma.OnboardingMethodOrderByWithRelationInput[]
-  cursor?: Prisma.OnboardingMethodWhereUniqueInput
+  include?: Prisma.OnboardingFlowInclude<ExtArgs> | null
+  where?: Prisma.OnboardingFlowWhereInput
+  orderBy?: Prisma.OnboardingFlowOrderByWithRelationInput | Prisma.OnboardingFlowOrderByWithRelationInput[]
+  cursor?: Prisma.OnboardingFlowWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.OnboardingMethodScalarFieldEnum | Prisma.OnboardingMethodScalarFieldEnum[]
+  distinct?: Prisma.OnboardingFlowScalarFieldEnum | Prisma.OnboardingFlowScalarFieldEnum[]
 }
 
 /**
- * Tenant.onboardingMethodPhases
+ * Tenant.onboardingFlowPhases
  */
-export type Tenant$onboardingMethodPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Tenant$onboardingFlowPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the OnboardingMethodPhase
+   * Select specific fields to fetch from the OnboardingFlowPhase
    */
-  select?: Prisma.OnboardingMethodPhaseSelect<ExtArgs> | null
+  select?: Prisma.OnboardingFlowPhaseSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the OnboardingMethodPhase
+   * Omit specific fields from the OnboardingFlowPhase
    */
-  omit?: Prisma.OnboardingMethodPhaseOmit<ExtArgs> | null
+  omit?: Prisma.OnboardingFlowPhaseOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.OnboardingMethodPhaseInclude<ExtArgs> | null
-  where?: Prisma.OnboardingMethodPhaseWhereInput
-  orderBy?: Prisma.OnboardingMethodPhaseOrderByWithRelationInput | Prisma.OnboardingMethodPhaseOrderByWithRelationInput[]
-  cursor?: Prisma.OnboardingMethodPhaseWhereUniqueInput
+  include?: Prisma.OnboardingFlowPhaseInclude<ExtArgs> | null
+  where?: Prisma.OnboardingFlowPhaseWhereInput
+  orderBy?: Prisma.OnboardingFlowPhaseOrderByWithRelationInput | Prisma.OnboardingFlowPhaseOrderByWithRelationInput[]
+  cursor?: Prisma.OnboardingFlowPhaseWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.OnboardingMethodPhaseScalarFieldEnum | Prisma.OnboardingMethodPhaseScalarFieldEnum[]
+  distinct?: Prisma.OnboardingFlowPhaseScalarFieldEnum | Prisma.OnboardingFlowPhaseScalarFieldEnum[]
 }
 
 /**

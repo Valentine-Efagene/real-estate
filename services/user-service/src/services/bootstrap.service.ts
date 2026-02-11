@@ -610,7 +610,7 @@ class BootstrapService {
 
     /**
      * Seed onboarding templates for BANK and DEVELOPER organization types.
-     * Creates QuestionnairePlans, DocumentationPlans, GatePlans, and OnboardingMethods.
+     * Creates QuestionnairePlans, DocumentationPlans, GatePlans, and OnboardingFlows.
      * Idempotent — checks for existing records by name before creating.
      */
     private async seedOnboardingTemplates(tenantId: string): Promise<void> {
@@ -646,7 +646,7 @@ class BootstrapService {
      */
     private async seedBankOnboarding(tenantId: string, bankTypeId: string, platformTypeId: string): Promise<void> {
         // Check if already seeded
-        const existing = await prisma.onboardingMethod.findFirst({
+        const existing = await prisma.onboardingFlow.findFirst({
             where: { tenantId, name: 'Bank Onboarding' },
         });
         if (existing) return;
@@ -723,8 +723,8 @@ class BootstrapService {
             },
         });
 
-        // 4. Create OnboardingMethod linking everything together
-        const method = await prisma.onboardingMethod.create({
+        // 4. Create OnboardingFlow linking everything together
+        const flow = await prisma.onboardingFlow.create({
             data: {
                 tenantId,
                 name: 'Bank Onboarding',
@@ -743,13 +743,13 @@ class BootstrapService {
             },
         });
 
-        // 5. Link the onboarding method to the BANK org type
+        // 5. Link the onboarding flow to the BANK org type
         await prisma.organizationType.update({
             where: { id: bankTypeId },
-            data: { onboardingMethodId: method.id },
+            data: { onboardingFlowId: flow.id },
         });
 
-        console.log(`[Bootstrap] Seeded Bank Onboarding: ${method.id}`);
+        console.log(`[Bootstrap] Seeded Bank Onboarding: ${flow.id}`);
     }
 
     /**
@@ -757,7 +757,7 @@ class BootstrapService {
      */
     private async seedDeveloperOnboarding(tenantId: string, developerTypeId: string, platformTypeId: string): Promise<void> {
         // Check if already seeded
-        const existing = await prisma.onboardingMethod.findFirst({
+        const existing = await prisma.onboardingFlow.findFirst({
             where: { tenantId, name: 'Developer Onboarding' },
         });
         if (existing) return;
@@ -834,8 +834,8 @@ class BootstrapService {
             },
         });
 
-        // 4. Create OnboardingMethod linking everything together
-        const method = await prisma.onboardingMethod.create({
+        // 4. Create OnboardingFlow linking everything together
+        const flow = await prisma.onboardingFlow.create({
             data: {
                 tenantId,
                 name: 'Developer Onboarding',
@@ -854,13 +854,13 @@ class BootstrapService {
             },
         });
 
-        // 5. Link the onboarding method to the DEVELOPER org type
+        // 5. Link the onboarding flow to the DEVELOPER org type
         await prisma.organizationType.update({
             where: { id: developerTypeId },
-            data: { onboardingMethodId: method.id },
+            data: { onboardingFlowId: flow.id },
         });
 
-        console.log(`[Bootstrap] Seeded Developer Onboarding: ${method.id}`);
+        console.log(`[Bootstrap] Seeded Developer Onboarding: ${flow.id}`);
     }
 }
 

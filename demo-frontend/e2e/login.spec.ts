@@ -5,12 +5,12 @@ import { test, expect } from '@playwright/test';
  * 
  * Uses the bootstrapped admin credentials:
  * - Email: adaeze@mailsac.com
- * - Password: SecureP@ssw0rd123!
+ * - Password: password
  */
 
 const TEST_CREDENTIALS = {
     email: 'adaeze@mailsac.com',
-    password: 'SecureP@ssw0rd123!',
+    password: 'password',
 };
 
 test('should login successfully with valid credentials', async ({ page }) => {

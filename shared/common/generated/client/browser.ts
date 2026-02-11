@@ -73,16 +73,16 @@ export type OrganizationMember = Prisma.OrganizationMemberModel
  */
 export type OrganizationInvitation = Prisma.OrganizationInvitationModel
 /**
- * Model OnboardingMethod
+ * Model OnboardingFlow
  * 
  */
-export type OnboardingMethod = Prisma.OnboardingMethodModel
+export type OnboardingFlow = Prisma.OnboardingFlowModel
 /**
- * Model OnboardingMethodPhase
- * Phase template within an OnboardingMethod
+ * Model OnboardingFlowPhase
+ * Phase template within an OnboardingFlow
  * Supports QUESTIONNAIRE, DOCUMENTATION, and GATE phases (no PAYMENT)
  */
-export type OnboardingMethodPhase = Prisma.OnboardingMethodPhaseModel
+export type OnboardingFlowPhase = Prisma.OnboardingFlowPhaseModel
 /**
  * Model OrganizationOnboarding
  * 

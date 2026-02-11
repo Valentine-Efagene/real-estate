@@ -5,16 +5,16 @@ import {
     hasAnyRole,
     ADMIN_ROLES,
 } from '@valentine-efagene/qshelter-common';
-import { onboardingMethodService } from '../services/onboarding-method.service';
+import { onboardingFlowService } from '../services/onboarding-flow.service';
 import { z } from 'zod';
 
-export const onboardingMethodRouter = Router();
+export const onboardingFlowRouter = Router();
 
 // =============================================================================
 // VALIDATION SCHEMAS
 // =============================================================================
 
-const CreateMethodSchema = z.object({
+const CreateFlowSchema = z.object({
     name: z.string().min(2).max(200),
     description: z.string().optional(),
     isActive: z.boolean().optional(),
@@ -22,7 +22,7 @@ const CreateMethodSchema = z.object({
     expiresInDays: z.number().int().positive().nullable().optional(),
 });
 
-const UpdateMethodSchema = z.object({
+const UpdateFlowSchema = z.object({
     name: z.string().min(2).max(200).optional(),
     description: z.string().optional(),
     isActive: z.boolean().optional(),
@@ -62,17 +62,17 @@ const LinkOrgTypeSchema = z.object({
 // =============================================================================
 
 /**
- * List available plans and org types for building onboarding methods.
- * GET /onboarding-methods/reference/plans
+ * List available plans and org types for building onboarding flows.
+ * GET /onboarding-flows/reference/plans
  */
-onboardingMethodRouter.get('/reference/plans', async (req, res, next) => {
+onboardingFlowRouter.get('/reference/plans', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
         const [questionnairePlans, documentationPlans, gatePlans, orgTypes] = await Promise.all([
-            onboardingMethodService.listQuestionnairePlans(ctx.tenantId),
-            onboardingMethodService.listDocumentationPlans(ctx.tenantId),
-            onboardingMethodService.listGatePlans(ctx.tenantId),
-            onboardingMethodService.listOrgTypes(ctx.tenantId),
+            onboardingFlowService.listQuestionnairePlans(ctx.tenantId),
+            onboardingFlowService.listDocumentationPlans(ctx.tenantId),
+            onboardingFlowService.listGatePlans(ctx.tenantId),
+            onboardingFlowService.listOrgTypes(ctx.tenantId),
         ]);
         res.json(successResponse({ questionnairePlans, documentationPlans, gatePlans, orgTypes }));
     } catch (error) {
@@ -85,13 +85,13 @@ onboardingMethodRouter.get('/reference/plans', async (req, res, next) => {
 // =============================================================================
 
 /**
- * List all onboarding methods.
- * GET /onboarding-methods
+ * List all onboarding flows.
+ * GET /onboarding-flows
  */
-onboardingMethodRouter.get('/', async (req, res, next) => {
+onboardingFlowRouter.get('/', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        const result = await onboardingMethodService.list(ctx.tenantId);
+        const result = await onboardingFlowService.list(ctx.tenantId);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -99,13 +99,13 @@ onboardingMethodRouter.get('/', async (req, res, next) => {
 });
 
 /**
- * Get onboarding method by ID.
- * GET /onboarding-methods/:id
+ * Get onboarding flow by ID.
+ * GET /onboarding-flows/:id
  */
-onboardingMethodRouter.get('/:id', async (req, res, next) => {
+onboardingFlowRouter.get('/:id', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        const result = await onboardingMethodService.findById(ctx.tenantId, req.params.id);
+        const result = await onboardingFlowService.findById(ctx.tenantId, req.params.id);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -113,18 +113,18 @@ onboardingMethodRouter.get('/:id', async (req, res, next) => {
 });
 
 /**
- * Create a new onboarding method.
- * POST /onboarding-methods
+ * Create a new onboarding flow.
+ * POST /onboarding-flows
  * Admin only.
  */
-onboardingMethodRouter.post('/', async (req, res, next) => {
+onboardingFlowRouter.post('/', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
         if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
-        const data = CreateMethodSchema.parse(req.body);
-        const result = await onboardingMethodService.create(ctx.tenantId, data);
+        const data = CreateFlowSchema.parse(req.body);
+        const result = await onboardingFlowService.create(ctx.tenantId, data);
         res.status(201).json(successResponse(result));
     } catch (error) {
         next(error);
@@ -132,18 +132,18 @@ onboardingMethodRouter.post('/', async (req, res, next) => {
 });
 
 /**
- * Update an onboarding method.
- * PATCH /onboarding-methods/:id
+ * Update an onboarding flow.
+ * PATCH /onboarding-flows/:id
  * Admin only.
  */
-onboardingMethodRouter.patch('/:id', async (req, res, next) => {
+onboardingFlowRouter.patch('/:id', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
         if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
-        const data = UpdateMethodSchema.parse(req.body);
-        const result = await onboardingMethodService.update(ctx.tenantId, req.params.id, data);
+        const data = UpdateFlowSchema.parse(req.body);
+        const result = await onboardingFlowService.update(ctx.tenantId, req.params.id, data);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -151,17 +151,17 @@ onboardingMethodRouter.patch('/:id', async (req, res, next) => {
 });
 
 /**
- * Delete an onboarding method.
- * DELETE /onboarding-methods/:id
+ * Delete an onboarding flow.
+ * DELETE /onboarding-flows/:id
  * Admin only.
  */
-onboardingMethodRouter.delete('/:id', async (req, res, next) => {
+onboardingFlowRouter.delete('/:id', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
         if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
-        const result = await onboardingMethodService.delete(ctx.tenantId, req.params.id);
+        const result = await onboardingFlowService.delete(ctx.tenantId, req.params.id);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -173,18 +173,18 @@ onboardingMethodRouter.delete('/:id', async (req, res, next) => {
 // =============================================================================
 
 /**
- * Add a phase to an onboarding method.
- * POST /onboarding-methods/:id/phases
+ * Add a phase to an onboarding flow.
+ * POST /onboarding-flows/:id/phases
  * Admin only.
  */
-onboardingMethodRouter.post('/:id/phases', async (req, res, next) => {
+onboardingFlowRouter.post('/:id/phases', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
         if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const data = AddPhaseSchema.parse(req.body);
-        const result = await onboardingMethodService.addPhase(ctx.tenantId, req.params.id, data);
+        const result = await onboardingFlowService.addPhase(ctx.tenantId, req.params.id, data);
         res.status(201).json(successResponse(result));
     } catch (error) {
         next(error);
@@ -193,17 +193,17 @@ onboardingMethodRouter.post('/:id/phases', async (req, res, next) => {
 
 /**
  * Update a phase.
- * PATCH /onboarding-methods/:id/phases/:phaseId
+ * PATCH /onboarding-flows/:id/phases/:phaseId
  * Admin only.
  */
-onboardingMethodRouter.patch('/:id/phases/:phaseId', async (req, res, next) => {
+onboardingFlowRouter.patch('/:id/phases/:phaseId', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
         if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const data = UpdatePhaseSchema.parse(req.body);
-        const result = await onboardingMethodService.updatePhase(ctx.tenantId, req.params.id, req.params.phaseId, data);
+        const result = await onboardingFlowService.updatePhase(ctx.tenantId, req.params.id, req.params.phaseId, data);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -212,16 +212,16 @@ onboardingMethodRouter.patch('/:id/phases/:phaseId', async (req, res, next) => {
 
 /**
  * Remove a phase.
- * DELETE /onboarding-methods/:id/phases/:phaseId
+ * DELETE /onboarding-flows/:id/phases/:phaseId
  * Admin only.
  */
-onboardingMethodRouter.delete('/:id/phases/:phaseId', async (req, res, next) => {
+onboardingFlowRouter.delete('/:id/phases/:phaseId', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
         if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
-        const result = await onboardingMethodService.removePhase(ctx.tenantId, req.params.id, req.params.phaseId);
+        const result = await onboardingFlowService.removePhase(ctx.tenantId, req.params.id, req.params.phaseId);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -233,18 +233,18 @@ onboardingMethodRouter.delete('/:id/phases/:phaseId', async (req, res, next) => 
 // =============================================================================
 
 /**
- * Link an onboarding method to an organization type.
- * POST /onboarding-methods/:id/org-types
+ * Link an onboarding flow to an organization type.
+ * POST /onboarding-flows/:id/org-types
  * Admin only.
  */
-onboardingMethodRouter.post('/:id/org-types', async (req, res, next) => {
+onboardingFlowRouter.post('/:id/org-types', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
         if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const data = LinkOrgTypeSchema.parse(req.body);
-        const result = await onboardingMethodService.linkToOrgType(ctx.tenantId, req.params.id, data.organizationTypeId);
+        const result = await onboardingFlowService.linkToOrgType(ctx.tenantId, req.params.id, data.organizationTypeId);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -252,17 +252,17 @@ onboardingMethodRouter.post('/:id/org-types', async (req, res, next) => {
 });
 
 /**
- * Unlink an organization type from this onboarding method.
- * DELETE /onboarding-methods/:id/org-types/:orgTypeId
+ * Unlink an organization type from this onboarding flow.
+ * DELETE /onboarding-flows/:id/org-types/:orgTypeId
  * Admin only.
  */
-onboardingMethodRouter.delete('/:id/org-types/:orgTypeId', async (req, res, next) => {
+onboardingFlowRouter.delete('/:id/org-types/:orgTypeId', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
         if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
-        const result = await onboardingMethodService.unlinkOrgType(ctx.tenantId, req.params.id, req.params.orgTypeId);
+        const result = await onboardingFlowService.unlinkOrgType(ctx.tenantId, req.params.id, req.params.orgTypeId);
         res.json(successResponse(result));
     } catch (error) {
         next(error);

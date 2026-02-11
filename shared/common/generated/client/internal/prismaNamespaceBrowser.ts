@@ -61,8 +61,8 @@ export const ModelName = {
   Organization: 'Organization',
   OrganizationMember: 'OrganizationMember',
   OrganizationInvitation: 'OrganizationInvitation',
-  OnboardingMethod: 'OnboardingMethod',
-  OnboardingMethodPhase: 'OnboardingMethodPhase',
+  OnboardingFlow: 'OnboardingFlow',
+  OnboardingFlowPhase: 'OnboardingFlowPhase',
   OrganizationOnboarding: 'OrganizationOnboarding',
   OnboardingPhase: 'OnboardingPhase',
   BankDocumentRequirement: 'BankDocumentRequirement',
@@ -159,7 +159,7 @@ export const OrganizationTypeScalarFieldEnum = {
   name: 'name',
   description: 'description',
   isSystemType: 'isSystemType',
-  onboardingMethodId: 'onboardingMethodId',
+  onboardingFlowId: 'onboardingFlowId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -327,7 +327,7 @@ export const OrganizationInvitationScalarFieldEnum = {
 export type OrganizationInvitationScalarFieldEnum = (typeof OrganizationInvitationScalarFieldEnum)[keyof typeof OrganizationInvitationScalarFieldEnum]
 
 
-export const OnboardingMethodScalarFieldEnum = {
+export const OnboardingFlowScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
@@ -339,13 +339,13 @@ export const OnboardingMethodScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type OnboardingMethodScalarFieldEnum = (typeof OnboardingMethodScalarFieldEnum)[keyof typeof OnboardingMethodScalarFieldEnum]
+export type OnboardingFlowScalarFieldEnum = (typeof OnboardingFlowScalarFieldEnum)[keyof typeof OnboardingFlowScalarFieldEnum]
 
 
-export const OnboardingMethodPhaseScalarFieldEnum = {
+export const OnboardingFlowPhaseScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  onboardingMethodId: 'onboardingMethodId',
+  onboardingFlowId: 'onboardingFlowId',
   questionnairePlanId: 'questionnairePlanId',
   documentationPlanId: 'documentationPlanId',
   gatePlanId: 'gatePlanId',
@@ -359,14 +359,14 @@ export const OnboardingMethodPhaseScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type OnboardingMethodPhaseScalarFieldEnum = (typeof OnboardingMethodPhaseScalarFieldEnum)[keyof typeof OnboardingMethodPhaseScalarFieldEnum]
+export type OnboardingFlowPhaseScalarFieldEnum = (typeof OnboardingFlowPhaseScalarFieldEnum)[keyof typeof OnboardingFlowPhaseScalarFieldEnum]
 
 
 export const OrganizationOnboardingScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   organizationId: 'organizationId',
-  onboardingMethodId: 'onboardingMethodId',
+  onboardingFlowId: 'onboardingFlowId',
   templateSnapshot: 'templateSnapshot',
   assigneeId: 'assigneeId',
   status: 'status',
@@ -1826,7 +1826,7 @@ export const OrganizationTypeOrderByRelevanceFieldEnum = {
   code: 'code',
   name: 'name',
   description: 'description',
-  onboardingMethodId: 'onboardingMethodId'
+  onboardingFlowId: 'onboardingFlowId'
 } as const
 
 export type OrganizationTypeOrderByRelevanceFieldEnum = (typeof OrganizationTypeOrderByRelevanceFieldEnum)[keyof typeof OrganizationTypeOrderByRelevanceFieldEnum]
@@ -1970,20 +1970,20 @@ export const OrganizationInvitationOrderByRelevanceFieldEnum = {
 export type OrganizationInvitationOrderByRelevanceFieldEnum = (typeof OrganizationInvitationOrderByRelevanceFieldEnum)[keyof typeof OrganizationInvitationOrderByRelevanceFieldEnum]
 
 
-export const OnboardingMethodOrderByRelevanceFieldEnum = {
+export const OnboardingFlowOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
   description: 'description'
 } as const
 
-export type OnboardingMethodOrderByRelevanceFieldEnum = (typeof OnboardingMethodOrderByRelevanceFieldEnum)[keyof typeof OnboardingMethodOrderByRelevanceFieldEnum]
+export type OnboardingFlowOrderByRelevanceFieldEnum = (typeof OnboardingFlowOrderByRelevanceFieldEnum)[keyof typeof OnboardingFlowOrderByRelevanceFieldEnum]
 
 
-export const OnboardingMethodPhaseOrderByRelevanceFieldEnum = {
+export const OnboardingFlowPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  onboardingMethodId: 'onboardingMethodId',
+  onboardingFlowId: 'onboardingFlowId',
   questionnairePlanId: 'questionnairePlanId',
   documentationPlanId: 'documentationPlanId',
   gatePlanId: 'gatePlanId',
@@ -1991,14 +1991,14 @@ export const OnboardingMethodPhaseOrderByRelevanceFieldEnum = {
   description: 'description'
 } as const
 
-export type OnboardingMethodPhaseOrderByRelevanceFieldEnum = (typeof OnboardingMethodPhaseOrderByRelevanceFieldEnum)[keyof typeof OnboardingMethodPhaseOrderByRelevanceFieldEnum]
+export type OnboardingFlowPhaseOrderByRelevanceFieldEnum = (typeof OnboardingFlowPhaseOrderByRelevanceFieldEnum)[keyof typeof OnboardingFlowPhaseOrderByRelevanceFieldEnum]
 
 
 export const OrganizationOnboardingOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   organizationId: 'organizationId',
-  onboardingMethodId: 'onboardingMethodId',
+  onboardingFlowId: 'onboardingFlowId',
   assigneeId: 'assigneeId',
   currentPhaseId: 'currentPhaseId',
   approvedById: 'approvedById',

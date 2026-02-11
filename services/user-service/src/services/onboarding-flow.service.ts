@@ -10,7 +10,7 @@ import {
 // TYPES
 // =============================================================================
 
-export interface CreateOnboardingMethodInput {
+export interface CreateOnboardingFlowInput {
     name: string;
     description?: string;
     isActive?: boolean;
@@ -18,7 +18,7 @@ export interface CreateOnboardingMethodInput {
     expiresInDays?: number | null;
 }
 
-export interface UpdateOnboardingMethodInput {
+export interface UpdateOnboardingFlowInput {
     name?: string;
     description?: string;
     isActive?: boolean;
@@ -26,7 +26,7 @@ export interface UpdateOnboardingMethodInput {
     expiresInDays?: number | null;
 }
 
-export interface AddMethodPhaseInput {
+export interface AddFlowPhaseInput {
     name: string;
     description?: string;
     phaseCategory: 'QUESTIONNAIRE' | 'DOCUMENTATION' | 'GATE';
@@ -38,7 +38,7 @@ export interface AddMethodPhaseInput {
     gatePlanId?: string;
 }
 
-export interface UpdateMethodPhaseInput {
+export interface UpdateFlowPhaseInput {
     name?: string;
     description?: string;
     phaseType?: string;
@@ -57,7 +57,7 @@ export interface LinkToOrgTypeInput {
 // STANDARD INCLUDE
 // =============================================================================
 
-const methodDetailInclude = {
+const flowDetailInclude = {
     phases: {
         orderBy: { order: 'asc' as const },
         include: {
@@ -78,43 +78,43 @@ const methodDetailInclude = {
 // SERVICE
 // =============================================================================
 
-class OnboardingMethodService {
+class OnboardingFlowService {
     /**
-     * List all onboarding methods for a tenant.
+     * List all onboarding flows for a tenant.
      */
     async list(tenantId: string) {
-        return prisma.onboardingMethod.findMany({
+        return prisma.onboardingFlow.findMany({
             where: { tenantId },
-            include: methodDetailInclude,
+            include: flowDetailInclude,
             orderBy: { createdAt: 'desc' },
         });
     }
 
     /**
-     * Get a single onboarding method by ID.
+     * Get a single onboarding flow by ID.
      */
     async findById(tenantId: string, id: string) {
-        const method = await prisma.onboardingMethod.findFirst({
+        const flow = await prisma.onboardingFlow.findFirst({
             where: { id, tenantId },
-            include: methodDetailInclude,
+            include: flowDetailInclude,
         });
-        if (!method) throw new NotFoundError('Onboarding method not found');
-        return method;
+        if (!flow) throw new NotFoundError('Onboarding flow not found');
+        return flow;
     }
 
     /**
-     * Create a new onboarding method.
+     * Create a new onboarding flow.
      */
-    async create(tenantId: string, data: CreateOnboardingMethodInput) {
+    async create(tenantId: string, data: CreateOnboardingFlowInput) {
         // Check for duplicate name
-        const existing = await prisma.onboardingMethod.findFirst({
+        const existing = await prisma.onboardingFlow.findFirst({
             where: { tenantId, name: data.name },
         });
         if (existing) {
-            throw new ConflictError(`Onboarding method "${data.name}" already exists`);
+            throw new ConflictError(`Onboarding flow "${data.name}" already exists`);
         }
 
-        return prisma.onboardingMethod.create({
+        return prisma.onboardingFlow.create({
             data: {
                 tenantId,
                 name: data.name,
@@ -123,28 +123,28 @@ class OnboardingMethodService {
                 autoActivatePhases: data.autoActivatePhases ?? true,
                 expiresInDays: data.expiresInDays ?? 30,
             },
-            include: methodDetailInclude,
+            include: flowDetailInclude,
         });
     }
 
     /**
-     * Update an onboarding method.
+     * Update an onboarding flow.
      */
-    async update(tenantId: string, id: string, data: UpdateOnboardingMethodInput) {
-        const method = await prisma.onboardingMethod.findFirst({
+    async update(tenantId: string, id: string, data: UpdateOnboardingFlowInput) {
+        const flow = await prisma.onboardingFlow.findFirst({
             where: { id, tenantId },
         });
-        if (!method) throw new NotFoundError('Onboarding method not found');
+        if (!flow) throw new NotFoundError('Onboarding flow not found');
 
         // Check for name conflict
-        if (data.name && data.name !== method.name) {
-            const dup = await prisma.onboardingMethod.findFirst({
+        if (data.name && data.name !== flow.name) {
+            const dup = await prisma.onboardingFlow.findFirst({
                 where: { tenantId, name: data.name, id: { not: id } },
             });
-            if (dup) throw new ConflictError(`Onboarding method "${data.name}" already exists`);
+            if (dup) throw new ConflictError(`Onboarding flow "${data.name}" already exists`);
         }
 
-        return prisma.onboardingMethod.update({
+        return prisma.onboardingFlow.update({
             where: { id },
             data: {
                 name: data.name,
@@ -153,33 +153,33 @@ class OnboardingMethodService {
                 autoActivatePhases: data.autoActivatePhases,
                 expiresInDays: data.expiresInDays,
             },
-            include: methodDetailInclude,
+            include: flowDetailInclude,
         });
     }
 
     /**
-     * Delete an onboarding method. Fails if it has active onboarding instances.
+     * Delete an onboarding flow. Fails if it has active onboarding instances.
      */
     async delete(tenantId: string, id: string) {
-        const method = await prisma.onboardingMethod.findFirst({
+        const flow = await prisma.onboardingFlow.findFirst({
             where: { id, tenantId },
             include: { _count: { select: { onboardings: true } } },
         });
-        if (!method) throw new NotFoundError('Onboarding method not found');
+        if (!flow) throw new NotFoundError('Onboarding flow not found');
 
-        if (method._count.onboardings > 0) {
+        if (flow._count.onboardings > 0) {
             throw new ValidationError(
-                `Cannot delete: ${method._count.onboardings} onboarding instance(s) use this method. Deactivate it instead.`
+                `Cannot delete: ${flow._count.onboardings} onboarding instance(s) use this flow. Deactivate it instead.`
             );
         }
 
         // Unlink from any org types first
         await prisma.organizationType.updateMany({
-            where: { onboardingMethodId: id },
-            data: { onboardingMethodId: null },
+            where: { onboardingFlowId: id },
+            data: { onboardingFlowId: null },
         });
 
-        await prisma.onboardingMethod.delete({ where: { id } });
+        await prisma.onboardingFlow.delete({ where: { id } });
         return { deleted: true };
     }
 
@@ -188,21 +188,21 @@ class OnboardingMethodService {
     // =========================================================================
 
     /**
-     * Add a phase to an onboarding method.
+     * Add a phase to an onboarding flow.
      */
-    async addPhase(tenantId: string, methodId: string, data: AddMethodPhaseInput) {
-        const method = await prisma.onboardingMethod.findFirst({
-            where: { id: methodId, tenantId },
+    async addPhase(tenantId: string, flowId: string, data: AddFlowPhaseInput) {
+        const flow = await prisma.onboardingFlow.findFirst({
+            where: { id: flowId, tenantId },
         });
-        if (!method) throw new NotFoundError('Onboarding method not found');
+        if (!flow) throw new NotFoundError('Onboarding flow not found');
 
         // Validate plan references based on phase category
         this.validatePhasePlanLinks(data.phaseCategory, data);
 
-        return prisma.onboardingMethodPhase.create({
+        return prisma.onboardingFlowPhase.create({
             data: {
                 tenantId,
-                onboardingMethodId: methodId,
+                onboardingFlowId: flowId,
                 name: data.name,
                 description: data.description,
                 phaseCategory: data.phaseCategory,
@@ -222,15 +222,15 @@ class OnboardingMethodService {
     }
 
     /**
-     * Update a phase of an onboarding method.
+     * Update a phase of an onboarding flow.
      */
-    async updatePhase(tenantId: string, methodId: string, phaseId: string, data: UpdateMethodPhaseInput) {
-        const phase = await prisma.onboardingMethodPhase.findFirst({
-            where: { id: phaseId, onboardingMethodId: methodId, tenantId },
+    async updatePhase(tenantId: string, flowId: string, phaseId: string, data: UpdateFlowPhaseInput) {
+        const phase = await prisma.onboardingFlowPhase.findFirst({
+            where: { id: phaseId, onboardingFlowId: flowId, tenantId },
         });
-        if (!phase) throw new NotFoundError('Onboarding method phase not found');
+        if (!phase) throw new NotFoundError('Onboarding flow phase not found');
 
-        return prisma.onboardingMethodPhase.update({
+        return prisma.onboardingFlowPhase.update({
             where: { id: phaseId },
             data: {
                 name: data.name,
@@ -251,15 +251,15 @@ class OnboardingMethodService {
     }
 
     /**
-     * Remove a phase from an onboarding method.
+     * Remove a phase from an onboarding flow.
      */
-    async removePhase(tenantId: string, methodId: string, phaseId: string) {
-        const phase = await prisma.onboardingMethodPhase.findFirst({
-            where: { id: phaseId, onboardingMethodId: methodId, tenantId },
+    async removePhase(tenantId: string, flowId: string, phaseId: string) {
+        const phase = await prisma.onboardingFlowPhase.findFirst({
+            where: { id: phaseId, onboardingFlowId: flowId, tenantId },
         });
-        if (!phase) throw new NotFoundError('Onboarding method phase not found');
+        if (!phase) throw new NotFoundError('Onboarding flow phase not found');
 
-        await prisma.onboardingMethodPhase.delete({ where: { id: phaseId } });
+        await prisma.onboardingFlowPhase.delete({ where: { id: phaseId } });
         return { deleted: true };
     }
 
@@ -268,49 +268,49 @@ class OnboardingMethodService {
     // =========================================================================
 
     /**
-     * Link this onboarding method to an organization type.
-     * An org type can only be linked to one onboarding method at a time.
+     * Link this onboarding flow to an organization type.
+     * An org type can only be linked to one onboarding flow at a time.
      */
-    async linkToOrgType(tenantId: string, methodId: string, orgTypeId: string) {
-        const method = await prisma.onboardingMethod.findFirst({
-            where: { id: methodId, tenantId },
+    async linkToOrgType(tenantId: string, flowId: string, orgTypeId: string) {
+        const flow = await prisma.onboardingFlow.findFirst({
+            where: { id: flowId, tenantId },
         });
-        if (!method) throw new NotFoundError('Onboarding method not found');
+        if (!flow) throw new NotFoundError('Onboarding flow not found');
 
         const orgType = await prisma.organizationType.findFirst({
             where: { id: orgTypeId, tenantId },
         });
         if (!orgType) throw new NotFoundError('Organization type not found');
 
-        if (orgType.onboardingMethodId && orgType.onboardingMethodId !== methodId) {
+        if (orgType.onboardingFlowId && orgType.onboardingFlowId !== flowId) {
             throw new ConflictError(
-                `Organization type "${orgType.code}" is already linked to another onboarding method. Unlink it first.`
+                `Organization type "${orgType.code}" is already linked to another onboarding flow. Unlink it first.`
             );
         }
 
         await prisma.organizationType.update({
             where: { id: orgTypeId },
-            data: { onboardingMethodId: methodId },
+            data: { onboardingFlowId: flowId },
         });
 
-        return this.findById(tenantId, methodId);
+        return this.findById(tenantId, flowId);
     }
 
     /**
-     * Unlink an organization type from this onboarding method.
+     * Unlink an organization type from this onboarding flow.
      */
-    async unlinkOrgType(tenantId: string, methodId: string, orgTypeId: string) {
+    async unlinkOrgType(tenantId: string, flowId: string, orgTypeId: string) {
         const orgType = await prisma.organizationType.findFirst({
-            where: { id: orgTypeId, tenantId, onboardingMethodId: methodId },
+            where: { id: orgTypeId, tenantId, onboardingFlowId: flowId },
         });
-        if (!orgType) throw new NotFoundError('Organization type not linked to this method');
+        if (!orgType) throw new NotFoundError('Organization type not linked to this flow');
 
         await prisma.organizationType.update({
             where: { id: orgTypeId },
-            data: { onboardingMethodId: null },
+            data: { onboardingFlowId: null },
         });
 
-        return this.findById(tenantId, methodId);
+        return this.findById(tenantId, flowId);
     }
 
     // =========================================================================
@@ -356,7 +356,7 @@ class OnboardingMethodService {
     async listOrgTypes(tenantId: string) {
         return prisma.organizationType.findMany({
             where: { tenantId },
-            select: { id: true, code: true, name: true, onboardingMethodId: true },
+            select: { id: true, code: true, name: true, onboardingFlowId: true },
             orderBy: { code: 'asc' },
         });
     }
@@ -389,4 +389,4 @@ class OnboardingMethodService {
     }
 }
 
-export const onboardingMethodService = new OnboardingMethodService();
+export const onboardingFlowService = new OnboardingFlowService();

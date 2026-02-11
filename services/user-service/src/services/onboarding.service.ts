@@ -16,7 +16,7 @@ import {
 // =============================================================================
 
 export interface StartOnboardingInput {
-    onboardingMethodId: string;
+    onboardingFlowId: string;
     assigneeId?: string;
 }
 
@@ -50,13 +50,13 @@ class OnboardingService {
 
     /**
      * Create an onboarding workflow for an organization.
-     * Materializes OnboardingPhases from OnboardingMethodPhase templates.
-     * Called automatically when an org is created with a type that has onboardingMethodId.
+     * Materializes OnboardingPhases from OnboardingFlowPhase templates.
+     * Called automatically when an org is created with a type that has onboardingFlowId.
      */
     async createOnboarding(
         tenantId: string,
         organizationId: string,
-        onboardingMethodId: string,
+        onboardingFlowId: string,
         assigneeId?: string,
     ) {
         // Check for existing onboarding
@@ -67,9 +67,9 @@ class OnboardingService {
             throw new ConflictError('Organization already has an onboarding workflow');
         }
 
-        // Fetch the onboarding method with all phases and their plans
-        const method = await prisma.onboardingMethod.findUnique({
-            where: { id: onboardingMethodId },
+        // Fetch the onboarding flow with all phases and their plans
+        const flow = await prisma.onboardingFlow.findUnique({
+            where: { id: onboardingFlowId },
             include: {
                 phases: {
                     orderBy: { order: 'asc' },
@@ -91,21 +91,21 @@ class OnboardingService {
             },
         });
 
-        if (!method) {
-            throw new NotFoundError('Onboarding method not found');
+        if (!flow) {
+            throw new NotFoundError('Onboarding flow not found');
         }
 
-        if (!method.isActive) {
-            throw new ValidationError('Onboarding method is not active');
+        if (!flow.isActive) {
+            throw new ValidationError('Onboarding flow is not active');
         }
 
-        if (method.phases.length === 0) {
-            throw new ValidationError('Onboarding method has no phases configured');
+        if (flow.phases.length === 0) {
+            throw new ValidationError('Onboarding flow has no phases configured');
         }
 
         // Calculate expiry
-        const expiresAt = method.expiresInDays
-            ? new Date(Date.now() + method.expiresInDays * 24 * 60 * 60 * 1000)
+        const expiresAt = flow.expiresInDays
+            ? new Date(Date.now() + flow.expiresInDays * 24 * 60 * 60 * 1000)
             : null;
 
         // Create everything in a transaction
@@ -115,11 +115,11 @@ class OnboardingService {
                 data: {
                     tenantId,
                     organizationId,
-                    onboardingMethodId,
+                    onboardingFlowId,
                     assigneeId: assigneeId || null,
                     status: OnboardingStatus.PENDING,
                     expiresAt,
-                    templateSnapshot: JSON.parse(JSON.stringify(method)),
+                    templateSnapshot: JSON.parse(JSON.stringify(flow)),
                 },
             });
 
@@ -127,7 +127,7 @@ class OnboardingService {
             let lastQuestionnairePhaseId: string | null = null;
 
             // Materialize phases from template
-            for (const phaseTemplate of method.phases) {
+            for (const phaseTemplate of flow.phases) {
                 const phase = await tx.onboardingPhase.create({
                     data: {
                         tenantId,
@@ -764,7 +764,7 @@ class OnboardingService {
             approvedBy: {
                 select: { id: true, email: true, firstName: true, lastName: true },
             },
-            onboardingMethod: {
+            onboardingFlow: {
                 select: { id: true, name: true },
             },
             currentPhase: {

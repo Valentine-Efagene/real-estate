@@ -394,8 +394,8 @@ export const ModelName = {
   Organization: 'Organization',
   OrganizationMember: 'OrganizationMember',
   OrganizationInvitation: 'OrganizationInvitation',
-  OnboardingMethod: 'OnboardingMethod',
-  OnboardingMethodPhase: 'OnboardingMethodPhase',
+  OnboardingFlow: 'OnboardingFlow',
+  OnboardingFlowPhase: 'OnboardingFlowPhase',
   OrganizationOnboarding: 'OrganizationOnboarding',
   OnboardingPhase: 'OnboardingPhase',
   BankDocumentRequirement: 'BankDocumentRequirement',
@@ -482,7 +482,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingMethod" | "onboardingMethodPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning"
+    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1146,135 +1146,135 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    OnboardingMethod: {
-      payload: Prisma.$OnboardingMethodPayload<ExtArgs>
-      fields: Prisma.OnboardingMethodFieldRefs
+    OnboardingFlow: {
+      payload: Prisma.$OnboardingFlowPayload<ExtArgs>
+      fields: Prisma.OnboardingFlowFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.OnboardingMethodFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload> | null
+          args: Prisma.OnboardingFlowFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.OnboardingMethodFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+          args: Prisma.OnboardingFlowFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPayload>
         }
         findFirst: {
-          args: Prisma.OnboardingMethodFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload> | null
+          args: Prisma.OnboardingFlowFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.OnboardingMethodFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+          args: Prisma.OnboardingFlowFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPayload>
         }
         findMany: {
-          args: Prisma.OnboardingMethodFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>[]
+          args: Prisma.OnboardingFlowFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPayload>[]
         }
         create: {
-          args: Prisma.OnboardingMethodCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+          args: Prisma.OnboardingFlowCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPayload>
         }
         createMany: {
-          args: Prisma.OnboardingMethodCreateManyArgs<ExtArgs>
+          args: Prisma.OnboardingFlowCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.OnboardingMethodDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+          args: Prisma.OnboardingFlowDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPayload>
         }
         update: {
-          args: Prisma.OnboardingMethodUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+          args: Prisma.OnboardingFlowUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPayload>
         }
         deleteMany: {
-          args: Prisma.OnboardingMethodDeleteManyArgs<ExtArgs>
+          args: Prisma.OnboardingFlowDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.OnboardingMethodUpdateManyArgs<ExtArgs>
+          args: Prisma.OnboardingFlowUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.OnboardingMethodUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPayload>
+          args: Prisma.OnboardingFlowUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPayload>
         }
         aggregate: {
-          args: Prisma.OnboardingMethodAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOnboardingMethod>
+          args: Prisma.OnboardingFlowAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOnboardingFlow>
         }
         groupBy: {
-          args: Prisma.OnboardingMethodGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OnboardingMethodGroupByOutputType>[]
+          args: Prisma.OnboardingFlowGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnboardingFlowGroupByOutputType>[]
         }
         count: {
-          args: Prisma.OnboardingMethodCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OnboardingMethodCountAggregateOutputType> | number
+          args: Prisma.OnboardingFlowCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnboardingFlowCountAggregateOutputType> | number
         }
       }
     }
-    OnboardingMethodPhase: {
-      payload: Prisma.$OnboardingMethodPhasePayload<ExtArgs>
-      fields: Prisma.OnboardingMethodPhaseFieldRefs
+    OnboardingFlowPhase: {
+      payload: Prisma.$OnboardingFlowPhasePayload<ExtArgs>
+      fields: Prisma.OnboardingFlowPhaseFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.OnboardingMethodPhaseFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload> | null
+          args: Prisma.OnboardingFlowPhaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPhasePayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.OnboardingMethodPhaseFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+          args: Prisma.OnboardingFlowPhaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPhasePayload>
         }
         findFirst: {
-          args: Prisma.OnboardingMethodPhaseFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload> | null
+          args: Prisma.OnboardingFlowPhaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPhasePayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.OnboardingMethodPhaseFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+          args: Prisma.OnboardingFlowPhaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPhasePayload>
         }
         findMany: {
-          args: Prisma.OnboardingMethodPhaseFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>[]
+          args: Prisma.OnboardingFlowPhaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPhasePayload>[]
         }
         create: {
-          args: Prisma.OnboardingMethodPhaseCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+          args: Prisma.OnboardingFlowPhaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPhasePayload>
         }
         createMany: {
-          args: Prisma.OnboardingMethodPhaseCreateManyArgs<ExtArgs>
+          args: Prisma.OnboardingFlowPhaseCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.OnboardingMethodPhaseDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+          args: Prisma.OnboardingFlowPhaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPhasePayload>
         }
         update: {
-          args: Prisma.OnboardingMethodPhaseUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+          args: Prisma.OnboardingFlowPhaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPhasePayload>
         }
         deleteMany: {
-          args: Prisma.OnboardingMethodPhaseDeleteManyArgs<ExtArgs>
+          args: Prisma.OnboardingFlowPhaseDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.OnboardingMethodPhaseUpdateManyArgs<ExtArgs>
+          args: Prisma.OnboardingFlowPhaseUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.OnboardingMethodPhaseUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingMethodPhasePayload>
+          args: Prisma.OnboardingFlowPhaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnboardingFlowPhasePayload>
         }
         aggregate: {
-          args: Prisma.OnboardingMethodPhaseAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOnboardingMethodPhase>
+          args: Prisma.OnboardingFlowPhaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOnboardingFlowPhase>
         }
         groupBy: {
-          args: Prisma.OnboardingMethodPhaseGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OnboardingMethodPhaseGroupByOutputType>[]
+          args: Prisma.OnboardingFlowPhaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnboardingFlowPhaseGroupByOutputType>[]
         }
         count: {
-          args: Prisma.OnboardingMethodPhaseCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OnboardingMethodPhaseCountAggregateOutputType> | number
+          args: Prisma.OnboardingFlowPhaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnboardingFlowPhaseCountAggregateOutputType> | number
         }
       }
     }
@@ -6010,7 +6010,7 @@ export const OrganizationTypeScalarFieldEnum = {
   name: 'name',
   description: 'description',
   isSystemType: 'isSystemType',
-  onboardingMethodId: 'onboardingMethodId',
+  onboardingFlowId: 'onboardingFlowId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -6178,7 +6178,7 @@ export const OrganizationInvitationScalarFieldEnum = {
 export type OrganizationInvitationScalarFieldEnum = (typeof OrganizationInvitationScalarFieldEnum)[keyof typeof OrganizationInvitationScalarFieldEnum]
 
 
-export const OnboardingMethodScalarFieldEnum = {
+export const OnboardingFlowScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
@@ -6190,13 +6190,13 @@ export const OnboardingMethodScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type OnboardingMethodScalarFieldEnum = (typeof OnboardingMethodScalarFieldEnum)[keyof typeof OnboardingMethodScalarFieldEnum]
+export type OnboardingFlowScalarFieldEnum = (typeof OnboardingFlowScalarFieldEnum)[keyof typeof OnboardingFlowScalarFieldEnum]
 
 
-export const OnboardingMethodPhaseScalarFieldEnum = {
+export const OnboardingFlowPhaseScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  onboardingMethodId: 'onboardingMethodId',
+  onboardingFlowId: 'onboardingFlowId',
   questionnairePlanId: 'questionnairePlanId',
   documentationPlanId: 'documentationPlanId',
   gatePlanId: 'gatePlanId',
@@ -6210,14 +6210,14 @@ export const OnboardingMethodPhaseScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type OnboardingMethodPhaseScalarFieldEnum = (typeof OnboardingMethodPhaseScalarFieldEnum)[keyof typeof OnboardingMethodPhaseScalarFieldEnum]
+export type OnboardingFlowPhaseScalarFieldEnum = (typeof OnboardingFlowPhaseScalarFieldEnum)[keyof typeof OnboardingFlowPhaseScalarFieldEnum]
 
 
 export const OrganizationOnboardingScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   organizationId: 'organizationId',
-  onboardingMethodId: 'onboardingMethodId',
+  onboardingFlowId: 'onboardingFlowId',
   templateSnapshot: 'templateSnapshot',
   assigneeId: 'assigneeId',
   status: 'status',
@@ -7677,7 +7677,7 @@ export const OrganizationTypeOrderByRelevanceFieldEnum = {
   code: 'code',
   name: 'name',
   description: 'description',
-  onboardingMethodId: 'onboardingMethodId'
+  onboardingFlowId: 'onboardingFlowId'
 } as const
 
 export type OrganizationTypeOrderByRelevanceFieldEnum = (typeof OrganizationTypeOrderByRelevanceFieldEnum)[keyof typeof OrganizationTypeOrderByRelevanceFieldEnum]
@@ -7821,20 +7821,20 @@ export const OrganizationInvitationOrderByRelevanceFieldEnum = {
 export type OrganizationInvitationOrderByRelevanceFieldEnum = (typeof OrganizationInvitationOrderByRelevanceFieldEnum)[keyof typeof OrganizationInvitationOrderByRelevanceFieldEnum]
 
 
-export const OnboardingMethodOrderByRelevanceFieldEnum = {
+export const OnboardingFlowOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
   description: 'description'
 } as const
 
-export type OnboardingMethodOrderByRelevanceFieldEnum = (typeof OnboardingMethodOrderByRelevanceFieldEnum)[keyof typeof OnboardingMethodOrderByRelevanceFieldEnum]
+export type OnboardingFlowOrderByRelevanceFieldEnum = (typeof OnboardingFlowOrderByRelevanceFieldEnum)[keyof typeof OnboardingFlowOrderByRelevanceFieldEnum]
 
 
-export const OnboardingMethodPhaseOrderByRelevanceFieldEnum = {
+export const OnboardingFlowPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  onboardingMethodId: 'onboardingMethodId',
+  onboardingFlowId: 'onboardingFlowId',
   questionnairePlanId: 'questionnairePlanId',
   documentationPlanId: 'documentationPlanId',
   gatePlanId: 'gatePlanId',
@@ -7842,14 +7842,14 @@ export const OnboardingMethodPhaseOrderByRelevanceFieldEnum = {
   description: 'description'
 } as const
 
-export type OnboardingMethodPhaseOrderByRelevanceFieldEnum = (typeof OnboardingMethodPhaseOrderByRelevanceFieldEnum)[keyof typeof OnboardingMethodPhaseOrderByRelevanceFieldEnum]
+export type OnboardingFlowPhaseOrderByRelevanceFieldEnum = (typeof OnboardingFlowPhaseOrderByRelevanceFieldEnum)[keyof typeof OnboardingFlowPhaseOrderByRelevanceFieldEnum]
 
 
 export const OrganizationOnboardingOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   organizationId: 'organizationId',
-  onboardingMethodId: 'onboardingMethodId',
+  onboardingFlowId: 'onboardingFlowId',
   assigneeId: 'assigneeId',
   currentPhaseId: 'currentPhaseId',
   approvedById: 'approvedById',
@@ -9261,8 +9261,8 @@ export type GlobalOmitConfig = {
   organization?: Prisma.OrganizationOmit
   organizationMember?: Prisma.OrganizationMemberOmit
   organizationInvitation?: Prisma.OrganizationInvitationOmit
-  onboardingMethod?: Prisma.OnboardingMethodOmit
-  onboardingMethodPhase?: Prisma.OnboardingMethodPhaseOmit
+  onboardingFlow?: Prisma.OnboardingFlowOmit
+  onboardingFlowPhase?: Prisma.OnboardingFlowPhaseOmit
   organizationOnboarding?: Prisma.OrganizationOnboardingOmit
   onboardingPhase?: Prisma.OnboardingPhaseOmit
   bankDocumentRequirement?: Prisma.BankDocumentRequirementOmit

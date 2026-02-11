@@ -689,7 +689,7 @@ function OnboardingDetailContent({ organizationId }: { organizationId: string })
                 <CardContent className="p-6 text-center">
                     <p className="text-muted-foreground">No onboarding workflow found for this organization.</p>
                     <p className="text-sm text-muted-foreground mt-1">
-                        Onboarding is automatically created for BANK and DEVELOPER organizations when they have a configured onboarding method.
+                        Onboarding is automatically created for BANK and DEVELOPER organizations when they have a configured onboarding flow.
                     </p>
                     <Link href="/admin/organizations">
                         <Button variant="outline" className="mt-4">← Back to Organizations</Button>
@@ -717,7 +717,7 @@ function OnboardingDetailContent({ organizationId }: { organizationId: string })
                 <div>
                     <h1 className="text-2xl font-bold">{onboarding.organization.name} — Onboarding</h1>
                     <p className="text-muted-foreground mt-1">
-                        {onboarding.onboardingMethod.name}
+                        {onboarding.onboardingFlow.name}
                     </p>
                 </div>
                 <Link href="/admin/organizations">

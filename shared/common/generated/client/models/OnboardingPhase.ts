@@ -299,7 +299,7 @@ export type OnboardingPhaseWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"OnboardingPhase"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   onboarding?: Prisma.XOR<Prisma.OrganizationOnboardingScalarRelationFilter, Prisma.OrganizationOnboardingWhereInput>
-  phaseTemplate?: Prisma.XOR<Prisma.OnboardingMethodPhaseNullableScalarRelationFilter, Prisma.OnboardingMethodPhaseWhereInput> | null
+  phaseTemplate?: Prisma.XOR<Prisma.OnboardingFlowPhaseNullableScalarRelationFilter, Prisma.OnboardingFlowPhaseWhereInput> | null
   questionnairePhase?: Prisma.XOR<Prisma.QuestionnairePhaseNullableScalarRelationFilter, Prisma.QuestionnairePhaseWhereInput> | null
   documentationPhase?: Prisma.XOR<Prisma.DocumentationPhaseNullableScalarRelationFilter, Prisma.DocumentationPhaseWhereInput> | null
   gatePhase?: Prisma.XOR<Prisma.GatePhaseNullableScalarRelationFilter, Prisma.GatePhaseWhereInput> | null
@@ -324,7 +324,7 @@ export type OnboardingPhaseOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
   onboarding?: Prisma.OrganizationOnboardingOrderByWithRelationInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseOrderByWithRelationInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseOrderByWithRelationInput
   questionnairePhase?: Prisma.QuestionnairePhaseOrderByWithRelationInput
   documentationPhase?: Prisma.DocumentationPhaseOrderByWithRelationInput
   gatePhase?: Prisma.GatePhaseOrderByWithRelationInput
@@ -354,7 +354,7 @@ export type OnboardingPhaseWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"OnboardingPhase"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   onboarding?: Prisma.XOR<Prisma.OrganizationOnboardingScalarRelationFilter, Prisma.OrganizationOnboardingWhereInput>
-  phaseTemplate?: Prisma.XOR<Prisma.OnboardingMethodPhaseNullableScalarRelationFilter, Prisma.OnboardingMethodPhaseWhereInput> | null
+  phaseTemplate?: Prisma.XOR<Prisma.OnboardingFlowPhaseNullableScalarRelationFilter, Prisma.OnboardingFlowPhaseWhereInput> | null
   questionnairePhase?: Prisma.XOR<Prisma.QuestionnairePhaseNullableScalarRelationFilter, Prisma.QuestionnairePhaseWhereInput> | null
   documentationPhase?: Prisma.XOR<Prisma.DocumentationPhaseNullableScalarRelationFilter, Prisma.DocumentationPhaseWhereInput> | null
   gatePhase?: Prisma.XOR<Prisma.GatePhaseNullableScalarRelationFilter, Prisma.GatePhaseWhereInput> | null
@@ -420,7 +420,7 @@ export type OnboardingPhaseCreateInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOnboardingPhasesInput
   onboarding: Prisma.OrganizationOnboardingCreateNestedOneWithoutPhasesInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseCreateNestedOneWithoutOnboardingPhasesInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseCreateNestedOneWithoutOnboardingPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutOnboardingPhaseInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutOnboardingPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutOnboardingPhaseInput
@@ -464,7 +464,7 @@ export type OnboardingPhaseUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOnboardingPhasesNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneRequiredWithoutPhasesNestedInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseUpdateOneWithoutOnboardingPhasesNestedInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseUpdateOneWithoutOnboardingPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutOnboardingPhaseNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutOnboardingPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutOnboardingPhaseNestedInput
@@ -930,7 +930,7 @@ export type OnboardingPhaseCreateWithoutCurrentForOnboardingsInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOnboardingPhasesInput
   onboarding: Prisma.OrganizationOnboardingCreateNestedOneWithoutPhasesInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseCreateNestedOneWithoutOnboardingPhasesInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseCreateNestedOneWithoutOnboardingPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutOnboardingPhaseInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutOnboardingPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutOnboardingPhaseInput
@@ -976,7 +976,7 @@ export type OnboardingPhaseCreateWithoutOnboardingInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOnboardingPhasesInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseCreateNestedOneWithoutOnboardingPhasesInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseCreateNestedOneWithoutOnboardingPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutOnboardingPhaseInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutOnboardingPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutOnboardingPhaseInput
@@ -1040,7 +1040,7 @@ export type OnboardingPhaseUpdateWithoutCurrentForOnboardingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOnboardingPhasesNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneRequiredWithoutPhasesNestedInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseUpdateOneWithoutOnboardingPhasesNestedInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseUpdateOneWithoutOnboardingPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutOnboardingPhaseNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutOnboardingPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutOnboardingPhaseNestedInput
@@ -1097,7 +1097,7 @@ export type OnboardingPhaseCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   onboarding: Prisma.OrganizationOnboardingCreateNestedOneWithoutPhasesInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseCreateNestedOneWithoutOnboardingPhasesInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseCreateNestedOneWithoutOnboardingPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutOnboardingPhaseInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutOnboardingPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutOnboardingPhaseInput
@@ -1166,7 +1166,7 @@ export type OnboardingPhaseCreateWithoutQuestionnairePhaseInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOnboardingPhasesInput
   onboarding: Prisma.OrganizationOnboardingCreateNestedOneWithoutPhasesInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseCreateNestedOneWithoutOnboardingPhasesInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseCreateNestedOneWithoutOnboardingPhasesInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutOnboardingPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutOnboardingPhaseInput
   currentForOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutCurrentPhaseInput
@@ -1224,7 +1224,7 @@ export type OnboardingPhaseUpdateWithoutQuestionnairePhaseInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOnboardingPhasesNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneRequiredWithoutPhasesNestedInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseUpdateOneWithoutOnboardingPhasesNestedInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseUpdateOneWithoutOnboardingPhasesNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutOnboardingPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutOnboardingPhaseNestedInput
   currentForOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutCurrentPhaseNestedInput
@@ -1266,7 +1266,7 @@ export type OnboardingPhaseCreateWithoutGatePhaseInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOnboardingPhasesInput
   onboarding: Prisma.OrganizationOnboardingCreateNestedOneWithoutPhasesInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseCreateNestedOneWithoutOnboardingPhasesInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseCreateNestedOneWithoutOnboardingPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutOnboardingPhaseInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutOnboardingPhaseInput
   currentForOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutCurrentPhaseInput
@@ -1324,7 +1324,7 @@ export type OnboardingPhaseUpdateWithoutGatePhaseInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOnboardingPhasesNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneRequiredWithoutPhasesNestedInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseUpdateOneWithoutOnboardingPhasesNestedInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseUpdateOneWithoutOnboardingPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutOnboardingPhaseNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutOnboardingPhaseNestedInput
   currentForOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutCurrentPhaseNestedInput
@@ -1366,7 +1366,7 @@ export type OnboardingPhaseCreateWithoutDocumentationPhaseInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOnboardingPhasesInput
   onboarding: Prisma.OrganizationOnboardingCreateNestedOneWithoutPhasesInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseCreateNestedOneWithoutOnboardingPhasesInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseCreateNestedOneWithoutOnboardingPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutOnboardingPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutOnboardingPhaseInput
   currentForOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutCurrentPhaseInput
@@ -1424,7 +1424,7 @@ export type OnboardingPhaseUpdateWithoutDocumentationPhaseInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOnboardingPhasesNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneRequiredWithoutPhasesNestedInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseUpdateOneWithoutOnboardingPhasesNestedInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseUpdateOneWithoutOnboardingPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutOnboardingPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutOnboardingPhaseNestedInput
   currentForOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutCurrentPhaseNestedInput
@@ -1558,7 +1558,7 @@ export type OnboardingPhaseUpdateWithoutOnboardingInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOnboardingPhasesNestedInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseUpdateOneWithoutOnboardingPhasesNestedInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseUpdateOneWithoutOnboardingPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutOnboardingPhaseNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutOnboardingPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutOnboardingPhaseNestedInput
@@ -1634,7 +1634,7 @@ export type OnboardingPhaseUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   onboarding?: Prisma.OrganizationOnboardingUpdateOneRequiredWithoutPhasesNestedInput
-  phaseTemplate?: Prisma.OnboardingMethodPhaseUpdateOneWithoutOnboardingPhasesNestedInput
+  phaseTemplate?: Prisma.OnboardingFlowPhaseUpdateOneWithoutOnboardingPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutOnboardingPhaseNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutOnboardingPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutOnboardingPhaseNestedInput
@@ -1773,7 +1773,7 @@ export type $OnboardingPhasePayload<ExtArgs extends runtime.Types.Extensions.Int
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>
     onboarding: Prisma.$OrganizationOnboardingPayload<ExtArgs>
-    phaseTemplate: Prisma.$OnboardingMethodPhasePayload<ExtArgs> | null
+    phaseTemplate: Prisma.$OnboardingFlowPhasePayload<ExtArgs> | null
     questionnairePhase: Prisma.$QuestionnairePhasePayload<ExtArgs> | null
     documentationPhase: Prisma.$DocumentationPhasePayload<ExtArgs> | null
     gatePhase: Prisma.$GatePhasePayload<ExtArgs> | null
@@ -2137,7 +2137,7 @@ export interface Prisma__OnboardingPhaseClient<T, Null = never, ExtArgs extends 
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   onboarding<T extends Prisma.OrganizationOnboardingDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationOnboardingDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationOnboardingClient<runtime.Types.Result.GetResult<Prisma.$OrganizationOnboardingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  phaseTemplate<T extends Prisma.OnboardingPhase$phaseTemplateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OnboardingPhase$phaseTemplateArgs<ExtArgs>>): Prisma.Prisma__OnboardingMethodPhaseClient<runtime.Types.Result.GetResult<Prisma.$OnboardingMethodPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  phaseTemplate<T extends Prisma.OnboardingPhase$phaseTemplateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OnboardingPhase$phaseTemplateArgs<ExtArgs>>): Prisma.Prisma__OnboardingFlowPhaseClient<runtime.Types.Result.GetResult<Prisma.$OnboardingFlowPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   questionnairePhase<T extends Prisma.OnboardingPhase$questionnairePhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OnboardingPhase$questionnairePhaseArgs<ExtArgs>>): Prisma.Prisma__QuestionnairePhaseClient<runtime.Types.Result.GetResult<Prisma.$QuestionnairePhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   documentationPhase<T extends Prisma.OnboardingPhase$documentationPhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OnboardingPhase$documentationPhaseArgs<ExtArgs>>): Prisma.Prisma__DocumentationPhaseClient<runtime.Types.Result.GetResult<Prisma.$DocumentationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   gatePhase<T extends Prisma.OnboardingPhase$gatePhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OnboardingPhase$gatePhaseArgs<ExtArgs>>): Prisma.Prisma__GatePhaseClient<runtime.Types.Result.GetResult<Prisma.$GatePhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2533,18 +2533,18 @@ export type OnboardingPhaseDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
  */
 export type OnboardingPhase$phaseTemplateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the OnboardingMethodPhase
+   * Select specific fields to fetch from the OnboardingFlowPhase
    */
-  select?: Prisma.OnboardingMethodPhaseSelect<ExtArgs> | null
+  select?: Prisma.OnboardingFlowPhaseSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the OnboardingMethodPhase
+   * Omit specific fields from the OnboardingFlowPhase
    */
-  omit?: Prisma.OnboardingMethodPhaseOmit<ExtArgs> | null
+  omit?: Prisma.OnboardingFlowPhaseOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.OnboardingMethodPhaseInclude<ExtArgs> | null
-  where?: Prisma.OnboardingMethodPhaseWhereInput
+  include?: Prisma.OnboardingFlowPhaseInclude<ExtArgs> | null
+  where?: Prisma.OnboardingFlowPhaseWhereInput
 }
 
 /**

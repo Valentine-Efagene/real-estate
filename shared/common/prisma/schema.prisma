@@ -228,8 +228,8 @@ model OrganizationType {
   isSystemType Boolean @default(false)
 
   // Optional onboarding workflow — if set, orgs of this type must complete onboarding
-  onboardingMethodId String?
-  onboardingMethod   OnboardingMethod? @relation(fields: [onboardingMethodId], references: [id], onDelete: SetNull)
+  onboardingFlowId String?
+  onboardingFlow   OnboardingFlow? @relation(fields: [onboardingFlowId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -261,7 +261,7 @@ model OrganizationType {
   @@unique([tenantId, code])
   @@index([tenantId])
   @@index([code])
-  @@index([onboardingMethodId])
+  @@index([onboardingFlowId])
   @@map("organization_types")
 }
 
@@ -839,16 +839,16 @@ enum InvitationStatus {
 }
 
 // =============================================================================
-// ONBOARDING METHOD - Configurable org onboarding workflow templates
+// ONBOARDING FLOW - Configurable org onboarding workflow templates
 // =============================================================================
-// OnboardingMethod = reusable workflow template for org verification/KYB
+// OnboardingFlow = reusable workflow template for org verification/KYB
 // Linked to OrganizationType — when an org of that type is created, this
 // template defines the onboarding phases the org must complete.
 // Mirrors PropertyPaymentMethod but for org onboarding (no PAYMENT phases).
 // Examples: "Bank Onboarding", "Developer Verification"
 // =============================================================================
 
-model OnboardingMethod {
+model OnboardingFlow {
   id          String  @id @default(cuid())
   tenantId    String
   tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
@@ -867,9 +867,9 @@ model OnboardingMethod {
   updatedAt DateTime @updatedAt
 
   // Ordered phases in this onboarding workflow
-  phases OnboardingMethodPhase[]
+  phases OnboardingFlowPhase[]
 
-  // Organization types that use this onboarding method
+  // Organization types that use this onboarding flow
   organizationTypes OrganizationType[]
 
   // Instances created from this template
@@ -877,17 +877,17 @@ model OnboardingMethod {
 
   @@unique([tenantId, name])
   @@index([tenantId])
-  @@map("onboarding_methods")
+  @@map("onboarding_flows")
 }
 
-/// Phase template within an OnboardingMethod
+/// Phase template within an OnboardingFlow
 /// Supports QUESTIONNAIRE, DOCUMENTATION, and GATE phases (no PAYMENT)
-model OnboardingMethodPhase {
-  id                 String           @id @default(cuid())
-  tenantId           String
-  tenant             Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  onboardingMethodId String
-  onboardingMethod   OnboardingMethod @relation(fields: [onboardingMethodId], references: [id], onDelete: Cascade)
+model OnboardingFlowPhase {
+  id               String         @id @default(cuid())
+  tenantId         String
+  tenant           Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  onboardingFlowId String
+  onboardingFlow   OnboardingFlow @relation(fields: [onboardingFlowId], references: [id], onDelete: Cascade)
 
   // Plan references (only one set based on phaseCategory)
   questionnairePlanId String? // Only for QUESTIONNAIRE phases
@@ -914,14 +914,14 @@ model OnboardingMethodPhase {
   // Onboarding phase instances created from this template
   onboardingPhases OnboardingPhase[]
 
-  @@unique([onboardingMethodId, order])
+  @@unique([onboardingFlowId, order])
   @@index([tenantId])
-  @@index([onboardingMethodId])
+  @@index([onboardingFlowId])
   @@index([questionnairePlanId])
   @@index([documentationPlanId])
   @@index([gatePlanId])
   @@index([phaseCategory])
-  @@map("onboarding_method_phases")
+  @@map("onboarding_flow_phases")
 }
 
 // =============================================================================
@@ -940,8 +940,8 @@ model OrganizationOnboarding {
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   // Template this was created from
-  onboardingMethodId String
-  onboardingMethod   OnboardingMethod @relation(fields: [onboardingMethodId], references: [id])
+  onboardingFlowId String
+  onboardingFlow   OnboardingFlow @relation(fields: [onboardingFlowId], references: [id])
 
   // Snapshot of the template at creation time (immutable audit trail)
   templateSnapshot Json?
@@ -960,7 +960,7 @@ model OrganizationOnboarding {
   // Timing
   startedAt   DateTime? // When assignee begins (first phase activated)
   completedAt DateTime? // When final gate phase approved
-  expiresAt   DateTime? // Calculated from onboardingMethod.expiresInDays
+  expiresAt   DateTime? // Calculated from onboardingFlow.expiresInDays
 
   // Outcome
   approvedAt      DateTime?
@@ -976,7 +976,7 @@ model OrganizationOnboarding {
 
   @@index([tenantId])
   @@index([organizationId])
-  @@index([onboardingMethodId])
+  @@index([onboardingFlowId])
   @@index([assigneeId])
   @@index([status])
   @@map("organization_onboardings")
@@ -993,7 +993,7 @@ model OnboardingPhase {
 
   // Reference to the phase template this was instantiated from
   phaseTemplateId String?
-  phaseTemplate   OnboardingMethodPhase? @relation(fields: [phaseTemplateId], references: [id], onDelete: SetNull)
+  phaseTemplate   OnboardingFlowPhase? @relation(fields: [phaseTemplateId], references: [id], onDelete: SetNull)
 
   // Admin-defined naming
   name        String
@@ -1210,8 +1210,8 @@ model Tenant {
   organizationInvitations OrganizationInvitation[]
 
   // Organization onboarding workflow
-  onboardingMethods       OnboardingMethod[]
-  onboardingMethodPhases  OnboardingMethodPhase[]
+  onboardingFlows         OnboardingFlow[]
+  onboardingFlowPhases    OnboardingFlowPhase[]
   organizationOnboardings OrganizationOnboarding[]
   onboardingPhases        OnboardingPhase[]
 
@@ -1721,11 +1721,11 @@ model DocumentationPlan {
   approvalStages ApprovalStage[]
 
   // Used by property payment method phases (templates)
-  methodPhases           PropertyPaymentMethodPhase[]
-  // Used by onboarding method phases (templates)
-  onboardingMethodPhases OnboardingMethodPhase[]
+  methodPhases         PropertyPaymentMethodPhase[]
+  // Used by onboarding flow phases (templates)
+  onboardingFlowPhases OnboardingFlowPhase[]
   // Used by instantiated documentation phases
-  documentationPhases    DocumentationPhase[]
+  documentationPhases  DocumentationPhase[]
 
   @@unique([tenantId, name]) // Unique per tenant, or globally if tenantId is null
   @@index([tenantId])
@@ -1852,8 +1852,8 @@ model QuestionnairePlan {
   // Used by property payment method phases (templates)
   methodPhases PropertyPaymentMethodPhase[]
 
-  // Used by onboarding method phases (templates)
-  onboardingMethodPhases OnboardingMethodPhase[]
+  // Used by onboarding flow phases (templates)
+  onboardingFlowPhases OnboardingFlowPhase[]
 
   // Used by instantiated questionnaire phases
   questionnairePhases QuestionnairePhase[]
@@ -1942,8 +1942,8 @@ model GatePlan {
   // Used by property payment method phases (templates)
   methodPhases PropertyPaymentMethodPhase[]
 
-  // Used by onboarding method phases (templates)
-  onboardingMethodPhases OnboardingMethodPhase[]
+  // Used by onboarding flow phases (templates)
+  onboardingFlowPhases OnboardingFlowPhase[]
 
   // Used by instantiated gate phases
   gatePhases GatePhase[]

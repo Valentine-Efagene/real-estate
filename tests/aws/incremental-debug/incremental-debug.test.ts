@@ -136,19 +136,19 @@ const state: TestState = {
 
     // Admin
     adminEmail: 'adaeze@mailsac.com',
-    adminPassword: 'SecureAdmin123!',
+    adminPassword: 'password',
 
     // Customer
     customerEmail: 'chidi@mailsac.com',
-    customerPassword: 'CustomerPass123!',
+    customerPassword: 'password',
 
     // Developer
     developerEmail: 'emeka@mailsac.com',
-    developerPassword: 'DeveloperPass123!',
+    developerPassword: 'password',
 
     // Lender
     lenderEmail: 'nkechi@mailsac.com',
-    lenderPassword: 'LenderPass123!',
+    lenderPassword: 'password',
 };
 
 // Property pricing (Chidi-Lekki scenario)

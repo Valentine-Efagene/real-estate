@@ -259,7 +259,7 @@ export type GatePlanWhereInput = {
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
   reviewerOrganizationType?: Prisma.XOR<Prisma.OrganizationTypeScalarRelationFilter, Prisma.OrganizationTypeWhereInput>
   methodPhases?: Prisma.PropertyPaymentMethodPhaseListRelationFilter
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseListRelationFilter
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseListRelationFilter
   gatePhases?: Prisma.GatePhaseListRelationFilter
 }
 
@@ -277,7 +277,7 @@ export type GatePlanOrderByWithRelationInput = {
   tenant?: Prisma.TenantOrderByWithRelationInput
   reviewerOrganizationType?: Prisma.OrganizationTypeOrderByWithRelationInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseOrderByRelationAggregateInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseOrderByRelationAggregateInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseOrderByRelationAggregateInput
   gatePhases?: Prisma.GatePhaseOrderByRelationAggregateInput
   _relevance?: Prisma.GatePlanOrderByRelevanceInput
 }
@@ -300,7 +300,7 @@ export type GatePlanWhereUniqueInput = Prisma.AtLeast<{
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
   reviewerOrganizationType?: Prisma.XOR<Prisma.OrganizationTypeScalarRelationFilter, Prisma.OrganizationTypeWhereInput>
   methodPhases?: Prisma.PropertyPaymentMethodPhaseListRelationFilter
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseListRelationFilter
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseListRelationFilter
   gatePhases?: Prisma.GatePhaseListRelationFilter
 }, "id" | "tenantId_name">
 
@@ -350,7 +350,7 @@ export type GatePlanCreateInput = {
   tenant?: Prisma.TenantCreateNestedOneWithoutGatePlansInput
   reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePlansInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutGatePlanInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutGatePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutGatePlanInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutGatePlanInput
 }
 
@@ -366,7 +366,7 @@ export type GatePlanUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutGatePlanInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutGatePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutGatePlanInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutGatePlanInput
 }
 
@@ -382,7 +382,7 @@ export type GatePlanUpdateInput = {
   tenant?: Prisma.TenantUpdateOneWithoutGatePlansNestedInput
   reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePlansNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutGatePlanNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutGatePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutGatePlanNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutGatePlanNestedInput
 }
 
@@ -398,7 +398,7 @@ export type GatePlanUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutGatePlanNestedInput
 }
 
@@ -554,20 +554,20 @@ export type GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInpu
   deleteMany?: Prisma.GatePlanScalarWhereInput | Prisma.GatePlanScalarWhereInput[]
 }
 
-export type GatePlanCreateNestedOneWithoutOnboardingMethodPhasesInput = {
-  create?: Prisma.XOR<Prisma.GatePlanCreateWithoutOnboardingMethodPhasesInput, Prisma.GatePlanUncheckedCreateWithoutOnboardingMethodPhasesInput>
-  connectOrCreate?: Prisma.GatePlanCreateOrConnectWithoutOnboardingMethodPhasesInput
+export type GatePlanCreateNestedOneWithoutOnboardingFlowPhasesInput = {
+  create?: Prisma.XOR<Prisma.GatePlanCreateWithoutOnboardingFlowPhasesInput, Prisma.GatePlanUncheckedCreateWithoutOnboardingFlowPhasesInput>
+  connectOrCreate?: Prisma.GatePlanCreateOrConnectWithoutOnboardingFlowPhasesInput
   connect?: Prisma.GatePlanWhereUniqueInput
 }
 
-export type GatePlanUpdateOneWithoutOnboardingMethodPhasesNestedInput = {
-  create?: Prisma.XOR<Prisma.GatePlanCreateWithoutOnboardingMethodPhasesInput, Prisma.GatePlanUncheckedCreateWithoutOnboardingMethodPhasesInput>
-  connectOrCreate?: Prisma.GatePlanCreateOrConnectWithoutOnboardingMethodPhasesInput
-  upsert?: Prisma.GatePlanUpsertWithoutOnboardingMethodPhasesInput
+export type GatePlanUpdateOneWithoutOnboardingFlowPhasesNestedInput = {
+  create?: Prisma.XOR<Prisma.GatePlanCreateWithoutOnboardingFlowPhasesInput, Prisma.GatePlanUncheckedCreateWithoutOnboardingFlowPhasesInput>
+  connectOrCreate?: Prisma.GatePlanCreateOrConnectWithoutOnboardingFlowPhasesInput
+  upsert?: Prisma.GatePlanUpsertWithoutOnboardingFlowPhasesInput
   disconnect?: Prisma.GatePlanWhereInput | boolean
   delete?: Prisma.GatePlanWhereInput | boolean
   connect?: Prisma.GatePlanWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.GatePlanUpdateToOneWithWhereWithoutOnboardingMethodPhasesInput, Prisma.GatePlanUpdateWithoutOnboardingMethodPhasesInput>, Prisma.GatePlanUncheckedUpdateWithoutOnboardingMethodPhasesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GatePlanUpdateToOneWithWhereWithoutOnboardingFlowPhasesInput, Prisma.GatePlanUpdateWithoutOnboardingFlowPhasesInput>, Prisma.GatePlanUncheckedUpdateWithoutOnboardingFlowPhasesInput>
 }
 
 export type GatePlanCreateNestedManyWithoutTenantInput = {
@@ -655,7 +655,7 @@ export type GatePlanCreateWithoutReviewerOrganizationTypeInput = {
   updatedAt?: Date | string
   tenant?: Prisma.TenantCreateNestedOneWithoutGatePlansInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutGatePlanInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutGatePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutGatePlanInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutGatePlanInput
 }
 
@@ -670,7 +670,7 @@ export type GatePlanUncheckedCreateWithoutReviewerOrganizationTypeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutGatePlanInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutGatePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutGatePlanInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutGatePlanInput
 }
 
@@ -716,7 +716,7 @@ export type GatePlanScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"GatePlan"> | Date | string
 }
 
-export type GatePlanCreateWithoutOnboardingMethodPhasesInput = {
+export type GatePlanCreateWithoutOnboardingFlowPhasesInput = {
   id?: string
   name: string
   description?: string | null
@@ -731,7 +731,7 @@ export type GatePlanCreateWithoutOnboardingMethodPhasesInput = {
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutGatePlanInput
 }
 
-export type GatePlanUncheckedCreateWithoutOnboardingMethodPhasesInput = {
+export type GatePlanUncheckedCreateWithoutOnboardingFlowPhasesInput = {
   id?: string
   tenantId?: string | null
   name: string
@@ -746,23 +746,23 @@ export type GatePlanUncheckedCreateWithoutOnboardingMethodPhasesInput = {
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutGatePlanInput
 }
 
-export type GatePlanCreateOrConnectWithoutOnboardingMethodPhasesInput = {
+export type GatePlanCreateOrConnectWithoutOnboardingFlowPhasesInput = {
   where: Prisma.GatePlanWhereUniqueInput
-  create: Prisma.XOR<Prisma.GatePlanCreateWithoutOnboardingMethodPhasesInput, Prisma.GatePlanUncheckedCreateWithoutOnboardingMethodPhasesInput>
+  create: Prisma.XOR<Prisma.GatePlanCreateWithoutOnboardingFlowPhasesInput, Prisma.GatePlanUncheckedCreateWithoutOnboardingFlowPhasesInput>
 }
 
-export type GatePlanUpsertWithoutOnboardingMethodPhasesInput = {
-  update: Prisma.XOR<Prisma.GatePlanUpdateWithoutOnboardingMethodPhasesInput, Prisma.GatePlanUncheckedUpdateWithoutOnboardingMethodPhasesInput>
-  create: Prisma.XOR<Prisma.GatePlanCreateWithoutOnboardingMethodPhasesInput, Prisma.GatePlanUncheckedCreateWithoutOnboardingMethodPhasesInput>
+export type GatePlanUpsertWithoutOnboardingFlowPhasesInput = {
+  update: Prisma.XOR<Prisma.GatePlanUpdateWithoutOnboardingFlowPhasesInput, Prisma.GatePlanUncheckedUpdateWithoutOnboardingFlowPhasesInput>
+  create: Prisma.XOR<Prisma.GatePlanCreateWithoutOnboardingFlowPhasesInput, Prisma.GatePlanUncheckedCreateWithoutOnboardingFlowPhasesInput>
   where?: Prisma.GatePlanWhereInput
 }
 
-export type GatePlanUpdateToOneWithWhereWithoutOnboardingMethodPhasesInput = {
+export type GatePlanUpdateToOneWithWhereWithoutOnboardingFlowPhasesInput = {
   where?: Prisma.GatePlanWhereInput
-  data: Prisma.XOR<Prisma.GatePlanUpdateWithoutOnboardingMethodPhasesInput, Prisma.GatePlanUncheckedUpdateWithoutOnboardingMethodPhasesInput>
+  data: Prisma.XOR<Prisma.GatePlanUpdateWithoutOnboardingFlowPhasesInput, Prisma.GatePlanUncheckedUpdateWithoutOnboardingFlowPhasesInput>
 }
 
-export type GatePlanUpdateWithoutOnboardingMethodPhasesInput = {
+export type GatePlanUpdateWithoutOnboardingFlowPhasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -777,7 +777,7 @@ export type GatePlanUpdateWithoutOnboardingMethodPhasesInput = {
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutGatePlanNestedInput
 }
 
-export type GatePlanUncheckedUpdateWithoutOnboardingMethodPhasesInput = {
+export type GatePlanUncheckedUpdateWithoutOnboardingFlowPhasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -803,7 +803,7 @@ export type GatePlanCreateWithoutTenantInput = {
   updatedAt?: Date | string
   reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePlansInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutGatePlanInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutGatePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutGatePlanInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutGatePlanInput
 }
 
@@ -818,7 +818,7 @@ export type GatePlanUncheckedCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutGatePlanInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutGatePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutGatePlanInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutGatePlanInput
 }
 
@@ -859,7 +859,7 @@ export type GatePlanCreateWithoutMethodPhasesInput = {
   updatedAt?: Date | string
   tenant?: Prisma.TenantCreateNestedOneWithoutGatePlansInput
   reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePlansInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutGatePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutGatePlanInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutGatePlanInput
 }
 
@@ -874,7 +874,7 @@ export type GatePlanUncheckedCreateWithoutMethodPhasesInput = {
   reviewerInstructions?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutGatePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutGatePlanInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutGatePlanInput
 }
 
@@ -905,7 +905,7 @@ export type GatePlanUpdateWithoutMethodPhasesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneWithoutGatePlansNestedInput
   reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePlansNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutGatePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutGatePlanNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutGatePlanNestedInput
 }
 
@@ -920,7 +920,7 @@ export type GatePlanUncheckedUpdateWithoutMethodPhasesInput = {
   reviewerInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutGatePlanNestedInput
 }
 
@@ -936,7 +936,7 @@ export type GatePlanCreateWithoutGatePhasesInput = {
   tenant?: Prisma.TenantCreateNestedOneWithoutGatePlansInput
   reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePlansInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutGatePlanInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseCreateNestedManyWithoutGatePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutGatePlanInput
 }
 
 export type GatePlanUncheckedCreateWithoutGatePhasesInput = {
@@ -951,7 +951,7 @@ export type GatePlanUncheckedCreateWithoutGatePhasesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutGatePlanInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedCreateNestedManyWithoutGatePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutGatePlanInput
 }
 
 export type GatePlanCreateOrConnectWithoutGatePhasesInput = {
@@ -982,7 +982,7 @@ export type GatePlanUpdateWithoutGatePhasesInput = {
   tenant?: Prisma.TenantUpdateOneWithoutGatePlansNestedInput
   reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePlansNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutGatePlanNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutGatePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutGatePlanNestedInput
 }
 
 export type GatePlanUncheckedUpdateWithoutGatePhasesInput = {
@@ -997,7 +997,7 @@ export type GatePlanUncheckedUpdateWithoutGatePhasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
 }
 
 export type GatePlanCreateManyReviewerOrganizationTypeInput = {
@@ -1023,7 +1023,7 @@ export type GatePlanUpdateWithoutReviewerOrganizationTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneWithoutGatePlansNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutGatePlanNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutGatePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutGatePlanNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutGatePlanNestedInput
 }
 
@@ -1038,7 +1038,7 @@ export type GatePlanUncheckedUpdateWithoutReviewerOrganizationTypeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutGatePlanNestedInput
 }
 
@@ -1077,7 +1077,7 @@ export type GatePlanUpdateWithoutTenantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePlansNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutGatePlanNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUpdateManyWithoutGatePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutGatePlanNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutGatePlanNestedInput
 }
 
@@ -1092,7 +1092,7 @@ export type GatePlanUncheckedUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
-  onboardingMethodPhases?: Prisma.OnboardingMethodPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutGatePlanNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutGatePlanNestedInput
 }
 
@@ -1115,13 +1115,13 @@ export type GatePlanUncheckedUpdateManyWithoutTenantInput = {
 
 export type GatePlanCountOutputType = {
   methodPhases: number
-  onboardingMethodPhases: number
+  onboardingFlowPhases: number
   gatePhases: number
 }
 
 export type GatePlanCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   methodPhases?: boolean | GatePlanCountOutputTypeCountMethodPhasesArgs
-  onboardingMethodPhases?: boolean | GatePlanCountOutputTypeCountOnboardingMethodPhasesArgs
+  onboardingFlowPhases?: boolean | GatePlanCountOutputTypeCountOnboardingFlowPhasesArgs
   gatePhases?: boolean | GatePlanCountOutputTypeCountGatePhasesArgs
 }
 
@@ -1145,8 +1145,8 @@ export type GatePlanCountOutputTypeCountMethodPhasesArgs<ExtArgs extends runtime
 /**
  * GatePlanCountOutputType without action
  */
-export type GatePlanCountOutputTypeCountOnboardingMethodPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OnboardingMethodPhaseWhereInput
+export type GatePlanCountOutputTypeCountOnboardingFlowPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OnboardingFlowPhaseWhereInput
 }
 
 /**
@@ -1171,7 +1171,7 @@ export type GatePlanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   tenant?: boolean | Prisma.GatePlan$tenantArgs<ExtArgs>
   reviewerOrganizationType?: boolean | Prisma.OrganizationTypeDefaultArgs<ExtArgs>
   methodPhases?: boolean | Prisma.GatePlan$methodPhasesArgs<ExtArgs>
-  onboardingMethodPhases?: boolean | Prisma.GatePlan$onboardingMethodPhasesArgs<ExtArgs>
+  onboardingFlowPhases?: boolean | Prisma.GatePlan$onboardingFlowPhasesArgs<ExtArgs>
   gatePhases?: boolean | Prisma.GatePlan$gatePhasesArgs<ExtArgs>
   _count?: boolean | Prisma.GatePlanCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["gatePlan"]>
@@ -1196,7 +1196,7 @@ export type GatePlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   tenant?: boolean | Prisma.GatePlan$tenantArgs<ExtArgs>
   reviewerOrganizationType?: boolean | Prisma.OrganizationTypeDefaultArgs<ExtArgs>
   methodPhases?: boolean | Prisma.GatePlan$methodPhasesArgs<ExtArgs>
-  onboardingMethodPhases?: boolean | Prisma.GatePlan$onboardingMethodPhasesArgs<ExtArgs>
+  onboardingFlowPhases?: boolean | Prisma.GatePlan$onboardingFlowPhasesArgs<ExtArgs>
   gatePhases?: boolean | Prisma.GatePlan$gatePhasesArgs<ExtArgs>
   _count?: boolean | Prisma.GatePlanCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1207,7 +1207,7 @@ export type $GatePlanPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     tenant: Prisma.$TenantPayload<ExtArgs> | null
     reviewerOrganizationType: Prisma.$OrganizationTypePayload<ExtArgs>
     methodPhases: Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>[]
-    onboardingMethodPhases: Prisma.$OnboardingMethodPhasePayload<ExtArgs>[]
+    onboardingFlowPhases: Prisma.$OnboardingFlowPhasePayload<ExtArgs>[]
     gatePhases: Prisma.$GatePhasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1564,7 +1564,7 @@ export interface Prisma__GatePlanClient<T, Null = never, ExtArgs extends runtime
   tenant<T extends Prisma.GatePlan$tenantArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GatePlan$tenantArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   reviewerOrganizationType<T extends Prisma.OrganizationTypeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationTypeDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationTypeClient<runtime.Types.Result.GetResult<Prisma.$OrganizationTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   methodPhases<T extends Prisma.GatePlan$methodPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GatePlan$methodPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  onboardingMethodPhases<T extends Prisma.GatePlan$onboardingMethodPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GatePlan$onboardingMethodPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnboardingMethodPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  onboardingFlowPhases<T extends Prisma.GatePlan$onboardingFlowPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GatePlan$onboardingFlowPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnboardingFlowPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   gatePhases<T extends Prisma.GatePlan$gatePhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GatePlan$gatePhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1991,27 +1991,27 @@ export type GatePlan$methodPhasesArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
- * GatePlan.onboardingMethodPhases
+ * GatePlan.onboardingFlowPhases
  */
-export type GatePlan$onboardingMethodPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type GatePlan$onboardingFlowPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the OnboardingMethodPhase
+   * Select specific fields to fetch from the OnboardingFlowPhase
    */
-  select?: Prisma.OnboardingMethodPhaseSelect<ExtArgs> | null
+  select?: Prisma.OnboardingFlowPhaseSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the OnboardingMethodPhase
+   * Omit specific fields from the OnboardingFlowPhase
    */
-  omit?: Prisma.OnboardingMethodPhaseOmit<ExtArgs> | null
+  omit?: Prisma.OnboardingFlowPhaseOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.OnboardingMethodPhaseInclude<ExtArgs> | null
-  where?: Prisma.OnboardingMethodPhaseWhereInput
-  orderBy?: Prisma.OnboardingMethodPhaseOrderByWithRelationInput | Prisma.OnboardingMethodPhaseOrderByWithRelationInput[]
-  cursor?: Prisma.OnboardingMethodPhaseWhereUniqueInput
+  include?: Prisma.OnboardingFlowPhaseInclude<ExtArgs> | null
+  where?: Prisma.OnboardingFlowPhaseWhereInput
+  orderBy?: Prisma.OnboardingFlowPhaseOrderByWithRelationInput | Prisma.OnboardingFlowPhaseOrderByWithRelationInput[]
+  cursor?: Prisma.OnboardingFlowPhaseWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.OnboardingMethodPhaseScalarFieldEnum | Prisma.OnboardingMethodPhaseScalarFieldEnum[]
+  distinct?: Prisma.OnboardingFlowPhaseScalarFieldEnum | Prisma.OnboardingFlowPhaseScalarFieldEnum[]
 }
 
 /**

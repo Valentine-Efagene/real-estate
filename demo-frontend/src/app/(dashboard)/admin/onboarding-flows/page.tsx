@@ -19,7 +19,6 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-    DialogClose,
 } from '@/components/ui/dialog';
 import {
     Select,
@@ -32,21 +31,21 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { toast } from 'sonner';
 import { Plus, Trash2, Settings2, Link2, Unlink, Pencil } from 'lucide-react';
 import {
-    useOnboardingMethods,
-    useCreateOnboardingMethod,
-    useUpdateOnboardingMethod,
-    useDeleteOnboardingMethod,
-    useAddMethodPhase,
-    useRemoveMethodPhase,
+    useOnboardingFlows,
+    useCreateOnboardingFlow,
+    useUpdateOnboardingFlow,
+    useDeleteOnboardingFlow,
+    useAddFlowPhase,
+    useRemoveFlowPhase,
     useReferencePlans,
     useLinkOrgType,
     useUnlinkOrgType,
-    type OnboardingMethod,
+    type OnboardingFlow,
     type PhaseCategory,
     type AddPhaseInput,
     type PlanRef,
     type OrgTypeRef,
-} from '@/lib/hooks/use-onboarding-methods';
+} from '@/lib/hooks/use-onboarding-flows';
 
 // ============================================================================
 // Constants
@@ -78,16 +77,16 @@ const PHASE_TYPES: Record<PhaseCategory, { value: string; label: string }[]> = {
 };
 
 // ============================================================================
-// Create Method Dialog
+// Create Flow Dialog
 // ============================================================================
 
-function CreateMethodDialog() {
+function CreateFlowDialog() {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [expiresInDays, setExpiresInDays] = useState('30');
     const [autoActivatePhases, setAutoActivatePhases] = useState(true);
-    const createMutation = useCreateOnboardingMethod();
+    const createMutation = useCreateOnboardingFlow();
 
     const handleCreate = async () => {
         if (!name.trim()) {
@@ -101,7 +100,7 @@ function CreateMethodDialog() {
                 expiresInDays: expiresInDays ? parseInt(expiresInDays) : null,
                 autoActivatePhases,
             });
-            toast.success('Onboarding method created');
+            toast.success('Onboarding flow created');
             setOpen(false);
             setName('');
             setDescription('');
@@ -115,11 +114,11 @@ function CreateMethodDialog() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button><Plus className="h-4 w-4 mr-2" /> New Method</Button>
+                <Button><Plus className="h-4 w-4 mr-2" /> New Flow</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Create Onboarding Method</DialogTitle>
+                    <DialogTitle>Create Onboarding Flow</DialogTitle>
                     <DialogDescription>
                         Define a new onboarding template that can be assigned to organization types.
                     </DialogDescription>
@@ -155,29 +154,29 @@ function CreateMethodDialog() {
 }
 
 // ============================================================================
-// Edit Method Dialog
+// Edit Flow Dialog
 // ============================================================================
 
-function EditMethodDialog({ method }: { method: OnboardingMethod }) {
+function EditFlowDialog({ flow }: { flow: OnboardingFlow }) {
     const [open, setOpen] = useState(false);
-    const [name, setName] = useState(method.name);
-    const [description, setDescription] = useState(method.description || '');
-    const [expiresInDays, setExpiresInDays] = useState(method.expiresInDays?.toString() || '');
-    const [isActive, setIsActive] = useState(method.isActive);
-    const [autoActivatePhases, setAutoActivatePhases] = useState(method.autoActivatePhases);
-    const updateMutation = useUpdateOnboardingMethod();
+    const [name, setName] = useState(flow.name);
+    const [description, setDescription] = useState(flow.description || '');
+    const [expiresInDays, setExpiresInDays] = useState(flow.expiresInDays?.toString() || '');
+    const [isActive, setIsActive] = useState(flow.isActive);
+    const [autoActivatePhases, setAutoActivatePhases] = useState(flow.autoActivatePhases);
+    const updateMutation = useUpdateOnboardingFlow();
 
     const handleUpdate = async () => {
         try {
             await updateMutation.mutateAsync({
-                id: method.id,
+                id: flow.id,
                 name: name.trim(),
                 description: description.trim() || undefined,
                 expiresInDays: expiresInDays ? parseInt(expiresInDays) : null,
                 isActive,
                 autoActivatePhases,
             });
-            toast.success('Method updated');
+            toast.success('Flow updated');
             setOpen(false);
         } catch (err) {
             toast.error(err instanceof Error ? err.message : 'Failed to update');
@@ -191,7 +190,7 @@ function EditMethodDialog({ method }: { method: OnboardingMethod }) {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Edit Onboarding Method</DialogTitle>
+                    <DialogTitle>Edit Onboarding Flow</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                     <div className="space-y-2">
@@ -230,7 +229,7 @@ function EditMethodDialog({ method }: { method: OnboardingMethod }) {
 // Add Phase Dialog
 // ============================================================================
 
-function AddPhaseDialog({ method }: { method: OnboardingMethod }) {
+function AddPhaseDialog({ flow }: { flow: OnboardingFlow }) {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -238,10 +237,10 @@ function AddPhaseDialog({ method }: { method: OnboardingMethod }) {
     const [phaseType, setPhaseType] = useState('ORG_KYB');
     const [planId, setPlanId] = useState('');
     const { data: reference } = useReferencePlans();
-    const addMutation = useAddMethodPhase();
+    const addMutation = useAddFlowPhase();
 
-    const nextOrder = method.phases.length > 0
-        ? Math.max(...method.phases.map(p => p.order)) + 1
+    const nextOrder = flow.phases.length > 0
+        ? Math.max(...flow.phases.map(p => p.order)) + 1
         : 1;
 
     const getAvailablePlans = (): PlanRef[] => {
@@ -266,8 +265,8 @@ function AddPhaseDialog({ method }: { method: OnboardingMethod }) {
         if (!name.trim()) { toast.error('Name is required'); return; }
         if (!planId) { toast.error(`${getPlanFieldName()} is required`); return; }
 
-        const data: AddPhaseInput & { methodId: string } = {
-            methodId: method.id,
+        const data: AddPhaseInput & { flowId: string } = {
+            flowId: flow.id,
             name: name.trim(),
             description: description.trim() || undefined,
             phaseCategory,
@@ -299,7 +298,7 @@ function AddPhaseDialog({ method }: { method: OnboardingMethod }) {
                 <DialogHeader>
                     <DialogTitle>Add Phase</DialogTitle>
                     <DialogDescription>
-                        Add a new phase to &quot;{method.name}&quot;. It will be placed at order {nextOrder}.
+                        Add a new phase to &quot;{flow.name}&quot;. It will be placed at order {nextOrder}.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
@@ -369,24 +368,24 @@ function AddPhaseDialog({ method }: { method: OnboardingMethod }) {
 // Link Org Type Dialog
 // ============================================================================
 
-function LinkOrgTypeDialog({ method }: { method: OnboardingMethod }) {
+function LinkOrgTypeDialog({ flow }: { flow: OnboardingFlow }) {
     const [open, setOpen] = useState(false);
     const [selectedOrgTypeId, setSelectedOrgTypeId] = useState('');
     const { data: reference } = useReferencePlans();
     const linkMutation = useLinkOrgType();
 
-    // Filter to org types that are not already linked to any method (or linked to this one)
+    // Filter to org types that are not already linked to any flow (or linked to this one)
     const availableTypes = (reference?.orgTypes || []).filter(
-        t => !t.onboardingMethodId || t.onboardingMethodId === method.id
+        t => !t.onboardingFlowId || t.onboardingFlowId === flow.id
     );
     const unlinkedTypes = availableTypes.filter(
-        t => !method.organizationTypes.some(ot => ot.id === t.id)
+        t => !flow.organizationTypes.some(ot => ot.id === t.id)
     );
 
     const handleLink = async () => {
         if (!selectedOrgTypeId) { toast.error('Select an organization type'); return; }
         try {
-            await linkMutation.mutateAsync({ methodId: method.id, organizationTypeId: selectedOrgTypeId });
+            await linkMutation.mutateAsync({ flowId: flow.id, organizationTypeId: selectedOrgTypeId });
             toast.success('Organization type linked');
             setOpen(false);
             setSelectedOrgTypeId('');
@@ -435,19 +434,19 @@ function LinkOrgTypeDialog({ method }: { method: OnboardingMethod }) {
 }
 
 // ============================================================================
-// Method Detail Card
+// Flow Detail Card
 // ============================================================================
 
-function MethodDetailCard({ method }: { method: OnboardingMethod }) {
-    const deleteMutation = useDeleteOnboardingMethod();
-    const removePhaseMutation = useRemoveMethodPhase();
+function FlowDetailCard({ flow }: { flow: OnboardingFlow }) {
+    const deleteMutation = useDeleteOnboardingFlow();
+    const removePhaseMutation = useRemoveFlowPhase();
     const unlinkMutation = useUnlinkOrgType();
     const [confirmDelete, setConfirmDelete] = useState(false);
 
     const handleDelete = async () => {
         try {
-            await deleteMutation.mutateAsync(method.id);
-            toast.success('Method deleted');
+            await deleteMutation.mutateAsync(flow.id);
+            toast.success('Flow deleted');
             setConfirmDelete(false);
         } catch (err) {
             toast.error(err instanceof Error ? err.message : 'Failed to delete');
@@ -457,7 +456,7 @@ function MethodDetailCard({ method }: { method: OnboardingMethod }) {
     const handleRemovePhase = async (phaseId: string, phaseName: string) => {
         if (!confirm(`Remove phase "${phaseName}"?`)) return;
         try {
-            await removePhaseMutation.mutateAsync({ methodId: method.id, phaseId });
+            await removePhaseMutation.mutateAsync({ flowId: flow.id, phaseId });
             toast.success('Phase removed');
         } catch (err) {
             toast.error(err instanceof Error ? err.message : 'Failed to remove phase');
@@ -465,16 +464,16 @@ function MethodDetailCard({ method }: { method: OnboardingMethod }) {
     };
 
     const handleUnlinkOrgType = async (orgType: OrgTypeRef) => {
-        if (!confirm(`Unlink "${orgType.code}" from this method?`)) return;
+        if (!confirm(`Unlink "${orgType.code}" from this flow?`)) return;
         try {
-            await unlinkMutation.mutateAsync({ methodId: method.id, orgTypeId: orgType.id });
+            await unlinkMutation.mutateAsync({ flowId: flow.id, orgTypeId: orgType.id });
             toast.success(`${orgType.code} unlinked`);
         } catch (err) {
             toast.error(err instanceof Error ? err.message : 'Failed to unlink');
         }
     };
 
-    const sortedPhases = [...method.phases].sort((a, b) => a.order - b.order);
+    const sortedPhases = [...flow.phases].sort((a, b) => a.order - b.order);
 
     return (
         <Card>
@@ -483,16 +482,16 @@ function MethodDetailCard({ method }: { method: OnboardingMethod }) {
                     <div className="flex items-center gap-3">
                         <div>
                             <CardTitle className="text-lg flex items-center gap-2">
-                                {method.name}
-                                <Badge variant={method.isActive ? 'default' : 'secondary'}>
-                                    {method.isActive ? 'Active' : 'Inactive'}
+                                {flow.name}
+                                <Badge variant={flow.isActive ? 'default' : 'secondary'}>
+                                    {flow.isActive ? 'Active' : 'Inactive'}
                                 </Badge>
                             </CardTitle>
-                            <CardDescription>{method.description || 'No description'}</CardDescription>
+                            <CardDescription>{flow.description || 'No description'}</CardDescription>
                         </div>
                     </div>
                     <div className="flex items-center gap-1">
-                        <EditMethodDialog method={method} />
+                        <EditFlowDialog flow={flow} />
                         <Dialog open={confirmDelete} onOpenChange={setConfirmDelete}>
                             <DialogTrigger asChild>
                                 <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
@@ -501,12 +500,12 @@ function MethodDetailCard({ method }: { method: OnboardingMethod }) {
                             </DialogTrigger>
                             <DialogContent>
                                 <DialogHeader>
-                                    <DialogTitle>Delete &quot;{method.name}&quot;?</DialogTitle>
+                                    <DialogTitle>Delete &quot;{flow.name}&quot;?</DialogTitle>
                                     <DialogDescription>
-                                        This will permanently delete this onboarding method and all its phase definitions.
-                                        {method._count.onboardings > 0 && (
+                                        This will permanently delete this onboarding flow and all its phase definitions.
+                                        {flow._count.onboardings > 0 && (
                                             <span className="block mt-2 text-destructive font-medium">
-                                                ⚠️ {method._count.onboardings} active onboarding instance(s) use this method. Deletion will be blocked.
+                                                ⚠️ {flow._count.onboardings} active onboarding instance(s) use this flow. Deletion will be blocked.
                                             </span>
                                         )}
                                     </DialogDescription>
@@ -527,19 +526,19 @@ function MethodDetailCard({ method }: { method: OnboardingMethod }) {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div>
                         <p className="text-muted-foreground">Expires In</p>
-                        <p className="font-medium">{method.expiresInDays ? `${method.expiresInDays} days` : 'Never'}</p>
+                        <p className="font-medium">{flow.expiresInDays ? `${flow.expiresInDays} days` : 'Never'}</p>
                     </div>
                     <div>
                         <p className="text-muted-foreground">Auto-Activate</p>
-                        <p className="font-medium">{method.autoActivatePhases ? 'Yes' : 'No'}</p>
+                        <p className="font-medium">{flow.autoActivatePhases ? 'Yes' : 'No'}</p>
                     </div>
                     <div>
                         <p className="text-muted-foreground">Phases</p>
-                        <p className="font-medium">{method.phases.length}</p>
+                        <p className="font-medium">{flow.phases.length}</p>
                     </div>
                     <div>
                         <p className="text-muted-foreground">Active Instances</p>
-                        <p className="font-medium">{method._count.onboardings}</p>
+                        <p className="font-medium">{flow._count.onboardings}</p>
                     </div>
                 </div>
 
@@ -549,15 +548,15 @@ function MethodDetailCard({ method }: { method: OnboardingMethod }) {
                 <div>
                     <div className="flex items-center justify-between mb-3">
                         <h4 className="text-sm font-semibold">Linked Organization Types</h4>
-                        <LinkOrgTypeDialog method={method} />
+                        <LinkOrgTypeDialog flow={flow} />
                     </div>
-                    {method.organizationTypes.length === 0 ? (
+                    {flow.organizationTypes.length === 0 ? (
                         <p className="text-sm text-muted-foreground">
                             No organization types linked. Link one to enable automatic onboarding for that type.
                         </p>
                     ) : (
                         <div className="flex flex-wrap gap-2">
-                            {method.organizationTypes.map(ot => (
+                            {flow.organizationTypes.map(ot => (
                                 <Badge key={ot.id} variant="secondary" className="text-sm flex items-center gap-1.5">
                                     {ot.name} ({ot.code})
                                     <button
@@ -579,7 +578,7 @@ function MethodDetailCard({ method }: { method: OnboardingMethod }) {
                 <div>
                     <div className="flex items-center justify-between mb-3">
                         <h4 className="text-sm font-semibold">Phases ({sortedPhases.length})</h4>
-                        <AddPhaseDialog method={method} />
+                        <AddPhaseDialog flow={flow} />
                     </div>
                     {sortedPhases.length === 0 ? (
                         <p className="text-sm text-muted-foreground">
@@ -646,8 +645,8 @@ function MethodDetailCard({ method }: { method: OnboardingMethod }) {
 // Main Page
 // ============================================================================
 
-function OnboardingMethodsContent() {
-    const { data: methods, isLoading, error } = useOnboardingMethods();
+function OnboardingFlowsContent() {
+    const { data: flows, isLoading, error } = useOnboardingFlows();
 
     if (isLoading) {
         return (
@@ -666,35 +665,35 @@ function OnboardingMethodsContent() {
         return (
             <div className="text-center py-12">
                 <span className="text-4xl">❌</span>
-                <h2 className="text-xl font-semibold mt-4">Failed to load onboarding methods</h2>
+                <h2 className="text-xl font-semibold mt-4">Failed to load onboarding flows</h2>
                 <p className="text-muted-foreground">{error instanceof Error ? error.message : 'Unknown error'}</p>
             </div>
         );
     }
 
-    const allMethods = methods || [];
+    const allFlows = flows || [];
 
     return (
         <div className="space-y-6">
             {/* Header */}
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Onboarding Methods</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">Onboarding Flows</h1>
                     <p className="text-muted-foreground mt-1">
                         Configure onboarding templates that define the workflow for new partner organizations.
                     </p>
                 </div>
-                <CreateMethodDialog />
+                <CreateFlowDialog />
             </div>
 
             {/* Stats */}
             <div className="grid gap-4 md:grid-cols-3">
                 <Card>
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Total Methods</CardTitle>
+                        <CardTitle className="text-sm font-medium text-muted-foreground">Total Flows</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{allMethods.length}</div>
+                        <div className="text-2xl font-bold">{allFlows.length}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -702,7 +701,7 @@ function OnboardingMethodsContent() {
                         <CardTitle className="text-sm font-medium text-muted-foreground">Active</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-green-600">{allMethods.filter(m => m.isActive).length}</div>
+                        <div className="text-2xl font-bold text-green-600">{allFlows.filter(m => m.isActive).length}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -710,29 +709,29 @@ function OnboardingMethodsContent() {
                         <CardTitle className="text-sm font-medium text-muted-foreground">Total Onboarding Instances</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-blue-600">{allMethods.reduce((sum, m) => sum + m._count.onboardings, 0)}</div>
+                        <div className="text-2xl font-bold text-blue-600">{allFlows.reduce((sum, m) => sum + m._count.onboardings, 0)}</div>
                     </CardContent>
                 </Card>
             </div>
 
-            {/* Method Cards */}
-            {allMethods.length === 0 ? (
+            {/* Flow Cards */}
+            {allFlows.length === 0 ? (
                 <Card>
                     <CardContent className="py-12 text-center">
                         <Settings2 className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                        <h3 className="text-lg font-semibold">No onboarding methods</h3>
+                        <h3 className="text-lg font-semibold">No onboarding flows</h3>
                         <p className="text-muted-foreground mt-1">
-                            Create your first onboarding method to define how partner organizations are verified.
+                            Create your first onboarding flow to define how partner organizations are verified.
                         </p>
                         <div className="mt-4">
-                            <CreateMethodDialog />
+                            <CreateFlowDialog />
                         </div>
                     </CardContent>
                 </Card>
             ) : (
                 <div className="space-y-4">
-                    {allMethods.map(method => (
-                        <MethodDetailCard key={method.id} method={method} />
+                    {allFlows.map(flow => (
+                        <FlowDetailCard key={flow.id} flow={flow} />
                     ))}
                 </div>
             )}
@@ -740,11 +739,11 @@ function OnboardingMethodsContent() {
     );
 }
 
-export default function OnboardingMethodsPage() {
+export default function OnboardingFlowsPage() {
     return (
         <ProtectedRoute roles={['admin']}>
             <div className="container mx-auto py-6">
-                <OnboardingMethodsContent />
+                <OnboardingFlowsContent />
             </div>
         </ProtectedRoute>
     );

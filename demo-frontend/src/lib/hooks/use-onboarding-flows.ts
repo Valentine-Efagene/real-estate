@@ -18,7 +18,7 @@ export interface PlanRef {
     category?: string;
 }
 
-export interface OnboardingMethodPhase {
+export interface OnboardingFlowPhase {
     id: string;
     name: string;
     description: string | null;
@@ -35,10 +35,10 @@ export interface OrgTypeRef {
     id: string;
     code: string;
     name: string;
-    onboardingMethodId?: string | null;
+    onboardingFlowId?: string | null;
 }
 
-export interface OnboardingMethod {
+export interface OnboardingFlow {
     id: string;
     name: string;
     description: string | null;
@@ -47,7 +47,7 @@ export interface OnboardingMethod {
     expiresInDays: number | null;
     createdAt: string;
     updatedAt: string;
-    phases: OnboardingMethodPhase[];
+    phases: OnboardingFlowPhase[];
     organizationTypes: OrgTypeRef[];
     _count: { onboardings: number };
 }
@@ -59,7 +59,7 @@ export interface ReferencePlans {
     orgTypes: OrgTypeRef[];
 }
 
-export interface CreateOnboardingMethodInput {
+export interface CreateOnboardingFlowInput {
     name: string;
     description?: string;
     isActive?: boolean;
@@ -67,7 +67,7 @@ export interface CreateOnboardingMethodInput {
     expiresInDays?: number | null;
 }
 
-export interface UpdateOnboardingMethodInput {
+export interface UpdateOnboardingFlowInput {
     name?: string;
     description?: string;
     isActive?: boolean;
@@ -102,37 +102,37 @@ export interface UpdatePhaseInput {
 // Query Keys
 // ============================================================================
 
-export const onboardingMethodKeys = {
-    all: ['onboarding-methods'] as const,
-    list: () => ['onboarding-methods', 'list'] as const,
-    detail: (id: string) => ['onboarding-methods', 'detail', id] as const,
-    reference: () => ['onboarding-methods', 'reference'] as const,
+export const onboardingFlowKeys = {
+    all: ['onboarding-flows'] as const,
+    list: () => ['onboarding-flows', 'list'] as const,
+    detail: (id: string) => ['onboarding-flows', 'detail', id] as const,
+    reference: () => ['onboarding-flows', 'reference'] as const,
 };
 
 // ============================================================================
 // Hooks — Queries
 // ============================================================================
 
-export function useOnboardingMethods() {
+export function useOnboardingFlows() {
     return useQuery({
-        queryKey: onboardingMethodKeys.list(),
+        queryKey: onboardingFlowKeys.list(),
         queryFn: async () => {
-            const response = await userApi.get<OnboardingMethod[]>('/onboarding-methods');
+            const response = await userApi.get<OnboardingFlow[]>('/onboarding-flows');
             if (!response.success) {
-                throw new Error(response.error?.message || 'Failed to fetch onboarding methods');
+                throw new Error(response.error?.message || 'Failed to fetch onboarding flows');
             }
             return response.data!;
         },
     });
 }
 
-export function useOnboardingMethod(id: string) {
+export function useOnboardingFlow(id: string) {
     return useQuery({
-        queryKey: onboardingMethodKeys.detail(id),
+        queryKey: onboardingFlowKeys.detail(id),
         queryFn: async () => {
-            const response = await userApi.get<OnboardingMethod>(`/onboarding-methods/${id}`);
+            const response = await userApi.get<OnboardingFlow>(`/onboarding-flows/${id}`);
             if (!response.success) {
-                throw new Error(response.error?.message || 'Failed to fetch onboarding method');
+                throw new Error(response.error?.message || 'Failed to fetch onboarding flow');
             }
             return response.data!;
         },
@@ -142,9 +142,9 @@ export function useOnboardingMethod(id: string) {
 
 export function useReferencePlans() {
     return useQuery({
-        queryKey: onboardingMethodKeys.reference(),
+        queryKey: onboardingFlowKeys.reference(),
         queryFn: async () => {
-            const response = await userApi.get<ReferencePlans>('/onboarding-methods/reference/plans');
+            const response = await userApi.get<ReferencePlans>('/onboarding-flows/reference/plans');
             if (!response.success) {
                 throw new Error(response.error?.message || 'Failed to fetch reference plans');
             }
@@ -157,90 +157,90 @@ export function useReferencePlans() {
 // Hooks — Mutations
 // ============================================================================
 
-export function useCreateOnboardingMethod() {
+export function useCreateOnboardingFlow() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (data: CreateOnboardingMethodInput) => {
-            const response = await userApi.post<OnboardingMethod>('/onboarding-methods', data);
+        mutationFn: async (data: CreateOnboardingFlowInput) => {
+            const response = await userApi.post<OnboardingFlow>('/onboarding-flows', data);
             if (!response.success) throw new Error(response.error?.message || 'Failed to create');
             return response.data!;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.all });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.all });
         },
     });
 }
 
-export function useUpdateOnboardingMethod() {
+export function useUpdateOnboardingFlow() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async ({ id, ...data }: UpdateOnboardingMethodInput & { id: string }) => {
-            const response = await userApi.patch<OnboardingMethod>(`/onboarding-methods/${id}`, data);
+        mutationFn: async ({ id, ...data }: UpdateOnboardingFlowInput & { id: string }) => {
+            const response = await userApi.patch<OnboardingFlow>(`/onboarding-flows/${id}`, data);
             if (!response.success) throw new Error(response.error?.message || 'Failed to update');
             return response.data!;
         },
         onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.all });
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.detail(variables.id) });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.all });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.detail(variables.id) });
         },
     });
 }
 
-export function useDeleteOnboardingMethod() {
+export function useDeleteOnboardingFlow() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (id: string) => {
-            const response = await userApi.delete<{ deleted: boolean }>(`/onboarding-methods/${id}`);
+            const response = await userApi.delete<{ deleted: boolean }>(`/onboarding-flows/${id}`);
             if (!response.success) throw new Error(response.error?.message || 'Failed to delete');
             return response.data!;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.all });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.all });
         },
     });
 }
 
-export function useAddMethodPhase() {
+export function useAddFlowPhase() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async ({ methodId, ...data }: AddPhaseInput & { methodId: string }) => {
-            const response = await userApi.post<OnboardingMethodPhase>(`/onboarding-methods/${methodId}/phases`, data);
+        mutationFn: async ({ flowId, ...data }: AddPhaseInput & { flowId: string }) => {
+            const response = await userApi.post<OnboardingFlowPhase>(`/onboarding-flows/${flowId}/phases`, data);
             if (!response.success) throw new Error(response.error?.message || 'Failed to add phase');
             return response.data!;
         },
         onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.detail(variables.methodId) });
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.list() });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.detail(variables.flowId) });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.list() });
         },
     });
 }
 
-export function useUpdateMethodPhase() {
+export function useUpdateFlowPhase() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async ({ methodId, phaseId, ...data }: UpdatePhaseInput & { methodId: string; phaseId: string }) => {
-            const response = await userApi.patch<OnboardingMethodPhase>(`/onboarding-methods/${methodId}/phases/${phaseId}`, data);
+        mutationFn: async ({ flowId, phaseId, ...data }: UpdatePhaseInput & { flowId: string; phaseId: string }) => {
+            const response = await userApi.patch<OnboardingFlowPhase>(`/onboarding-flows/${flowId}/phases/${phaseId}`, data);
             if (!response.success) throw new Error(response.error?.message || 'Failed to update phase');
             return response.data!;
         },
         onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.detail(variables.methodId) });
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.list() });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.detail(variables.flowId) });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.list() });
         },
     });
 }
 
-export function useRemoveMethodPhase() {
+export function useRemoveFlowPhase() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async ({ methodId, phaseId }: { methodId: string; phaseId: string }) => {
-            const response = await userApi.delete<{ deleted: boolean }>(`/onboarding-methods/${methodId}/phases/${phaseId}`);
+        mutationFn: async ({ flowId, phaseId }: { flowId: string; phaseId: string }) => {
+            const response = await userApi.delete<{ deleted: boolean }>(`/onboarding-flows/${flowId}/phases/${phaseId}`);
             if (!response.success) throw new Error(response.error?.message || 'Failed to remove phase');
             return response.data!;
         },
         onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.detail(variables.methodId) });
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.list() });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.detail(variables.flowId) });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.list() });
         },
     });
 }
@@ -248,14 +248,14 @@ export function useRemoveMethodPhase() {
 export function useLinkOrgType() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async ({ methodId, organizationTypeId }: { methodId: string; organizationTypeId: string }) => {
-            const response = await userApi.post<OnboardingMethod>(`/onboarding-methods/${methodId}/org-types`, { organizationTypeId });
+        mutationFn: async ({ flowId, organizationTypeId }: { flowId: string; organizationTypeId: string }) => {
+            const response = await userApi.post<OnboardingFlow>(`/onboarding-flows/${flowId}/org-types`, { organizationTypeId });
             if (!response.success) throw new Error(response.error?.message || 'Failed to link');
             return response.data!;
         },
-        onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.all });
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.reference() });
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.all });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.reference() });
         },
     });
 }
@@ -263,14 +263,14 @@ export function useLinkOrgType() {
 export function useUnlinkOrgType() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async ({ methodId, orgTypeId }: { methodId: string; orgTypeId: string }) => {
-            const response = await userApi.delete<OnboardingMethod>(`/onboarding-methods/${methodId}/org-types/${orgTypeId}`);
+        mutationFn: async ({ flowId, orgTypeId }: { flowId: string; orgTypeId: string }) => {
+            const response = await userApi.delete<OnboardingFlow>(`/onboarding-flows/${flowId}/org-types/${orgTypeId}`);
             if (!response.success) throw new Error(response.error?.message || 'Failed to unlink');
             return response.data!;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.all });
-            queryClient.invalidateQueries({ queryKey: onboardingMethodKeys.reference() });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.all });
+            queryClient.invalidateQueries({ queryKey: onboardingFlowKeys.reference() });
         },
     });
 }

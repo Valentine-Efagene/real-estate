@@ -133,7 +133,7 @@ export interface OrganizationOnboarding {
     };
     assignee: OnboardingAssignee | null;
     approvedBy: OnboardingAssignee | null;
-    onboardingMethod: {
+    onboardingFlow: {
         id: string;
         name: string;
     };

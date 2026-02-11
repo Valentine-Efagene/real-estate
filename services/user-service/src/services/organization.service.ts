@@ -171,7 +171,7 @@ class OrganizationService {
         // Create organization with type assignments in a transaction
         const orgResult = await prisma.$transaction(async (tx) => {
             // Check if any org type requires onboarding
-            const typesWithOnboarding = orgTypes.filter((t) => t.onboardingMethodId);
+            const typesWithOnboarding = orgTypes.filter((t) => t.onboardingFlowId);
             const requiresOnboarding = typesWithOnboarding.length > 0;
 
             const org = await tx.organization.create({
@@ -226,7 +226,7 @@ class OrganizationService {
                 await onboardingService.createOnboarding(
                     tenantId,
                     orgResult.org.id,
-                    onboardingType.onboardingMethodId!,
+                    onboardingType.onboardingFlowId!,
                 );
                 console.log(`[OrganizationService] Created onboarding for org ${orgResult.org.name} (type: ${onboardingType.code})`);
             } catch (error) {

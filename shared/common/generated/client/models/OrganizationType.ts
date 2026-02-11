@@ -31,7 +31,7 @@ export type OrganizationTypeMinAggregateOutputType = {
   name: string | null
   description: string | null
   isSystemType: boolean | null
-  onboardingMethodId: string | null
+  onboardingFlowId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -43,7 +43,7 @@ export type OrganizationTypeMaxAggregateOutputType = {
   name: string | null
   description: string | null
   isSystemType: boolean | null
-  onboardingMethodId: string | null
+  onboardingFlowId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -55,7 +55,7 @@ export type OrganizationTypeCountAggregateOutputType = {
   name: number
   description: number
   isSystemType: number
-  onboardingMethodId: number
+  onboardingFlowId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -69,7 +69,7 @@ export type OrganizationTypeMinAggregateInputType = {
   name?: true
   description?: true
   isSystemType?: true
-  onboardingMethodId?: true
+  onboardingFlowId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -81,7 +81,7 @@ export type OrganizationTypeMaxAggregateInputType = {
   name?: true
   description?: true
   isSystemType?: true
-  onboardingMethodId?: true
+  onboardingFlowId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -93,7 +93,7 @@ export type OrganizationTypeCountAggregateInputType = {
   name?: true
   description?: true
   isSystemType?: true
-  onboardingMethodId?: true
+  onboardingFlowId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -178,7 +178,7 @@ export type OrganizationTypeGroupByOutputType = {
   name: string
   description: string | null
   isSystemType: boolean
-  onboardingMethodId: string | null
+  onboardingFlowId: string | null
   createdAt: Date
   updatedAt: Date
   _count: OrganizationTypeCountAggregateOutputType | null
@@ -211,11 +211,11 @@ export type OrganizationTypeWhereInput = {
   name?: Prisma.StringFilter<"OrganizationType"> | string
   description?: Prisma.StringNullableFilter<"OrganizationType"> | string | null
   isSystemType?: Prisma.BoolFilter<"OrganizationType"> | boolean
-  onboardingMethodId?: Prisma.StringNullableFilter<"OrganizationType"> | string | null
+  onboardingFlowId?: Prisma.StringNullableFilter<"OrganizationType"> | string | null
   createdAt?: Prisma.DateTimeFilter<"OrganizationType"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationType"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
-  onboardingMethod?: Prisma.XOR<Prisma.OnboardingMethodNullableScalarRelationFilter, Prisma.OnboardingMethodWhereInput> | null
+  onboardingFlow?: Prisma.XOR<Prisma.OnboardingFlowNullableScalarRelationFilter, Prisma.OnboardingFlowWhereInput> | null
   organizations?: Prisma.OrganizationTypeAssignmentListRelationFilter
   applicationOrganizations?: Prisma.ApplicationOrganizationListRelationFilter
   approvalStages?: Prisma.ApprovalStageListRelationFilter
@@ -233,11 +233,11 @@ export type OrganizationTypeOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   isSystemType?: Prisma.SortOrder
-  onboardingMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
+  onboardingFlowId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
-  onboardingMethod?: Prisma.OnboardingMethodOrderByWithRelationInput
+  onboardingFlow?: Prisma.OnboardingFlowOrderByWithRelationInput
   organizations?: Prisma.OrganizationTypeAssignmentOrderByRelationAggregateInput
   applicationOrganizations?: Prisma.ApplicationOrganizationOrderByRelationAggregateInput
   approvalStages?: Prisma.ApprovalStageOrderByRelationAggregateInput
@@ -260,11 +260,11 @@ export type OrganizationTypeWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"OrganizationType"> | string
   description?: Prisma.StringNullableFilter<"OrganizationType"> | string | null
   isSystemType?: Prisma.BoolFilter<"OrganizationType"> | boolean
-  onboardingMethodId?: Prisma.StringNullableFilter<"OrganizationType"> | string | null
+  onboardingFlowId?: Prisma.StringNullableFilter<"OrganizationType"> | string | null
   createdAt?: Prisma.DateTimeFilter<"OrganizationType"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationType"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
-  onboardingMethod?: Prisma.XOR<Prisma.OnboardingMethodNullableScalarRelationFilter, Prisma.OnboardingMethodWhereInput> | null
+  onboardingFlow?: Prisma.XOR<Prisma.OnboardingFlowNullableScalarRelationFilter, Prisma.OnboardingFlowWhereInput> | null
   organizations?: Prisma.OrganizationTypeAssignmentListRelationFilter
   applicationOrganizations?: Prisma.ApplicationOrganizationListRelationFilter
   approvalStages?: Prisma.ApprovalStageListRelationFilter
@@ -282,7 +282,7 @@ export type OrganizationTypeOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   isSystemType?: Prisma.SortOrder
-  onboardingMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
+  onboardingFlowId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.OrganizationTypeCountOrderByAggregateInput
@@ -300,7 +300,7 @@ export type OrganizationTypeScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"OrganizationType"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"OrganizationType"> | string | null
   isSystemType?: Prisma.BoolWithAggregatesFilter<"OrganizationType"> | boolean
-  onboardingMethodId?: Prisma.StringNullableWithAggregatesFilter<"OrganizationType"> | string | null
+  onboardingFlowId?: Prisma.StringNullableWithAggregatesFilter<"OrganizationType"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OrganizationType"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"OrganizationType"> | Date | string
 }
@@ -314,7 +314,7 @@ export type OrganizationTypeCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationTypesInput
-  onboardingMethod?: Prisma.OnboardingMethodCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
   organizations?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrgTypeInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedAsTypeInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutOrganizationTypeInput
@@ -332,7 +332,7 @@ export type OrganizationTypeUncheckedCreateInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrgTypeInput
@@ -354,7 +354,7 @@ export type OrganizationTypeUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationTypesNestedInput
-  onboardingMethod?: Prisma.OnboardingMethodUpdateOneWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
   organizations?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrgTypeNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedAsTypeNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput
@@ -372,7 +372,7 @@ export type OrganizationTypeUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrgTypeNestedInput
@@ -392,7 +392,7 @@ export type OrganizationTypeCreateManyInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -414,7 +414,7 @@ export type OrganizationTypeUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -437,7 +437,7 @@ export type OrganizationTypeCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   isSystemType?: Prisma.SortOrder
-  onboardingMethodId?: Prisma.SortOrder
+  onboardingFlowId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -449,7 +449,7 @@ export type OrganizationTypeMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   isSystemType?: Prisma.SortOrder
-  onboardingMethodId?: Prisma.SortOrder
+  onboardingFlowId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -461,7 +461,7 @@ export type OrganizationTypeMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   isSystemType?: Prisma.SortOrder
-  onboardingMethodId?: Prisma.SortOrder
+  onboardingFlowId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -516,45 +516,45 @@ export type OrganizationTypeUpdateOneRequiredWithoutOrganizationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationTypeUpdateToOneWithWhereWithoutOrganizationsInput, Prisma.OrganizationTypeUpdateWithoutOrganizationsInput>, Prisma.OrganizationTypeUncheckedUpdateWithoutOrganizationsInput>
 }
 
-export type OrganizationTypeCreateNestedManyWithoutOnboardingMethodInput = {
-  create?: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingMethodInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput> | Prisma.OrganizationTypeCreateWithoutOnboardingMethodInput[] | Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput[]
-  connectOrCreate?: Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingMethodInput | Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingMethodInput[]
-  createMany?: Prisma.OrganizationTypeCreateManyOnboardingMethodInputEnvelope
+export type OrganizationTypeCreateNestedManyWithoutOnboardingFlowInput = {
+  create?: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingFlowInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput> | Prisma.OrganizationTypeCreateWithoutOnboardingFlowInput[] | Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput[]
+  connectOrCreate?: Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingFlowInput | Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingFlowInput[]
+  createMany?: Prisma.OrganizationTypeCreateManyOnboardingFlowInputEnvelope
   connect?: Prisma.OrganizationTypeWhereUniqueInput | Prisma.OrganizationTypeWhereUniqueInput[]
 }
 
-export type OrganizationTypeUncheckedCreateNestedManyWithoutOnboardingMethodInput = {
-  create?: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingMethodInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput> | Prisma.OrganizationTypeCreateWithoutOnboardingMethodInput[] | Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput[]
-  connectOrCreate?: Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingMethodInput | Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingMethodInput[]
-  createMany?: Prisma.OrganizationTypeCreateManyOnboardingMethodInputEnvelope
+export type OrganizationTypeUncheckedCreateNestedManyWithoutOnboardingFlowInput = {
+  create?: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingFlowInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput> | Prisma.OrganizationTypeCreateWithoutOnboardingFlowInput[] | Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput[]
+  connectOrCreate?: Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingFlowInput | Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingFlowInput[]
+  createMany?: Prisma.OrganizationTypeCreateManyOnboardingFlowInputEnvelope
   connect?: Prisma.OrganizationTypeWhereUniqueInput | Prisma.OrganizationTypeWhereUniqueInput[]
 }
 
-export type OrganizationTypeUpdateManyWithoutOnboardingMethodNestedInput = {
-  create?: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingMethodInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput> | Prisma.OrganizationTypeCreateWithoutOnboardingMethodInput[] | Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput[]
-  connectOrCreate?: Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingMethodInput | Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingMethodInput[]
-  upsert?: Prisma.OrganizationTypeUpsertWithWhereUniqueWithoutOnboardingMethodInput | Prisma.OrganizationTypeUpsertWithWhereUniqueWithoutOnboardingMethodInput[]
-  createMany?: Prisma.OrganizationTypeCreateManyOnboardingMethodInputEnvelope
+export type OrganizationTypeUpdateManyWithoutOnboardingFlowNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingFlowInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput> | Prisma.OrganizationTypeCreateWithoutOnboardingFlowInput[] | Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput[]
+  connectOrCreate?: Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingFlowInput | Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingFlowInput[]
+  upsert?: Prisma.OrganizationTypeUpsertWithWhereUniqueWithoutOnboardingFlowInput | Prisma.OrganizationTypeUpsertWithWhereUniqueWithoutOnboardingFlowInput[]
+  createMany?: Prisma.OrganizationTypeCreateManyOnboardingFlowInputEnvelope
   set?: Prisma.OrganizationTypeWhereUniqueInput | Prisma.OrganizationTypeWhereUniqueInput[]
   disconnect?: Prisma.OrganizationTypeWhereUniqueInput | Prisma.OrganizationTypeWhereUniqueInput[]
   delete?: Prisma.OrganizationTypeWhereUniqueInput | Prisma.OrganizationTypeWhereUniqueInput[]
   connect?: Prisma.OrganizationTypeWhereUniqueInput | Prisma.OrganizationTypeWhereUniqueInput[]
-  update?: Prisma.OrganizationTypeUpdateWithWhereUniqueWithoutOnboardingMethodInput | Prisma.OrganizationTypeUpdateWithWhereUniqueWithoutOnboardingMethodInput[]
-  updateMany?: Prisma.OrganizationTypeUpdateManyWithWhereWithoutOnboardingMethodInput | Prisma.OrganizationTypeUpdateManyWithWhereWithoutOnboardingMethodInput[]
+  update?: Prisma.OrganizationTypeUpdateWithWhereUniqueWithoutOnboardingFlowInput | Prisma.OrganizationTypeUpdateWithWhereUniqueWithoutOnboardingFlowInput[]
+  updateMany?: Prisma.OrganizationTypeUpdateManyWithWhereWithoutOnboardingFlowInput | Prisma.OrganizationTypeUpdateManyWithWhereWithoutOnboardingFlowInput[]
   deleteMany?: Prisma.OrganizationTypeScalarWhereInput | Prisma.OrganizationTypeScalarWhereInput[]
 }
 
-export type OrganizationTypeUncheckedUpdateManyWithoutOnboardingMethodNestedInput = {
-  create?: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingMethodInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput> | Prisma.OrganizationTypeCreateWithoutOnboardingMethodInput[] | Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput[]
-  connectOrCreate?: Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingMethodInput | Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingMethodInput[]
-  upsert?: Prisma.OrganizationTypeUpsertWithWhereUniqueWithoutOnboardingMethodInput | Prisma.OrganizationTypeUpsertWithWhereUniqueWithoutOnboardingMethodInput[]
-  createMany?: Prisma.OrganizationTypeCreateManyOnboardingMethodInputEnvelope
+export type OrganizationTypeUncheckedUpdateManyWithoutOnboardingFlowNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingFlowInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput> | Prisma.OrganizationTypeCreateWithoutOnboardingFlowInput[] | Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput[]
+  connectOrCreate?: Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingFlowInput | Prisma.OrganizationTypeCreateOrConnectWithoutOnboardingFlowInput[]
+  upsert?: Prisma.OrganizationTypeUpsertWithWhereUniqueWithoutOnboardingFlowInput | Prisma.OrganizationTypeUpsertWithWhereUniqueWithoutOnboardingFlowInput[]
+  createMany?: Prisma.OrganizationTypeCreateManyOnboardingFlowInputEnvelope
   set?: Prisma.OrganizationTypeWhereUniqueInput | Prisma.OrganizationTypeWhereUniqueInput[]
   disconnect?: Prisma.OrganizationTypeWhereUniqueInput | Prisma.OrganizationTypeWhereUniqueInput[]
   delete?: Prisma.OrganizationTypeWhereUniqueInput | Prisma.OrganizationTypeWhereUniqueInput[]
   connect?: Prisma.OrganizationTypeWhereUniqueInput | Prisma.OrganizationTypeWhereUniqueInput[]
-  update?: Prisma.OrganizationTypeUpdateWithWhereUniqueWithoutOnboardingMethodInput | Prisma.OrganizationTypeUpdateWithWhereUniqueWithoutOnboardingMethodInput[]
-  updateMany?: Prisma.OrganizationTypeUpdateManyWithWhereWithoutOnboardingMethodInput | Prisma.OrganizationTypeUpdateManyWithWhereWithoutOnboardingMethodInput[]
+  update?: Prisma.OrganizationTypeUpdateWithWhereUniqueWithoutOnboardingFlowInput | Prisma.OrganizationTypeUpdateWithWhereUniqueWithoutOnboardingFlowInput[]
+  updateMany?: Prisma.OrganizationTypeUpdateManyWithWhereWithoutOnboardingFlowInput | Prisma.OrganizationTypeUpdateManyWithWhereWithoutOnboardingFlowInput[]
   deleteMany?: Prisma.OrganizationTypeScalarWhereInput | Prisma.OrganizationTypeScalarWhereInput[]
 }
 
@@ -709,7 +709,7 @@ export type OrganizationTypeCreateWithoutOrganizationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationTypesInput
-  onboardingMethod?: Prisma.OnboardingMethodCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedAsTypeInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutOrganizationTypeInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationTypeInput
@@ -726,7 +726,7 @@ export type OrganizationTypeUncheckedCreateWithoutOrganizationsInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutAssignedAsTypeInput
@@ -763,7 +763,7 @@ export type OrganizationTypeUpdateWithoutOrganizationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationTypesNestedInput
-  onboardingMethod?: Prisma.OnboardingMethodUpdateOneWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedAsTypeNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationTypeNestedInput
@@ -780,7 +780,7 @@ export type OrganizationTypeUncheckedUpdateWithoutOrganizationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutAssignedAsTypeNestedInput
@@ -792,7 +792,7 @@ export type OrganizationTypeUncheckedUpdateWithoutOrganizationsInput = {
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
 }
 
-export type OrganizationTypeCreateWithoutOnboardingMethodInput = {
+export type OrganizationTypeCreateWithoutOnboardingFlowInput = {
   id?: string
   code: string
   name: string
@@ -811,7 +811,7 @@ export type OrganizationTypeCreateWithoutOnboardingMethodInput = {
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
 }
 
-export type OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput = {
+export type OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput = {
   id?: string
   tenantId: string
   code: string
@@ -830,30 +830,30 @@ export type OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput = {
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
 }
 
-export type OrganizationTypeCreateOrConnectWithoutOnboardingMethodInput = {
+export type OrganizationTypeCreateOrConnectWithoutOnboardingFlowInput = {
   where: Prisma.OrganizationTypeWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingMethodInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput>
+  create: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingFlowInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput>
 }
 
-export type OrganizationTypeCreateManyOnboardingMethodInputEnvelope = {
-  data: Prisma.OrganizationTypeCreateManyOnboardingMethodInput | Prisma.OrganizationTypeCreateManyOnboardingMethodInput[]
+export type OrganizationTypeCreateManyOnboardingFlowInputEnvelope = {
+  data: Prisma.OrganizationTypeCreateManyOnboardingFlowInput | Prisma.OrganizationTypeCreateManyOnboardingFlowInput[]
   skipDuplicates?: boolean
 }
 
-export type OrganizationTypeUpsertWithWhereUniqueWithoutOnboardingMethodInput = {
+export type OrganizationTypeUpsertWithWhereUniqueWithoutOnboardingFlowInput = {
   where: Prisma.OrganizationTypeWhereUniqueInput
-  update: Prisma.XOR<Prisma.OrganizationTypeUpdateWithoutOnboardingMethodInput, Prisma.OrganizationTypeUncheckedUpdateWithoutOnboardingMethodInput>
-  create: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingMethodInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingMethodInput>
+  update: Prisma.XOR<Prisma.OrganizationTypeUpdateWithoutOnboardingFlowInput, Prisma.OrganizationTypeUncheckedUpdateWithoutOnboardingFlowInput>
+  create: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutOnboardingFlowInput, Prisma.OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput>
 }
 
-export type OrganizationTypeUpdateWithWhereUniqueWithoutOnboardingMethodInput = {
+export type OrganizationTypeUpdateWithWhereUniqueWithoutOnboardingFlowInput = {
   where: Prisma.OrganizationTypeWhereUniqueInput
-  data: Prisma.XOR<Prisma.OrganizationTypeUpdateWithoutOnboardingMethodInput, Prisma.OrganizationTypeUncheckedUpdateWithoutOnboardingMethodInput>
+  data: Prisma.XOR<Prisma.OrganizationTypeUpdateWithoutOnboardingFlowInput, Prisma.OrganizationTypeUncheckedUpdateWithoutOnboardingFlowInput>
 }
 
-export type OrganizationTypeUpdateManyWithWhereWithoutOnboardingMethodInput = {
+export type OrganizationTypeUpdateManyWithWhereWithoutOnboardingFlowInput = {
   where: Prisma.OrganizationTypeScalarWhereInput
-  data: Prisma.XOR<Prisma.OrganizationTypeUpdateManyMutationInput, Prisma.OrganizationTypeUncheckedUpdateManyWithoutOnboardingMethodInput>
+  data: Prisma.XOR<Prisma.OrganizationTypeUpdateManyMutationInput, Prisma.OrganizationTypeUncheckedUpdateManyWithoutOnboardingFlowInput>
 }
 
 export type OrganizationTypeScalarWhereInput = {
@@ -866,7 +866,7 @@ export type OrganizationTypeScalarWhereInput = {
   name?: Prisma.StringFilter<"OrganizationType"> | string
   description?: Prisma.StringNullableFilter<"OrganizationType"> | string | null
   isSystemType?: Prisma.BoolFilter<"OrganizationType"> | boolean
-  onboardingMethodId?: Prisma.StringNullableFilter<"OrganizationType"> | string | null
+  onboardingFlowId?: Prisma.StringNullableFilter<"OrganizationType"> | string | null
   createdAt?: Prisma.DateTimeFilter<"OrganizationType"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationType"> | Date | string
 }
@@ -879,7 +879,7 @@ export type OrganizationTypeCreateWithoutTenantInput = {
   isSystemType?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  onboardingMethod?: Prisma.OnboardingMethodCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
   organizations?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrgTypeInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedAsTypeInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutOrganizationTypeInput
@@ -896,7 +896,7 @@ export type OrganizationTypeUncheckedCreateWithoutTenantInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrgTypeInput
@@ -944,7 +944,7 @@ export type OrganizationTypeCreateWithoutApprovalStagesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationTypesInput
-  onboardingMethod?: Prisma.OnboardingMethodCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
   organizations?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrgTypeInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedAsTypeInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationTypeInput
@@ -961,7 +961,7 @@ export type OrganizationTypeUncheckedCreateWithoutApprovalStagesInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrgTypeInput
@@ -998,7 +998,7 @@ export type OrganizationTypeUpdateWithoutApprovalStagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationTypesNestedInput
-  onboardingMethod?: Prisma.OnboardingMethodUpdateOneWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
   organizations?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrgTypeNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedAsTypeNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationTypeNestedInput
@@ -1015,7 +1015,7 @@ export type OrganizationTypeUncheckedUpdateWithoutApprovalStagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrgTypeNestedInput
@@ -1036,7 +1036,7 @@ export type OrganizationTypeCreateWithoutGatePlansInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationTypesInput
-  onboardingMethod?: Prisma.OnboardingMethodCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
   organizations?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrgTypeInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedAsTypeInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutOrganizationTypeInput
@@ -1053,7 +1053,7 @@ export type OrganizationTypeUncheckedCreateWithoutGatePlansInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrgTypeInput
@@ -1090,7 +1090,7 @@ export type OrganizationTypeUpdateWithoutGatePlansInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationTypesNestedInput
-  onboardingMethod?: Prisma.OnboardingMethodUpdateOneWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
   organizations?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrgTypeNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedAsTypeNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput
@@ -1107,7 +1107,7 @@ export type OrganizationTypeUncheckedUpdateWithoutGatePlansInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrgTypeNestedInput
@@ -1128,7 +1128,7 @@ export type OrganizationTypeCreateWithoutApplicationOrganizationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationTypesInput
-  onboardingMethod?: Prisma.OnboardingMethodCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
   organizations?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrgTypeInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutOrganizationTypeInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationTypeInput
@@ -1145,7 +1145,7 @@ export type OrganizationTypeUncheckedCreateWithoutApplicationOrganizationsInput 
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrgTypeInput
@@ -1182,7 +1182,7 @@ export type OrganizationTypeUpdateWithoutApplicationOrganizationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationTypesNestedInput
-  onboardingMethod?: Prisma.OnboardingMethodUpdateOneWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
   organizations?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrgTypeNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationTypeNestedInput
@@ -1199,7 +1199,7 @@ export type OrganizationTypeUncheckedUpdateWithoutApplicationOrganizationsInput 
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrgTypeNestedInput
@@ -1220,7 +1220,7 @@ export type OrganizationTypeCreateWithoutGatePhasesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationTypesInput
-  onboardingMethod?: Prisma.OnboardingMethodCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
   organizations?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrgTypeInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedAsTypeInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutOrganizationTypeInput
@@ -1237,7 +1237,7 @@ export type OrganizationTypeUncheckedCreateWithoutGatePhasesInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrgTypeInput
@@ -1274,7 +1274,7 @@ export type OrganizationTypeUpdateWithoutGatePhasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationTypesNestedInput
-  onboardingMethod?: Prisma.OnboardingMethodUpdateOneWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
   organizations?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrgTypeNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedAsTypeNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput
@@ -1291,7 +1291,7 @@ export type OrganizationTypeUncheckedUpdateWithoutGatePhasesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrgTypeNestedInput
@@ -1312,7 +1312,7 @@ export type OrganizationTypeCreateWithoutDocumentReviewsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationTypesInput
-  onboardingMethod?: Prisma.OnboardingMethodCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
   organizations?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrgTypeInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedAsTypeInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutOrganizationTypeInput
@@ -1329,7 +1329,7 @@ export type OrganizationTypeUncheckedCreateWithoutDocumentReviewsInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrgTypeInput
@@ -1366,7 +1366,7 @@ export type OrganizationTypeUpdateWithoutDocumentReviewsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationTypesNestedInput
-  onboardingMethod?: Prisma.OnboardingMethodUpdateOneWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
   organizations?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrgTypeNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedAsTypeNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput
@@ -1383,7 +1383,7 @@ export type OrganizationTypeUncheckedUpdateWithoutDocumentReviewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrgTypeNestedInput
@@ -1404,7 +1404,7 @@ export type OrganizationTypeCreateWithoutApprovalStageProgressInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationTypesInput
-  onboardingMethod?: Prisma.OnboardingMethodCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
   organizations?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrgTypeInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedAsTypeInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutOrganizationTypeInput
@@ -1421,7 +1421,7 @@ export type OrganizationTypeUncheckedCreateWithoutApprovalStageProgressInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrgTypeInput
@@ -1458,7 +1458,7 @@ export type OrganizationTypeUpdateWithoutApprovalStageProgressInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationTypesNestedInput
-  onboardingMethod?: Prisma.OnboardingMethodUpdateOneWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
   organizations?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrgTypeNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedAsTypeNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput
@@ -1475,7 +1475,7 @@ export type OrganizationTypeUncheckedUpdateWithoutApprovalStageProgressInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrgTypeNestedInput
@@ -1496,7 +1496,7 @@ export type OrganizationTypeCreateWithoutDocumentApprovalsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationTypesInput
-  onboardingMethod?: Prisma.OnboardingMethodCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
   organizations?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrgTypeInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedAsTypeInput
   approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutOrganizationTypeInput
@@ -1513,7 +1513,7 @@ export type OrganizationTypeUncheckedCreateWithoutDocumentApprovalsInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrgTypeInput
@@ -1550,7 +1550,7 @@ export type OrganizationTypeUpdateWithoutDocumentApprovalsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationTypesNestedInput
-  onboardingMethod?: Prisma.OnboardingMethodUpdateOneWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
   organizations?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrgTypeNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedAsTypeNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput
@@ -1567,7 +1567,7 @@ export type OrganizationTypeUncheckedUpdateWithoutDocumentApprovalsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrgTypeNestedInput
@@ -1579,7 +1579,7 @@ export type OrganizationTypeUncheckedUpdateWithoutDocumentApprovalsInput = {
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
 }
 
-export type OrganizationTypeCreateManyOnboardingMethodInput = {
+export type OrganizationTypeCreateManyOnboardingFlowInput = {
   id?: string
   tenantId: string
   code: string
@@ -1590,7 +1590,7 @@ export type OrganizationTypeCreateManyOnboardingMethodInput = {
   updatedAt?: Date | string
 }
 
-export type OrganizationTypeUpdateWithoutOnboardingMethodInput = {
+export type OrganizationTypeUpdateWithoutOnboardingFlowInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1609,7 +1609,7 @@ export type OrganizationTypeUpdateWithoutOnboardingMethodInput = {
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
 }
 
-export type OrganizationTypeUncheckedUpdateWithoutOnboardingMethodInput = {
+export type OrganizationTypeUncheckedUpdateWithoutOnboardingFlowInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1628,7 +1628,7 @@ export type OrganizationTypeUncheckedUpdateWithoutOnboardingMethodInput = {
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
 }
 
-export type OrganizationTypeUncheckedUpdateManyWithoutOnboardingMethodInput = {
+export type OrganizationTypeUncheckedUpdateManyWithoutOnboardingFlowInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1645,7 +1645,7 @@ export type OrganizationTypeCreateManyTenantInput = {
   name: string
   description?: string | null
   isSystemType?: boolean
-  onboardingMethodId?: string | null
+  onboardingFlowId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1658,7 +1658,7 @@ export type OrganizationTypeUpdateWithoutTenantInput = {
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  onboardingMethod?: Prisma.OnboardingMethodUpdateOneWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
   organizations?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrgTypeNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedAsTypeNestedInput
   approvalStages?: Prisma.ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput
@@ -1675,7 +1675,7 @@ export type OrganizationTypeUncheckedUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrgTypeNestedInput
@@ -1694,7 +1694,7 @@ export type OrganizationTypeUncheckedUpdateManyWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1800,11 +1800,11 @@ export type OrganizationTypeSelect<ExtArgs extends runtime.Types.Extensions.Inte
   name?: boolean
   description?: boolean
   isSystemType?: boolean
-  onboardingMethodId?: boolean
+  onboardingFlowId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
-  onboardingMethod?: boolean | Prisma.OrganizationType$onboardingMethodArgs<ExtArgs>
+  onboardingFlow?: boolean | Prisma.OrganizationType$onboardingFlowArgs<ExtArgs>
   organizations?: boolean | Prisma.OrganizationType$organizationsArgs<ExtArgs>
   applicationOrganizations?: boolean | Prisma.OrganizationType$applicationOrganizationsArgs<ExtArgs>
   approvalStages?: boolean | Prisma.OrganizationType$approvalStagesArgs<ExtArgs>
@@ -1825,15 +1825,15 @@ export type OrganizationTypeSelectScalar = {
   name?: boolean
   description?: boolean
   isSystemType?: boolean
-  onboardingMethodId?: boolean
+  onboardingFlowId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OrganizationTypeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "code" | "name" | "description" | "isSystemType" | "onboardingMethodId" | "createdAt" | "updatedAt", ExtArgs["result"]["organizationType"]>
+export type OrganizationTypeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "code" | "name" | "description" | "isSystemType" | "onboardingFlowId" | "createdAt" | "updatedAt", ExtArgs["result"]["organizationType"]>
 export type OrganizationTypeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
-  onboardingMethod?: boolean | Prisma.OrganizationType$onboardingMethodArgs<ExtArgs>
+  onboardingFlow?: boolean | Prisma.OrganizationType$onboardingFlowArgs<ExtArgs>
   organizations?: boolean | Prisma.OrganizationType$organizationsArgs<ExtArgs>
   applicationOrganizations?: boolean | Prisma.OrganizationType$applicationOrganizationsArgs<ExtArgs>
   approvalStages?: boolean | Prisma.OrganizationType$approvalStagesArgs<ExtArgs>
@@ -1849,7 +1849,7 @@ export type $OrganizationTypePayload<ExtArgs extends runtime.Types.Extensions.In
   name: "OrganizationType"
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>
-    onboardingMethod: Prisma.$OnboardingMethodPayload<ExtArgs> | null
+    onboardingFlow: Prisma.$OnboardingFlowPayload<ExtArgs> | null
     organizations: Prisma.$OrganizationTypeAssignmentPayload<ExtArgs>[]
     applicationOrganizations: Prisma.$ApplicationOrganizationPayload<ExtArgs>[]
     approvalStages: Prisma.$ApprovalStagePayload<ExtArgs>[]
@@ -1866,7 +1866,7 @@ export type $OrganizationTypePayload<ExtArgs extends runtime.Types.Extensions.In
     name: string
     description: string | null
     isSystemType: boolean
-    onboardingMethodId: string | null
+    onboardingFlowId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["organizationType"]>
@@ -2210,7 +2210,7 @@ readonly fields: OrganizationTypeFieldRefs;
 export interface Prisma__OrganizationTypeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  onboardingMethod<T extends Prisma.OrganizationType$onboardingMethodArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationType$onboardingMethodArgs<ExtArgs>>): Prisma.Prisma__OnboardingMethodClient<runtime.Types.Result.GetResult<Prisma.$OnboardingMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  onboardingFlow<T extends Prisma.OrganizationType$onboardingFlowArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationType$onboardingFlowArgs<ExtArgs>>): Prisma.Prisma__OnboardingFlowClient<runtime.Types.Result.GetResult<Prisma.$OnboardingFlowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   organizations<T extends Prisma.OrganizationType$organizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationType$organizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationTypeAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   applicationOrganizations<T extends Prisma.OrganizationType$applicationOrganizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationType$applicationOrganizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationOrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvalStages<T extends Prisma.OrganizationType$approvalStagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationType$approvalStagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovalStagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2254,7 +2254,7 @@ export interface OrganizationTypeFieldRefs {
   readonly name: Prisma.FieldRef<"OrganizationType", 'String'>
   readonly description: Prisma.FieldRef<"OrganizationType", 'String'>
   readonly isSystemType: Prisma.FieldRef<"OrganizationType", 'Boolean'>
-  readonly onboardingMethodId: Prisma.FieldRef<"OrganizationType", 'String'>
+  readonly onboardingFlowId: Prisma.FieldRef<"OrganizationType", 'String'>
   readonly createdAt: Prisma.FieldRef<"OrganizationType", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"OrganizationType", 'DateTime'>
 }
@@ -2600,22 +2600,22 @@ export type OrganizationTypeDeleteManyArgs<ExtArgs extends runtime.Types.Extensi
 }
 
 /**
- * OrganizationType.onboardingMethod
+ * OrganizationType.onboardingFlow
  */
-export type OrganizationType$onboardingMethodArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type OrganizationType$onboardingFlowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the OnboardingMethod
+   * Select specific fields to fetch from the OnboardingFlow
    */
-  select?: Prisma.OnboardingMethodSelect<ExtArgs> | null
+  select?: Prisma.OnboardingFlowSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the OnboardingMethod
+   * Omit specific fields from the OnboardingFlow
    */
-  omit?: Prisma.OnboardingMethodOmit<ExtArgs> | null
+  omit?: Prisma.OnboardingFlowOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.OnboardingMethodInclude<ExtArgs> | null
-  where?: Prisma.OnboardingMethodWhereInput
+  include?: Prisma.OnboardingFlowInclude<ExtArgs> | null
+  where?: Prisma.OnboardingFlowWhereInput
 }
 
 /**

@@ -11,7 +11,7 @@ import { adminRouter } from './routes/admin';
 import { organizationRouter } from './routes/organizations';
 import { invitationRouter, publicInvitationRouter } from './routes/invitations';
 import { onboardingRouter } from './routes/onboarding';
-import { onboardingMethodRouter } from './routes/onboarding-methods';
+import { onboardingFlowRouter } from './routes/onboarding-flows';
 import { errorHandler } from './middleware/error-handler';
 import { requestLogger, createTenantMiddleware } from '@valentine-efagene/qshelter-common';
 import { generateOpenAPIDocument } from './config/swagger';
@@ -92,8 +92,8 @@ app.use('/organizations', organizationRouter);
 // Invitation routes (authenticated - for creating/managing invitations)
 app.use(invitationRouter);
 
-// Onboarding method templates (CRUD for admin)
-app.use('/onboarding-methods', onboardingMethodRouter);
+// Onboarding flow templates (CRUD for admin)
+app.use('/onboarding-flows', onboardingFlowRouter);
 
 // Onboarding routes (authenticated - for managing org onboarding workflows)
 app.use(onboardingRouter);
