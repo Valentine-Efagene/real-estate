@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { ProtectedRoute } from '@/components/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +17,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query';
-import { Plus, UserPlus, Mail, RefreshCw, X, Clock, User, Pencil } from 'lucide-react';
+import { Plus, UserPlus, Mail, RefreshCw, X, Clock, User, Pencil, ClipboardCheck } from 'lucide-react';
+import { useOnboarding, type OnboardingStatus } from '@/lib/hooks/use-onboarding';
 
 interface Organization {
   id: string;
@@ -1019,6 +1021,43 @@ function getOrgTypeColor(code: string): 'default' | 'secondary' | 'outline' | 'd
   }
 }
 
+function getOnboardingBadgeVariant(status: OnboardingStatus): 'default' | 'secondary' | 'destructive' | 'outline' {
+  switch (status) {
+    case 'COMPLETED': return 'default';
+    case 'IN_PROGRESS': return 'secondary';
+    case 'REJECTED': return 'destructive';
+    case 'EXPIRED': return 'destructive';
+    case 'PENDING': return 'outline';
+    default: return 'outline';
+  }
+}
+
+function OnboardingStatusCell({ organizationId }: { organizationId: string }) {
+  const { data: onboarding, isLoading } = useOnboarding(organizationId);
+
+  if (isLoading) {
+    return <Skeleton className="h-5 w-20" />;
+  }
+
+  if (!onboarding) {
+    return <span className="text-xs text-muted-foreground">—</span>;
+  }
+
+  return (
+    <Link href={`/admin/organizations/${organizationId}/onboarding`}>
+      <Badge variant={getOnboardingBadgeVariant(onboarding.status)} className="text-xs cursor-pointer hover:opacity-80">
+        {onboarding.status.replace('_', ' ')}
+      </Badge>
+    </Link>
+  );
+}
+
+/** Returns true if the org has any type that would trigger onboarding (BANK, DEVELOPER, etc.) */
+function hasOnboardableType(org: Organization): boolean {
+  const onboardableTypes = ['BANK', 'DEVELOPER'];
+  return org.types?.some((ot) => onboardableTypes.includes(ot.orgType?.code || '')) ?? false;
+}
+
 function OrganizationsTable({
   organizations,
   filter,
@@ -1038,6 +1077,7 @@ function OrganizationsTable({
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Types</TableHead>
+          <TableHead>Onboarding</TableHead>
           <TableHead>Created</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
@@ -1045,7 +1085,7 @@ function OrganizationsTable({
       <TableBody>
         {filteredOrgs.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={5} className="text-center py-8 text-gray-500">
+            <TableCell colSpan={6} className="text-center py-8 text-gray-500">
               No organizations found
             </TableCell>
           </TableRow>
@@ -1077,9 +1117,23 @@ function OrganizationsTable({
                   ))}
                 </div>
               </TableCell>
+              <TableCell>
+                {hasOnboardableType(org) ? (
+                  <OnboardingStatusCell organizationId={org.id} />
+                ) : (
+                  <span className="text-xs text-muted-foreground">N/A</span>
+                )}
+              </TableCell>
               <TableCell>{new Date(org.createdAt).toLocaleDateString()}</TableCell>
               <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-2">
+                  {hasOnboardableType(org) && (
+                    <Link href={`/admin/organizations/${org.id}/onboarding`}>
+                      <Button variant="outline" size="sm" title="View Onboarding">
+                        <ClipboardCheck className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                  )}
                   <AddMemberDialog organization={org} />
                   <InviteStaffDialog organization={org} />
                   <Dialog>
@@ -1126,6 +1180,19 @@ function OrganizationsTable({
                             ))}
                           </div>
                         </div>
+                        {hasOnboardableType(org) && (
+                          <div className="space-y-2">
+                            <Label>Onboarding</Label>
+                            <div className="flex items-center gap-2">
+                              <OnboardingStatusCell organizationId={org.id} />
+                              <Link href={`/admin/organizations/${org.id}/onboarding`}>
+                                <Button variant="link" size="sm" className="h-auto p-0 text-xs">
+                                  View full onboarding →
+                                </Button>
+                              </Link>
+                            </div>
+                          </div>
+                        )}
                         <div className="space-y-2">
                           <Label>Pending Invitations</Label>
                           <PendingInvitationsList organization={org} />
