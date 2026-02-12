@@ -34,6 +34,8 @@ provider:
     PROPERTY_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/property-service-url, ''}
     MORTGAGE_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/mortgage-service-url, ''}
     PAYMENT_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/payment-service-url, ''}
+    # DynamoDB table for policy polling in demo-bootstrap
+    ROLE_POLICIES_TABLE_NAME: ${ssm:/qshelter/${self:provider.stage}/role-policies-table-name, ''}
   
   iam:
     role:
@@ -44,6 +46,10 @@ provider:
             - ssm:GetParameters
             - ssm:GetParametersByPath
           Resource: arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/qshelter-${self:provider.stage}-role-policies
         - Effect: Allow
           Action: secretsmanager:GetSecretValue
           Resource: 
@@ -72,7 +78,7 @@ provider:
 functions:
   api:
     handler: dist/lambda.handler
-    timeout: 29
+    timeout: 120
     memorySize: 512
     runtime: nodejs20.x
     events:
