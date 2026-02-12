@@ -2030,10 +2030,11 @@ describe('Full E2E Mortgage Flow', () => {
         });
 
         it('Step 9.2a: Current action — after upload, Admin should REVIEW (Stage 1), Customer should WAIT', async () => {
-            // After all customer docs uploaded, but lender docs still pending
+            // After all customer docs uploaded, but lender docs still pending (Stage 2)
             // The current review stage is PLATFORM (stage 1)
+            // Stage-aware logic: Stage 1 only considers CUSTOMER/PLATFORM docs
 
-            // Admin perspective — should be able to REVIEW
+            // Admin perspective — should REVIEW (all Stage 1 docs uploaded)
             const adminResponse = await mortgageApi
                 .get(`/applications/${applicationId}/current-action`)
                 .set(adminHeaders(adaezeAccessToken));
@@ -2043,18 +2044,29 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(adminAction.currentPhase.id).toBe(kycPhaseId);
             expect(adminAction.userPartyType).toBe('PLATFORM');
-
-            // Lender still needs to upload preapproval letter, so stage may still show uploads pending
-            // OR if only customer docs uploaded and the current stage waits for uploads before review,
-            // admin might see WAIT or UPLOAD depending on lender doc state
-            // The key is that currentStep stage 1 is active
+            expect(adminAction.actionRequired).toBe('REVIEW');
+            expect(adminAction.partyActions?.PLATFORM?.action).toBe('REVIEW');
+            expect(adminAction.partyActions?.PLATFORM?.canCurrentUserAct).toBe(true);
             if (adminAction.currentStep) {
                 expect(adminAction.currentStep.stepType).toBe('PLATFORM');
                 expect(adminAction.currentStep.order).toBe(1);
             }
             console.log(`✅ Admin sees: ${adminAction.actionRequired} — ${adminAction.actionMessage}`);
 
-            // Customer perspective — should WAIT
+            // Bank perspective — should WAIT (Stage 2 not active yet)
+            const lenderResponse = await mortgageApi
+                .get(`/applications/${applicationId}/current-action`)
+                .set(lenderHeaders(nkechiAccessToken));
+
+            expect(lenderResponse.status).toBe(200);
+            const lenderAction = lenderResponse.body.data;
+            expect(lenderAction.partyActions?.BANK?.action).toBe('WAIT');
+            expect(lenderAction.partyActions?.BANK?.canCurrentUserAct).toBe(false);
+            // Bank still informed of docs they'll need later
+            expect(lenderAction.partyActions?.BANK?.pendingDocuments).toContain('PREAPPROVAL_LETTER');
+            console.log(`✅ Lender sees: ${lenderAction.actionRequired} — WAIT (Stage 2 not active)`);
+
+            // Customer perspective — should WAIT (their docs uploaded, waiting for review)
             const custResponse = await mortgageApi
                 .get(`/applications/${applicationId}/current-action`)
                 .set(customerHeaders(chidiAccessToken));
@@ -2062,10 +2074,9 @@ describe('Full E2E Mortgage Flow', () => {
             expect(custResponse.status).toBe(200);
             const custAction = custResponse.body.data;
             expect(custAction.currentPhase.id).toBe(kycPhaseId);
-            // Customer uploaded all their docs, so they wait
-            // But LENDER still has pending docs (PREAPPROVAL_LETTER) — so there are still pending uploads
-            // The customer's action depends on whether they still have pending docs
-            console.log(`✅ Customer sees: ${custAction.actionRequired} — ${custAction.actionMessage}`);
+            expect(custAction.actionRequired).toBe('WAIT_FOR_REVIEW');
+            expect(custAction.partyActions?.CUSTOMER?.action).toBe('WAIT');
+            console.log(`✅ Customer sees: ${custAction.actionRequired} — WAIT`);
         });
 
         it('Step 9.3: Adaeze (QShelter - Stage 1) reviews and approves documents', async () => {

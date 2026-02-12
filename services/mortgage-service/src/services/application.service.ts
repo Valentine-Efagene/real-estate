@@ -1538,57 +1538,114 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 };
             }
         } else if (currentPhase.phaseCategory === 'DOCUMENTATION') {
-            // Documentation phase - compute actions for each party based on pending uploads
+            // Documentation phase - compute actions for each party based on approval stages
+            //
+            // Stage-aware logic: Only consider documents relevant to the current stage.
+            // Stage org type → reviews docs uploaded by:
+            //   PLATFORM → CUSTOMER, PLATFORM
+            //   BANK     → LENDER/BANK
+            //   DEVELOPER → DEVELOPER
+            //   LEGAL    → LEGAL
+            //   etc.
 
-            // Group required documents by uploadedBy (normalized)
-            const docsByParty: Record<string, typeof requiredDocuments> = {};
-            for (const doc of requiredDocuments) {
-                const party = normalizePartyType(doc.uploadedBy || 'CUSTOMER');
-                if (!docsByParty[party]) {
-                    docsByParty[party] = [];
-                }
-                docsByParty[party].push(doc);
-            }
-
-            // Check which parties have pending uploads
-            const pendingByParty: Record<string, string[]> = {};
-            for (const [party, docs] of Object.entries(docsByParty)) {
-                const pending = docs.filter((d) => !isDocUploaded(d.documentType));
-                if (pending.length > 0) {
-                    pendingByParty[party] = pending.map((d) => d.name || d.documentType);
-                }
-            }
+            // Map: which uploaders does a given stage org type review?
+            const getUploadersForStage = (stageOrgType: string): string[] => {
+                if (stageOrgType === 'PLATFORM') return ['CUSTOMER', 'PLATFORM'];
+                return [stageOrgType]; // BANK reviews BANK (normalized from LENDER), DEVELOPER reviews DEVELOPER, etc.
+            };
 
             // Determine the current review stage info
             const stageOrgType = currentStage?.organizationType?.code || 'PLATFORM';
-            const isCustomerReviewStage = stageOrgType === 'CUSTOMER' || !stageOrgType;
-            const allDocsUploaded = Object.keys(pendingByParty).length === 0;
 
-            // Compute action for each party
-            // Always include the current stage reviewer so they appear in partyActions
+            // DEBUG: Log stage info for troubleshooting
+            console.log('[getCurrentAction] DOCUMENTATION branch debug:', JSON.stringify({
+                currentStageOrder,
+                stageOrgType,
+                currentStageStatus: currentStage?.status,
+                currentStageName: currentStage?.name,
+                stageProgressCount: stageProgress.length,
+                requiredDocsCount: requiredDocuments.length,
+                requiredDocs: requiredDocuments.map(d => ({ documentType: d.documentType, uploadedBy: d.uploadedBy })),
+                phaseUploadedDocsCount: phaseUploadedDocs.length,
+                phaseUploadedDocs: phaseUploadedDocs.map((d: any) => ({ type: d.type, documentType: d.documentType, status: d.status })),
+                userPartyType,
+            }));
+
+            // Partition documents into current-stage vs future-stage
+            const currentStageUploaders = new Set(getUploadersForStage(stageOrgType));
+            const currentStageDocs: typeof requiredDocuments = [];
+            const futureStageDocs: typeof requiredDocuments = [];
+
+            for (const doc of requiredDocuments) {
+                const party = normalizePartyType(doc.uploadedBy || 'CUSTOMER');
+                if (currentStageUploaders.has(party)) {
+                    currentStageDocs.push(doc);
+                } else {
+                    futureStageDocs.push(doc);
+                }
+            }
+
+            // Check pending uploads for CURRENT STAGE documents only
+            const currentStagePendingByParty: Record<string, string[]> = {};
+            for (const doc of currentStageDocs) {
+                const party = normalizePartyType(doc.uploadedBy || 'CUSTOMER');
+                if (!isDocUploaded(doc.documentType)) {
+                    if (!currentStagePendingByParty[party]) currentStagePendingByParty[party] = [];
+                    currentStagePendingByParty[party].push(doc.name || doc.documentType);
+                }
+            }
+
+            const allCurrentStageDocsUploaded = Object.keys(currentStagePendingByParty).length === 0;
+
+            // DEBUG: Log partition results
+            console.log('[getCurrentAction] Partition results:', JSON.stringify({
+                currentStageUploadersArr: Array.from(currentStageUploaders),
+                currentStageDocsCount: currentStageDocs.length,
+                futureStageDocsCount: futureStageDocs.length,
+                currentStagePendingByParty,
+                allCurrentStageDocsUploaded,
+            }));
+
+            // Parties whose docs belong to future stages
+            const futureStageParties = new Set(
+                futureStageDocs.map((d) => normalizePartyType(d.uploadedBy || 'CUSTOMER')),
+            );
+
+            // Compute all parties that should appear in the response
             const allParties = new Set([
                 'CUSTOMER',
-                ...Object.keys(docsByParty),
+                ...requiredDocuments.map((d) => normalizePartyType(d.uploadedBy || 'CUSTOMER')),
                 ...Object.keys(orgBindingByType),
-                stageOrgType, // Include reviewer party type
+                stageOrgType,
             ]);
 
-            for (const party of allParties) {
-                const pendingDocs = pendingByParty[party] || [];
-                const binding = orgBindingByType[party];
+            // DEBUG: Log all parties
+            console.log('[getCurrentAction] allParties:', JSON.stringify({
+                allPartiesArr: Array.from(allParties),
+                futureStagePartiesArr: Array.from(futureStageParties),
+                orgBindingByTypeKeys: Object.keys(orgBindingByType),
+            }));
 
-                if (pendingDocs.length > 0) {
-                    // This party has documents to upload
+            for (const party of allParties) {
+                const binding = orgBindingByType[party];
+                const currentStagePending = currentStagePendingByParty[party] || [];
+
+                // DEBUG: Log each party's decision path
+                const isCurrentStageReviewerDebug = party === stageOrgType;
+                console.log(`[getCurrentAction] Party ${party}: pending=${currentStagePending.length}, allUploaded=${allCurrentStageDocsUploaded}, isReviewer=${isCurrentStageReviewerDebug}, stageStatus=${currentStage?.status}, isFutureParty=${futureStageParties.has(party)}, isCurrentStageUploader=${currentStageUploaders.has(party)}`);
+
+                if (currentStagePending.length > 0) {
+                    // This party has current-stage documents still to upload
                     partyActions[party] = {
                         action: 'UPLOAD',
-                        message: `Please upload the required documents: ${pendingDocs.join(', ')}`,
-                        pendingDocuments: pendingDocs,
+                        message: `Please upload the required documents: ${currentStagePending.join(', ')}`,
+                        pendingDocuments: currentStagePending,
                         assignedStaffId: binding?.assignedStaffId || null,
                         canCurrentUserAct: canUserActForParty(party),
                     };
-                } else if (!allDocsUploaded) {
-                    // This party is done, but others have pending uploads
-                    const waitingFor = Object.keys(pendingByParty).map(p => p.toLowerCase()).join(', ');
+                } else if (!allCurrentStageDocsUploaded) {
+                    // This party's current-stage docs are done, but another party on the same stage still has uploads
+                    const waitingFor = Object.keys(currentStagePendingByParty).map(p => p.toLowerCase()).join(', ');
                     partyActions[party] = {
                         action: 'WAIT',
                         message: `Waiting for ${waitingFor} to upload documents`,
@@ -1597,11 +1654,11 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                         canCurrentUserAct: false,
                     };
                 } else {
-                    // All documents uploaded - now in review stage
-                    const isReviewer = (isCustomerReviewStage && party === 'CUSTOMER') ||
-                        (!isCustomerReviewStage && party === stageOrgType);
+                    // All current-stage documents uploaded — now determine review vs wait
+                    const isCurrentStageReviewer = party === stageOrgType;
 
-                    if (isReviewer && currentStage?.status !== 'COMPLETED') {
+                    if (isCurrentStageReviewer && currentStage?.status !== 'COMPLETED') {
+                        // This party is the reviewer for the current stage
                         partyActions[party] = {
                             action: 'REVIEW',
                             message: `Please review the documents for: ${currentPhase.name}`,
@@ -1609,9 +1666,23 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                             assignedStaffId: binding?.assignedStaffId || null,
                             canCurrentUserAct: canUserActForParty(party),
                         };
+                    } else if (futureStageParties.has(party) && !currentStageUploaders.has(party)) {
+                        // This party uploads in a FUTURE stage — tell them to wait for the current stage
+                        const futurePending = futureStageDocs
+                            .filter((d) => normalizePartyType(d.uploadedBy || 'CUSTOMER') === party && !isDocUploaded(d.documentType))
+                            .map((d) => d.name || d.documentType);
+                        partyActions[party] = {
+                            action: 'WAIT',
+                            message: futurePending.length > 0
+                                ? `Documents needed later: ${futurePending.join(', ')} (after current review stage completes)`
+                                : `Waiting for current review stage to complete`,
+                            pendingDocuments: futurePending,
+                            assignedStaffId: binding?.assignedStaffId || null,
+                            canCurrentUserAct: false, // Can't act yet — stage not active
+                        };
                     } else {
                         // Waiting for reviewer
-                        const reviewerName = isCustomerReviewStage ? 'customer' : stageOrgType.toLowerCase();
+                        const reviewerName = stageOrgType.toLowerCase();
                         partyActions[party] = {
                             action: 'WAIT',
                             message: currentStage?.status === 'COMPLETED'

@@ -3,6 +3,7 @@ import { bootstrapService } from '../services/bootstrap.service';
 import { bootstrapTenantSchema } from '../validators/bootstrap.validator';
 import { AppError, ConfigService } from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
+import { runDemoBootstrap } from '../services/demo-bootstrap.service';
 
 const router = Router();
 
@@ -523,6 +524,57 @@ router.post(
                 deleted,
             });
         } catch (error) {
+            next(error);
+        }
+    }
+);
+
+// =============================================================================
+// DEMO BOOTSTRAP
+// =============================================================================
+// Creates a complete demo environment in one call:
+// - Resets DB, bootstraps tenant, creates orgs, invites actors
+// - Creates property with variant/unit, publishes it
+// - Creates MREIF 10/90 payment method with 5 phases, links to property
+//
+// External service URLs are read from env vars (set via SSM in serverless.yml).
+// The caller can also pass them in the request body to override.
+// =============================================================================
+
+router.post(
+    '/demo-bootstrap',
+    verifyBootstrapSecret,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const propertyServiceUrl =
+                req.body.propertyServiceUrl || process.env.PROPERTY_SERVICE_URL;
+            const mortgageServiceUrl =
+                req.body.mortgageServiceUrl || process.env.MORTGAGE_SERVICE_URL;
+            const paymentServiceUrl =
+                req.body.paymentServiceUrl || process.env.PAYMENT_SERVICE_URL;
+
+            if (!propertyServiceUrl || !mortgageServiceUrl || !paymentServiceUrl) {
+                throw new AppError(
+                    400,
+                    'Missing service URLs. Provide propertyServiceUrl, mortgageServiceUrl, and paymentServiceUrl ' +
+                    'in the request body or configure PROPERTY_SERVICE_URL, MORTGAGE_SERVICE_URL, PAYMENT_SERVICE_URL env vars.',
+                );
+            }
+
+            console.log('[Demo Bootstrap] Starting full demo environment setup...');
+            console.log('[Demo Bootstrap] External URLs:', { propertyServiceUrl, mortgageServiceUrl, paymentServiceUrl });
+
+            const result = await runDemoBootstrap({
+                propertyServiceUrl,
+                mortgageServiceUrl,
+                paymentServiceUrl,
+            });
+
+            console.log(`[Demo Bootstrap] Complete. ${result.steps.length} steps executed.`);
+
+            res.status(201).json(result);
+        } catch (error) {
+            console.error('[Demo Bootstrap] Failed:', error);
             next(error);
         }
     }

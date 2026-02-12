@@ -96,6 +96,7 @@ check_health() {
 check_health "user-service" "$USER_SERVICE_URL"
 check_health "property-service" "$PROPERTY_SERVICE_URL"
 check_health "mortgage-service" "$MORTGAGE_SERVICE_URL"
+check_health "payment-service" "$PAYMENT_SERVICE_URL"
 
 if [ "$services_healthy" = false ]; then
     echo ""

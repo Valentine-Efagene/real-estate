@@ -30,6 +30,10 @@ provider:
     GOOGLE_CLIENT_ID: ${ssm:/qshelter/${self:provider.stage}/google-client-id, ''}
     GOOGLE_CLIENT_SECRET: ${ssm:/qshelter/${self:provider.stage}/google-client-secret, ''}
     GOOGLE_CALLBACK_URL: ${ssm:/qshelter/${self:provider.stage}/google-callback-url, 'http://localhost:3000/auth/google/callback'}
+    # External service URLs for demo-bootstrap endpoint (optional — can also be passed in request body)
+    PROPERTY_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/property-service-url, ''}
+    MORTGAGE_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/mortgage-service-url, ''}
+    PAYMENT_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/payment-service-url, ''}
   
   iam:
     role:
