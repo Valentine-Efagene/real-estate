@@ -34,8 +34,10 @@ provider:
     PROPERTY_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/property-service-url, ''}
     MORTGAGE_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/mortgage-service-url, ''}
     PAYMENT_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/payment-service-url, ''}
-    # DynamoDB table for policy polling in demo-bootstrap
+    # DynamoDB table for policy polling and bootstrap job tracking
     ROLE_POLICIES_TABLE_NAME: ${ssm:/qshelter/${self:provider.stage}/role-policies-table-name, ''}
+    # Bootstrap worker function name (constructed from service/stage naming convention)
+    BOOTSTRAP_WORKER_FUNCTION_NAME: ${self:service}-${self:provider.stage}-bootstrapWorker
   
   iam:
     role:
@@ -49,7 +51,13 @@ provider:
         - Effect: Allow
           Action:
             - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
           Resource: arn:aws:dynamodb:${self:provider.region}:*:table/qshelter-${self:provider.stage}-role-policies
+        - Effect: Allow
+          Action:
+            - lambda:InvokeFunction
+          Resource: arn:aws:lambda:${self:provider.region}:*:function:${self:service}-${self:provider.stage}-bootstrapWorker
         - Effect: Allow
           Action: secretsmanager:GetSecretValue
           Resource: 
@@ -71,8 +79,6 @@ provider:
             - ec2:UnassignPrivateIpAddresses
           Resource: '*'
   
-  # VPC configuration for database access (production only)
-  # Staging: RDS is publicly accessible, no VPC needed (saves NAT gateway cost)
   vpc: ${self:custom.vpcConfig.${self:provider.stage}, null}
 
 functions:
@@ -115,6 +121,14 @@ functions:
           method: ANY
           authorizer:
             name: UserServiceAuthorizer
+
+  bootstrapWorker:
+    handler: dist/bootstrap-worker.handler
+    timeout: 300
+    memorySize: 512
+    runtime: nodejs20.x
+    # No httpApi events — this is invoked directly by the API Lambda, not via API Gateway
+    # Inherits provider VPC config — needs DB access AND internet (via NAT gateway in private subnets)
 
 plugins:
   - serverless-localstack

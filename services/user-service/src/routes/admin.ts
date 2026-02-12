@@ -3,7 +3,14 @@ import { bootstrapService } from '../services/bootstrap.service';
 import { bootstrapTenantSchema } from '../validators/bootstrap.validator';
 import { AppError, ConfigService } from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
-import { runDemoBootstrap } from '../services/demo-bootstrap.service';
+import { randomUUID } from 'crypto';
+import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
+import { DynamoDBClient, PutItemCommand, GetItemCommand } from '@aws-sdk/client-dynamodb';
+
+const lambdaClient = new LambdaClient({ region: process.env.AWS_REGION || 'us-east-1' });
+const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION || 'us-east-1' });
+const ROLE_POLICIES_TABLE = process.env.ROLE_POLICIES_TABLE_NAME || 'qshelter-staging-role-policies';
+const BOOTSTRAP_WORKER_FUNCTION = process.env.BOOTSTRAP_WORKER_FUNCTION_NAME || '';
 
 const router = Router();
 
@@ -561,20 +568,91 @@ router.post(
                 );
             }
 
-            console.log('[Demo Bootstrap] Starting full demo environment setup...');
-            console.log('[Demo Bootstrap] External URLs:', { propertyServiceUrl, mortgageServiceUrl, paymentServiceUrl });
+            if (!BOOTSTRAP_WORKER_FUNCTION) {
+                throw new AppError(500, 'BOOTSTRAP_WORKER_FUNCTION_NAME not configured');
+            }
 
-            const result = await runDemoBootstrap({
-                propertyServiceUrl,
-                mortgageServiceUrl,
-                paymentServiceUrl,
+            const jobId = randomUUID();
+
+            // Write PENDING job to DynamoDB
+            await dynamoClient.send(new PutItemCommand({
+                TableName: ROLE_POLICIES_TABLE,
+                Item: {
+                    PK: { S: `BOOTSTRAP_JOB#${jobId}` },
+                    SK: { S: 'STATUS' },
+                    status: { S: 'PENDING' },
+                    createdAt: { S: new Date().toISOString() },
+                    updatedAt: { S: new Date().toISOString() },
+                },
+            }));
+
+            // Invoke worker Lambda asynchronously (fire-and-forget)
+            console.log(`[Demo Bootstrap] Dispatching job ${jobId} to ${BOOTSTRAP_WORKER_FUNCTION}`);
+            await lambdaClient.send(new InvokeCommand({
+                FunctionName: BOOTSTRAP_WORKER_FUNCTION,
+                InvocationType: 'Event', // async — returns 202 immediately
+                Payload: Buffer.from(JSON.stringify({
+                    jobId,
+                    input: { propertyServiceUrl, mortgageServiceUrl, paymentServiceUrl },
+                })),
+            }));
+
+            res.status(202).json({
+                jobId,
+                status: 'PENDING',
+                message: 'Bootstrap job dispatched. Poll GET /admin/demo-bootstrap/:jobId for status.',
+                pollUrl: `/admin/demo-bootstrap/${jobId}`,
             });
-
-            console.log(`[Demo Bootstrap] Complete. ${result.steps.length} steps executed.`);
-
-            res.status(201).json(result);
         } catch (error) {
-            console.error('[Demo Bootstrap] Failed:', error);
+            console.error('[Demo Bootstrap] Failed to dispatch:', error);
+            next(error);
+        }
+    }
+);
+
+/**
+ * GET /admin/demo-bootstrap/:jobId
+ *
+ * Poll for the status of an async demo-bootstrap job.
+ * Returns { status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED', result?, error? }
+ */
+router.get(
+    '/demo-bootstrap/:jobId',
+    verifyBootstrapSecret,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { jobId } = req.params;
+
+            const result = await dynamoClient.send(new GetItemCommand({
+                TableName: ROLE_POLICIES_TABLE,
+                Key: {
+                    PK: { S: `BOOTSTRAP_JOB#${jobId}` },
+                    SK: { S: 'STATUS' },
+                },
+            }));
+
+            if (!result.Item) {
+                throw new AppError(404, `Bootstrap job ${jobId} not found`);
+            }
+
+            const status = result.Item.status?.S || 'UNKNOWN';
+            const response: Record<string, any> = {
+                jobId,
+                status,
+                createdAt: result.Item.createdAt?.S,
+                updatedAt: result.Item.updatedAt?.S,
+            };
+
+            if (status === 'COMPLETED' && result.Item.result?.S) {
+                response.result = JSON.parse(result.Item.result.S);
+            }
+
+            if (status === 'FAILED' && result.Item.error?.S) {
+                response.error = result.Item.error.S;
+            }
+
+            res.json(response);
+        } catch (error) {
             next(error);
         }
     }
