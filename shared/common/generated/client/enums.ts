@@ -260,6 +260,18 @@ export const OnboardingStatus = {
 export type OnboardingStatus = (typeof OnboardingStatus)[keyof typeof OnboardingStatus]
 
 
+export const QualificationStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  QUALIFIED: 'QUALIFIED',
+  REJECTED: 'REJECTED',
+  SUSPENDED: 'SUSPENDED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type QualificationStatus = (typeof QualificationStatus)[keyof typeof QualificationStatus]
+
+
 export const TerminationType = {
   BUYER_WITHDRAWAL: 'BUYER_WITHDRAWAL',
   SELLER_WITHDRAWAL: 'SELLER_WITHDRAWAL',

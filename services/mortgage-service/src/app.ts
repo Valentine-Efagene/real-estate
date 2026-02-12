@@ -21,6 +21,8 @@ import propertyTransferRouter from './routes/property-transfer';
 import approvalRequestRouter from './routes/approval-request';
 import workflowBlockerRouter from './routes/workflow-blocker';
 import organizationReviewsRouter from './routes/organization-reviews';
+import qualificationFlowRouter from './routes/qualification-flow';
+import gatePlanRouter from './routes/gate-plan';
 
 export const app: Application = express();
 
@@ -97,6 +99,8 @@ app.use('/payment-plans', paymentPlanRouter);
 app.use('/documentation-plans', documentationPlanRouter);
 app.use('/questionnaire-plans', questionnairePlanRouter);
 app.use('/payment-methods', paymentMethodRouter);
+app.use('/qualification-flows', qualificationFlowRouter);
+app.use('/gate-plans', gatePlanRouter);
 app.use('/applications', applicationRouter);
 app.use('/offer-letters', offerLetterRouter);
 app.use('/underwriting', underwritingRouter);

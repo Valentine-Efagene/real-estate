@@ -22,6 +22,8 @@ import { createPaymentMethodService, PaymentMethodService } from '../services/pa
 import { createOfferLetterService, OfferLetterService } from '../services/offer-letter.service';
 import { createApplicationTerminationService, ApplicationTerminationService } from '../services/application-termination.service';
 import { createPaymentPlanService, PaymentPlanService } from '../services/payment-plan.service';
+import { createQualificationFlowService, QualificationFlowService } from '../services/qualification-flow.service';
+import { createGatePlanService, GatePlanService } from '../services/gate-plan.service';
 
 // Note: ApplicationPhaseService and ApplicationPaymentService still use class-based singletons
 // and need to be refactored to factory pattern for proper tenant scoping.
@@ -71,6 +73,20 @@ export function getTenantApplicationTerminationService(req: Request): Applicatio
  */
 export function getTenantPaymentPlanService(req: Request): PaymentPlanService {
     return createPaymentPlanService(getTenantPrisma(req));
+}
+
+/**
+ * Get tenant-scoped QualificationFlowService.
+ */
+export function getTenantQualificationFlowService(req: Request): QualificationFlowService {
+    return createQualificationFlowService(getTenantPrisma(req));
+}
+
+/**
+ * Get tenant-scoped GatePlanService.
+ */
+export function getTenantGatePlanService(req: Request): GatePlanService {
+    return createGatePlanService(getTenantPrisma(req));
 }
 
 // TODO: Refactor ApplicationPhaseService and ApplicationPaymentService to factory pattern

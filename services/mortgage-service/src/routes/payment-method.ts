@@ -28,6 +28,13 @@ import {
 } from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
 import { getTenantPrisma } from '../lib/tenant-services';
+import { createQualificationFlowService } from '../services/qualification-flow.service';
+import {
+    ApplyForPaymentMethodSchema,
+    ReviewQualificationSchema,
+    UpdateQualificationStatusSchema,
+    AssignQualificationFlowSchema,
+} from '../validators/qualification-flow.validator';
 
 const router: Router = Router();
 
@@ -569,6 +576,122 @@ router.delete('/:id/document-rules/:ruleId', requireTenant, requireRole(ADMIN_RO
 
         res.json({ success: true });
     } catch (error) {
+        next(error);
+    }
+});
+
+// =============================================================================
+// QUALIFICATION FLOW — Org applies for / qualifies for payment method access
+// =============================================================================
+
+/** Helper to get tenant-scoped qualification flow service */
+function getQualificationService(req: Request) {
+    return createQualificationFlowService(getTenantPrisma(req));
+}
+
+/**
+ * POST /payment-methods/:id/qualification-flow
+ * Assign a qualification flow to a payment method (admin only)
+ */
+router.post('/:id/qualification-flow', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = AssignQualificationFlowSchema.parse(req.body);
+        const service = getQualificationService(req);
+        const result = await service.assignToPaymentMethod(req.params.id, data);
+        res.json(successResponse(result));
+    } catch (error: any) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+/**
+ * POST /payment-methods/:id/apply
+ * Organization applies to use this payment method
+ */
+router.post('/:id/apply', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { tenantId } = getAuthContext(req);
+        const data = ApplyForPaymentMethodSchema.parse(req.body);
+        const service = getQualificationService(req);
+        const result = await service.applyForPaymentMethod(req.params.id, tenantId, data);
+        res.status(201).json(successResponse(result));
+    } catch (error: any) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+/**
+ * GET /payment-methods/:id/assignments
+ * List organizations assigned to this payment method (with qualification status)
+ */
+router.get('/:id/assignments', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const service = getQualificationService(req);
+        const status = req.query.status as string | undefined;
+        const assignments = await service.findAssignments(req.params.id, { status });
+        res.json(successResponse(assignments));
+    } catch (error: any) {
+        next(error);
+    }
+});
+
+/**
+ * GET /payment-methods/:id/assignments/:assignmentId
+ * Get detailed qualification progress for an assignment
+ */
+router.get('/:id/assignments/:assignmentId', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const service = getQualificationService(req);
+        const result = await service.findQualification(req.params.assignmentId);
+        res.json(successResponse(result));
+    } catch (error: any) {
+        next(error);
+    }
+});
+
+/**
+ * PATCH /payment-methods/:id/assignments/:assignmentId/status
+ * Admin update assignment status (qualify, suspend, reject)
+ */
+router.patch('/:id/assignments/:assignmentId/status', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = UpdateQualificationStatusSchema.parse(req.body);
+        const service = getQualificationService(req);
+        const result = await service.updateAssignmentStatus(req.params.assignmentId, data);
+        res.json(successResponse(result));
+    } catch (error: any) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+/**
+ * POST /payment-methods/:id/assignments/:assignmentId/phases/:phaseId/review
+ * Review a gate phase within a qualification workflow
+ */
+router.post('/:id/assignments/:assignmentId/phases/:phaseId/review', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { userId } = getAuthContext(req);
+        const data = ReviewQualificationSchema.parse(req.body);
+        const service = getQualificationService(req);
+        const result = await service.reviewGatePhase(req.params.phaseId, userId, data);
+        res.json(successResponse(result));
+    } catch (error: any) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
         next(error);
     }
 });

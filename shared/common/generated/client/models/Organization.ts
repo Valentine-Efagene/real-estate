@@ -351,6 +351,7 @@ export type OrganizationWhereInput = {
   documentReviews?: Prisma.DocumentReviewListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
   onboarding?: Prisma.XOR<Prisma.OrganizationOnboardingNullableScalarRelationFilter, Prisma.OrganizationOnboardingWhereInput> | null
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodListRelationFilter
 }
 
 export type OrganizationOrderByWithRelationInput = {
@@ -388,6 +389,7 @@ export type OrganizationOrderByWithRelationInput = {
   documentReviews?: Prisma.DocumentReviewOrderByRelationAggregateInput
   properties?: Prisma.PropertyOrderByRelationAggregateInput
   onboarding?: Prisma.OrganizationOnboardingOrderByWithRelationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodOrderByRelationAggregateInput
   _relevance?: Prisma.OrganizationOrderByRelevanceInput
 }
 
@@ -431,6 +433,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   documentReviews?: Prisma.DocumentReviewListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
   onboarding?: Prisma.XOR<Prisma.OrganizationOnboardingNullableScalarRelationFilter, Prisma.OrganizationOnboardingWhereInput> | null
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodListRelationFilter
 }, "id" | "tenantId_bankCode" | "tenantId_cacNumber">
 
 export type OrganizationOrderByWithAggregationInput = {
@@ -529,6 +532,7 @@ export type OrganizationCreateInput = {
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateInput = {
@@ -565,6 +569,7 @@ export type OrganizationUncheckedCreateInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUpdateInput = {
@@ -601,6 +606,7 @@ export type OrganizationUpdateInput = {
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateInput = {
@@ -637,6 +643,7 @@ export type OrganizationUncheckedUpdateInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyInput = {
@@ -1004,6 +1011,20 @@ export type OrganizationUpdateOneWithoutDocumentReviewsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutDocumentReviewsInput, Prisma.OrganizationUpdateWithoutDocumentReviewsInput>, Prisma.OrganizationUncheckedUpdateWithoutDocumentReviewsInput>
 }
 
+export type OrganizationCreateNestedOneWithoutPaymentMethodAssignmentsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutPaymentMethodAssignmentsInput, Prisma.OrganizationUncheckedCreateWithoutPaymentMethodAssignmentsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutPaymentMethodAssignmentsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutPaymentMethodAssignmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutPaymentMethodAssignmentsInput, Prisma.OrganizationUncheckedCreateWithoutPaymentMethodAssignmentsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutPaymentMethodAssignmentsInput
+  upsert?: Prisma.OrganizationUpsertWithoutPaymentMethodAssignmentsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutPaymentMethodAssignmentsInput, Prisma.OrganizationUpdateWithoutPaymentMethodAssignmentsInput>, Prisma.OrganizationUncheckedUpdateWithoutPaymentMethodAssignmentsInput>
+}
+
 export type OrganizationCreateWithoutTypesInput = {
   id?: string
   name: string
@@ -1037,6 +1058,7 @@ export type OrganizationCreateWithoutTypesInput = {
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTypesInput = {
@@ -1072,6 +1094,7 @@ export type OrganizationUncheckedCreateWithoutTypesInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTypesInput = {
@@ -1123,6 +1146,7 @@ export type OrganizationUpdateWithoutTypesInput = {
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTypesInput = {
@@ -1158,6 +1182,7 @@ export type OrganizationUncheckedUpdateWithoutTypesInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutMembersInput = {
@@ -1193,6 +1218,7 @@ export type OrganizationCreateWithoutMembersInput = {
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutMembersInput = {
@@ -1228,6 +1254,7 @@ export type OrganizationUncheckedCreateWithoutMembersInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutMembersInput = {
@@ -1279,6 +1306,7 @@ export type OrganizationUpdateWithoutMembersInput = {
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutMembersInput = {
@@ -1314,6 +1342,7 @@ export type OrganizationUncheckedUpdateWithoutMembersInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutInvitationsInput = {
@@ -1349,6 +1378,7 @@ export type OrganizationCreateWithoutInvitationsInput = {
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutInvitationsInput = {
@@ -1384,6 +1414,7 @@ export type OrganizationUncheckedCreateWithoutInvitationsInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutInvitationsInput = {
@@ -1435,6 +1466,7 @@ export type OrganizationUpdateWithoutInvitationsInput = {
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutInvitationsInput = {
@@ -1470,6 +1502,7 @@ export type OrganizationUncheckedUpdateWithoutInvitationsInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutOnboardingInput = {
@@ -1505,6 +1538,7 @@ export type OrganizationCreateWithoutOnboardingInput = {
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutOnboardingInput = {
@@ -1540,6 +1574,7 @@ export type OrganizationUncheckedCreateWithoutOnboardingInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutOnboardingInput = {
@@ -1591,6 +1626,7 @@ export type OrganizationUpdateWithoutOnboardingInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutOnboardingInput = {
@@ -1626,6 +1662,7 @@ export type OrganizationUncheckedUpdateWithoutOnboardingInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutDocumentRequirementsInput = {
@@ -1661,6 +1698,7 @@ export type OrganizationCreateWithoutDocumentRequirementsInput = {
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDocumentRequirementsInput = {
@@ -1696,6 +1734,7 @@ export type OrganizationUncheckedCreateWithoutDocumentRequirementsInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDocumentRequirementsInput = {
@@ -1747,6 +1786,7 @@ export type OrganizationUpdateWithoutDocumentRequirementsInput = {
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDocumentRequirementsInput = {
@@ -1782,6 +1822,7 @@ export type OrganizationUncheckedUpdateWithoutDocumentRequirementsInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutTenantInput = {
@@ -1817,6 +1858,7 @@ export type OrganizationCreateWithoutTenantInput = {
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTenantInput = {
@@ -1852,6 +1894,7 @@ export type OrganizationUncheckedCreateWithoutTenantInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTenantInput = {
@@ -1944,6 +1987,7 @@ export type OrganizationCreateWithoutPropertiesInput = {
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutPropertiesInput = {
@@ -1979,6 +2023,7 @@ export type OrganizationUncheckedCreateWithoutPropertiesInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutPropertiesInput = {
@@ -2030,6 +2075,7 @@ export type OrganizationUpdateWithoutPropertiesInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutPropertiesInput = {
@@ -2065,6 +2111,7 @@ export type OrganizationUncheckedUpdateWithoutPropertiesInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutApplicationAssignmentsInput = {
@@ -2100,6 +2147,7 @@ export type OrganizationCreateWithoutApplicationAssignmentsInput = {
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutApplicationAssignmentsInput = {
@@ -2135,6 +2183,7 @@ export type OrganizationUncheckedCreateWithoutApplicationAssignmentsInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutApplicationAssignmentsInput = {
@@ -2186,6 +2235,7 @@ export type OrganizationUpdateWithoutApplicationAssignmentsInput = {
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutApplicationAssignmentsInput = {
@@ -2221,6 +2271,7 @@ export type OrganizationUncheckedUpdateWithoutApplicationAssignmentsInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutDocumentReviewsInput = {
@@ -2256,6 +2307,7 @@ export type OrganizationCreateWithoutDocumentReviewsInput = {
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDocumentReviewsInput = {
@@ -2291,6 +2343,7 @@ export type OrganizationUncheckedCreateWithoutDocumentReviewsInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDocumentReviewsInput = {
@@ -2342,6 +2395,7 @@ export type OrganizationUpdateWithoutDocumentReviewsInput = {
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDocumentReviewsInput = {
@@ -2375,6 +2429,167 @@ export type OrganizationUncheckedUpdateWithoutDocumentReviewsInput = {
   invitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutOrganizationNestedInput
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutPaymentMethodAssignmentsInput = {
+  id?: string
+  name: string
+  status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
+  email?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  website?: string | null
+  logoUrl?: string | null
+  description?: string | null
+  bankCode?: string | null
+  bankLicenseNo?: string | null
+  swiftCode?: string | null
+  sortCode?: string | null
+  cacNumber?: string | null
+  cacCertificateUrl?: string | null
+  taxId?: string | null
+  approvedAt?: Date | string | null
+  approvedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrganizationInput
+  tenant: Prisma.TenantCreateNestedOneWithoutOrganizationsInput
+  members?: Prisma.OrganizationMemberCreateNestedManyWithoutOrganizationInput
+  invitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutOrganizationInput
+  applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
+  documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingCreateNestedOneWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutPaymentMethodAssignmentsInput = {
+  id?: string
+  tenantId: string
+  name: string
+  status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
+  email?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  website?: string | null
+  logoUrl?: string | null
+  description?: string | null
+  bankCode?: string | null
+  bankLicenseNo?: string | null
+  swiftCode?: string | null
+  sortCode?: string | null
+  cacNumber?: string | null
+  cacCertificateUrl?: string | null
+  taxId?: string | null
+  approvedAt?: Date | string | null
+  approvedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
+  members?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+  invitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutOrganizationInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
+  documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOrganizationInput
+  onboarding?: Prisma.OrganizationOnboardingUncheckedCreateNestedOneWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutPaymentMethodAssignmentsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutPaymentMethodAssignmentsInput, Prisma.OrganizationUncheckedCreateWithoutPaymentMethodAssignmentsInput>
+}
+
+export type OrganizationUpsertWithoutPaymentMethodAssignmentsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutPaymentMethodAssignmentsInput, Prisma.OrganizationUncheckedUpdateWithoutPaymentMethodAssignmentsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutPaymentMethodAssignmentsInput, Prisma.OrganizationUncheckedCreateWithoutPaymentMethodAssignmentsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutPaymentMethodAssignmentsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutPaymentMethodAssignmentsInput, Prisma.OrganizationUncheckedUpdateWithoutPaymentMethodAssignmentsInput>
+}
+
+export type OrganizationUpdateWithoutPaymentMethodAssignmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrganizationNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationsNestedInput
+  members?: Prisma.OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+  invitations?: Prisma.OrganizationInvitationUpdateManyWithoutOrganizationNestedInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
+  documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
+  onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutPaymentMethodAssignmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  members?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  invitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutOrganizationNestedInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
 }
@@ -2439,6 +2654,7 @@ export type OrganizationUpdateWithoutTenantInput = {
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTenantInput = {
@@ -2474,6 +2690,7 @@ export type OrganizationUncheckedUpdateWithoutTenantInput = {
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutOrganizationNestedInput
   onboarding?: Prisma.OrganizationOnboardingUncheckedUpdateOneWithoutOrganizationNestedInput
+  paymentMethodAssignments?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateManyWithoutTenantInput = {
@@ -2516,6 +2733,7 @@ export type OrganizationCountOutputType = {
   documentRequirements: number
   documentReviews: number
   properties: number
+  paymentMethodAssignments: number
 }
 
 export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2526,6 +2744,7 @@ export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   documentRequirements?: boolean | OrganizationCountOutputTypeCountDocumentRequirementsArgs
   documentReviews?: boolean | OrganizationCountOutputTypeCountDocumentReviewsArgs
   properties?: boolean | OrganizationCountOutputTypeCountPropertiesArgs
+  paymentMethodAssignments?: boolean | OrganizationCountOutputTypeCountPaymentMethodAssignmentsArgs
 }
 
 /**
@@ -2587,6 +2806,13 @@ export type OrganizationCountOutputTypeCountPropertiesArgs<ExtArgs extends runti
   where?: Prisma.PropertyWhereInput
 }
 
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountPaymentMethodAssignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrganizationPaymentMethodWhereInput
+}
+
 
 export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2623,6 +2849,7 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   documentReviews?: boolean | Prisma.Organization$documentReviewsArgs<ExtArgs>
   properties?: boolean | Prisma.Organization$propertiesArgs<ExtArgs>
   onboarding?: boolean | Prisma.Organization$onboardingArgs<ExtArgs>
+  paymentMethodAssignments?: boolean | Prisma.Organization$paymentMethodAssignmentsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organization"]>
 
@@ -2667,6 +2894,7 @@ export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   documentReviews?: boolean | Prisma.Organization$documentReviewsArgs<ExtArgs>
   properties?: boolean | Prisma.Organization$propertiesArgs<ExtArgs>
   onboarding?: boolean | Prisma.Organization$onboardingArgs<ExtArgs>
+  paymentMethodAssignments?: boolean | Prisma.Organization$paymentMethodAssignmentsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -2682,6 +2910,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     documentReviews: Prisma.$DocumentReviewPayload<ExtArgs>[]
     properties: Prisma.$PropertyPayload<ExtArgs>[]
     onboarding: Prisma.$OrganizationOnboardingPayload<ExtArgs> | null
+    paymentMethodAssignments: Prisma.$OrganizationPaymentMethodPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3058,6 +3287,7 @@ export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends run
   documentReviews<T extends Prisma.Organization$documentReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$documentReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   properties<T extends Prisma.Organization$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   onboarding<T extends Prisma.Organization$onboardingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$onboardingArgs<ExtArgs>>): Prisma.Prisma__OrganizationOnboardingClient<runtime.Types.Result.GetResult<Prisma.$OrganizationOnboardingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  paymentMethodAssignments<T extends Prisma.Organization$paymentMethodAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$paymentMethodAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationPaymentMethodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3639,6 +3869,30 @@ export type Organization$onboardingArgs<ExtArgs extends runtime.Types.Extensions
    */
   include?: Prisma.OrganizationOnboardingInclude<ExtArgs> | null
   where?: Prisma.OrganizationOnboardingWhereInput
+}
+
+/**
+ * Organization.paymentMethodAssignments
+ */
+export type Organization$paymentMethodAssignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrganizationPaymentMethod
+   */
+  select?: Prisma.OrganizationPaymentMethodSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrganizationPaymentMethod
+   */
+  omit?: Prisma.OrganizationPaymentMethodOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationPaymentMethodInclude<ExtArgs> | null
+  where?: Prisma.OrganizationPaymentMethodWhereInput
+  orderBy?: Prisma.OrganizationPaymentMethodOrderByWithRelationInput | Prisma.OrganizationPaymentMethodOrderByWithRelationInput[]
+  cursor?: Prisma.OrganizationPaymentMethodWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrganizationPaymentMethodScalarFieldEnum | Prisma.OrganizationPaymentMethodScalarFieldEnum[]
 }
 
 /**

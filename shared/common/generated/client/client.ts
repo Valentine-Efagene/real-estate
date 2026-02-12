@@ -466,3 +466,30 @@ export type ScheduledJob = Prisma.ScheduledJobModel
  * Document Expiry Warning - Track warnings sent for expiring documents
  */
 export type DocumentExpiryWarning = Prisma.DocumentExpiryWarningModel
+/**
+ * Model QualificationFlow
+ * 
+ */
+export type QualificationFlow = Prisma.QualificationFlowModel
+/**
+ * Model QualificationFlowPhase
+ * Phase template within a QualificationFlow
+ * Supports QUESTIONNAIRE, DOCUMENTATION, and GATE phases (no PAYMENT)
+ */
+export type QualificationFlowPhase = Prisma.QualificationFlowPhaseModel
+/**
+ * Model OrganizationPaymentMethod
+ * 
+ */
+export type OrganizationPaymentMethod = Prisma.OrganizationPaymentMethodModel
+/**
+ * Model PaymentMethodQualification
+ * 
+ */
+export type PaymentMethodQualification = Prisma.PaymentMethodQualificationModel
+/**
+ * Model QualificationPhase
+ * Phase instance within a PaymentMethodQualification
+ * Mirrors OnboardingPhase but scoped to payment method qualification (no PAYMENT phases)
+ */
+export type QualificationPhase = Prisma.QualificationPhaseModel

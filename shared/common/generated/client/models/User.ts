@@ -316,6 +316,8 @@ export type UserWhereInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewListRelationFilter
   assignedOnboardings?: Prisma.OrganizationOnboardingListRelationFilter
   approvedOnboardings?: Prisma.OrganizationOnboardingListRelationFilter
+  assignedQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
+  approvedQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -374,6 +376,8 @@ export type UserOrderByWithRelationInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewOrderByRelationAggregateInput
   assignedOnboardings?: Prisma.OrganizationOnboardingOrderByRelationAggregateInput
   approvedOnboardings?: Prisma.OrganizationOnboardingOrderByRelationAggregateInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationOrderByRelationAggregateInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationOrderByRelationAggregateInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
@@ -436,6 +440,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   gatePhaseReviews?: Prisma.GatePhaseReviewListRelationFilter
   assignedOnboardings?: Prisma.OrganizationOnboardingListRelationFilter
   approvedOnboardings?: Prisma.OrganizationOnboardingListRelationFilter
+  assignedQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
+  approvedQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
 }, "id" | "email" | "phone" | "walletId">
 
 export type UserOrderByWithAggregationInput = {
@@ -538,6 +544,8 @@ export type UserCreateInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -594,6 +602,8 @@ export type UserUncheckedCreateInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUpdateInput = {
@@ -650,6 +660,8 @@ export type UserUpdateInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -706,6 +718,8 @@ export type UserUncheckedUpdateInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1470,6 +1484,38 @@ export type UserUpdateOneWithoutApprovalRequestsReviewedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApprovalRequestsReviewedInput, Prisma.UserUpdateWithoutApprovalRequestsReviewedInput>, Prisma.UserUncheckedUpdateWithoutApprovalRequestsReviewedInput>
 }
 
+export type UserCreateNestedOneWithoutAssignedQualificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedQualificationsInput, Prisma.UserUncheckedCreateWithoutAssignedQualificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedQualificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutApprovedQualificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovedQualificationsInput, Prisma.UserUncheckedCreateWithoutApprovedQualificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovedQualificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutAssignedQualificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedQualificationsInput, Prisma.UserUncheckedCreateWithoutAssignedQualificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedQualificationsInput
+  upsert?: Prisma.UserUpsertWithoutAssignedQualificationsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedQualificationsInput, Prisma.UserUpdateWithoutAssignedQualificationsInput>, Prisma.UserUncheckedUpdateWithoutAssignedQualificationsInput>
+}
+
+export type UserUpdateOneWithoutApprovedQualificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovedQualificationsInput, Prisma.UserUncheckedCreateWithoutApprovedQualificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovedQualificationsInput
+  upsert?: Prisma.UserUpsertWithoutApprovedQualificationsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApprovedQualificationsInput, Prisma.UserUpdateWithoutApprovedQualificationsInput>, Prisma.UserUncheckedUpdateWithoutApprovedQualificationsInput>
+}
+
 export type UserCreateWithoutTenantMembershipsInput = {
   id?: string
   email: string
@@ -1523,6 +1569,8 @@ export type UserCreateWithoutTenantMembershipsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutTenantMembershipsInput = {
@@ -1578,6 +1626,8 @@ export type UserUncheckedCreateWithoutTenantMembershipsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutTenantMembershipsInput = {
@@ -1649,6 +1699,8 @@ export type UserUpdateWithoutTenantMembershipsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTenantMembershipsInput = {
@@ -1704,6 +1756,8 @@ export type UserUncheckedUpdateWithoutTenantMembershipsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutOrganizationMembershipsInput = {
@@ -1759,6 +1813,8 @@ export type UserCreateWithoutOrganizationMembershipsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutOrganizationMembershipsInput = {
@@ -1814,6 +1870,8 @@ export type UserUncheckedCreateWithoutOrganizationMembershipsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutOrganizationMembershipsInput = {
@@ -1885,6 +1943,8 @@ export type UserUpdateWithoutOrganizationMembershipsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizationMembershipsInput = {
@@ -1940,6 +2000,8 @@ export type UserUncheckedUpdateWithoutOrganizationMembershipsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutSentInvitationsInput = {
@@ -1995,6 +2057,8 @@ export type UserCreateWithoutSentInvitationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutSentInvitationsInput = {
@@ -2050,6 +2114,8 @@ export type UserUncheckedCreateWithoutSentInvitationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutSentInvitationsInput = {
@@ -2121,6 +2187,8 @@ export type UserUpdateWithoutSentInvitationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentInvitationsInput = {
@@ -2176,6 +2244,8 @@ export type UserUncheckedUpdateWithoutSentInvitationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutAssignedOnboardingsInput = {
@@ -2231,6 +2301,8 @@ export type UserCreateWithoutAssignedOnboardingsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedStaffInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutAssignedOnboardingsInput = {
@@ -2286,6 +2358,8 @@ export type UserUncheckedCreateWithoutAssignedOnboardingsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutAssignedStaffInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutAssignedOnboardingsInput = {
@@ -2346,6 +2420,8 @@ export type UserCreateWithoutApprovedOnboardingsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedStaffInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovedOnboardingsInput = {
@@ -2401,6 +2477,8 @@ export type UserUncheckedCreateWithoutApprovedOnboardingsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutAssignedStaffInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovedOnboardingsInput = {
@@ -2472,6 +2550,8 @@ export type UserUpdateWithoutAssignedOnboardingsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedStaffNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedOnboardingsInput = {
@@ -2527,6 +2607,8 @@ export type UserUncheckedUpdateWithoutAssignedOnboardingsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutAssignedStaffNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUpsertWithoutApprovedOnboardingsInput = {
@@ -2593,6 +2675,8 @@ export type UserUpdateWithoutApprovedOnboardingsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedStaffNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedOnboardingsInput = {
@@ -2648,6 +2732,8 @@ export type UserUncheckedUpdateWithoutApprovedOnboardingsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutAssignedStaffNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutTenantInput = {
@@ -2703,6 +2789,8 @@ export type UserCreateWithoutTenantInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutTenantInput = {
@@ -2758,6 +2846,8 @@ export type UserUncheckedCreateWithoutTenantInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutTenantInput = {
@@ -2862,6 +2952,8 @@ export type UserCreateWithoutRefreshTokensInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -2917,6 +3009,8 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -2988,6 +3082,8 @@ export type UserUpdateWithoutRefreshTokensInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -3043,6 +3139,8 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutPasswordResetsInput = {
@@ -3098,6 +3196,8 @@ export type UserCreateWithoutPasswordResetsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -3153,6 +3253,8 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -3224,6 +3326,8 @@ export type UserUpdateWithoutPasswordResetsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -3279,6 +3383,8 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutSuspensionsInput = {
@@ -3334,6 +3440,8 @@ export type UserCreateWithoutSuspensionsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutSuspensionsInput = {
@@ -3389,6 +3497,8 @@ export type UserUncheckedCreateWithoutSuspensionsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutSuspensionsInput = {
@@ -3460,6 +3570,8 @@ export type UserUpdateWithoutSuspensionsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSuspensionsInput = {
@@ -3515,6 +3627,8 @@ export type UserUncheckedUpdateWithoutSuspensionsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutEmailPreferencesInput = {
@@ -3570,6 +3684,8 @@ export type UserCreateWithoutEmailPreferencesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutEmailPreferencesInput = {
@@ -3625,6 +3741,8 @@ export type UserUncheckedCreateWithoutEmailPreferencesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutEmailPreferencesInput = {
@@ -3696,6 +3814,8 @@ export type UserUpdateWithoutEmailPreferencesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
@@ -3751,6 +3871,8 @@ export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutDeviceEndpointsInput = {
@@ -3806,6 +3928,8 @@ export type UserCreateWithoutDeviceEndpointsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
@@ -3861,6 +3985,8 @@ export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutDeviceEndpointsInput = {
@@ -3932,6 +4058,8 @@ export type UserUpdateWithoutDeviceEndpointsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
@@ -3987,6 +4115,8 @@ export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutSocialsInput = {
@@ -4042,6 +4172,8 @@ export type UserCreateWithoutSocialsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutSocialsInput = {
@@ -4097,6 +4229,8 @@ export type UserUncheckedCreateWithoutSocialsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutSocialsInput = {
@@ -4168,6 +4302,8 @@ export type UserUpdateWithoutSocialsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSocialsInput = {
@@ -4223,6 +4359,8 @@ export type UserUncheckedUpdateWithoutSocialsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutWalletInput = {
@@ -4278,6 +4416,8 @@ export type UserCreateWithoutWalletInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutWalletInput = {
@@ -4333,6 +4473,8 @@ export type UserUncheckedCreateWithoutWalletInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutWalletInput = {
@@ -4404,6 +4546,8 @@ export type UserUpdateWithoutWalletInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletInput = {
@@ -4459,6 +4603,8 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutPropertiesInput = {
@@ -4514,6 +4660,8 @@ export type UserCreateWithoutPropertiesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutPropertiesInput = {
@@ -4569,6 +4717,8 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutPropertiesInput = {
@@ -4640,6 +4790,8 @@ export type UserUpdateWithoutPropertiesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPropertiesInput = {
@@ -4695,6 +4847,8 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -4750,6 +4904,8 @@ export type UserCreateWithoutApplicationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -4805,6 +4961,8 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -4865,6 +5023,8 @@ export type UserCreateWithoutSoldApplicationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutSoldApplicationsInput = {
@@ -4920,6 +5080,8 @@ export type UserUncheckedCreateWithoutSoldApplicationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutSoldApplicationsInput = {
@@ -4991,6 +5153,8 @@ export type UserUpdateWithoutApplicationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -5046,6 +5210,8 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUpsertWithoutSoldApplicationsInput = {
@@ -5112,6 +5278,8 @@ export type UserUpdateWithoutSoldApplicationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSoldApplicationsInput = {
@@ -5167,6 +5335,8 @@ export type UserUncheckedUpdateWithoutSoldApplicationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutAssignedApplicationOrgsInput = {
@@ -5222,6 +5392,8 @@ export type UserCreateWithoutAssignedApplicationOrgsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutAssignedApplicationOrgsInput = {
@@ -5277,6 +5449,8 @@ export type UserUncheckedCreateWithoutAssignedApplicationOrgsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutAssignedApplicationOrgsInput = {
@@ -5348,6 +5522,8 @@ export type UserUpdateWithoutAssignedApplicationOrgsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedApplicationOrgsInput = {
@@ -5403,6 +5579,8 @@ export type UserUncheckedUpdateWithoutAssignedApplicationOrgsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutRequestedRefundsInput = {
@@ -5458,6 +5636,8 @@ export type UserCreateWithoutRequestedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutRequestedRefundsInput = {
@@ -5513,6 +5693,8 @@ export type UserUncheckedCreateWithoutRequestedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutRequestedRefundsInput = {
@@ -5573,6 +5755,8 @@ export type UserCreateWithoutApprovedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovedRefundsInput = {
@@ -5628,6 +5812,8 @@ export type UserUncheckedCreateWithoutApprovedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovedRefundsInput = {
@@ -5688,6 +5874,8 @@ export type UserCreateWithoutProcessedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutProcessedRefundsInput = {
@@ -5743,6 +5931,8 @@ export type UserUncheckedCreateWithoutProcessedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutProcessedRefundsInput = {
@@ -5814,6 +6004,8 @@ export type UserUpdateWithoutRequestedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRequestedRefundsInput = {
@@ -5869,6 +6061,8 @@ export type UserUncheckedUpdateWithoutRequestedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUpsertWithoutApprovedRefundsInput = {
@@ -5935,6 +6129,8 @@ export type UserUpdateWithoutApprovedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedRefundsInput = {
@@ -5990,6 +6186,8 @@ export type UserUncheckedUpdateWithoutApprovedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUpsertWithoutProcessedRefundsInput = {
@@ -6056,6 +6254,8 @@ export type UserUpdateWithoutProcessedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProcessedRefundsInput = {
@@ -6111,6 +6311,8 @@ export type UserUncheckedUpdateWithoutProcessedRefundsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutQuestionnaireReviewsInput = {
@@ -6166,6 +6368,8 @@ export type UserCreateWithoutQuestionnaireReviewsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutQuestionnaireReviewsInput = {
@@ -6221,6 +6425,8 @@ export type UserUncheckedCreateWithoutQuestionnaireReviewsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutQuestionnaireReviewsInput = {
@@ -6292,6 +6498,8 @@ export type UserUpdateWithoutQuestionnaireReviewsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutQuestionnaireReviewsInput = {
@@ -6347,6 +6555,8 @@ export type UserUncheckedUpdateWithoutQuestionnaireReviewsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutGatePhaseReviewsInput = {
@@ -6402,6 +6612,8 @@ export type UserCreateWithoutGatePhaseReviewsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedStaffInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutGatePhaseReviewsInput = {
@@ -6457,6 +6669,8 @@ export type UserUncheckedCreateWithoutGatePhaseReviewsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutAssignedStaffInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutGatePhaseReviewsInput = {
@@ -6528,6 +6742,8 @@ export type UserUpdateWithoutGatePhaseReviewsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedStaffNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGatePhaseReviewsInput = {
@@ -6583,6 +6799,8 @@ export type UserUncheckedUpdateWithoutGatePhaseReviewsInput = {
   assignedApplicationOrgs?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutAssignedStaffNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutApplicationPaymentsInput = {
@@ -6638,6 +6856,8 @@ export type UserCreateWithoutApplicationPaymentsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutApplicationPaymentsInput = {
@@ -6693,6 +6913,8 @@ export type UserUncheckedCreateWithoutApplicationPaymentsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutApplicationPaymentsInput = {
@@ -6764,6 +6986,8 @@ export type UserUpdateWithoutApplicationPaymentsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationPaymentsInput = {
@@ -6819,6 +7043,8 @@ export type UserUncheckedUpdateWithoutApplicationPaymentsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutUploadedDocsInput = {
@@ -6874,6 +7100,8 @@ export type UserCreateWithoutUploadedDocsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutUploadedDocsInput = {
@@ -6929,6 +7157,8 @@ export type UserUncheckedCreateWithoutUploadedDocsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutUploadedDocsInput = {
@@ -7000,6 +7230,8 @@ export type UserUpdateWithoutUploadedDocsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedDocsInput = {
@@ -7055,6 +7287,8 @@ export type UserUncheckedUpdateWithoutUploadedDocsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutDocumentReviewsInput = {
@@ -7110,6 +7344,8 @@ export type UserCreateWithoutDocumentReviewsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutDocumentReviewsInput = {
@@ -7165,6 +7401,8 @@ export type UserUncheckedCreateWithoutDocumentReviewsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutDocumentReviewsInput = {
@@ -7236,6 +7474,8 @@ export type UserUpdateWithoutDocumentReviewsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocumentReviewsInput = {
@@ -7291,6 +7531,8 @@ export type UserUncheckedUpdateWithoutDocumentReviewsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutCompletedStagesInput = {
@@ -7346,6 +7588,8 @@ export type UserCreateWithoutCompletedStagesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutCompletedStagesInput = {
@@ -7401,6 +7645,8 @@ export type UserUncheckedCreateWithoutCompletedStagesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutCompletedStagesInput = {
@@ -7472,6 +7718,8 @@ export type UserUpdateWithoutCompletedStagesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompletedStagesInput = {
@@ -7527,6 +7775,8 @@ export type UserUncheckedUpdateWithoutCompletedStagesInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutDocumentApprovalsInput = {
@@ -7582,6 +7832,8 @@ export type UserCreateWithoutDocumentApprovalsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutDocumentApprovalsInput = {
@@ -7637,6 +7889,8 @@ export type UserUncheckedCreateWithoutDocumentApprovalsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutDocumentApprovalsInput = {
@@ -7708,6 +7962,8 @@ export type UserUpdateWithoutDocumentApprovalsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocumentApprovalsInput = {
@@ -7763,6 +8019,8 @@ export type UserUncheckedUpdateWithoutDocumentApprovalsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutOfferLettersGeneratedInput = {
@@ -7818,6 +8076,8 @@ export type UserCreateWithoutOfferLettersGeneratedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutOfferLettersGeneratedInput = {
@@ -7873,6 +8133,8 @@ export type UserUncheckedCreateWithoutOfferLettersGeneratedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutOfferLettersGeneratedInput = {
@@ -7933,6 +8195,8 @@ export type UserCreateWithoutOfferLettersSentInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutOfferLettersSentInput = {
@@ -7988,6 +8252,8 @@ export type UserUncheckedCreateWithoutOfferLettersSentInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutOfferLettersSentInput = {
@@ -8059,6 +8325,8 @@ export type UserUpdateWithoutOfferLettersGeneratedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOfferLettersGeneratedInput = {
@@ -8114,6 +8382,8 @@ export type UserUncheckedUpdateWithoutOfferLettersGeneratedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUpsertWithoutOfferLettersSentInput = {
@@ -8180,6 +8450,8 @@ export type UserUpdateWithoutOfferLettersSentInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOfferLettersSentInput = {
@@ -8235,6 +8507,8 @@ export type UserUncheckedUpdateWithoutOfferLettersSentInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutInitiatedTerminationsInput = {
@@ -8290,6 +8564,8 @@ export type UserCreateWithoutInitiatedTerminationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutInitiatedTerminationsInput = {
@@ -8345,6 +8621,8 @@ export type UserUncheckedCreateWithoutInitiatedTerminationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutInitiatedTerminationsInput = {
@@ -8405,6 +8683,8 @@ export type UserCreateWithoutReviewedTerminationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutReviewedTerminationsInput = {
@@ -8460,6 +8740,8 @@ export type UserUncheckedCreateWithoutReviewedTerminationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutReviewedTerminationsInput = {
@@ -8531,6 +8813,8 @@ export type UserUpdateWithoutInitiatedTerminationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInitiatedTerminationsInput = {
@@ -8586,6 +8870,8 @@ export type UserUncheckedUpdateWithoutInitiatedTerminationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUpsertWithoutReviewedTerminationsInput = {
@@ -8652,6 +8938,8 @@ export type UserUpdateWithoutReviewedTerminationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedTerminationsInput = {
@@ -8707,6 +8995,8 @@ export type UserUncheckedUpdateWithoutReviewedTerminationsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -8762,6 +9052,8 @@ export type UserCreateWithoutPaymentMethodChangeRequestsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -8817,6 +9109,8 @@ export type UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
@@ -8877,6 +9171,8 @@ export type UserCreateWithoutReviewedChangeRequestsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutReviewedChangeRequestsInput = {
@@ -8932,6 +9228,8 @@ export type UserUncheckedCreateWithoutReviewedChangeRequestsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutReviewedChangeRequestsInput = {
@@ -9003,6 +9301,8 @@ export type UserUpdateWithoutPaymentMethodChangeRequestsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
@@ -9058,6 +9358,8 @@ export type UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUpsertWithoutReviewedChangeRequestsInput = {
@@ -9124,6 +9426,8 @@ export type UserUpdateWithoutReviewedChangeRequestsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedChangeRequestsInput = {
@@ -9179,6 +9483,8 @@ export type UserUncheckedUpdateWithoutReviewedChangeRequestsInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutTransferRequestsSubmittedInput = {
@@ -9234,6 +9540,8 @@ export type UserCreateWithoutTransferRequestsSubmittedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutTransferRequestsSubmittedInput = {
@@ -9289,6 +9597,8 @@ export type UserUncheckedCreateWithoutTransferRequestsSubmittedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutTransferRequestsSubmittedInput = {
@@ -9349,6 +9659,8 @@ export type UserCreateWithoutTransferRequestsReviewedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutTransferRequestsReviewedInput = {
@@ -9404,6 +9716,8 @@ export type UserUncheckedCreateWithoutTransferRequestsReviewedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutTransferRequestsReviewedInput = {
@@ -9475,6 +9789,8 @@ export type UserUpdateWithoutTransferRequestsSubmittedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransferRequestsSubmittedInput = {
@@ -9530,6 +9846,8 @@ export type UserUncheckedUpdateWithoutTransferRequestsSubmittedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUpsertWithoutTransferRequestsReviewedInput = {
@@ -9596,6 +9914,8 @@ export type UserUpdateWithoutTransferRequestsReviewedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransferRequestsReviewedInput = {
@@ -9651,6 +9971,8 @@ export type UserUncheckedUpdateWithoutTransferRequestsReviewedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutApprovalRequestsSubmittedInput = {
@@ -9706,6 +10028,8 @@ export type UserCreateWithoutApprovalRequestsSubmittedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovalRequestsSubmittedInput = {
@@ -9761,6 +10085,8 @@ export type UserUncheckedCreateWithoutApprovalRequestsSubmittedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovalRequestsSubmittedInput = {
@@ -9821,6 +10147,8 @@ export type UserCreateWithoutApprovalRequestsAssignedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovalRequestsAssignedInput = {
@@ -9876,6 +10204,8 @@ export type UserUncheckedCreateWithoutApprovalRequestsAssignedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovalRequestsAssignedInput = {
@@ -9936,6 +10266,8 @@ export type UserCreateWithoutApprovalRequestsReviewedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovalRequestsReviewedInput = {
@@ -9991,6 +10323,8 @@ export type UserUncheckedCreateWithoutApprovalRequestsReviewedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovalRequestsReviewedInput = {
@@ -10062,6 +10396,8 @@ export type UserUpdateWithoutApprovalRequestsSubmittedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovalRequestsSubmittedInput = {
@@ -10117,6 +10453,8 @@ export type UserUncheckedUpdateWithoutApprovalRequestsSubmittedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUpsertWithoutApprovalRequestsAssignedInput = {
@@ -10183,6 +10521,8 @@ export type UserUpdateWithoutApprovalRequestsAssignedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovalRequestsAssignedInput = {
@@ -10238,6 +10578,8 @@ export type UserUncheckedUpdateWithoutApprovalRequestsAssignedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUpsertWithoutApprovalRequestsReviewedInput = {
@@ -10304,6 +10646,8 @@ export type UserUpdateWithoutApprovalRequestsReviewedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovalRequestsReviewedInput = {
@@ -10359,6 +10703,496 @@ export type UserUncheckedUpdateWithoutApprovalRequestsReviewedInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserCreateWithoutAssignedQualificationsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutUserInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutBuyerInput
+  soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
+  uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
+  documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutReviewerInput
+  completedStages?: Prisma.ApprovalStageProgressCreateNestedManyWithoutCompletedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestCreateNestedManyWithoutRequestedByInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestCreateNestedManyWithoutAssigneeInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestCreateNestedManyWithoutReviewedByInput
+  requestedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutRequestedByInput
+  approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
+  processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
+  organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutInvitedByInput
+  assignedApplicationOrgs?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedStaffInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
+  assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
+  approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
+}
+
+export type UserUncheckedCreateWithoutAssignedQualificationsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  tenantId?: string | null
+  walletId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutBuyerInput
+  soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
+  uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutReviewerInput
+  completedStages?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutCompletedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutAssigneeInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  requestedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutRequestedByInput
+  approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
+  processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
+  organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  assignedApplicationOrgs?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutAssignedStaffInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
+  assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
+}
+
+export type UserCreateOrConnectWithoutAssignedQualificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedQualificationsInput, Prisma.UserUncheckedCreateWithoutAssignedQualificationsInput>
+}
+
+export type UserCreateWithoutApprovedQualificationsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutUserInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutBuyerInput
+  soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
+  uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
+  documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutReviewerInput
+  completedStages?: Prisma.ApprovalStageProgressCreateNestedManyWithoutCompletedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestCreateNestedManyWithoutRequestedByInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestCreateNestedManyWithoutAssigneeInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestCreateNestedManyWithoutReviewedByInput
+  requestedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutRequestedByInput
+  approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
+  processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
+  organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutInvitedByInput
+  assignedApplicationOrgs?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedStaffInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutReviewerInput
+  assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
+  approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
+}
+
+export type UserUncheckedCreateWithoutApprovedQualificationsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  tenantId?: string | null
+  walletId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutBuyerInput
+  soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
+  uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutReviewerInput
+  completedStages?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutCompletedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutAssigneeInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  requestedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutRequestedByInput
+  approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
+  processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
+  organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  assignedApplicationOrgs?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutAssignedStaffInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
+  assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
+  approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
+}
+
+export type UserCreateOrConnectWithoutApprovedQualificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovedQualificationsInput, Prisma.UserUncheckedCreateWithoutApprovedQualificationsInput>
+}
+
+export type UserUpsertWithoutAssignedQualificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignedQualificationsInput, Prisma.UserUncheckedUpdateWithoutAssignedQualificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedQualificationsInput, Prisma.UserUncheckedCreateWithoutAssignedQualificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAssignedQualificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignedQualificationsInput, Prisma.UserUncheckedUpdateWithoutAssignedQualificationsInput>
+}
+
+export type UserUpdateWithoutAssignedQualificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutBuyerNestedInput
+  soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
+  uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutReviewerNestedInput
+  completedStages?: Prisma.ApprovalStageProgressUpdateManyWithoutCompletedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUpdateManyWithoutRequestedByNestedInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUpdateManyWithoutAssigneeNestedInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUpdateManyWithoutReviewedByNestedInput
+  requestedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutRequestedByNestedInput
+  approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
+  processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
+  organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutInvitedByNestedInput
+  assignedApplicationOrgs?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedStaffNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
+  assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
+  approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAssignedQualificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutBuyerNestedInput
+  soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutReviewerNestedInput
+  completedStages?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutCompletedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  requestedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
+  processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  assignedApplicationOrgs?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutAssignedStaffNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserUpsertWithoutApprovedQualificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutApprovedQualificationsInput, Prisma.UserUncheckedUpdateWithoutApprovedQualificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovedQualificationsInput, Prisma.UserUncheckedCreateWithoutApprovedQualificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutApprovedQualificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutApprovedQualificationsInput, Prisma.UserUncheckedUpdateWithoutApprovedQualificationsInput>
+}
+
+export type UserUpdateWithoutApprovedQualificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutBuyerNestedInput
+  soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
+  uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutReviewerNestedInput
+  completedStages?: Prisma.ApprovalStageProgressUpdateManyWithoutCompletedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUpdateManyWithoutRequestedByNestedInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUpdateManyWithoutAssigneeNestedInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUpdateManyWithoutReviewedByNestedInput
+  requestedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutRequestedByNestedInput
+  approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
+  processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
+  organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutInvitedByNestedInput
+  assignedApplicationOrgs?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedStaffNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
+  assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
+  approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+}
+
+export type UserUncheckedUpdateWithoutApprovedQualificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutBuyerNestedInput
+  soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutReviewerNestedInput
+  completedStages?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutCompletedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  requestedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
+  processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  assignedApplicationOrgs?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutAssignedStaffNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
 }
 
 export type UserCreateManyTenantInput = {
@@ -10433,6 +11267,8 @@ export type UserUpdateWithoutTenantInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTenantInput = {
@@ -10488,6 +11324,8 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
+  assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutTenantInput = {
@@ -10551,6 +11389,8 @@ export type UserCountOutputType = {
   gatePhaseReviews: number
   assignedOnboardings: number
   approvedOnboardings: number
+  assignedQualifications: number
+  approvedQualifications: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -10590,6 +11430,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   gatePhaseReviews?: boolean | UserCountOutputTypeCountGatePhaseReviewsArgs
   assignedOnboardings?: boolean | UserCountOutputTypeCountAssignedOnboardingsArgs
   approvedOnboardings?: boolean | UserCountOutputTypeCountApprovedOnboardingsArgs
+  assignedQualifications?: boolean | UserCountOutputTypeCountAssignedQualificationsArgs
+  approvedQualifications?: boolean | UserCountOutputTypeCountApprovedQualificationsArgs
 }
 
 /**
@@ -10854,6 +11696,20 @@ export type UserCountOutputTypeCountApprovedOnboardingsArgs<ExtArgs extends runt
   where?: Prisma.OrganizationOnboardingWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAssignedQualificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentMethodQualificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountApprovedQualificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentMethodQualificationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -10911,6 +11767,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   gatePhaseReviews?: boolean | Prisma.User$gatePhaseReviewsArgs<ExtArgs>
   assignedOnboardings?: boolean | Prisma.User$assignedOnboardingsArgs<ExtArgs>
   approvedOnboardings?: boolean | Prisma.User$approvedOnboardingsArgs<ExtArgs>
+  assignedQualifications?: boolean | Prisma.User$assignedQualificationsArgs<ExtArgs>
+  approvedQualifications?: boolean | Prisma.User$approvedQualificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -10976,6 +11834,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   gatePhaseReviews?: boolean | Prisma.User$gatePhaseReviewsArgs<ExtArgs>
   assignedOnboardings?: boolean | Prisma.User$assignedOnboardingsArgs<ExtArgs>
   approvedOnboardings?: boolean | Prisma.User$approvedOnboardingsArgs<ExtArgs>
+  assignedQualifications?: boolean | Prisma.User$assignedQualificationsArgs<ExtArgs>
+  approvedQualifications?: boolean | Prisma.User$approvedQualificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -11020,6 +11880,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     gatePhaseReviews: Prisma.$GatePhaseReviewPayload<ExtArgs>[]
     assignedOnboardings: Prisma.$OrganizationOnboardingPayload<ExtArgs>[]
     approvedOnboardings: Prisma.$OrganizationOnboardingPayload<ExtArgs>[]
+    assignedQualifications: Prisma.$PaymentMethodQualificationPayload<ExtArgs>[]
+    approvedQualifications: Prisma.$PaymentMethodQualificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -11417,6 +12279,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   gatePhaseReviews<T extends Prisma.User$gatePhaseReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$gatePhaseReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePhaseReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedOnboardings<T extends Prisma.User$assignedOnboardingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedOnboardingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationOnboardingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvedOnboardings<T extends Prisma.User$approvedOnboardingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedOnboardingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationOnboardingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignedQualifications<T extends Prisma.User$assignedQualificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedQualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvedQualifications<T extends Prisma.User$approvedQualificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedQualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12705,6 +13569,54 @@ export type User$approvedOnboardingsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.OrganizationOnboardingScalarFieldEnum | Prisma.OrganizationOnboardingScalarFieldEnum[]
+}
+
+/**
+ * User.assignedQualifications
+ */
+export type User$assignedQualificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentMethodQualification
+   */
+  select?: Prisma.PaymentMethodQualificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentMethodQualification
+   */
+  omit?: Prisma.PaymentMethodQualificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentMethodQualificationInclude<ExtArgs> | null
+  where?: Prisma.PaymentMethodQualificationWhereInput
+  orderBy?: Prisma.PaymentMethodQualificationOrderByWithRelationInput | Prisma.PaymentMethodQualificationOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentMethodQualificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentMethodQualificationScalarFieldEnum | Prisma.PaymentMethodQualificationScalarFieldEnum[]
+}
+
+/**
+ * User.approvedQualifications
+ */
+export type User$approvedQualificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentMethodQualification
+   */
+  select?: Prisma.PaymentMethodQualificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentMethodQualification
+   */
+  omit?: Prisma.PaymentMethodQualificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentMethodQualificationInclude<ExtArgs> | null
+  where?: Prisma.PaymentMethodQualificationWhereInput
+  orderBy?: Prisma.PaymentMethodQualificationOrderByWithRelationInput | Prisma.PaymentMethodQualificationOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentMethodQualificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentMethodQualificationScalarFieldEnum | Prisma.PaymentMethodQualificationScalarFieldEnum[]
 }
 
 /**

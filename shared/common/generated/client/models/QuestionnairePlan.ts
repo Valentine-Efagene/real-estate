@@ -292,6 +292,7 @@ export type QuestionnairePlanWhereInput = {
   questions?: Prisma.QuestionnairePlanQuestionListRelationFilter
   methodPhases?: Prisma.PropertyPaymentMethodPhaseListRelationFilter
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseListRelationFilter
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseListRelationFilter
   questionnairePhases?: Prisma.QuestionnairePhaseListRelationFilter
 }
 
@@ -313,6 +314,7 @@ export type QuestionnairePlanOrderByWithRelationInput = {
   questions?: Prisma.QuestionnairePlanQuestionOrderByRelationAggregateInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseOrderByRelationAggregateInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseOrderByRelationAggregateInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseOrderByRelationAggregateInput
   questionnairePhases?: Prisma.QuestionnairePhaseOrderByRelationAggregateInput
   _relevance?: Prisma.QuestionnairePlanOrderByRelevanceInput
 }
@@ -339,6 +341,7 @@ export type QuestionnairePlanWhereUniqueInput = Prisma.AtLeast<{
   questions?: Prisma.QuestionnairePlanQuestionListRelationFilter
   methodPhases?: Prisma.PropertyPaymentMethodPhaseListRelationFilter
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseListRelationFilter
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseListRelationFilter
   questionnairePhases?: Prisma.QuestionnairePhaseListRelationFilter
 }, "id" | "tenantId_name_version">
 
@@ -399,6 +402,7 @@ export type QuestionnairePlanCreateInput = {
   questions?: Prisma.QuestionnairePlanQuestionCreateNestedManyWithoutQuestionnairePlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutQuestionnairePlanInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
   questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutQuestionnairePlanInput
 }
 
@@ -419,6 +423,7 @@ export type QuestionnairePlanUncheckedCreateInput = {
   questions?: Prisma.QuestionnairePlanQuestionUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
 }
 
@@ -439,6 +444,7 @@ export type QuestionnairePlanUpdateInput = {
   questions?: Prisma.QuestionnairePlanQuestionUpdateManyWithoutQuestionnairePlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutQuestionnairePlanNestedInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
   questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
@@ -459,6 +465,7 @@ export type QuestionnairePlanUncheckedUpdateInput = {
   questions?: Prisma.QuestionnairePlanQuestionUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
@@ -713,6 +720,22 @@ export type QuestionnairePlanUpdateOneWithoutQuestionnairePhasesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.QuestionnairePlanUpdateToOneWithWhereWithoutQuestionnairePhasesInput, Prisma.QuestionnairePlanUpdateWithoutQuestionnairePhasesInput>, Prisma.QuestionnairePlanUncheckedUpdateWithoutQuestionnairePhasesInput>
 }
 
+export type QuestionnairePlanCreateNestedOneWithoutQualificationFlowPhasesInput = {
+  create?: Prisma.XOR<Prisma.QuestionnairePlanCreateWithoutQualificationFlowPhasesInput, Prisma.QuestionnairePlanUncheckedCreateWithoutQualificationFlowPhasesInput>
+  connectOrCreate?: Prisma.QuestionnairePlanCreateOrConnectWithoutQualificationFlowPhasesInput
+  connect?: Prisma.QuestionnairePlanWhereUniqueInput
+}
+
+export type QuestionnairePlanUpdateOneWithoutQualificationFlowPhasesNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionnairePlanCreateWithoutQualificationFlowPhasesInput, Prisma.QuestionnairePlanUncheckedCreateWithoutQualificationFlowPhasesInput>
+  connectOrCreate?: Prisma.QuestionnairePlanCreateOrConnectWithoutQualificationFlowPhasesInput
+  upsert?: Prisma.QuestionnairePlanUpsertWithoutQualificationFlowPhasesInput
+  disconnect?: Prisma.QuestionnairePlanWhereInput | boolean
+  delete?: Prisma.QuestionnairePlanWhereInput | boolean
+  connect?: Prisma.QuestionnairePlanWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.QuestionnairePlanUpdateToOneWithWhereWithoutQualificationFlowPhasesInput, Prisma.QuestionnairePlanUpdateWithoutQualificationFlowPhasesInput>, Prisma.QuestionnairePlanUncheckedUpdateWithoutQualificationFlowPhasesInput>
+}
+
 export type QuestionnairePlanCreateWithoutOnboardingFlowPhasesInput = {
   id?: string
   name: string
@@ -729,6 +752,7 @@ export type QuestionnairePlanCreateWithoutOnboardingFlowPhasesInput = {
   tenant?: Prisma.TenantCreateNestedOneWithoutQuestionnairePlansInput
   questions?: Prisma.QuestionnairePlanQuestionCreateNestedManyWithoutQuestionnairePlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
   questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutQuestionnairePlanInput
 }
 
@@ -748,6 +772,7 @@ export type QuestionnairePlanUncheckedCreateWithoutOnboardingFlowPhasesInput = {
   updatedAt?: Date | string
   questions?: Prisma.QuestionnairePlanQuestionUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
 }
 
@@ -783,6 +808,7 @@ export type QuestionnairePlanUpdateWithoutOnboardingFlowPhasesInput = {
   tenant?: Prisma.TenantUpdateOneWithoutQuestionnairePlansNestedInput
   questions?: Prisma.QuestionnairePlanQuestionUpdateManyWithoutQuestionnairePlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
   questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
@@ -802,6 +828,7 @@ export type QuestionnairePlanUncheckedUpdateWithoutOnboardingFlowPhasesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionnairePlanQuestionUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
@@ -821,6 +848,7 @@ export type QuestionnairePlanCreateWithoutTenantInput = {
   questions?: Prisma.QuestionnairePlanQuestionCreateNestedManyWithoutQuestionnairePlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutQuestionnairePlanInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
   questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutQuestionnairePlanInput
 }
 
@@ -840,6 +868,7 @@ export type QuestionnairePlanUncheckedCreateWithoutTenantInput = {
   questions?: Prisma.QuestionnairePlanQuestionUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
 }
 
@@ -904,6 +933,7 @@ export type QuestionnairePlanCreateWithoutQuestionsInput = {
   tenant?: Prisma.TenantCreateNestedOneWithoutQuestionnairePlansInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutQuestionnairePlanInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
   questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutQuestionnairePlanInput
 }
 
@@ -923,6 +953,7 @@ export type QuestionnairePlanUncheckedCreateWithoutQuestionsInput = {
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
 }
 
@@ -958,6 +989,7 @@ export type QuestionnairePlanUpdateWithoutQuestionsInput = {
   tenant?: Prisma.TenantUpdateOneWithoutQuestionnairePlansNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutQuestionnairePlanNestedInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
   questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
@@ -977,6 +1009,7 @@ export type QuestionnairePlanUncheckedUpdateWithoutQuestionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
@@ -996,6 +1029,7 @@ export type QuestionnairePlanCreateWithoutMethodPhasesInput = {
   tenant?: Prisma.TenantCreateNestedOneWithoutQuestionnairePlansInput
   questions?: Prisma.QuestionnairePlanQuestionCreateNestedManyWithoutQuestionnairePlanInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
   questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutQuestionnairePlanInput
 }
 
@@ -1015,6 +1049,7 @@ export type QuestionnairePlanUncheckedCreateWithoutMethodPhasesInput = {
   updatedAt?: Date | string
   questions?: Prisma.QuestionnairePlanQuestionUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
 }
 
@@ -1050,6 +1085,7 @@ export type QuestionnairePlanUpdateWithoutMethodPhasesInput = {
   tenant?: Prisma.TenantUpdateOneWithoutQuestionnairePlansNestedInput
   questions?: Prisma.QuestionnairePlanQuestionUpdateManyWithoutQuestionnairePlanNestedInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
   questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
@@ -1069,6 +1105,7 @@ export type QuestionnairePlanUncheckedUpdateWithoutMethodPhasesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionnairePlanQuestionUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
@@ -1089,6 +1126,7 @@ export type QuestionnairePlanCreateWithoutQuestionnairePhasesInput = {
   questions?: Prisma.QuestionnairePlanQuestionCreateNestedManyWithoutQuestionnairePlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutQuestionnairePlanInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
 }
 
 export type QuestionnairePlanUncheckedCreateWithoutQuestionnairePhasesInput = {
@@ -1108,6 +1146,7 @@ export type QuestionnairePlanUncheckedCreateWithoutQuestionnairePhasesInput = {
   questions?: Prisma.QuestionnairePlanQuestionUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
 }
 
 export type QuestionnairePlanCreateOrConnectWithoutQuestionnairePhasesInput = {
@@ -1143,6 +1182,7 @@ export type QuestionnairePlanUpdateWithoutQuestionnairePhasesInput = {
   questions?: Prisma.QuestionnairePlanQuestionUpdateManyWithoutQuestionnairePlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutQuestionnairePlanNestedInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
 export type QuestionnairePlanUncheckedUpdateWithoutQuestionnairePhasesInput = {
@@ -1162,6 +1202,103 @@ export type QuestionnairePlanUncheckedUpdateWithoutQuestionnairePhasesInput = {
   questions?: Prisma.QuestionnairePlanQuestionUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
+}
+
+export type QuestionnairePlanCreateWithoutQualificationFlowPhasesInput = {
+  id?: string
+  name: string
+  description?: string | null
+  version?: number
+  isActive?: boolean
+  passingScore?: number | null
+  scoringStrategy?: $Enums.ScoringStrategy
+  autoDecisionEnabled?: boolean
+  estimatedMinutes?: number | null
+  category?: $Enums.QuestionnaireCategory
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant?: Prisma.TenantCreateNestedOneWithoutQuestionnairePlansInput
+  questions?: Prisma.QuestionnairePlanQuestionCreateNestedManyWithoutQuestionnairePlanInput
+  methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutQuestionnairePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutQuestionnairePlanInput
+  questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutQuestionnairePlanInput
+}
+
+export type QuestionnairePlanUncheckedCreateWithoutQualificationFlowPhasesInput = {
+  id?: string
+  tenantId?: string | null
+  name: string
+  description?: string | null
+  version?: number
+  isActive?: boolean
+  passingScore?: number | null
+  scoringStrategy?: $Enums.ScoringStrategy
+  autoDecisionEnabled?: boolean
+  estimatedMinutes?: number | null
+  category?: $Enums.QuestionnaireCategory
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questions?: Prisma.QuestionnairePlanQuestionUncheckedCreateNestedManyWithoutQuestionnairePlanInput
+  methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput
+}
+
+export type QuestionnairePlanCreateOrConnectWithoutQualificationFlowPhasesInput = {
+  where: Prisma.QuestionnairePlanWhereUniqueInput
+  create: Prisma.XOR<Prisma.QuestionnairePlanCreateWithoutQualificationFlowPhasesInput, Prisma.QuestionnairePlanUncheckedCreateWithoutQualificationFlowPhasesInput>
+}
+
+export type QuestionnairePlanUpsertWithoutQualificationFlowPhasesInput = {
+  update: Prisma.XOR<Prisma.QuestionnairePlanUpdateWithoutQualificationFlowPhasesInput, Prisma.QuestionnairePlanUncheckedUpdateWithoutQualificationFlowPhasesInput>
+  create: Prisma.XOR<Prisma.QuestionnairePlanCreateWithoutQualificationFlowPhasesInput, Prisma.QuestionnairePlanUncheckedCreateWithoutQualificationFlowPhasesInput>
+  where?: Prisma.QuestionnairePlanWhereInput
+}
+
+export type QuestionnairePlanUpdateToOneWithWhereWithoutQualificationFlowPhasesInput = {
+  where?: Prisma.QuestionnairePlanWhereInput
+  data: Prisma.XOR<Prisma.QuestionnairePlanUpdateWithoutQualificationFlowPhasesInput, Prisma.QuestionnairePlanUncheckedUpdateWithoutQualificationFlowPhasesInput>
+}
+
+export type QuestionnairePlanUpdateWithoutQualificationFlowPhasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scoringStrategy?: Prisma.EnumScoringStrategyFieldUpdateOperationsInput | $Enums.ScoringStrategy
+  autoDecisionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estimatedMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  category?: Prisma.EnumQuestionnaireCategoryFieldUpdateOperationsInput | $Enums.QuestionnaireCategory
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneWithoutQuestionnairePlansNestedInput
+  questions?: Prisma.QuestionnairePlanQuestionUpdateManyWithoutQuestionnairePlanNestedInput
+  methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutQuestionnairePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutQuestionnairePlanNestedInput
+}
+
+export type QuestionnairePlanUncheckedUpdateWithoutQualificationFlowPhasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scoringStrategy?: Prisma.EnumScoringStrategyFieldUpdateOperationsInput | $Enums.ScoringStrategy
+  autoDecisionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  estimatedMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  category?: Prisma.EnumQuestionnaireCategoryFieldUpdateOperationsInput | $Enums.QuestionnaireCategory
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questions?: Prisma.QuestionnairePlanQuestionUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
+  methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
 export type QuestionnairePlanCreateManyTenantInput = {
@@ -1195,6 +1332,7 @@ export type QuestionnairePlanUpdateWithoutTenantInput = {
   questions?: Prisma.QuestionnairePlanQuestionUpdateManyWithoutQuestionnairePlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutQuestionnairePlanNestedInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQuestionnairePlanNestedInput
   questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
@@ -1214,6 +1352,7 @@ export type QuestionnairePlanUncheckedUpdateWithoutTenantInput = {
   questions?: Prisma.QuestionnairePlanQuestionUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
   questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput
 }
 
@@ -1241,6 +1380,7 @@ export type QuestionnairePlanCountOutputType = {
   questions: number
   methodPhases: number
   onboardingFlowPhases: number
+  qualificationFlowPhases: number
   questionnairePhases: number
 }
 
@@ -1248,6 +1388,7 @@ export type QuestionnairePlanCountOutputTypeSelect<ExtArgs extends runtime.Types
   questions?: boolean | QuestionnairePlanCountOutputTypeCountQuestionsArgs
   methodPhases?: boolean | QuestionnairePlanCountOutputTypeCountMethodPhasesArgs
   onboardingFlowPhases?: boolean | QuestionnairePlanCountOutputTypeCountOnboardingFlowPhasesArgs
+  qualificationFlowPhases?: boolean | QuestionnairePlanCountOutputTypeCountQualificationFlowPhasesArgs
   questionnairePhases?: boolean | QuestionnairePlanCountOutputTypeCountQuestionnairePhasesArgs
 }
 
@@ -1285,6 +1426,13 @@ export type QuestionnairePlanCountOutputTypeCountOnboardingFlowPhasesArgs<ExtArg
 /**
  * QuestionnairePlanCountOutputType without action
  */
+export type QuestionnairePlanCountOutputTypeCountQualificationFlowPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QualificationFlowPhaseWhereInput
+}
+
+/**
+ * QuestionnairePlanCountOutputType without action
+ */
 export type QuestionnairePlanCountOutputTypeCountQuestionnairePhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.QuestionnairePhaseWhereInput
 }
@@ -1308,6 +1456,7 @@ export type QuestionnairePlanSelect<ExtArgs extends runtime.Types.Extensions.Int
   questions?: boolean | Prisma.QuestionnairePlan$questionsArgs<ExtArgs>
   methodPhases?: boolean | Prisma.QuestionnairePlan$methodPhasesArgs<ExtArgs>
   onboardingFlowPhases?: boolean | Prisma.QuestionnairePlan$onboardingFlowPhasesArgs<ExtArgs>
+  qualificationFlowPhases?: boolean | Prisma.QuestionnairePlan$qualificationFlowPhasesArgs<ExtArgs>
   questionnairePhases?: boolean | Prisma.QuestionnairePlan$questionnairePhasesArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionnairePlanCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["questionnairePlan"]>
@@ -1336,6 +1485,7 @@ export type QuestionnairePlanInclude<ExtArgs extends runtime.Types.Extensions.In
   questions?: boolean | Prisma.QuestionnairePlan$questionsArgs<ExtArgs>
   methodPhases?: boolean | Prisma.QuestionnairePlan$methodPhasesArgs<ExtArgs>
   onboardingFlowPhases?: boolean | Prisma.QuestionnairePlan$onboardingFlowPhasesArgs<ExtArgs>
+  qualificationFlowPhases?: boolean | Prisma.QuestionnairePlan$qualificationFlowPhasesArgs<ExtArgs>
   questionnairePhases?: boolean | Prisma.QuestionnairePlan$questionnairePhasesArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionnairePlanCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1347,6 +1497,7 @@ export type $QuestionnairePlanPayload<ExtArgs extends runtime.Types.Extensions.I
     questions: Prisma.$QuestionnairePlanQuestionPayload<ExtArgs>[]
     methodPhases: Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>[]
     onboardingFlowPhases: Prisma.$OnboardingFlowPhasePayload<ExtArgs>[]
+    qualificationFlowPhases: Prisma.$QualificationFlowPhasePayload<ExtArgs>[]
     questionnairePhases: Prisma.$QuestionnairePhasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1707,6 +1858,7 @@ export interface Prisma__QuestionnairePlanClient<T, Null = never, ExtArgs extend
   questions<T extends Prisma.QuestionnairePlan$questionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionnairePlan$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionnairePlanQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   methodPhases<T extends Prisma.QuestionnairePlan$methodPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionnairePlan$methodPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   onboardingFlowPhases<T extends Prisma.QuestionnairePlan$onboardingFlowPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionnairePlan$onboardingFlowPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnboardingFlowPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  qualificationFlowPhases<T extends Prisma.QuestionnairePlan$qualificationFlowPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionnairePlan$qualificationFlowPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualificationFlowPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   questionnairePhases<T extends Prisma.QuestionnairePlan$questionnairePhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionnairePlan$questionnairePhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionnairePhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2181,6 +2333,30 @@ export type QuestionnairePlan$onboardingFlowPhasesArgs<ExtArgs extends runtime.T
   take?: number
   skip?: number
   distinct?: Prisma.OnboardingFlowPhaseScalarFieldEnum | Prisma.OnboardingFlowPhaseScalarFieldEnum[]
+}
+
+/**
+ * QuestionnairePlan.qualificationFlowPhases
+ */
+export type QuestionnairePlan$qualificationFlowPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the QualificationFlowPhase
+   */
+  select?: Prisma.QualificationFlowPhaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the QualificationFlowPhase
+   */
+  omit?: Prisma.QualificationFlowPhaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QualificationFlowPhaseInclude<ExtArgs> | null
+  where?: Prisma.QualificationFlowPhaseWhereInput
+  orderBy?: Prisma.QualificationFlowPhaseOrderByWithRelationInput | Prisma.QualificationFlowPhaseOrderByWithRelationInput[]
+  cursor?: Prisma.QualificationFlowPhaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.QualificationFlowPhaseScalarFieldEnum | Prisma.QualificationFlowPhaseScalarFieldEnum[]
 }
 
 /**

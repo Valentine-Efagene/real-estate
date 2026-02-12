@@ -15,6 +15,16 @@ import {
   RevertDocumentSchema,
   ReopenPhaseSchema,
 } from '../validators/application-phase.validator';
+import {
+  CreateQualificationFlowSchema,
+  ApplyForPaymentMethodSchema,
+  ReviewQualificationSchema,
+  AssignQualificationFlowSchema,
+  UpdateQualificationStatusSchema,
+} from '../validators/qualification-flow.validator';
+import {
+  CreateGatePlanSchema,
+} from '../validators/gate-plan.validator';
 
 extendZodWithOpenApi(z);
 
@@ -218,6 +228,234 @@ registry.registerPath({
         },
       },
     },
+  },
+});
+
+// ============ Gate Plans ============
+registry.registerPath({
+  method: 'post',
+  path: '/gate-plans',
+  tags: ['Gate Plans'],
+  summary: 'Create a gate plan',
+  description: 'Create a gate plan that defines approval requirements for a GATE phase in a qualification flow. Specifies required approvals count and reviewer organization type.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    body: { content: { 'application/json': { schema: CreateGatePlanSchema } } },
+  },
+  responses: {
+    201: { description: 'Gate plan created', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    400: { description: 'Validation error' },
+    403: { description: 'Forbidden - requires admin role' },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/gate-plans',
+  tags: ['Gate Plans'],
+  summary: 'List gate plans',
+  description: 'List all gate plans. Optionally filter by isActive status.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    query: z.object({ isActive: z.string().optional() }),
+  },
+  responses: {
+    200: { description: 'List of gate plans', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.array(z.any()) }) } } },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/gate-plans/{id}',
+  tags: ['Gate Plans'],
+  summary: 'Get gate plan by ID',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ id: z.string() }) },
+  responses: {
+    200: { description: 'Gate plan details', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    404: { description: 'Not found' },
+  },
+});
+
+registry.registerPath({
+  method: 'put',
+  path: '/gate-plans/{id}',
+  tags: ['Gate Plans'],
+  summary: 'Update a gate plan',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string() }),
+    body: { content: { 'application/json': { schema: CreateGatePlanSchema.partial() } } },
+  },
+  responses: {
+    200: { description: 'Gate plan updated', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    404: { description: 'Not found' },
+  },
+});
+
+registry.registerPath({
+  method: 'delete',
+  path: '/gate-plans/{id}',
+  tags: ['Gate Plans'],
+  summary: 'Delete a gate plan',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ id: z.string() }) },
+  responses: {
+    200: { description: 'Gate plan deleted' },
+    404: { description: 'Not found' },
+  },
+});
+
+// ============ Qualification Flows ============
+registry.registerPath({
+  method: 'post',
+  path: '/qualification-flows',
+  tags: ['Qualification Flows'],
+  summary: 'Create a qualification flow template',
+  description: 'Create a reusable qualification workflow that organizations must complete to access a payment method. Supports QUESTIONNAIRE, DOCUMENTATION, and GATE phases.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    body: { content: { 'application/json': { schema: CreateQualificationFlowSchema } } },
+  },
+  responses: {
+    201: { description: 'Qualification flow created', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    400: { description: 'Validation error' },
+    403: { description: 'Forbidden - requires admin role' },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/qualification-flows',
+  tags: ['Qualification Flows'],
+  summary: 'List qualification flow templates',
+  security: [{ bearerAuth: [] }],
+  responses: {
+    200: { description: 'List of qualification flows', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.array(z.any()) }) } } },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/qualification-flows/{id}',
+  tags: ['Qualification Flows'],
+  summary: 'Get qualification flow by ID',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ id: z.string() }) },
+  responses: {
+    200: { description: 'Qualification flow details', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    404: { description: 'Not found' },
+  },
+});
+
+// ============ Payment Method Qualifications ============
+registry.registerPath({
+  method: 'post',
+  path: '/payment-methods/{id}/qualification-flow',
+  tags: ['Payment Method Qualifications'],
+  summary: 'Assign qualification flow to payment method',
+  description: 'Assign a qualification flow template to a payment method. Organizations must complete this flow to use the payment method.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string() }),
+    body: { content: { 'application/json': { schema: AssignQualificationFlowSchema } } },
+  },
+  responses: {
+    200: { description: 'Qualification flow assigned', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    404: { description: 'Payment method or qualification flow not found' },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/payment-methods/{id}/apply',
+  tags: ['Payment Method Qualifications'],
+  summary: 'Apply for payment method access',
+  description: 'Organization applies to use a payment method. If the method has a qualification flow, a workflow instance is created. If no flow, org is auto-qualified.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string() }),
+    body: { content: { 'application/json': { schema: ApplyForPaymentMethodSchema } } },
+  },
+  responses: {
+    201: { description: 'Application created', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    404: { description: 'Payment method or organization not found' },
+    409: { description: 'Organization already applied' },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/payment-methods/{id}/assignments',
+  tags: ['Payment Method Qualifications'],
+  summary: 'List org assignments for payment method',
+  description: 'List all organizations assigned to this payment method, with their qualification status.',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ id: z.string() }) },
+  responses: {
+    200: { description: 'List of assignments', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.array(z.any()) }) } } },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/payment-methods/{id}/assignments/{assignmentId}',
+  tags: ['Payment Method Qualifications'],
+  summary: 'Get qualification progress',
+  description: 'Get detailed qualification progress for an organization-payment-method assignment, including all phases and their status.',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ id: z.string(), assignmentId: z.string() }) },
+  responses: {
+    200: { description: 'Assignment with qualification details', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    404: { description: 'Assignment not found' },
+  },
+});
+
+registry.registerPath({
+  method: 'patch',
+  path: '/payment-methods/{id}/assignments/{assignmentId}/status',
+  tags: ['Payment Method Qualifications'],
+  summary: 'Update assignment status',
+  description: 'Admin override to directly update qualification status (e.g., suspend, manually qualify).',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string(), assignmentId: z.string() }),
+    body: { content: { 'application/json': { schema: UpdateQualificationStatusSchema } } },
+  },
+  responses: {
+    200: { description: 'Status updated', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    404: { description: 'Assignment not found' },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/payment-methods/{id}/assignments/{assignmentId}/phases/{phaseId}/review',
+  tags: ['Payment Method Qualifications'],
+  summary: 'Review gate phase in qualification',
+  description: 'Approve or reject a GATE phase within a qualification workflow. When the final gate is approved, the organization becomes QUALIFIED.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string(), assignmentId: z.string(), phaseId: z.string() }),
+    body: { content: { 'application/json': { schema: ReviewQualificationSchema } } },
+  },
+  responses: {
+    200: { description: 'Review recorded', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    400: { description: 'Phase not in reviewable state' },
+    404: { description: 'Phase not found' },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/organizations/{orgId}/payment-methods',
+  tags: ['Payment Method Qualifications'],
+  summary: 'List payment methods for organization',
+  description: 'List all payment methods an organization has applied for, with their qualification status.',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ orgId: z.string() }) },
+  responses: {
+    200: { description: 'List of payment method assignments', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.array(z.any()) }) } } },
   },
 });
 
@@ -1262,6 +1500,9 @@ export function generateOpenAPIDocument(baseUrl?: string): any {
     tags: [
       { name: 'Payment Plans', description: 'Payment plan templates (e.g., Outright, Installment 6mo)' },
       { name: 'Payment Methods', description: 'Property-specific payment method configurations' },
+      { name: 'Gate Plans', description: 'Gate plan templates defining approval requirements for qualification GATE phases' },
+      { name: 'Qualification Flows', description: 'Qualification workflow templates for payment method access' },
+      { name: 'Payment Method Qualifications', description: 'Organization applications and qualifications for payment methods' },
       { name: 'Applications', description: 'Buyer applications for property units' },
       { name: 'application Phases', description: 'application lifecycle phases (documentation, payment, etc.)' },
       { name: 'Application Payments', description: 'Payment processing for applications' },

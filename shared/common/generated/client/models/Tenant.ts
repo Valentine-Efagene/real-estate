@@ -258,6 +258,11 @@ export type TenantWhereInput = {
   gatePlans?: Prisma.GatePlanListRelationFilter
   gatePhases?: Prisma.GatePhaseListRelationFilter
   gatePhaseReviews?: Prisma.GatePhaseReviewListRelationFilter
+  qualificationFlows?: Prisma.QualificationFlowListRelationFilter
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseListRelationFilter
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodListRelationFilter
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
+  qualificationPhases?: Prisma.QualificationPhaseListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
@@ -335,6 +340,11 @@ export type TenantOrderByWithRelationInput = {
   gatePlans?: Prisma.GatePlanOrderByRelationAggregateInput
   gatePhases?: Prisma.GatePhaseOrderByRelationAggregateInput
   gatePhaseReviews?: Prisma.GatePhaseReviewOrderByRelationAggregateInput
+  qualificationFlows?: Prisma.QualificationFlowOrderByRelationAggregateInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseOrderByRelationAggregateInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodOrderByRelationAggregateInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationOrderByRelationAggregateInput
+  qualificationPhases?: Prisma.QualificationPhaseOrderByRelationAggregateInput
   _relevance?: Prisma.TenantOrderByRelevanceInput
 }
 
@@ -416,6 +426,11 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   gatePlans?: Prisma.GatePlanListRelationFilter
   gatePhases?: Prisma.GatePhaseListRelationFilter
   gatePhaseReviews?: Prisma.GatePhaseReviewListRelationFilter
+  qualificationFlows?: Prisma.QualificationFlowListRelationFilter
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseListRelationFilter
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodListRelationFilter
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
+  qualificationPhases?: Prisma.QualificationPhaseListRelationFilter
 }, "id" | "subdomain">
 
 export type TenantOrderByWithAggregationInput = {
@@ -517,6 +532,11 @@ export type TenantCreateInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
@@ -594,6 +614,11 @@ export type TenantUncheckedCreateInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -671,6 +696,11 @@ export type TenantUpdateInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
@@ -748,6 +778,11 @@ export type TenantUncheckedUpdateInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
@@ -1786,6 +1821,76 @@ export type TenantUpdateOneRequiredWithoutWorkflowBlockersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutWorkflowBlockersInput, Prisma.TenantUpdateWithoutWorkflowBlockersInput>, Prisma.TenantUncheckedUpdateWithoutWorkflowBlockersInput>
 }
 
+export type TenantCreateNestedOneWithoutQualificationFlowsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutQualificationFlowsInput, Prisma.TenantUncheckedCreateWithoutQualificationFlowsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutQualificationFlowsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutQualificationFlowsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutQualificationFlowsInput, Prisma.TenantUncheckedCreateWithoutQualificationFlowsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutQualificationFlowsInput
+  upsert?: Prisma.TenantUpsertWithoutQualificationFlowsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutQualificationFlowsInput, Prisma.TenantUpdateWithoutQualificationFlowsInput>, Prisma.TenantUncheckedUpdateWithoutQualificationFlowsInput>
+}
+
+export type TenantCreateNestedOneWithoutQualificationFlowPhasesInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutQualificationFlowPhasesInput, Prisma.TenantUncheckedCreateWithoutQualificationFlowPhasesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutQualificationFlowPhasesInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutQualificationFlowPhasesNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutQualificationFlowPhasesInput, Prisma.TenantUncheckedCreateWithoutQualificationFlowPhasesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutQualificationFlowPhasesInput
+  upsert?: Prisma.TenantUpsertWithoutQualificationFlowPhasesInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutQualificationFlowPhasesInput, Prisma.TenantUpdateWithoutQualificationFlowPhasesInput>, Prisma.TenantUncheckedUpdateWithoutQualificationFlowPhasesInput>
+}
+
+export type TenantCreateNestedOneWithoutOrganizationPaymentMethodsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationPaymentMethodsInput, Prisma.TenantUncheckedCreateWithoutOrganizationPaymentMethodsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrganizationPaymentMethodsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutOrganizationPaymentMethodsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationPaymentMethodsInput, Prisma.TenantUncheckedCreateWithoutOrganizationPaymentMethodsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrganizationPaymentMethodsInput
+  upsert?: Prisma.TenantUpsertWithoutOrganizationPaymentMethodsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOrganizationPaymentMethodsInput, Prisma.TenantUpdateWithoutOrganizationPaymentMethodsInput>, Prisma.TenantUncheckedUpdateWithoutOrganizationPaymentMethodsInput>
+}
+
+export type TenantCreateNestedOneWithoutPaymentMethodQualificationsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutPaymentMethodQualificationsInput, Prisma.TenantUncheckedCreateWithoutPaymentMethodQualificationsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutPaymentMethodQualificationsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutPaymentMethodQualificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutPaymentMethodQualificationsInput, Prisma.TenantUncheckedCreateWithoutPaymentMethodQualificationsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutPaymentMethodQualificationsInput
+  upsert?: Prisma.TenantUpsertWithoutPaymentMethodQualificationsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutPaymentMethodQualificationsInput, Prisma.TenantUpdateWithoutPaymentMethodQualificationsInput>, Prisma.TenantUncheckedUpdateWithoutPaymentMethodQualificationsInput>
+}
+
+export type TenantCreateNestedOneWithoutQualificationPhasesInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutQualificationPhasesInput, Prisma.TenantUncheckedCreateWithoutQualificationPhasesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutQualificationPhasesInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutQualificationPhasesNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutQualificationPhasesInput, Prisma.TenantUncheckedCreateWithoutQualificationPhasesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutQualificationPhasesInput
+  upsert?: Prisma.TenantUpsertWithoutQualificationPhasesInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutQualificationPhasesInput, Prisma.TenantUpdateWithoutQualificationPhasesInput>, Prisma.TenantUncheckedUpdateWithoutQualificationPhasesInput>
+}
+
 export type TenantCreateWithoutOrganizationTypesInput = {
   id?: string
   name: string
@@ -1860,6 +1965,11 @@ export type TenantCreateWithoutOrganizationTypesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOrganizationTypesInput = {
@@ -1936,6 +2046,11 @@ export type TenantUncheckedCreateWithoutOrganizationTypesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOrganizationTypesInput = {
@@ -2028,6 +2143,11 @@ export type TenantUpdateWithoutOrganizationTypesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOrganizationTypesInput = {
@@ -2104,6 +2224,11 @@ export type TenantUncheckedUpdateWithoutOrganizationTypesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutUsersInput = {
@@ -2180,6 +2305,11 @@ export type TenantCreateWithoutUsersInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutUsersInput = {
@@ -2256,6 +2386,11 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutUsersInput = {
@@ -2348,6 +2483,11 @@ export type TenantUpdateWithoutUsersInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutUsersInput = {
@@ -2424,6 +2564,11 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutRolesInput = {
@@ -2500,6 +2645,11 @@ export type TenantCreateWithoutRolesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutRolesInput = {
@@ -2576,6 +2726,11 @@ export type TenantUncheckedCreateWithoutRolesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutRolesInput = {
@@ -2668,6 +2823,11 @@ export type TenantUpdateWithoutRolesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutRolesInput = {
@@ -2744,6 +2904,11 @@ export type TenantUncheckedUpdateWithoutRolesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPermissionsInput = {
@@ -2820,6 +2985,11 @@ export type TenantCreateWithoutPermissionsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPermissionsInput = {
@@ -2896,6 +3066,11 @@ export type TenantUncheckedCreateWithoutPermissionsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPermissionsInput = {
@@ -2988,6 +3163,11 @@ export type TenantUpdateWithoutPermissionsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPermissionsInput = {
@@ -3064,6 +3244,11 @@ export type TenantUncheckedUpdateWithoutPermissionsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutMembershipsInput = {
@@ -3140,6 +3325,11 @@ export type TenantCreateWithoutMembershipsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutMembershipsInput = {
@@ -3216,6 +3406,11 @@ export type TenantUncheckedCreateWithoutMembershipsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutMembershipsInput = {
@@ -3308,6 +3503,11 @@ export type TenantUpdateWithoutMembershipsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutMembershipsInput = {
@@ -3384,6 +3584,11 @@ export type TenantUncheckedUpdateWithoutMembershipsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOrganizationsInput = {
@@ -3460,6 +3665,11 @@ export type TenantCreateWithoutOrganizationsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOrganizationsInput = {
@@ -3536,6 +3746,11 @@ export type TenantUncheckedCreateWithoutOrganizationsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOrganizationsInput = {
@@ -3628,6 +3843,11 @@ export type TenantUpdateWithoutOrganizationsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOrganizationsInput = {
@@ -3704,6 +3924,11 @@ export type TenantUncheckedUpdateWithoutOrganizationsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOrganizationInvitationsInput = {
@@ -3780,6 +4005,11 @@ export type TenantCreateWithoutOrganizationInvitationsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOrganizationInvitationsInput = {
@@ -3856,6 +4086,11 @@ export type TenantUncheckedCreateWithoutOrganizationInvitationsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOrganizationInvitationsInput = {
@@ -3948,6 +4183,11 @@ export type TenantUpdateWithoutOrganizationInvitationsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOrganizationInvitationsInput = {
@@ -4024,6 +4264,11 @@ export type TenantUncheckedUpdateWithoutOrganizationInvitationsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOnboardingFlowsInput = {
@@ -4100,6 +4345,11 @@ export type TenantCreateWithoutOnboardingFlowsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOnboardingFlowsInput = {
@@ -4176,6 +4426,11 @@ export type TenantUncheckedCreateWithoutOnboardingFlowsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOnboardingFlowsInput = {
@@ -4268,6 +4523,11 @@ export type TenantUpdateWithoutOnboardingFlowsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOnboardingFlowsInput = {
@@ -4344,6 +4604,11 @@ export type TenantUncheckedUpdateWithoutOnboardingFlowsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOnboardingFlowPhasesInput = {
@@ -4420,6 +4685,11 @@ export type TenantCreateWithoutOnboardingFlowPhasesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOnboardingFlowPhasesInput = {
@@ -4496,6 +4766,11 @@ export type TenantUncheckedCreateWithoutOnboardingFlowPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOnboardingFlowPhasesInput = {
@@ -4588,6 +4863,11 @@ export type TenantUpdateWithoutOnboardingFlowPhasesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOnboardingFlowPhasesInput = {
@@ -4664,6 +4944,11 @@ export type TenantUncheckedUpdateWithoutOnboardingFlowPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOrganizationOnboardingsInput = {
@@ -4740,6 +5025,11 @@ export type TenantCreateWithoutOrganizationOnboardingsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOrganizationOnboardingsInput = {
@@ -4816,6 +5106,11 @@ export type TenantUncheckedCreateWithoutOrganizationOnboardingsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOrganizationOnboardingsInput = {
@@ -4908,6 +5203,11 @@ export type TenantUpdateWithoutOrganizationOnboardingsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOrganizationOnboardingsInput = {
@@ -4984,6 +5284,11 @@ export type TenantUncheckedUpdateWithoutOrganizationOnboardingsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOnboardingPhasesInput = {
@@ -5060,6 +5365,11 @@ export type TenantCreateWithoutOnboardingPhasesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOnboardingPhasesInput = {
@@ -5136,6 +5446,11 @@ export type TenantUncheckedCreateWithoutOnboardingPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOnboardingPhasesInput = {
@@ -5228,6 +5543,11 @@ export type TenantUpdateWithoutOnboardingPhasesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOnboardingPhasesInput = {
@@ -5304,6 +5624,11 @@ export type TenantUncheckedUpdateWithoutOnboardingPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutBankDocumentRequirementsInput = {
@@ -5380,6 +5705,11 @@ export type TenantCreateWithoutBankDocumentRequirementsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutBankDocumentRequirementsInput = {
@@ -5456,6 +5786,11 @@ export type TenantUncheckedCreateWithoutBankDocumentRequirementsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutBankDocumentRequirementsInput = {
@@ -5548,6 +5883,11 @@ export type TenantUpdateWithoutBankDocumentRequirementsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutBankDocumentRequirementsInput = {
@@ -5624,6 +5964,11 @@ export type TenantUncheckedUpdateWithoutBankDocumentRequirementsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApiKeysInput = {
@@ -5700,6 +6045,11 @@ export type TenantCreateWithoutApiKeysInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApiKeysInput = {
@@ -5776,6 +6126,11 @@ export type TenantUncheckedCreateWithoutApiKeysInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApiKeysInput = {
@@ -5868,6 +6223,11 @@ export type TenantUpdateWithoutApiKeysInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApiKeysInput = {
@@ -5944,6 +6304,11 @@ export type TenantUncheckedUpdateWithoutApiKeysInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSocialsInput = {
@@ -6020,6 +6385,11 @@ export type TenantCreateWithoutSocialsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSocialsInput = {
@@ -6096,6 +6466,11 @@ export type TenantUncheckedCreateWithoutSocialsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSocialsInput = {
@@ -6188,6 +6563,11 @@ export type TenantUpdateWithoutSocialsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSocialsInput = {
@@ -6264,6 +6644,11 @@ export type TenantUncheckedUpdateWithoutSocialsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutWalletsInput = {
@@ -6340,6 +6725,11 @@ export type TenantCreateWithoutWalletsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutWalletsInput = {
@@ -6416,6 +6806,11 @@ export type TenantUncheckedCreateWithoutWalletsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutWalletsInput = {
@@ -6508,6 +6903,11 @@ export type TenantUpdateWithoutWalletsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutWalletsInput = {
@@ -6584,6 +6984,11 @@ export type TenantUncheckedUpdateWithoutWalletsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTransactionsInput = {
@@ -6660,6 +7065,11 @@ export type TenantCreateWithoutTransactionsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTransactionsInput = {
@@ -6736,6 +7146,11 @@ export type TenantUncheckedCreateWithoutTransactionsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTransactionsInput = {
@@ -6828,6 +7243,11 @@ export type TenantUpdateWithoutTransactionsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTransactionsInput = {
@@ -6904,6 +7324,11 @@ export type TenantUncheckedUpdateWithoutTransactionsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSettingsInput = {
@@ -6980,6 +7405,11 @@ export type TenantCreateWithoutSettingsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSettingsInput = {
@@ -7056,6 +7486,11 @@ export type TenantUncheckedCreateWithoutSettingsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSettingsInput = {
@@ -7148,6 +7583,11 @@ export type TenantUpdateWithoutSettingsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSettingsInput = {
@@ -7224,6 +7664,11 @@ export type TenantUncheckedUpdateWithoutSettingsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertiesInput = {
@@ -7300,6 +7745,11 @@ export type TenantCreateWithoutPropertiesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertiesInput = {
@@ -7376,6 +7826,11 @@ export type TenantUncheckedCreateWithoutPropertiesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertiesInput = {
@@ -7468,6 +7923,11 @@ export type TenantUpdateWithoutPropertiesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertiesInput = {
@@ -7544,6 +8004,11 @@ export type TenantUncheckedUpdateWithoutPropertiesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyMediaInput = {
@@ -7620,6 +8085,11 @@ export type TenantCreateWithoutPropertyMediaInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyMediaInput = {
@@ -7696,6 +8166,11 @@ export type TenantUncheckedCreateWithoutPropertyMediaInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyMediaInput = {
@@ -7788,6 +8263,11 @@ export type TenantUpdateWithoutPropertyMediaInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyMediaInput = {
@@ -7864,6 +8344,11 @@ export type TenantUncheckedUpdateWithoutPropertyMediaInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyDocumentsInput = {
@@ -7940,6 +8425,11 @@ export type TenantCreateWithoutPropertyDocumentsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyDocumentsInput = {
@@ -8016,6 +8506,11 @@ export type TenantUncheckedCreateWithoutPropertyDocumentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyDocumentsInput = {
@@ -8108,6 +8603,11 @@ export type TenantUpdateWithoutPropertyDocumentsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyDocumentsInput = {
@@ -8184,6 +8684,11 @@ export type TenantUncheckedUpdateWithoutPropertyDocumentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAmenitiesInput = {
@@ -8260,6 +8765,11 @@ export type TenantCreateWithoutAmenitiesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAmenitiesInput = {
@@ -8336,6 +8846,11 @@ export type TenantUncheckedCreateWithoutAmenitiesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAmenitiesInput = {
@@ -8428,6 +8943,11 @@ export type TenantUpdateWithoutAmenitiesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAmenitiesInput = {
@@ -8504,6 +9024,11 @@ export type TenantUncheckedUpdateWithoutAmenitiesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyVariantsInput = {
@@ -8580,6 +9105,11 @@ export type TenantCreateWithoutPropertyVariantsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyVariantsInput = {
@@ -8656,6 +9186,11 @@ export type TenantUncheckedCreateWithoutPropertyVariantsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyVariantsInput = {
@@ -8748,6 +9283,11 @@ export type TenantUpdateWithoutPropertyVariantsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyVariantsInput = {
@@ -8824,6 +9364,11 @@ export type TenantUncheckedUpdateWithoutPropertyVariantsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyVariantAmenitiesInput = {
@@ -8900,6 +9445,11 @@ export type TenantCreateWithoutPropertyVariantAmenitiesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyVariantAmenitiesInput = {
@@ -8976,6 +9526,11 @@ export type TenantUncheckedCreateWithoutPropertyVariantAmenitiesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyVariantAmenitiesInput = {
@@ -9068,6 +9623,11 @@ export type TenantUpdateWithoutPropertyVariantAmenitiesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyVariantAmenitiesInput = {
@@ -9144,6 +9704,11 @@ export type TenantUncheckedUpdateWithoutPropertyVariantAmenitiesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyVariantMediaInput = {
@@ -9220,6 +9785,11 @@ export type TenantCreateWithoutPropertyVariantMediaInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyVariantMediaInput = {
@@ -9296,6 +9866,11 @@ export type TenantUncheckedCreateWithoutPropertyVariantMediaInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyVariantMediaInput = {
@@ -9388,6 +9963,11 @@ export type TenantUpdateWithoutPropertyVariantMediaInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyVariantMediaInput = {
@@ -9464,6 +10044,11 @@ export type TenantUncheckedUpdateWithoutPropertyVariantMediaInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyUnitsInput = {
@@ -9540,6 +10125,11 @@ export type TenantCreateWithoutPropertyUnitsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyUnitsInput = {
@@ -9616,6 +10206,11 @@ export type TenantUncheckedCreateWithoutPropertyUnitsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyUnitsInput = {
@@ -9708,6 +10303,11 @@ export type TenantUpdateWithoutPropertyUnitsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyUnitsInput = {
@@ -9784,6 +10384,11 @@ export type TenantUncheckedUpdateWithoutPropertyUnitsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyAmenitiesInput = {
@@ -9860,6 +10465,11 @@ export type TenantCreateWithoutPropertyAmenitiesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyAmenitiesInput = {
@@ -9936,6 +10546,11 @@ export type TenantUncheckedCreateWithoutPropertyAmenitiesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyAmenitiesInput = {
@@ -10028,6 +10643,11 @@ export type TenantUpdateWithoutPropertyAmenitiesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyAmenitiesInput = {
@@ -10104,6 +10724,11 @@ export type TenantUncheckedUpdateWithoutPropertyAmenitiesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentationPlansInput = {
@@ -10180,6 +10805,11 @@ export type TenantCreateWithoutDocumentationPlansInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentationPlansInput = {
@@ -10256,6 +10886,11 @@ export type TenantUncheckedCreateWithoutDocumentationPlansInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentationPlansInput = {
@@ -10348,6 +10983,11 @@ export type TenantUpdateWithoutDocumentationPlansInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentationPlansInput = {
@@ -10424,6 +11064,11 @@ export type TenantUncheckedUpdateWithoutDocumentationPlansInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutQuestionnairePlansInput = {
@@ -10500,6 +11145,11 @@ export type TenantCreateWithoutQuestionnairePlansInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutQuestionnairePlansInput = {
@@ -10576,6 +11226,11 @@ export type TenantUncheckedCreateWithoutQuestionnairePlansInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutQuestionnairePlansInput = {
@@ -10668,6 +11323,11 @@ export type TenantUpdateWithoutQuestionnairePlansInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutQuestionnairePlansInput = {
@@ -10744,6 +11404,11 @@ export type TenantUncheckedUpdateWithoutQuestionnairePlansInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutGatePlansInput = {
@@ -10820,6 +11485,11 @@ export type TenantCreateWithoutGatePlansInput = {
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutGatePlansInput = {
@@ -10896,6 +11566,11 @@ export type TenantUncheckedCreateWithoutGatePlansInput = {
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutGatePlansInput = {
@@ -10988,6 +11663,11 @@ export type TenantUpdateWithoutGatePlansInput = {
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutGatePlansInput = {
@@ -11064,6 +11744,11 @@ export type TenantUncheckedUpdateWithoutGatePlansInput = {
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentPlansInput = {
@@ -11140,6 +11825,11 @@ export type TenantCreateWithoutPaymentPlansInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentPlansInput = {
@@ -11216,6 +11906,11 @@ export type TenantUncheckedCreateWithoutPaymentPlansInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentPlansInput = {
@@ -11308,6 +12003,11 @@ export type TenantUpdateWithoutPaymentPlansInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
@@ -11384,6 +12084,11 @@ export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodsInput = {
@@ -11460,6 +12165,11 @@ export type TenantCreateWithoutPaymentMethodsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
@@ -11536,6 +12246,11 @@ export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodsInput = {
@@ -11628,6 +12343,11 @@ export type TenantUpdateWithoutPaymentMethodsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
@@ -11704,6 +12424,11 @@ export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyPaymentMethodLinksInput = {
@@ -11780,6 +12505,11 @@ export type TenantCreateWithoutPropertyPaymentMethodLinksInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyPaymentMethodLinksInput = {
@@ -11856,6 +12586,11 @@ export type TenantUncheckedCreateWithoutPropertyPaymentMethodLinksInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyPaymentMethodLinksInput = {
@@ -11948,6 +12683,11 @@ export type TenantUpdateWithoutPropertyPaymentMethodLinksInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyPaymentMethodLinksInput = {
@@ -12024,6 +12764,11 @@ export type TenantUncheckedUpdateWithoutPropertyPaymentMethodLinksInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyPaymentMethodPhasesInput = {
@@ -12100,6 +12845,11 @@ export type TenantCreateWithoutPropertyPaymentMethodPhasesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyPaymentMethodPhasesInput = {
@@ -12176,6 +12926,11 @@ export type TenantUncheckedCreateWithoutPropertyPaymentMethodPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyPaymentMethodPhasesInput = {
@@ -12268,6 +13023,11 @@ export type TenantUpdateWithoutPropertyPaymentMethodPhasesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyPaymentMethodPhasesInput = {
@@ -12344,6 +13104,11 @@ export type TenantUncheckedUpdateWithoutPropertyPaymentMethodPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPhaseEventAttachmentsInput = {
@@ -12420,6 +13185,11 @@ export type TenantCreateWithoutPhaseEventAttachmentsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPhaseEventAttachmentsInput = {
@@ -12496,6 +13266,11 @@ export type TenantUncheckedCreateWithoutPhaseEventAttachmentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPhaseEventAttachmentsInput = {
@@ -12588,6 +13363,11 @@ export type TenantUpdateWithoutPhaseEventAttachmentsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPhaseEventAttachmentsInput = {
@@ -12664,6 +13444,11 @@ export type TenantUncheckedUpdateWithoutPhaseEventAttachmentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodPhaseStepsInput = {
@@ -12740,6 +13525,11 @@ export type TenantCreateWithoutPaymentMethodPhaseStepsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodPhaseStepsInput = {
@@ -12816,6 +13606,11 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseStepsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodPhaseStepsInput = {
@@ -12908,6 +13703,11 @@ export type TenantUpdateWithoutPaymentMethodPhaseStepsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodPhaseStepsInput = {
@@ -12984,6 +13784,11 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseStepsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutStepEventAttachmentsInput = {
@@ -13060,6 +13865,11 @@ export type TenantCreateWithoutStepEventAttachmentsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutStepEventAttachmentsInput = {
@@ -13136,6 +13946,11 @@ export type TenantUncheckedCreateWithoutStepEventAttachmentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutStepEventAttachmentsInput = {
@@ -13228,6 +14043,11 @@ export type TenantUpdateWithoutStepEventAttachmentsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutStepEventAttachmentsInput = {
@@ -13304,6 +14124,11 @@ export type TenantUncheckedUpdateWithoutStepEventAttachmentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodPhaseDocumentsInput = {
@@ -13380,6 +14205,11 @@ export type TenantCreateWithoutPaymentMethodPhaseDocumentsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodPhaseDocumentsInput = {
@@ -13456,6 +14286,11 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseDocumentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodPhaseDocumentsInput = {
@@ -13548,6 +14383,11 @@ export type TenantUpdateWithoutPaymentMethodPhaseDocumentsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodPhaseDocumentsInput = {
@@ -13624,6 +14464,11 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseDocumentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodPhaseFieldsInput = {
@@ -13700,6 +14545,11 @@ export type TenantCreateWithoutPaymentMethodPhaseFieldsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodPhaseFieldsInput = {
@@ -13776,6 +14626,11 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseFieldsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodPhaseFieldsInput = {
@@ -13868,6 +14723,11 @@ export type TenantUpdateWithoutPaymentMethodPhaseFieldsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodPhaseFieldsInput = {
@@ -13944,6 +14804,11 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseFieldsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationsInput = {
@@ -14020,6 +14885,11 @@ export type TenantCreateWithoutApplicationsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationsInput = {
@@ -14096,6 +14966,11 @@ export type TenantUncheckedCreateWithoutApplicationsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationsInput = {
@@ -14188,6 +15063,11 @@ export type TenantUpdateWithoutApplicationsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationsInput = {
@@ -14264,6 +15144,11 @@ export type TenantUncheckedUpdateWithoutApplicationsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationOrganizationsInput = {
@@ -14340,6 +15225,11 @@ export type TenantCreateWithoutApplicationOrganizationsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationOrganizationsInput = {
@@ -14416,6 +15306,11 @@ export type TenantUncheckedCreateWithoutApplicationOrganizationsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationOrganizationsInput = {
@@ -14508,6 +15403,11 @@ export type TenantUpdateWithoutApplicationOrganizationsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationOrganizationsInput = {
@@ -14584,6 +15484,11 @@ export type TenantUncheckedUpdateWithoutApplicationOrganizationsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutContractRefundsInput = {
@@ -14660,6 +15565,11 @@ export type TenantCreateWithoutContractRefundsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutContractRefundsInput = {
@@ -14736,6 +15646,11 @@ export type TenantUncheckedCreateWithoutContractRefundsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutContractRefundsInput = {
@@ -14828,6 +15743,11 @@ export type TenantUpdateWithoutContractRefundsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutContractRefundsInput = {
@@ -14904,6 +15824,11 @@ export type TenantUncheckedUpdateWithoutContractRefundsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationPhasesInput = {
@@ -14980,6 +15905,11 @@ export type TenantCreateWithoutApplicationPhasesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationPhasesInput = {
@@ -15056,6 +15986,11 @@ export type TenantUncheckedCreateWithoutApplicationPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationPhasesInput = {
@@ -15148,6 +16083,11 @@ export type TenantUpdateWithoutApplicationPhasesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationPhasesInput = {
@@ -15224,6 +16164,11 @@ export type TenantUncheckedUpdateWithoutApplicationPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutQuestionnairePhasesInput = {
@@ -15300,6 +16245,11 @@ export type TenantCreateWithoutQuestionnairePhasesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutQuestionnairePhasesInput = {
@@ -15376,6 +16326,11 @@ export type TenantUncheckedCreateWithoutQuestionnairePhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutQuestionnairePhasesInput = {
@@ -15468,6 +16423,11 @@ export type TenantUpdateWithoutQuestionnairePhasesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutQuestionnairePhasesInput = {
@@ -15544,6 +16504,11 @@ export type TenantUncheckedUpdateWithoutQuestionnairePhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutQuestionnairePhaseReviewsInput = {
@@ -15620,6 +16585,11 @@ export type TenantCreateWithoutQuestionnairePhaseReviewsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutQuestionnairePhaseReviewsInput = {
@@ -15696,6 +16666,11 @@ export type TenantUncheckedCreateWithoutQuestionnairePhaseReviewsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutQuestionnairePhaseReviewsInput = {
@@ -15788,6 +16763,11 @@ export type TenantUpdateWithoutQuestionnairePhaseReviewsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutQuestionnairePhaseReviewsInput = {
@@ -15864,6 +16844,11 @@ export type TenantUncheckedUpdateWithoutQuestionnairePhaseReviewsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutGatePhasesInput = {
@@ -15940,6 +16925,11 @@ export type TenantCreateWithoutGatePhasesInput = {
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutGatePhasesInput = {
@@ -16016,6 +17006,11 @@ export type TenantUncheckedCreateWithoutGatePhasesInput = {
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutGatePhasesInput = {
@@ -16108,6 +17103,11 @@ export type TenantUpdateWithoutGatePhasesInput = {
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutGatePhasesInput = {
@@ -16184,6 +17184,11 @@ export type TenantUncheckedUpdateWithoutGatePhasesInput = {
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutGatePhaseReviewsInput = {
@@ -16260,6 +17265,11 @@ export type TenantCreateWithoutGatePhaseReviewsInput = {
   onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutGatePhaseReviewsInput = {
@@ -16336,6 +17346,11 @@ export type TenantUncheckedCreateWithoutGatePhaseReviewsInput = {
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutGatePhaseReviewsInput = {
@@ -16428,6 +17443,11 @@ export type TenantUpdateWithoutGatePhaseReviewsInput = {
   onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutGatePhaseReviewsInput = {
@@ -16504,6 +17524,11 @@ export type TenantUncheckedUpdateWithoutGatePhaseReviewsInput = {
   onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentationPhasesInput = {
@@ -16580,6 +17605,11 @@ export type TenantCreateWithoutDocumentationPhasesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentationPhasesInput = {
@@ -16656,6 +17686,11 @@ export type TenantUncheckedCreateWithoutDocumentationPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentationPhasesInput = {
@@ -16748,6 +17783,11 @@ export type TenantUpdateWithoutDocumentationPhasesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentationPhasesInput = {
@@ -16824,6 +17864,11 @@ export type TenantUncheckedUpdateWithoutDocumentationPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentPhasesInput = {
@@ -16900,6 +17945,11 @@ export type TenantCreateWithoutPaymentPhasesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentPhasesInput = {
@@ -16976,6 +18026,11 @@ export type TenantUncheckedCreateWithoutPaymentPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentPhasesInput = {
@@ -17068,6 +18123,11 @@ export type TenantUpdateWithoutPaymentPhasesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentPhasesInput = {
@@ -17144,6 +18204,11 @@ export type TenantUncheckedUpdateWithoutPaymentPhasesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutQuestionnaireFieldsInput = {
@@ -17220,6 +18285,11 @@ export type TenantCreateWithoutQuestionnaireFieldsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutQuestionnaireFieldsInput = {
@@ -17296,6 +18366,11 @@ export type TenantUncheckedCreateWithoutQuestionnaireFieldsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutQuestionnaireFieldsInput = {
@@ -17388,6 +18463,11 @@ export type TenantUpdateWithoutQuestionnaireFieldsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutQuestionnaireFieldsInput = {
@@ -17464,6 +18544,11 @@ export type TenantUncheckedUpdateWithoutQuestionnaireFieldsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationEventsInput = {
@@ -17540,6 +18625,11 @@ export type TenantCreateWithoutApplicationEventsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationEventsInput = {
@@ -17616,6 +18706,11 @@ export type TenantUncheckedCreateWithoutApplicationEventsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationEventsInput = {
@@ -17708,6 +18803,11 @@ export type TenantUpdateWithoutApplicationEventsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationEventsInput = {
@@ -17784,6 +18884,11 @@ export type TenantUncheckedUpdateWithoutApplicationEventsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentInstallmentsInput = {
@@ -17860,6 +18965,11 @@ export type TenantCreateWithoutPaymentInstallmentsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentInstallmentsInput = {
@@ -17936,6 +19046,11 @@ export type TenantUncheckedCreateWithoutPaymentInstallmentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentInstallmentsInput = {
@@ -18028,6 +19143,11 @@ export type TenantUpdateWithoutPaymentInstallmentsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentInstallmentsInput = {
@@ -18104,6 +19224,11 @@ export type TenantUncheckedUpdateWithoutPaymentInstallmentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationPaymentsInput = {
@@ -18180,6 +19305,11 @@ export type TenantCreateWithoutApplicationPaymentsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationPaymentsInput = {
@@ -18256,6 +19386,11 @@ export type TenantUncheckedCreateWithoutApplicationPaymentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationPaymentsInput = {
@@ -18348,6 +19483,11 @@ export type TenantUpdateWithoutApplicationPaymentsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationPaymentsInput = {
@@ -18424,6 +19564,11 @@ export type TenantUncheckedUpdateWithoutApplicationPaymentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationDocumentsInput = {
@@ -18500,6 +19645,11 @@ export type TenantCreateWithoutApplicationDocumentsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationDocumentsInput = {
@@ -18576,6 +19726,11 @@ export type TenantUncheckedCreateWithoutApplicationDocumentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationDocumentsInput = {
@@ -18668,6 +19823,11 @@ export type TenantUpdateWithoutApplicationDocumentsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationDocumentsInput = {
@@ -18744,6 +19904,11 @@ export type TenantUncheckedUpdateWithoutApplicationDocumentsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentReviewsInput = {
@@ -18820,6 +19985,11 @@ export type TenantCreateWithoutDocumentReviewsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentReviewsInput = {
@@ -18896,6 +20066,11 @@ export type TenantUncheckedCreateWithoutDocumentReviewsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentReviewsInput = {
@@ -18988,6 +20163,11 @@ export type TenantUpdateWithoutDocumentReviewsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentReviewsInput = {
@@ -19064,6 +20244,11 @@ export type TenantUncheckedUpdateWithoutDocumentReviewsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApprovalStageProgressInput = {
@@ -19140,6 +20325,11 @@ export type TenantCreateWithoutApprovalStageProgressInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApprovalStageProgressInput = {
@@ -19216,6 +20406,11 @@ export type TenantUncheckedCreateWithoutApprovalStageProgressInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApprovalStageProgressInput = {
@@ -19308,6 +20503,11 @@ export type TenantUpdateWithoutApprovalStageProgressInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApprovalStageProgressInput = {
@@ -19384,6 +20584,11 @@ export type TenantUncheckedUpdateWithoutApprovalStageProgressInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentApprovalsInput = {
@@ -19460,6 +20665,11 @@ export type TenantCreateWithoutDocumentApprovalsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentApprovalsInput = {
@@ -19536,6 +20746,11 @@ export type TenantUncheckedCreateWithoutDocumentApprovalsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentApprovalsInput = {
@@ -19628,6 +20843,11 @@ export type TenantUpdateWithoutDocumentApprovalsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentApprovalsInput = {
@@ -19704,6 +20924,11 @@ export type TenantUncheckedUpdateWithoutDocumentApprovalsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentTemplatesInput = {
@@ -19780,6 +21005,11 @@ export type TenantCreateWithoutDocumentTemplatesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
@@ -19856,6 +21086,11 @@ export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentTemplatesInput = {
@@ -19948,6 +21183,11 @@ export type TenantUpdateWithoutDocumentTemplatesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
@@ -20024,6 +21264,11 @@ export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOfferLettersInput = {
@@ -20100,6 +21345,11 @@ export type TenantCreateWithoutOfferLettersInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOfferLettersInput = {
@@ -20176,6 +21426,11 @@ export type TenantUncheckedCreateWithoutOfferLettersInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOfferLettersInput = {
@@ -20268,6 +21523,11 @@ export type TenantUpdateWithoutOfferLettersInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOfferLettersInput = {
@@ -20344,6 +21604,11 @@ export type TenantUncheckedUpdateWithoutOfferLettersInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutContractTerminationsInput = {
@@ -20420,6 +21685,11 @@ export type TenantCreateWithoutContractTerminationsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutContractTerminationsInput = {
@@ -20496,6 +21766,11 @@ export type TenantUncheckedCreateWithoutContractTerminationsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutContractTerminationsInput = {
@@ -20588,6 +21863,11 @@ export type TenantUpdateWithoutContractTerminationsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
@@ -20664,6 +21944,11 @@ export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -20740,6 +22025,11 @@ export type TenantCreateWithoutPaymentMethodChangeRequestsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -20816,6 +22106,11 @@ export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
@@ -20908,6 +22203,11 @@ export type TenantUpdateWithoutPaymentMethodChangeRequestsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
@@ -20984,6 +22284,11 @@ export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentRequirementRulesInput = {
@@ -21060,6 +22365,11 @@ export type TenantCreateWithoutDocumentRequirementRulesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
@@ -21136,6 +22446,11 @@ export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentRequirementRulesInput = {
@@ -21228,6 +22543,11 @@ export type TenantUpdateWithoutDocumentRequirementRulesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
@@ -21304,6 +22624,11 @@ export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutEventChannelsInput = {
@@ -21380,6 +22705,11 @@ export type TenantCreateWithoutEventChannelsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutEventChannelsInput = {
@@ -21456,6 +22786,11 @@ export type TenantUncheckedCreateWithoutEventChannelsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutEventChannelsInput = {
@@ -21548,6 +22883,11 @@ export type TenantUpdateWithoutEventChannelsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutEventChannelsInput = {
@@ -21624,6 +22964,11 @@ export type TenantUncheckedUpdateWithoutEventChannelsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutEventTypesInput = {
@@ -21700,6 +23045,11 @@ export type TenantCreateWithoutEventTypesInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutEventTypesInput = {
@@ -21776,6 +23126,11 @@ export type TenantUncheckedCreateWithoutEventTypesInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutEventTypesInput = {
@@ -21868,6 +23223,11 @@ export type TenantUpdateWithoutEventTypesInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutEventTypesInput = {
@@ -21944,6 +23304,11 @@ export type TenantUncheckedUpdateWithoutEventTypesInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutEventHandlersInput = {
@@ -22020,6 +23385,11 @@ export type TenantCreateWithoutEventHandlersInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutEventHandlersInput = {
@@ -22096,6 +23466,11 @@ export type TenantUncheckedCreateWithoutEventHandlersInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutEventHandlersInput = {
@@ -22188,6 +23563,11 @@ export type TenantUpdateWithoutEventHandlersInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutEventHandlersInput = {
@@ -22264,6 +23644,11 @@ export type TenantUncheckedUpdateWithoutEventHandlersInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDomainEventsInput = {
@@ -22340,6 +23725,11 @@ export type TenantCreateWithoutDomainEventsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDomainEventsInput = {
@@ -22416,6 +23806,11 @@ export type TenantUncheckedCreateWithoutDomainEventsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDomainEventsInput = {
@@ -22508,6 +23903,11 @@ export type TenantUpdateWithoutDomainEventsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDomainEventsInput = {
@@ -22584,6 +23984,11 @@ export type TenantUncheckedUpdateWithoutDomainEventsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyTransferRequestsInput = {
@@ -22660,6 +24065,11 @@ export type TenantCreateWithoutPropertyTransferRequestsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyTransferRequestsInput = {
@@ -22736,6 +24146,11 @@ export type TenantUncheckedCreateWithoutPropertyTransferRequestsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyTransferRequestsInput = {
@@ -22828,6 +24243,11 @@ export type TenantUpdateWithoutPropertyTransferRequestsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyTransferRequestsInput = {
@@ -22904,6 +24324,11 @@ export type TenantUncheckedUpdateWithoutPropertyTransferRequestsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApprovalRequestsInput = {
@@ -22980,6 +24405,11 @@ export type TenantCreateWithoutApprovalRequestsInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApprovalRequestsInput = {
@@ -23056,6 +24486,11 @@ export type TenantUncheckedCreateWithoutApprovalRequestsInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApprovalRequestsInput = {
@@ -23148,6 +24583,11 @@ export type TenantUpdateWithoutApprovalRequestsInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApprovalRequestsInput = {
@@ -23224,6 +24664,11 @@ export type TenantUncheckedUpdateWithoutApprovalRequestsInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutWorkflowBlockersInput = {
@@ -23300,6 +24745,11 @@ export type TenantCreateWithoutWorkflowBlockersInput = {
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutWorkflowBlockersInput = {
@@ -23376,6 +24826,11 @@ export type TenantUncheckedCreateWithoutWorkflowBlockersInput = {
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutWorkflowBlockersInput = {
@@ -23468,6 +24923,11 @@ export type TenantUpdateWithoutWorkflowBlockersInput = {
   gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutWorkflowBlockersInput = {
@@ -23544,6 +25004,1711 @@ export type TenantUncheckedUpdateWithoutWorkflowBlockersInput = {
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
   gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutQualificationFlowsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
+  onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
+  gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
+  gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutQualificationFlowsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityUncheckedCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletUncheckedCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsUncheckedCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
+  onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
+  gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
+  gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutQualificationFlowsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutQualificationFlowsInput, Prisma.TenantUncheckedCreateWithoutQualificationFlowsInput>
+}
+
+export type TenantUpsertWithoutQualificationFlowsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutQualificationFlowsInput, Prisma.TenantUncheckedUpdateWithoutQualificationFlowsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutQualificationFlowsInput, Prisma.TenantUncheckedCreateWithoutQualificationFlowsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutQualificationFlowsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutQualificationFlowsInput, Prisma.TenantUncheckedUpdateWithoutQualificationFlowsInput>
+}
+
+export type TenantUpdateWithoutQualificationFlowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
+  onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
+  gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
+  gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutQualificationFlowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUncheckedUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUncheckedUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUncheckedUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
+  gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutQualificationFlowPhasesInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
+  onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
+  gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
+  gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutQualificationFlowPhasesInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityUncheckedCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletUncheckedCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsUncheckedCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
+  onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
+  gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
+  gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutQualificationFlowPhasesInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutQualificationFlowPhasesInput, Prisma.TenantUncheckedCreateWithoutQualificationFlowPhasesInput>
+}
+
+export type TenantUpsertWithoutQualificationFlowPhasesInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutQualificationFlowPhasesInput, Prisma.TenantUncheckedUpdateWithoutQualificationFlowPhasesInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutQualificationFlowPhasesInput, Prisma.TenantUncheckedCreateWithoutQualificationFlowPhasesInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutQualificationFlowPhasesInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutQualificationFlowPhasesInput, Prisma.TenantUncheckedUpdateWithoutQualificationFlowPhasesInput>
+}
+
+export type TenantUpdateWithoutQualificationFlowPhasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
+  onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
+  gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
+  gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutQualificationFlowPhasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUncheckedUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUncheckedUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUncheckedUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
+  gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutOrganizationPaymentMethodsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
+  onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
+  gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
+  gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutOrganizationPaymentMethodsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityUncheckedCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletUncheckedCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsUncheckedCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
+  onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
+  gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
+  gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutOrganizationPaymentMethodsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationPaymentMethodsInput, Prisma.TenantUncheckedCreateWithoutOrganizationPaymentMethodsInput>
+}
+
+export type TenantUpsertWithoutOrganizationPaymentMethodsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutOrganizationPaymentMethodsInput, Prisma.TenantUncheckedUpdateWithoutOrganizationPaymentMethodsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationPaymentMethodsInput, Prisma.TenantUncheckedCreateWithoutOrganizationPaymentMethodsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutOrganizationPaymentMethodsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutOrganizationPaymentMethodsInput, Prisma.TenantUncheckedUpdateWithoutOrganizationPaymentMethodsInput>
+}
+
+export type TenantUpdateWithoutOrganizationPaymentMethodsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
+  onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
+  gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
+  gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutOrganizationPaymentMethodsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUncheckedUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUncheckedUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUncheckedUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
+  gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutPaymentMethodQualificationsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
+  onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
+  gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
+  gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutPaymentMethodQualificationsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityUncheckedCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletUncheckedCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsUncheckedCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
+  onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
+  gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
+  gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutPaymentMethodQualificationsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutPaymentMethodQualificationsInput, Prisma.TenantUncheckedCreateWithoutPaymentMethodQualificationsInput>
+}
+
+export type TenantUpsertWithoutPaymentMethodQualificationsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutPaymentMethodQualificationsInput, Prisma.TenantUncheckedUpdateWithoutPaymentMethodQualificationsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutPaymentMethodQualificationsInput, Prisma.TenantUncheckedCreateWithoutPaymentMethodQualificationsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutPaymentMethodQualificationsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutPaymentMethodQualificationsInput, Prisma.TenantUncheckedUpdateWithoutPaymentMethodQualificationsInput>
+}
+
+export type TenantUpdateWithoutPaymentMethodQualificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
+  onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
+  gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
+  gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutPaymentMethodQualificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUncheckedUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUncheckedUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUncheckedUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
+  gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutQualificationPhasesInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutTenantInput
+  onboardingPhases?: Prisma.OnboardingPhaseCreateNestedManyWithoutTenantInput
+  gatePlans?: Prisma.GatePlanCreateNestedManyWithoutTenantInput
+  gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutTenantInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutQualificationPhasesInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityUncheckedCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletUncheckedCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsUncheckedCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedCreateNestedManyWithoutTenantInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutTenantInput
+  onboardingPhases?: Prisma.OnboardingPhaseUncheckedCreateNestedManyWithoutTenantInput
+  gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutTenantInput
+  gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutTenantInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedCreateNestedManyWithoutTenantInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutTenantInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutQualificationPhasesInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutQualificationPhasesInput, Prisma.TenantUncheckedCreateWithoutQualificationPhasesInput>
+}
+
+export type TenantUpsertWithoutQualificationPhasesInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutQualificationPhasesInput, Prisma.TenantUncheckedUpdateWithoutQualificationPhasesInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutQualificationPhasesInput, Prisma.TenantUncheckedCreateWithoutQualificationPhasesInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutQualificationPhasesInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutQualificationPhasesInput, Prisma.TenantUncheckedUpdateWithoutQualificationPhasesInput>
+}
+
+export type TenantUpdateWithoutQualificationPhasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutTenantNestedInput
+  onboardingPhases?: Prisma.OnboardingPhaseUpdateManyWithoutTenantNestedInput
+  gatePlans?: Prisma.GatePlanUpdateManyWithoutTenantNestedInput
+  gatePhases?: Prisma.GatePhaseUpdateManyWithoutTenantNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutQualificationPhasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUncheckedUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUncheckedUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUncheckedUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlows?: Prisma.OnboardingFlowUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingFlowPhases?: Prisma.OnboardingFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutTenantNestedInput
+  onboardingPhases?: Prisma.OnboardingPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutTenantNestedInput
+  gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  gatePhaseReviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlows?: Prisma.QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput
+  qualificationFlowPhases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -23620,6 +26785,11 @@ export type TenantCountOutputType = {
   gatePlans: number
   gatePhases: number
   gatePhaseReviews: number
+  qualificationFlows: number
+  qualificationFlowPhases: number
+  organizationPaymentMethods: number
+  paymentMethodQualifications: number
+  qualificationPhases: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -23691,6 +26861,11 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   gatePlans?: boolean | TenantCountOutputTypeCountGatePlansArgs
   gatePhases?: boolean | TenantCountOutputTypeCountGatePhasesArgs
   gatePhaseReviews?: boolean | TenantCountOutputTypeCountGatePhaseReviewsArgs
+  qualificationFlows?: boolean | TenantCountOutputTypeCountQualificationFlowsArgs
+  qualificationFlowPhases?: boolean | TenantCountOutputTypeCountQualificationFlowPhasesArgs
+  organizationPaymentMethods?: boolean | TenantCountOutputTypeCountOrganizationPaymentMethodsArgs
+  paymentMethodQualifications?: boolean | TenantCountOutputTypeCountPaymentMethodQualificationsArgs
+  qualificationPhases?: boolean | TenantCountOutputTypeCountQualificationPhasesArgs
 }
 
 /**
@@ -24179,6 +27354,41 @@ export type TenantCountOutputTypeCountGatePhaseReviewsArgs<ExtArgs extends runti
   where?: Prisma.GatePhaseReviewWhereInput
 }
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountQualificationFlowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QualificationFlowWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountQualificationFlowPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QualificationFlowPhaseWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountOrganizationPaymentMethodsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrganizationPaymentMethodWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountPaymentMethodQualificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentMethodQualificationWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountQualificationPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QualificationPhaseWhereInput
+}
+
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -24255,6 +27465,11 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   gatePlans?: boolean | Prisma.Tenant$gatePlansArgs<ExtArgs>
   gatePhases?: boolean | Prisma.Tenant$gatePhasesArgs<ExtArgs>
   gatePhaseReviews?: boolean | Prisma.Tenant$gatePhaseReviewsArgs<ExtArgs>
+  qualificationFlows?: boolean | Prisma.Tenant$qualificationFlowsArgs<ExtArgs>
+  qualificationFlowPhases?: boolean | Prisma.Tenant$qualificationFlowPhasesArgs<ExtArgs>
+  organizationPaymentMethods?: boolean | Prisma.Tenant$organizationPaymentMethodsArgs<ExtArgs>
+  paymentMethodQualifications?: boolean | Prisma.Tenant$paymentMethodQualificationsArgs<ExtArgs>
+  qualificationPhases?: boolean | Prisma.Tenant$qualificationPhasesArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -24339,6 +27554,11 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   gatePlans?: boolean | Prisma.Tenant$gatePlansArgs<ExtArgs>
   gatePhases?: boolean | Prisma.Tenant$gatePhasesArgs<ExtArgs>
   gatePhaseReviews?: boolean | Prisma.Tenant$gatePhaseReviewsArgs<ExtArgs>
+  qualificationFlows?: boolean | Prisma.Tenant$qualificationFlowsArgs<ExtArgs>
+  qualificationFlowPhases?: boolean | Prisma.Tenant$qualificationFlowPhasesArgs<ExtArgs>
+  organizationPaymentMethods?: boolean | Prisma.Tenant$organizationPaymentMethodsArgs<ExtArgs>
+  paymentMethodQualifications?: boolean | Prisma.Tenant$paymentMethodQualificationsArgs<ExtArgs>
+  qualificationPhases?: boolean | Prisma.Tenant$qualificationPhasesArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -24413,6 +27633,11 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     gatePlans: Prisma.$GatePlanPayload<ExtArgs>[]
     gatePhases: Prisma.$GatePhasePayload<ExtArgs>[]
     gatePhaseReviews: Prisma.$GatePhaseReviewPayload<ExtArgs>[]
+    qualificationFlows: Prisma.$QualificationFlowPayload<ExtArgs>[]
+    qualificationFlowPhases: Prisma.$QualificationFlowPhasePayload<ExtArgs>[]
+    organizationPaymentMethods: Prisma.$OrganizationPaymentMethodPayload<ExtArgs>[]
+    paymentMethodQualifications: Prisma.$PaymentMethodQualificationPayload<ExtArgs>[]
+    qualificationPhases: Prisma.$QualificationPhasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -24829,6 +28054,11 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   gatePlans<T extends Prisma.Tenant$gatePlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$gatePlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   gatePhases<T extends Prisma.Tenant$gatePhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$gatePhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   gatePhaseReviews<T extends Prisma.Tenant$gatePhaseReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$gatePhaseReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePhaseReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  qualificationFlows<T extends Prisma.Tenant$qualificationFlowsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$qualificationFlowsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualificationFlowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  qualificationFlowPhases<T extends Prisma.Tenant$qualificationFlowPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$qualificationFlowPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualificationFlowPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  organizationPaymentMethods<T extends Prisma.Tenant$organizationPaymentMethodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$organizationPaymentMethodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationPaymentMethodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paymentMethodQualifications<T extends Prisma.Tenant$paymentMethodQualificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$paymentMethodQualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  qualificationPhases<T extends Prisma.Tenant$qualificationPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$qualificationPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualificationPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26836,6 +30066,126 @@ export type Tenant$gatePhaseReviewsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.GatePhaseReviewScalarFieldEnum | Prisma.GatePhaseReviewScalarFieldEnum[]
+}
+
+/**
+ * Tenant.qualificationFlows
+ */
+export type Tenant$qualificationFlowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the QualificationFlow
+   */
+  select?: Prisma.QualificationFlowSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the QualificationFlow
+   */
+  omit?: Prisma.QualificationFlowOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QualificationFlowInclude<ExtArgs> | null
+  where?: Prisma.QualificationFlowWhereInput
+  orderBy?: Prisma.QualificationFlowOrderByWithRelationInput | Prisma.QualificationFlowOrderByWithRelationInput[]
+  cursor?: Prisma.QualificationFlowWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.QualificationFlowScalarFieldEnum | Prisma.QualificationFlowScalarFieldEnum[]
+}
+
+/**
+ * Tenant.qualificationFlowPhases
+ */
+export type Tenant$qualificationFlowPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the QualificationFlowPhase
+   */
+  select?: Prisma.QualificationFlowPhaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the QualificationFlowPhase
+   */
+  omit?: Prisma.QualificationFlowPhaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QualificationFlowPhaseInclude<ExtArgs> | null
+  where?: Prisma.QualificationFlowPhaseWhereInput
+  orderBy?: Prisma.QualificationFlowPhaseOrderByWithRelationInput | Prisma.QualificationFlowPhaseOrderByWithRelationInput[]
+  cursor?: Prisma.QualificationFlowPhaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.QualificationFlowPhaseScalarFieldEnum | Prisma.QualificationFlowPhaseScalarFieldEnum[]
+}
+
+/**
+ * Tenant.organizationPaymentMethods
+ */
+export type Tenant$organizationPaymentMethodsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrganizationPaymentMethod
+   */
+  select?: Prisma.OrganizationPaymentMethodSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrganizationPaymentMethod
+   */
+  omit?: Prisma.OrganizationPaymentMethodOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationPaymentMethodInclude<ExtArgs> | null
+  where?: Prisma.OrganizationPaymentMethodWhereInput
+  orderBy?: Prisma.OrganizationPaymentMethodOrderByWithRelationInput | Prisma.OrganizationPaymentMethodOrderByWithRelationInput[]
+  cursor?: Prisma.OrganizationPaymentMethodWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrganizationPaymentMethodScalarFieldEnum | Prisma.OrganizationPaymentMethodScalarFieldEnum[]
+}
+
+/**
+ * Tenant.paymentMethodQualifications
+ */
+export type Tenant$paymentMethodQualificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentMethodQualification
+   */
+  select?: Prisma.PaymentMethodQualificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentMethodQualification
+   */
+  omit?: Prisma.PaymentMethodQualificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentMethodQualificationInclude<ExtArgs> | null
+  where?: Prisma.PaymentMethodQualificationWhereInput
+  orderBy?: Prisma.PaymentMethodQualificationOrderByWithRelationInput | Prisma.PaymentMethodQualificationOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentMethodQualificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentMethodQualificationScalarFieldEnum | Prisma.PaymentMethodQualificationScalarFieldEnum[]
+}
+
+/**
+ * Tenant.qualificationPhases
+ */
+export type Tenant$qualificationPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the QualificationPhase
+   */
+  select?: Prisma.QualificationPhaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the QualificationPhase
+   */
+  omit?: Prisma.QualificationPhaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QualificationPhaseInclude<ExtArgs> | null
+  where?: Prisma.QualificationPhaseWhereInput
+  orderBy?: Prisma.QualificationPhaseOrderByWithRelationInput | Prisma.QualificationPhaseOrderByWithRelationInput[]
+  cursor?: Prisma.QualificationPhaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.QualificationPhaseScalarFieldEnum | Prisma.QualificationPhaseScalarFieldEnum[]
 }
 
 /**

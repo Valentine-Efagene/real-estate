@@ -66,6 +66,7 @@ export interface DemoBootstrapResult {
         price: number;
     };
     paymentMethod: { id: string; name: string; phases: number };
+    qualificationFlow?: { id: string; name: string; gatePlanId: string; assignmentId: string };
     steps: StepLog[];
 }
 
@@ -761,8 +762,108 @@ export async function runDemoBootstrap(
     log('Create MREIF payment method', `${phaseCount} phases`);
 
     // =========================================================================
-    // Step 13: Link MREIF to property
+    // Step 13: Create gate plan + qualification flow for MREIF
     // =========================================================================
+    // First create a gate plan that defines the approval requirements
+    const gatePlanRes = await fetchJson(`${mortgageServiceUrl}/gate-plans`, {
+        method: 'POST',
+        headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('create-gate-plan') },
+        body: JSON.stringify({
+            name: 'Developer Access Approval',
+            description: 'Platform team reviews and approves developer organizations for payment method access',
+            requiredApprovals: 1,
+            reviewerOrganizationTypeCode: 'PLATFORM',
+            reviewerInstructions: 'Verify that the developer organization is a legitimate partner with valid credentials',
+        }),
+    });
+    if (gatePlanRes.status !== 201) throw new Error(`Gate plan creation failed: ${gatePlanRes.status}`);
+    const gatePlanId = gatePlanRes.data.data.id;
+    log('Create gate plan', 'Developer Access Approval');
+
+    // Now create the qualification flow referencing the gate plan
+    const qualFlowRes = await fetchJson(`${mortgageServiceUrl}/qualification-flows`, {
+        method: 'POST',
+        headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('create-qual-flow') },
+        body: JSON.stringify({
+            name: 'MREIF Developer Qualification',
+            description: 'Simple platform approval gate for organizations to access the MREIF payment method',
+            expiresInDays: 90,
+            phases: [
+                {
+                    name: 'Platform Approval',
+                    phaseCategory: 'GATE',
+                    phaseType: 'APPROVAL_GATE',
+                    order: 1,
+                    gatePlanId,
+                },
+            ],
+        }),
+    });
+    if (qualFlowRes.status !== 201) throw new Error(`Qualification flow creation failed: ${qualFlowRes.status}`);
+    const qualificationFlowId = qualFlowRes.data.data.id;
+    log('Create MREIF qualification flow');
+
+    // =========================================================================
+    // Step 14: Assign qualification flow to MREIF payment method
+    // =========================================================================
+    const assignFlowRes = await fetchJson(
+        `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/qualification-flow`,
+        {
+            method: 'POST',
+            headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('assign-qual-flow') },
+            body: JSON.stringify({ qualificationFlowId }),
+        },
+    );
+    if (assignFlowRes.status !== 200) throw new Error(`Assign qualification flow failed: ${assignFlowRes.status}`);
+    log('Assign qualification flow to MREIF');
+
+    // =========================================================================
+    // Step 15: Lekki Gardens applies for MREIF access
+    // =========================================================================
+    // Nneka (agent at Lekki Gardens) applies her organization for the payment method.
+    const applyRes = await fetchJson(
+        `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/apply`,
+        {
+            method: 'POST',
+            headers: { ...authHeaders(nnekaToken), 'x-idempotency-key': idempotencyKey('apply-mreif') },
+            body: JSON.stringify({
+                organizationId: developerOrgId,
+                notes: 'Lekki Gardens applying for MREIF 10/90 Mortgage access',
+            }),
+        },
+    );
+    if (applyRes.status !== 201) throw new Error(`Apply for MREIF failed: ${applyRes.status}`);
+    const assignmentId = applyRes.data.data.id;
+    // The GATE phase was auto-started — find its ID for review
+    const qualificationId = applyRes.data.data.qualification?.id;
+    const gatePhaseId = applyRes.data.data.qualification?.phases?.[0]?.id;
+    log('Lekki Gardens applies for MREIF', `assignmentId=${assignmentId}`);
+
+    // =========================================================================
+    // Step 16: Platform admin approves the qualification gate
+    // =========================================================================
+    if (gatePhaseId) {
+        const reviewRes = await fetchJson(
+            `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/assignments/${assignmentId}/phases/${gatePhaseId}/review`,
+            {
+                method: 'POST',
+                headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('approve-qual-gate') },
+                body: JSON.stringify({
+                    decision: 'APPROVED',
+                    notes: 'Lekki Gardens is an approved developer partner',
+                }),
+            },
+        );
+        if (reviewRes.status !== 200) throw new Error(`Qualification gate review failed: ${reviewRes.status}`);
+        log('Platform approves Lekki Gardens qualification', 'Status: QUALIFIED');
+    } else {
+        log('Qualification auto-approved (no gate phase)', 'Status: QUALIFIED');
+    }
+
+    // =========================================================================
+    // Step 17: Link MREIF to property
+    // =========================================================================
+    // Platform mortgage_ops links the payment method to the property
     const linkRes = await fetchJson(
         `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/properties`,
         {
@@ -772,9 +873,9 @@ export async function runDemoBootstrap(
         },
     );
     if (linkRes.status !== 201) throw new Error(`Link MREIF failed: ${linkRes.status}`);
-    log('Link MREIF to property');
+    log('Link MREIF to Sunrise Heights', 'Yinka links payment method to property');
 
-    log('Environment ready', '✅ All actors, orgs, property, and payment method created');
+    log('Environment ready', '✅ All actors, orgs, property, payment method, and qualification created');
 
     // =========================================================================
     // Build result
@@ -804,6 +905,7 @@ export async function runDemoBootstrap(
             price: PROPERTY_PRICE,
         },
         paymentMethod: { id: paymentMethodId, name: 'MREIF 10/90 Mortgage', phases: phaseCount },
+        qualificationFlow: { id: qualificationFlowId, name: 'MREIF Developer Qualification', gatePlanId, assignmentId },
         steps,
     };
 }

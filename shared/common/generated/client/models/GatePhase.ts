@@ -43,6 +43,7 @@ export type GatePhaseMinAggregateOutputType = {
   tenantId: string | null
   applicationPhaseId: string | null
   onboardingPhaseId: string | null
+  qualificationPhaseId: string | null
   gatePlanId: string | null
   requiredApprovals: number | null
   reviewerOrganizationTypeId: string | null
@@ -59,6 +60,7 @@ export type GatePhaseMaxAggregateOutputType = {
   tenantId: string | null
   applicationPhaseId: string | null
   onboardingPhaseId: string | null
+  qualificationPhaseId: string | null
   gatePlanId: string | null
   requiredApprovals: number | null
   reviewerOrganizationTypeId: string | null
@@ -75,6 +77,7 @@ export type GatePhaseCountAggregateOutputType = {
   tenantId: number
   applicationPhaseId: number
   onboardingPhaseId: number
+  qualificationPhaseId: number
   gatePlanId: number
   requiredApprovals: number
   reviewerOrganizationTypeId: number
@@ -106,6 +109,7 @@ export type GatePhaseMinAggregateInputType = {
   tenantId?: true
   applicationPhaseId?: true
   onboardingPhaseId?: true
+  qualificationPhaseId?: true
   gatePlanId?: true
   requiredApprovals?: true
   reviewerOrganizationTypeId?: true
@@ -122,6 +126,7 @@ export type GatePhaseMaxAggregateInputType = {
   tenantId?: true
   applicationPhaseId?: true
   onboardingPhaseId?: true
+  qualificationPhaseId?: true
   gatePlanId?: true
   requiredApprovals?: true
   reviewerOrganizationTypeId?: true
@@ -138,6 +143,7 @@ export type GatePhaseCountAggregateInputType = {
   tenantId?: true
   applicationPhaseId?: true
   onboardingPhaseId?: true
+  qualificationPhaseId?: true
   gatePlanId?: true
   requiredApprovals?: true
   reviewerOrganizationTypeId?: true
@@ -242,6 +248,7 @@ export type GatePhaseGroupByOutputType = {
   tenantId: string
   applicationPhaseId: string | null
   onboardingPhaseId: string | null
+  qualificationPhaseId: string | null
   gatePlanId: string | null
   requiredApprovals: number
   reviewerOrganizationTypeId: string
@@ -282,6 +289,7 @@ export type GatePhaseWhereInput = {
   tenantId?: Prisma.StringFilter<"GatePhase"> | string
   applicationPhaseId?: Prisma.StringNullableFilter<"GatePhase"> | string | null
   onboardingPhaseId?: Prisma.StringNullableFilter<"GatePhase"> | string | null
+  qualificationPhaseId?: Prisma.StringNullableFilter<"GatePhase"> | string | null
   gatePlanId?: Prisma.StringNullableFilter<"GatePhase"> | string | null
   requiredApprovals?: Prisma.IntFilter<"GatePhase"> | number
   reviewerOrganizationTypeId?: Prisma.StringFilter<"GatePhase"> | string
@@ -295,6 +303,7 @@ export type GatePhaseWhereInput = {
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   applicationPhase?: Prisma.XOR<Prisma.ApplicationPhaseNullableScalarRelationFilter, Prisma.ApplicationPhaseWhereInput> | null
   onboardingPhase?: Prisma.XOR<Prisma.OnboardingPhaseNullableScalarRelationFilter, Prisma.OnboardingPhaseWhereInput> | null
+  qualificationPhase?: Prisma.XOR<Prisma.QualificationPhaseNullableScalarRelationFilter, Prisma.QualificationPhaseWhereInput> | null
   gatePlan?: Prisma.XOR<Prisma.GatePlanNullableScalarRelationFilter, Prisma.GatePlanWhereInput> | null
   reviewerOrganizationType?: Prisma.XOR<Prisma.OrganizationTypeScalarRelationFilter, Prisma.OrganizationTypeWhereInput>
   reviews?: Prisma.GatePhaseReviewListRelationFilter
@@ -305,6 +314,7 @@ export type GatePhaseOrderByWithRelationInput = {
   tenantId?: Prisma.SortOrder
   applicationPhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
   onboardingPhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  qualificationPhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
   gatePlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   requiredApprovals?: Prisma.SortOrder
   reviewerOrganizationTypeId?: Prisma.SortOrder
@@ -318,6 +328,7 @@ export type GatePhaseOrderByWithRelationInput = {
   tenant?: Prisma.TenantOrderByWithRelationInput
   applicationPhase?: Prisma.ApplicationPhaseOrderByWithRelationInput
   onboardingPhase?: Prisma.OnboardingPhaseOrderByWithRelationInput
+  qualificationPhase?: Prisma.QualificationPhaseOrderByWithRelationInput
   gatePlan?: Prisma.GatePlanOrderByWithRelationInput
   reviewerOrganizationType?: Prisma.OrganizationTypeOrderByWithRelationInput
   reviews?: Prisma.GatePhaseReviewOrderByRelationAggregateInput
@@ -328,6 +339,7 @@ export type GatePhaseWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   applicationPhaseId?: string
   onboardingPhaseId?: string
+  qualificationPhaseId?: string
   AND?: Prisma.GatePhaseWhereInput | Prisma.GatePhaseWhereInput[]
   OR?: Prisma.GatePhaseWhereInput[]
   NOT?: Prisma.GatePhaseWhereInput | Prisma.GatePhaseWhereInput[]
@@ -345,16 +357,18 @@ export type GatePhaseWhereUniqueInput = Prisma.AtLeast<{
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   applicationPhase?: Prisma.XOR<Prisma.ApplicationPhaseNullableScalarRelationFilter, Prisma.ApplicationPhaseWhereInput> | null
   onboardingPhase?: Prisma.XOR<Prisma.OnboardingPhaseNullableScalarRelationFilter, Prisma.OnboardingPhaseWhereInput> | null
+  qualificationPhase?: Prisma.XOR<Prisma.QualificationPhaseNullableScalarRelationFilter, Prisma.QualificationPhaseWhereInput> | null
   gatePlan?: Prisma.XOR<Prisma.GatePlanNullableScalarRelationFilter, Prisma.GatePlanWhereInput> | null
   reviewerOrganizationType?: Prisma.XOR<Prisma.OrganizationTypeScalarRelationFilter, Prisma.OrganizationTypeWhereInput>
   reviews?: Prisma.GatePhaseReviewListRelationFilter
-}, "id" | "applicationPhaseId" | "onboardingPhaseId">
+}, "id" | "applicationPhaseId" | "onboardingPhaseId" | "qualificationPhaseId">
 
 export type GatePhaseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   applicationPhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
   onboardingPhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  qualificationPhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
   gatePlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   requiredApprovals?: Prisma.SortOrder
   reviewerOrganizationTypeId?: Prisma.SortOrder
@@ -380,6 +394,7 @@ export type GatePhaseScalarWhereWithAggregatesInput = {
   tenantId?: Prisma.StringWithAggregatesFilter<"GatePhase"> | string
   applicationPhaseId?: Prisma.StringNullableWithAggregatesFilter<"GatePhase"> | string | null
   onboardingPhaseId?: Prisma.StringNullableWithAggregatesFilter<"GatePhase"> | string | null
+  qualificationPhaseId?: Prisma.StringNullableWithAggregatesFilter<"GatePhase"> | string | null
   gatePlanId?: Prisma.StringNullableWithAggregatesFilter<"GatePhase"> | string | null
   requiredApprovals?: Prisma.IntWithAggregatesFilter<"GatePhase"> | number
   reviewerOrganizationTypeId?: Prisma.StringWithAggregatesFilter<"GatePhase"> | string
@@ -405,6 +420,7 @@ export type GatePhaseCreateInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutGatePhasesInput
   applicationPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutGatePhaseInput
   onboardingPhase?: Prisma.OnboardingPhaseCreateNestedOneWithoutGatePhaseInput
+  qualificationPhase?: Prisma.QualificationPhaseCreateNestedOneWithoutGatePhaseInput
   gatePlan?: Prisma.GatePlanCreateNestedOneWithoutGatePhasesInput
   reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePhasesInput
   reviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutGatePhaseInput
@@ -415,6 +431,7 @@ export type GatePhaseUncheckedCreateInput = {
   tenantId: string
   applicationPhaseId?: string | null
   onboardingPhaseId?: string | null
+  qualificationPhaseId?: string | null
   gatePlanId?: string | null
   requiredApprovals?: number
   reviewerOrganizationTypeId: string
@@ -441,6 +458,7 @@ export type GatePhaseUpdateInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutGatePhasesNestedInput
   applicationPhase?: Prisma.ApplicationPhaseUpdateOneWithoutGatePhaseNestedInput
   onboardingPhase?: Prisma.OnboardingPhaseUpdateOneWithoutGatePhaseNestedInput
+  qualificationPhase?: Prisma.QualificationPhaseUpdateOneWithoutGatePhaseNestedInput
   gatePlan?: Prisma.GatePlanUpdateOneWithoutGatePhasesNestedInput
   reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePhasesNestedInput
   reviews?: Prisma.GatePhaseReviewUpdateManyWithoutGatePhaseNestedInput
@@ -451,6 +469,7 @@ export type GatePhaseUncheckedUpdateInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerOrganizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -469,6 +488,7 @@ export type GatePhaseCreateManyInput = {
   tenantId: string
   applicationPhaseId?: string | null
   onboardingPhaseId?: string | null
+  qualificationPhaseId?: string | null
   gatePlanId?: string | null
   requiredApprovals?: number
   reviewerOrganizationTypeId: string
@@ -498,6 +518,7 @@ export type GatePhaseUncheckedUpdateManyInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerOrganizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -536,6 +557,7 @@ export type GatePhaseCountOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   applicationPhaseId?: Prisma.SortOrder
   onboardingPhaseId?: Prisma.SortOrder
+  qualificationPhaseId?: Prisma.SortOrder
   gatePlanId?: Prisma.SortOrder
   requiredApprovals?: Prisma.SortOrder
   reviewerOrganizationTypeId?: Prisma.SortOrder
@@ -559,6 +581,7 @@ export type GatePhaseMaxOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   applicationPhaseId?: Prisma.SortOrder
   onboardingPhaseId?: Prisma.SortOrder
+  qualificationPhaseId?: Prisma.SortOrder
   gatePlanId?: Prisma.SortOrder
   requiredApprovals?: Prisma.SortOrder
   reviewerOrganizationTypeId?: Prisma.SortOrder
@@ -575,6 +598,7 @@ export type GatePhaseMinOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   applicationPhaseId?: Prisma.SortOrder
   onboardingPhaseId?: Prisma.SortOrder
+  qualificationPhaseId?: Prisma.SortOrder
   gatePlanId?: Prisma.SortOrder
   requiredApprovals?: Prisma.SortOrder
   reviewerOrganizationTypeId?: Prisma.SortOrder
@@ -801,6 +825,38 @@ export type GatePhaseUpdateOneRequiredWithoutReviewsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.GatePhaseUpdateToOneWithWhereWithoutReviewsInput, Prisma.GatePhaseUpdateWithoutReviewsInput>, Prisma.GatePhaseUncheckedUpdateWithoutReviewsInput>
 }
 
+export type GatePhaseCreateNestedOneWithoutQualificationPhaseInput = {
+  create?: Prisma.XOR<Prisma.GatePhaseCreateWithoutQualificationPhaseInput, Prisma.GatePhaseUncheckedCreateWithoutQualificationPhaseInput>
+  connectOrCreate?: Prisma.GatePhaseCreateOrConnectWithoutQualificationPhaseInput
+  connect?: Prisma.GatePhaseWhereUniqueInput
+}
+
+export type GatePhaseUncheckedCreateNestedOneWithoutQualificationPhaseInput = {
+  create?: Prisma.XOR<Prisma.GatePhaseCreateWithoutQualificationPhaseInput, Prisma.GatePhaseUncheckedCreateWithoutQualificationPhaseInput>
+  connectOrCreate?: Prisma.GatePhaseCreateOrConnectWithoutQualificationPhaseInput
+  connect?: Prisma.GatePhaseWhereUniqueInput
+}
+
+export type GatePhaseUpdateOneWithoutQualificationPhaseNestedInput = {
+  create?: Prisma.XOR<Prisma.GatePhaseCreateWithoutQualificationPhaseInput, Prisma.GatePhaseUncheckedCreateWithoutQualificationPhaseInput>
+  connectOrCreate?: Prisma.GatePhaseCreateOrConnectWithoutQualificationPhaseInput
+  upsert?: Prisma.GatePhaseUpsertWithoutQualificationPhaseInput
+  disconnect?: Prisma.GatePhaseWhereInput | boolean
+  delete?: Prisma.GatePhaseWhereInput | boolean
+  connect?: Prisma.GatePhaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GatePhaseUpdateToOneWithWhereWithoutQualificationPhaseInput, Prisma.GatePhaseUpdateWithoutQualificationPhaseInput>, Prisma.GatePhaseUncheckedUpdateWithoutQualificationPhaseInput>
+}
+
+export type GatePhaseUncheckedUpdateOneWithoutQualificationPhaseNestedInput = {
+  create?: Prisma.XOR<Prisma.GatePhaseCreateWithoutQualificationPhaseInput, Prisma.GatePhaseUncheckedCreateWithoutQualificationPhaseInput>
+  connectOrCreate?: Prisma.GatePhaseCreateOrConnectWithoutQualificationPhaseInput
+  upsert?: Prisma.GatePhaseUpsertWithoutQualificationPhaseInput
+  disconnect?: Prisma.GatePhaseWhereInput | boolean
+  delete?: Prisma.GatePhaseWhereInput | boolean
+  connect?: Prisma.GatePhaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GatePhaseUpdateToOneWithWhereWithoutQualificationPhaseInput, Prisma.GatePhaseUpdateWithoutQualificationPhaseInput>, Prisma.GatePhaseUncheckedUpdateWithoutQualificationPhaseInput>
+}
+
 export type GatePhaseCreateWithoutReviewerOrganizationTypeInput = {
   id?: string
   requiredApprovals?: number
@@ -814,6 +870,7 @@ export type GatePhaseCreateWithoutReviewerOrganizationTypeInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutGatePhasesInput
   applicationPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutGatePhaseInput
   onboardingPhase?: Prisma.OnboardingPhaseCreateNestedOneWithoutGatePhaseInput
+  qualificationPhase?: Prisma.QualificationPhaseCreateNestedOneWithoutGatePhaseInput
   gatePlan?: Prisma.GatePlanCreateNestedOneWithoutGatePhasesInput
   reviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutGatePhaseInput
 }
@@ -823,6 +880,7 @@ export type GatePhaseUncheckedCreateWithoutReviewerOrganizationTypeInput = {
   tenantId: string
   applicationPhaseId?: string | null
   onboardingPhaseId?: string | null
+  qualificationPhaseId?: string | null
   gatePlanId?: string | null
   requiredApprovals?: number
   reviewerInstructions?: string | null
@@ -869,6 +927,7 @@ export type GatePhaseScalarWhereInput = {
   tenantId?: Prisma.StringFilter<"GatePhase"> | string
   applicationPhaseId?: Prisma.StringNullableFilter<"GatePhase"> | string | null
   onboardingPhaseId?: Prisma.StringNullableFilter<"GatePhase"> | string | null
+  qualificationPhaseId?: Prisma.StringNullableFilter<"GatePhase"> | string | null
   gatePlanId?: Prisma.StringNullableFilter<"GatePhase"> | string | null
   requiredApprovals?: Prisma.IntFilter<"GatePhase"> | number
   reviewerOrganizationTypeId?: Prisma.StringFilter<"GatePhase"> | string
@@ -893,6 +952,7 @@ export type GatePhaseCreateWithoutOnboardingPhaseInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutGatePhasesInput
   applicationPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutGatePhaseInput
+  qualificationPhase?: Prisma.QualificationPhaseCreateNestedOneWithoutGatePhaseInput
   gatePlan?: Prisma.GatePlanCreateNestedOneWithoutGatePhasesInput
   reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePhasesInput
   reviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutGatePhaseInput
@@ -902,6 +962,7 @@ export type GatePhaseUncheckedCreateWithoutOnboardingPhaseInput = {
   id?: string
   tenantId: string
   applicationPhaseId?: string | null
+  qualificationPhaseId?: string | null
   gatePlanId?: string | null
   requiredApprovals?: number
   reviewerOrganizationTypeId: string
@@ -943,6 +1004,7 @@ export type GatePhaseUpdateWithoutOnboardingPhaseInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutGatePhasesNestedInput
   applicationPhase?: Prisma.ApplicationPhaseUpdateOneWithoutGatePhaseNestedInput
+  qualificationPhase?: Prisma.QualificationPhaseUpdateOneWithoutGatePhaseNestedInput
   gatePlan?: Prisma.GatePlanUpdateOneWithoutGatePhasesNestedInput
   reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePhasesNestedInput
   reviews?: Prisma.GatePhaseReviewUpdateManyWithoutGatePhaseNestedInput
@@ -952,6 +1014,7 @@ export type GatePhaseUncheckedUpdateWithoutOnboardingPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerOrganizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -977,6 +1040,7 @@ export type GatePhaseCreateWithoutTenantInput = {
   updatedAt?: Date | string
   applicationPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutGatePhaseInput
   onboardingPhase?: Prisma.OnboardingPhaseCreateNestedOneWithoutGatePhaseInput
+  qualificationPhase?: Prisma.QualificationPhaseCreateNestedOneWithoutGatePhaseInput
   gatePlan?: Prisma.GatePlanCreateNestedOneWithoutGatePhasesInput
   reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePhasesInput
   reviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutGatePhaseInput
@@ -986,6 +1050,7 @@ export type GatePhaseUncheckedCreateWithoutTenantInput = {
   id?: string
   applicationPhaseId?: string | null
   onboardingPhaseId?: string | null
+  qualificationPhaseId?: string | null
   gatePlanId?: string | null
   requiredApprovals?: number
   reviewerOrganizationTypeId: string
@@ -1038,6 +1103,7 @@ export type GatePhaseCreateWithoutGatePlanInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutGatePhasesInput
   applicationPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutGatePhaseInput
   onboardingPhase?: Prisma.OnboardingPhaseCreateNestedOneWithoutGatePhaseInput
+  qualificationPhase?: Prisma.QualificationPhaseCreateNestedOneWithoutGatePhaseInput
   reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePhasesInput
   reviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutGatePhaseInput
 }
@@ -1047,6 +1113,7 @@ export type GatePhaseUncheckedCreateWithoutGatePlanInput = {
   tenantId: string
   applicationPhaseId?: string | null
   onboardingPhaseId?: string | null
+  qualificationPhaseId?: string | null
   requiredApprovals?: number
   reviewerOrganizationTypeId: string
   reviewerInstructions?: string | null
@@ -1097,6 +1164,7 @@ export type GatePhaseCreateWithoutApplicationPhaseInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutGatePhasesInput
   onboardingPhase?: Prisma.OnboardingPhaseCreateNestedOneWithoutGatePhaseInput
+  qualificationPhase?: Prisma.QualificationPhaseCreateNestedOneWithoutGatePhaseInput
   gatePlan?: Prisma.GatePlanCreateNestedOneWithoutGatePhasesInput
   reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePhasesInput
   reviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutGatePhaseInput
@@ -1106,6 +1174,7 @@ export type GatePhaseUncheckedCreateWithoutApplicationPhaseInput = {
   id?: string
   tenantId: string
   onboardingPhaseId?: string | null
+  qualificationPhaseId?: string | null
   gatePlanId?: string | null
   requiredApprovals?: number
   reviewerOrganizationTypeId: string
@@ -1147,6 +1216,7 @@ export type GatePhaseUpdateWithoutApplicationPhaseInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutGatePhasesNestedInput
   onboardingPhase?: Prisma.OnboardingPhaseUpdateOneWithoutGatePhaseNestedInput
+  qualificationPhase?: Prisma.QualificationPhaseUpdateOneWithoutGatePhaseNestedInput
   gatePlan?: Prisma.GatePlanUpdateOneWithoutGatePhasesNestedInput
   reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePhasesNestedInput
   reviews?: Prisma.GatePhaseReviewUpdateManyWithoutGatePhaseNestedInput
@@ -1156,6 +1226,7 @@ export type GatePhaseUncheckedUpdateWithoutApplicationPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   onboardingPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerOrganizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1182,6 +1253,7 @@ export type GatePhaseCreateWithoutReviewsInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutGatePhasesInput
   applicationPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutGatePhaseInput
   onboardingPhase?: Prisma.OnboardingPhaseCreateNestedOneWithoutGatePhaseInput
+  qualificationPhase?: Prisma.QualificationPhaseCreateNestedOneWithoutGatePhaseInput
   gatePlan?: Prisma.GatePlanCreateNestedOneWithoutGatePhasesInput
   reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePhasesInput
 }
@@ -1191,6 +1263,7 @@ export type GatePhaseUncheckedCreateWithoutReviewsInput = {
   tenantId: string
   applicationPhaseId?: string | null
   onboardingPhaseId?: string | null
+  qualificationPhaseId?: string | null
   gatePlanId?: string | null
   requiredApprovals?: number
   reviewerOrganizationTypeId: string
@@ -1232,11 +1305,100 @@ export type GatePhaseUpdateWithoutReviewsInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutGatePhasesNestedInput
   applicationPhase?: Prisma.ApplicationPhaseUpdateOneWithoutGatePhaseNestedInput
   onboardingPhase?: Prisma.OnboardingPhaseUpdateOneWithoutGatePhaseNestedInput
+  qualificationPhase?: Prisma.QualificationPhaseUpdateOneWithoutGatePhaseNestedInput
   gatePlan?: Prisma.GatePlanUpdateOneWithoutGatePhasesNestedInput
   reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePhasesNestedInput
 }
 
 export type GatePhaseUncheckedUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardingPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gatePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewerOrganizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rejectionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gatePlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type GatePhaseCreateWithoutQualificationPhaseInput = {
+  id?: string
+  requiredApprovals?: number
+  reviewerInstructions?: string | null
+  approvalCount?: number
+  rejectionCount?: number
+  rejectionReason?: string | null
+  gatePlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutGatePhasesInput
+  applicationPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutGatePhaseInput
+  onboardingPhase?: Prisma.OnboardingPhaseCreateNestedOneWithoutGatePhaseInput
+  gatePlan?: Prisma.GatePlanCreateNestedOneWithoutGatePhasesInput
+  reviewerOrganizationType: Prisma.OrganizationTypeCreateNestedOneWithoutGatePhasesInput
+  reviews?: Prisma.GatePhaseReviewCreateNestedManyWithoutGatePhaseInput
+}
+
+export type GatePhaseUncheckedCreateWithoutQualificationPhaseInput = {
+  id?: string
+  tenantId: string
+  applicationPhaseId?: string | null
+  onboardingPhaseId?: string | null
+  gatePlanId?: string | null
+  requiredApprovals?: number
+  reviewerOrganizationTypeId: string
+  reviewerInstructions?: string | null
+  approvalCount?: number
+  rejectionCount?: number
+  rejectionReason?: string | null
+  gatePlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviews?: Prisma.GatePhaseReviewUncheckedCreateNestedManyWithoutGatePhaseInput
+}
+
+export type GatePhaseCreateOrConnectWithoutQualificationPhaseInput = {
+  where: Prisma.GatePhaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.GatePhaseCreateWithoutQualificationPhaseInput, Prisma.GatePhaseUncheckedCreateWithoutQualificationPhaseInput>
+}
+
+export type GatePhaseUpsertWithoutQualificationPhaseInput = {
+  update: Prisma.XOR<Prisma.GatePhaseUpdateWithoutQualificationPhaseInput, Prisma.GatePhaseUncheckedUpdateWithoutQualificationPhaseInput>
+  create: Prisma.XOR<Prisma.GatePhaseCreateWithoutQualificationPhaseInput, Prisma.GatePhaseUncheckedCreateWithoutQualificationPhaseInput>
+  where?: Prisma.GatePhaseWhereInput
+}
+
+export type GatePhaseUpdateToOneWithWhereWithoutQualificationPhaseInput = {
+  where?: Prisma.GatePhaseWhereInput
+  data: Prisma.XOR<Prisma.GatePhaseUpdateWithoutQualificationPhaseInput, Prisma.GatePhaseUncheckedUpdateWithoutQualificationPhaseInput>
+}
+
+export type GatePhaseUpdateWithoutQualificationPhaseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewerInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rejectionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gatePlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutGatePhasesNestedInput
+  applicationPhase?: Prisma.ApplicationPhaseUpdateOneWithoutGatePhaseNestedInput
+  onboardingPhase?: Prisma.OnboardingPhaseUpdateOneWithoutGatePhaseNestedInput
+  gatePlan?: Prisma.GatePlanUpdateOneWithoutGatePhasesNestedInput
+  reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePhasesNestedInput
+  reviews?: Prisma.GatePhaseReviewUpdateManyWithoutGatePhaseNestedInput
+}
+
+export type GatePhaseUncheckedUpdateWithoutQualificationPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1251,6 +1413,7 @@ export type GatePhaseUncheckedUpdateWithoutReviewsInput = {
   gatePlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.GatePhaseReviewUncheckedUpdateManyWithoutGatePhaseNestedInput
 }
 
 export type GatePhaseCreateManyReviewerOrganizationTypeInput = {
@@ -1258,6 +1421,7 @@ export type GatePhaseCreateManyReviewerOrganizationTypeInput = {
   tenantId: string
   applicationPhaseId?: string | null
   onboardingPhaseId?: string | null
+  qualificationPhaseId?: string | null
   gatePlanId?: string | null
   requiredApprovals?: number
   reviewerInstructions?: string | null
@@ -1282,6 +1446,7 @@ export type GatePhaseUpdateWithoutReviewerOrganizationTypeInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutGatePhasesNestedInput
   applicationPhase?: Prisma.ApplicationPhaseUpdateOneWithoutGatePhaseNestedInput
   onboardingPhase?: Prisma.OnboardingPhaseUpdateOneWithoutGatePhaseNestedInput
+  qualificationPhase?: Prisma.QualificationPhaseUpdateOneWithoutGatePhaseNestedInput
   gatePlan?: Prisma.GatePlanUpdateOneWithoutGatePhasesNestedInput
   reviews?: Prisma.GatePhaseReviewUpdateManyWithoutGatePhaseNestedInput
 }
@@ -1291,6 +1456,7 @@ export type GatePhaseUncheckedUpdateWithoutReviewerOrganizationTypeInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1308,6 +1474,7 @@ export type GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1323,6 +1490,7 @@ export type GatePhaseCreateManyTenantInput = {
   id?: string
   applicationPhaseId?: string | null
   onboardingPhaseId?: string | null
+  qualificationPhaseId?: string | null
   gatePlanId?: string | null
   requiredApprovals?: number
   reviewerOrganizationTypeId: string
@@ -1347,6 +1515,7 @@ export type GatePhaseUpdateWithoutTenantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applicationPhase?: Prisma.ApplicationPhaseUpdateOneWithoutGatePhaseNestedInput
   onboardingPhase?: Prisma.OnboardingPhaseUpdateOneWithoutGatePhaseNestedInput
+  qualificationPhase?: Prisma.QualificationPhaseUpdateOneWithoutGatePhaseNestedInput
   gatePlan?: Prisma.GatePlanUpdateOneWithoutGatePhasesNestedInput
   reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePhasesNestedInput
   reviews?: Prisma.GatePhaseReviewUpdateManyWithoutGatePhaseNestedInput
@@ -1356,6 +1525,7 @@ export type GatePhaseUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerOrganizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1373,6 +1543,7 @@ export type GatePhaseUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerOrganizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1390,6 +1561,7 @@ export type GatePhaseCreateManyGatePlanInput = {
   tenantId: string
   applicationPhaseId?: string | null
   onboardingPhaseId?: string | null
+  qualificationPhaseId?: string | null
   requiredApprovals?: number
   reviewerOrganizationTypeId: string
   reviewerInstructions?: string | null
@@ -1414,6 +1586,7 @@ export type GatePhaseUpdateWithoutGatePlanInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutGatePhasesNestedInput
   applicationPhase?: Prisma.ApplicationPhaseUpdateOneWithoutGatePhaseNestedInput
   onboardingPhase?: Prisma.OnboardingPhaseUpdateOneWithoutGatePhaseNestedInput
+  qualificationPhase?: Prisma.QualificationPhaseUpdateOneWithoutGatePhaseNestedInput
   reviewerOrganizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutGatePhasesNestedInput
   reviews?: Prisma.GatePhaseReviewUpdateManyWithoutGatePhaseNestedInput
 }
@@ -1423,6 +1596,7 @@ export type GatePhaseUncheckedUpdateWithoutGatePlanInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerOrganizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   reviewerInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1440,6 +1614,7 @@ export type GatePhaseUncheckedUpdateManyWithoutGatePlanInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qualificationPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredApprovals?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerOrganizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   reviewerInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1487,6 +1662,7 @@ export type GatePhaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   tenantId?: boolean
   applicationPhaseId?: boolean
   onboardingPhaseId?: boolean
+  qualificationPhaseId?: boolean
   gatePlanId?: boolean
   requiredApprovals?: boolean
   reviewerOrganizationTypeId?: boolean
@@ -1500,6 +1676,7 @@ export type GatePhaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   applicationPhase?: boolean | Prisma.GatePhase$applicationPhaseArgs<ExtArgs>
   onboardingPhase?: boolean | Prisma.GatePhase$onboardingPhaseArgs<ExtArgs>
+  qualificationPhase?: boolean | Prisma.GatePhase$qualificationPhaseArgs<ExtArgs>
   gatePlan?: boolean | Prisma.GatePhase$gatePlanArgs<ExtArgs>
   reviewerOrganizationType?: boolean | Prisma.OrganizationTypeDefaultArgs<ExtArgs>
   reviews?: boolean | Prisma.GatePhase$reviewsArgs<ExtArgs>
@@ -1513,6 +1690,7 @@ export type GatePhaseSelectScalar = {
   tenantId?: boolean
   applicationPhaseId?: boolean
   onboardingPhaseId?: boolean
+  qualificationPhaseId?: boolean
   gatePlanId?: boolean
   requiredApprovals?: boolean
   reviewerOrganizationTypeId?: boolean
@@ -1525,11 +1703,12 @@ export type GatePhaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type GatePhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationPhaseId" | "onboardingPhaseId" | "gatePlanId" | "requiredApprovals" | "reviewerOrganizationTypeId" | "reviewerInstructions" | "approvalCount" | "rejectionCount" | "rejectionReason" | "gatePlanSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["gatePhase"]>
+export type GatePhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationPhaseId" | "onboardingPhaseId" | "qualificationPhaseId" | "gatePlanId" | "requiredApprovals" | "reviewerOrganizationTypeId" | "reviewerInstructions" | "approvalCount" | "rejectionCount" | "rejectionReason" | "gatePlanSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["gatePhase"]>
 export type GatePhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   applicationPhase?: boolean | Prisma.GatePhase$applicationPhaseArgs<ExtArgs>
   onboardingPhase?: boolean | Prisma.GatePhase$onboardingPhaseArgs<ExtArgs>
+  qualificationPhase?: boolean | Prisma.GatePhase$qualificationPhaseArgs<ExtArgs>
   gatePlan?: boolean | Prisma.GatePhase$gatePlanArgs<ExtArgs>
   reviewerOrganizationType?: boolean | Prisma.OrganizationTypeDefaultArgs<ExtArgs>
   reviews?: boolean | Prisma.GatePhase$reviewsArgs<ExtArgs>
@@ -1542,6 +1721,7 @@ export type $GatePhasePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     tenant: Prisma.$TenantPayload<ExtArgs>
     applicationPhase: Prisma.$ApplicationPhasePayload<ExtArgs> | null
     onboardingPhase: Prisma.$OnboardingPhasePayload<ExtArgs> | null
+    qualificationPhase: Prisma.$QualificationPhasePayload<ExtArgs> | null
     gatePlan: Prisma.$GatePlanPayload<ExtArgs> | null
     reviewerOrganizationType: Prisma.$OrganizationTypePayload<ExtArgs>
     reviews: Prisma.$GatePhaseReviewPayload<ExtArgs>[]
@@ -1551,6 +1731,7 @@ export type $GatePhasePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     tenantId: string
     applicationPhaseId: string | null
     onboardingPhaseId: string | null
+    qualificationPhaseId: string | null
     gatePlanId: string | null
     requiredApprovals: number
     reviewerOrganizationTypeId: string
@@ -1904,6 +2085,7 @@ export interface Prisma__GatePhaseClient<T, Null = never, ExtArgs extends runtim
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   applicationPhase<T extends Prisma.GatePhase$applicationPhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GatePhase$applicationPhaseArgs<ExtArgs>>): Prisma.Prisma__ApplicationPhaseClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   onboardingPhase<T extends Prisma.GatePhase$onboardingPhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GatePhase$onboardingPhaseArgs<ExtArgs>>): Prisma.Prisma__OnboardingPhaseClient<runtime.Types.Result.GetResult<Prisma.$OnboardingPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  qualificationPhase<T extends Prisma.GatePhase$qualificationPhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GatePhase$qualificationPhaseArgs<ExtArgs>>): Prisma.Prisma__QualificationPhaseClient<runtime.Types.Result.GetResult<Prisma.$QualificationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   gatePlan<T extends Prisma.GatePhase$gatePlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GatePhase$gatePlanArgs<ExtArgs>>): Prisma.Prisma__GatePlanClient<runtime.Types.Result.GetResult<Prisma.$GatePlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   reviewerOrganizationType<T extends Prisma.OrganizationTypeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationTypeDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationTypeClient<runtime.Types.Result.GetResult<Prisma.$OrganizationTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   reviews<T extends Prisma.GatePhase$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GatePhase$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePhaseReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1940,6 +2122,7 @@ export interface GatePhaseFieldRefs {
   readonly tenantId: Prisma.FieldRef<"GatePhase", 'String'>
   readonly applicationPhaseId: Prisma.FieldRef<"GatePhase", 'String'>
   readonly onboardingPhaseId: Prisma.FieldRef<"GatePhase", 'String'>
+  readonly qualificationPhaseId: Prisma.FieldRef<"GatePhase", 'String'>
   readonly gatePlanId: Prisma.FieldRef<"GatePhase", 'String'>
   readonly requiredApprovals: Prisma.FieldRef<"GatePhase", 'Int'>
   readonly reviewerOrganizationTypeId: Prisma.FieldRef<"GatePhase", 'String'>
@@ -2328,6 +2511,25 @@ export type GatePhase$onboardingPhaseArgs<ExtArgs extends runtime.Types.Extensio
    */
   include?: Prisma.OnboardingPhaseInclude<ExtArgs> | null
   where?: Prisma.OnboardingPhaseWhereInput
+}
+
+/**
+ * GatePhase.qualificationPhase
+ */
+export type GatePhase$qualificationPhaseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the QualificationPhase
+   */
+  select?: Prisma.QualificationPhaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the QualificationPhase
+   */
+  omit?: Prisma.QualificationPhaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QualificationPhaseInclude<ExtArgs> | null
+  where?: Prisma.QualificationPhaseWhereInput
 }
 
 /**

@@ -133,7 +133,12 @@ export const ModelName = {
   ApprovalRequest: 'ApprovalRequest',
   WorkflowBlocker: 'WorkflowBlocker',
   ScheduledJob: 'ScheduledJob',
-  DocumentExpiryWarning: 'DocumentExpiryWarning'
+  DocumentExpiryWarning: 'DocumentExpiryWarning',
+  QualificationFlow: 'QualificationFlow',
+  QualificationFlowPhase: 'QualificationFlowPhase',
+  OrganizationPaymentMethod: 'OrganizationPaymentMethod',
+  PaymentMethodQualification: 'PaymentMethodQualification',
+  QualificationPhase: 'QualificationPhase'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -886,6 +891,7 @@ export const PropertyPaymentMethodScalarFieldEnum = {
   earlyPayoffPenaltyRate: 'earlyPayoffPenaltyRate',
   autoActivatePhases: 'autoActivatePhases',
   requiresManualApproval: 'requiresManualApproval',
+  qualificationFlowId: 'qualificationFlowId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1143,6 +1149,7 @@ export const QuestionnairePhaseScalarFieldEnum = {
   tenantId: 'tenantId',
   phaseId: 'phaseId',
   onboardingPhaseId: 'onboardingPhaseId',
+  qualificationPhaseId: 'qualificationPhaseId',
   questionnairePlanId: 'questionnairePlanId',
   completedFieldsCount: 'completedFieldsCount',
   totalFieldsCount: 'totalFieldsCount',
@@ -1182,6 +1189,7 @@ export const GatePhaseScalarFieldEnum = {
   tenantId: 'tenantId',
   applicationPhaseId: 'applicationPhaseId',
   onboardingPhaseId: 'onboardingPhaseId',
+  qualificationPhaseId: 'qualificationPhaseId',
   gatePlanId: 'gatePlanId',
   requiredApprovals: 'requiredApprovals',
   reviewerOrganizationTypeId: 'reviewerOrganizationTypeId',
@@ -1215,6 +1223,7 @@ export const DocumentationPhaseScalarFieldEnum = {
   tenantId: 'tenantId',
   phaseId: 'phaseId',
   onboardingPhaseId: 'onboardingPhaseId',
+  qualificationPhaseId: 'qualificationPhaseId',
   documentationPlanId: 'documentationPlanId',
   sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId',
   currentStageOrder: 'currentStageOrder',
@@ -1789,6 +1798,102 @@ export const DocumentExpiryWarningScalarFieldEnum = {
 export type DocumentExpiryWarningScalarFieldEnum = (typeof DocumentExpiryWarningScalarFieldEnum)[keyof typeof DocumentExpiryWarningScalarFieldEnum]
 
 
+export const QualificationFlowScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  autoActivatePhases: 'autoActivatePhases',
+  expiresInDays: 'expiresInDays',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QualificationFlowScalarFieldEnum = (typeof QualificationFlowScalarFieldEnum)[keyof typeof QualificationFlowScalarFieldEnum]
+
+
+export const QualificationFlowPhaseScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  qualificationFlowId: 'qualificationFlowId',
+  questionnairePlanId: 'questionnairePlanId',
+  documentationPlanId: 'documentationPlanId',
+  gatePlanId: 'gatePlanId',
+  name: 'name',
+  description: 'description',
+  phaseCategory: 'phaseCategory',
+  phaseType: 'phaseType',
+  order: 'order',
+  requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QualificationFlowPhaseScalarFieldEnum = (typeof QualificationFlowPhaseScalarFieldEnum)[keyof typeof QualificationFlowPhaseScalarFieldEnum]
+
+
+export const OrganizationPaymentMethodScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  paymentMethodId: 'paymentMethodId',
+  status: 'status',
+  appliedAt: 'appliedAt',
+  qualifiedAt: 'qualifiedAt',
+  suspendedAt: 'suspendedAt',
+  expiresAt: 'expiresAt',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationPaymentMethodScalarFieldEnum = (typeof OrganizationPaymentMethodScalarFieldEnum)[keyof typeof OrganizationPaymentMethodScalarFieldEnum]
+
+
+export const PaymentMethodQualificationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationPaymentMethodId: 'organizationPaymentMethodId',
+  qualificationFlowId: 'qualificationFlowId',
+  templateSnapshot: 'templateSnapshot',
+  assigneeId: 'assigneeId',
+  status: 'status',
+  currentPhaseId: 'currentPhaseId',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  expiresAt: 'expiresAt',
+  approvedAt: 'approvedAt',
+  approvedById: 'approvedById',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentMethodQualificationScalarFieldEnum = (typeof PaymentMethodQualificationScalarFieldEnum)[keyof typeof PaymentMethodQualificationScalarFieldEnum]
+
+
+export const QualificationPhaseScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  qualificationId: 'qualificationId',
+  phaseTemplateId: 'phaseTemplateId',
+  name: 'name',
+  description: 'description',
+  phaseCategory: 'phaseCategory',
+  phaseType: 'phaseType',
+  order: 'order',
+  status: 'status',
+  activatedAt: 'activatedAt',
+  completedAt: 'completedAt',
+  requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QualificationPhaseScalarFieldEnum = (typeof QualificationPhaseScalarFieldEnum)[keyof typeof QualificationPhaseScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2346,7 +2451,8 @@ export const PropertyPaymentMethodOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  qualificationFlowId: 'qualificationFlowId'
 } as const
 
 export type PropertyPaymentMethodOrderByRelevanceFieldEnum = (typeof PropertyPaymentMethodOrderByRelevanceFieldEnum)[keyof typeof PropertyPaymentMethodOrderByRelevanceFieldEnum]
@@ -2505,6 +2611,7 @@ export const QuestionnairePhaseOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   phaseId: 'phaseId',
   onboardingPhaseId: 'onboardingPhaseId',
+  qualificationPhaseId: 'qualificationPhaseId',
   questionnairePlanId: 'questionnairePlanId',
   underwritingDecision: 'underwritingDecision',
   underwritingNotes: 'underwritingNotes'
@@ -2529,6 +2636,7 @@ export const GatePhaseOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   applicationPhaseId: 'applicationPhaseId',
   onboardingPhaseId: 'onboardingPhaseId',
+  qualificationPhaseId: 'qualificationPhaseId',
   gatePlanId: 'gatePlanId',
   reviewerOrganizationTypeId: 'reviewerOrganizationTypeId',
   reviewerInstructions: 'reviewerInstructions',
@@ -2554,6 +2662,7 @@ export const DocumentationPhaseOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   phaseId: 'phaseId',
   onboardingPhaseId: 'onboardingPhaseId',
+  qualificationPhaseId: 'qualificationPhaseId',
   documentationPlanId: 'documentationPlanId',
   sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId'
 } as const
@@ -2885,4 +2994,65 @@ export const DocumentExpiryWarningOrderByRelevanceFieldEnum = {
 } as const
 
 export type DocumentExpiryWarningOrderByRelevanceFieldEnum = (typeof DocumentExpiryWarningOrderByRelevanceFieldEnum)[keyof typeof DocumentExpiryWarningOrderByRelevanceFieldEnum]
+
+
+export const QualificationFlowOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type QualificationFlowOrderByRelevanceFieldEnum = (typeof QualificationFlowOrderByRelevanceFieldEnum)[keyof typeof QualificationFlowOrderByRelevanceFieldEnum]
+
+
+export const QualificationFlowPhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  qualificationFlowId: 'qualificationFlowId',
+  questionnairePlanId: 'questionnairePlanId',
+  documentationPlanId: 'documentationPlanId',
+  gatePlanId: 'gatePlanId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type QualificationFlowPhaseOrderByRelevanceFieldEnum = (typeof QualificationFlowPhaseOrderByRelevanceFieldEnum)[keyof typeof QualificationFlowPhaseOrderByRelevanceFieldEnum]
+
+
+export const OrganizationPaymentMethodOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  paymentMethodId: 'paymentMethodId',
+  notes: 'notes'
+} as const
+
+export type OrganizationPaymentMethodOrderByRelevanceFieldEnum = (typeof OrganizationPaymentMethodOrderByRelevanceFieldEnum)[keyof typeof OrganizationPaymentMethodOrderByRelevanceFieldEnum]
+
+
+export const PaymentMethodQualificationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationPaymentMethodId: 'organizationPaymentMethodId',
+  qualificationFlowId: 'qualificationFlowId',
+  assigneeId: 'assigneeId',
+  currentPhaseId: 'currentPhaseId',
+  approvedById: 'approvedById',
+  rejectionReason: 'rejectionReason'
+} as const
+
+export type PaymentMethodQualificationOrderByRelevanceFieldEnum = (typeof PaymentMethodQualificationOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodQualificationOrderByRelevanceFieldEnum]
+
+
+export const QualificationPhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  qualificationId: 'qualificationId',
+  phaseTemplateId: 'phaseTemplateId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type QualificationPhaseOrderByRelevanceFieldEnum = (typeof QualificationPhaseOrderByRelevanceFieldEnum)[keyof typeof QualificationPhaseOrderByRelevanceFieldEnum]
 

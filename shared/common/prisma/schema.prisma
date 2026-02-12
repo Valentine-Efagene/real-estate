@@ -302,6 +302,16 @@ enum OnboardingStatus {
   EXPIRED // Onboarding window expired (configurable deadline)
 }
 
+/// Status of a payment method qualification process for an organization
+enum QualificationStatus {
+  PENDING // Applied but qualification workflow not started
+  IN_PROGRESS // Working through qualification phases
+  QUALIFIED // All phases complete, org can use this payment method
+  REJECTED // Platform rejected the qualification
+  SUSPENDED // Previously qualified but suspended
+  EXPIRED // Qualification expired
+}
+
 // =============================================================================
 // CONTRACT TERMINATION / CANCELLATION ENUMS
 // =============================================================================
@@ -581,6 +591,10 @@ model User {
   // Organization onboardings approved by this user
   approvedOnboardings OrganizationOnboarding[] @relation("OnboardingApprover")
 
+  // Payment method qualification workflow
+  assignedQualifications PaymentMethodQualification[] @relation("QualificationAssignee")
+  approvedQualifications PaymentMethodQualification[] @relation("QualificationApprover")
+
   @@index([email])
   @@index([tenantId])
   @@map("users")
@@ -743,6 +757,9 @@ model Organization {
 
   // Onboarding workflow instance (one per org, if org type requires onboarding)
   onboarding OrganizationOnboarding?
+
+  // Payment method qualifications (org applies to use payment methods)
+  paymentMethodAssignments OrganizationPaymentMethod[]
 
   @@unique([tenantId, bankCode]) // Bank codes unique within tenant
   @@unique([tenantId, cacNumber]) // CAC numbers unique within tenant
@@ -1219,6 +1236,13 @@ model Tenant {
   gatePlans        GatePlan[]
   gatePhases       GatePhase[]
   gatePhaseReviews GatePhaseReview[]
+
+  // Payment method qualification workflow
+  qualificationFlows          QualificationFlow[]
+  qualificationFlowPhases     QualificationFlowPhase[]
+  organizationPaymentMethods  OrganizationPaymentMethod[]
+  paymentMethodQualifications PaymentMethodQualification[]
+  qualificationPhases         QualificationPhase[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -1721,11 +1745,13 @@ model DocumentationPlan {
   approvalStages ApprovalStage[]
 
   // Used by property payment method phases (templates)
-  methodPhases         PropertyPaymentMethodPhase[]
+  methodPhases            PropertyPaymentMethodPhase[]
   // Used by onboarding flow phases (templates)
-  onboardingFlowPhases OnboardingFlowPhase[]
+  onboardingFlowPhases    OnboardingFlowPhase[]
+  // Used by qualification flow phases (templates)
+  qualificationFlowPhases QualificationFlowPhase[]
   // Used by instantiated documentation phases
-  documentationPhases  DocumentationPhase[]
+  documentationPhases     DocumentationPhase[]
 
   @@unique([tenantId, name]) // Unique per tenant, or globally if tenantId is null
   @@index([tenantId])
@@ -1855,6 +1881,9 @@ model QuestionnairePlan {
   // Used by onboarding flow phases (templates)
   onboardingFlowPhases OnboardingFlowPhase[]
 
+  // Used by qualification flow phases (templates)
+  qualificationFlowPhases QualificationFlowPhase[]
+
   // Used by instantiated questionnaire phases
   questionnairePhases QuestionnairePhase[]
 
@@ -1945,6 +1974,9 @@ model GatePlan {
   // Used by onboarding flow phases (templates)
   onboardingFlowPhases OnboardingFlowPhase[]
 
+  // Used by qualification flow phases (templates)
+  qualificationFlowPhases QualificationFlowPhase[]
+
   // Used by instantiated gate phases
   gatePhases GatePhase[]
 
@@ -2022,6 +2054,10 @@ model PropertyPaymentMethod {
   autoActivatePhases     Boolean @default(true)
   requiresManualApproval Boolean @default(false)
 
+  // Qualification flow — organizations must complete this to use the payment method
+  qualificationFlowId String?
+  qualificationFlow   QualificationFlow? @relation(fields: [qualificationFlowId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -2041,8 +2077,12 @@ model PropertyPaymentMethod {
   changeRulesFrom DocumentRequirementRule[] @relation("RuleFromMethod")
   changeRulesTo   DocumentRequirementRule[] @relation("RuleToMethod")
 
+  // Organizations assigned/qualified for this payment method
+  organizationAssignments OrganizationPaymentMethod[]
+
   @@unique([tenantId, name]) // Unique per tenant
   @@index([tenantId])
+  @@index([qualificationFlowId])
   @@map("property_payment_methods")
 }
 
@@ -2717,10 +2757,12 @@ model QuestionnairePhase {
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   // Polymorphic parent — exactly one is set
-  phaseId           String?           @unique // ApplicationPhase (mortgage workflows)
-  phase             ApplicationPhase? @relation(fields: [phaseId], references: [id], onDelete: Cascade)
-  onboardingPhaseId String?           @unique // OnboardingPhase (org onboarding workflows)
-  onboardingPhase   OnboardingPhase?  @relation(fields: [onboardingPhaseId], references: [id], onDelete: Cascade)
+  phaseId              String?             @unique // ApplicationPhase (mortgage workflows)
+  phase                ApplicationPhase?   @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  onboardingPhaseId    String?             @unique // OnboardingPhase (org onboarding workflows)
+  onboardingPhase      OnboardingPhase?    @relation(fields: [onboardingPhaseId], references: [id], onDelete: Cascade)
+  qualificationPhaseId String?             @unique // QualificationPhase (payment method qualification)
+  qualificationPhase   QualificationPhase? @relation(fields: [qualificationPhaseId], references: [id], onDelete: Cascade)
 
   // Questionnaire plan reference (if created from a plan)
   questionnairePlanId String?
@@ -2760,6 +2802,7 @@ model QuestionnairePhase {
   @@index([tenantId])
   @@index([phaseId])
   @@index([onboardingPhaseId])
+  @@index([qualificationPhaseId])
   @@index([questionnairePlanId])
   @@map("questionnaire_phases")
 }
@@ -2811,10 +2854,12 @@ model GatePhase {
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   // Polymorphic parent — exactly one is set
-  applicationPhaseId String?           @unique
-  applicationPhase   ApplicationPhase? @relation(fields: [applicationPhaseId], references: [id], onDelete: Cascade)
-  onboardingPhaseId  String?           @unique
-  onboardingPhase    OnboardingPhase?  @relation(fields: [onboardingPhaseId], references: [id], onDelete: Cascade)
+  applicationPhaseId   String?             @unique
+  applicationPhase     ApplicationPhase?   @relation(fields: [applicationPhaseId], references: [id], onDelete: Cascade)
+  onboardingPhaseId    String?             @unique
+  onboardingPhase      OnboardingPhase?    @relation(fields: [onboardingPhaseId], references: [id], onDelete: Cascade)
+  qualificationPhaseId String?             @unique
+  qualificationPhase   QualificationPhase? @relation(fields: [qualificationPhaseId], references: [id], onDelete: Cascade)
 
   // Gate plan reference (if created from a plan)
   gatePlanId String?
@@ -2845,6 +2890,7 @@ model GatePhase {
   @@index([tenantId])
   @@index([applicationPhaseId])
   @@index([onboardingPhaseId])
+  @@index([qualificationPhaseId])
   @@index([gatePlanId])
   @@map("gate_phases")
 }
@@ -2889,10 +2935,12 @@ model DocumentationPhase {
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   // Polymorphic parent — exactly one is set
-  phaseId           String?           @unique // ApplicationPhase (mortgage workflows)
-  phase             ApplicationPhase? @relation(fields: [phaseId], references: [id], onDelete: Cascade)
-  onboardingPhaseId String?           @unique // OnboardingPhase (org onboarding workflows)
-  onboardingPhase   OnboardingPhase?  @relation(fields: [onboardingPhaseId], references: [id], onDelete: Cascade)
+  phaseId              String?             @unique // ApplicationPhase (mortgage workflows)
+  phase                ApplicationPhase?   @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  onboardingPhaseId    String?             @unique // OnboardingPhase (org onboarding workflows)
+  onboardingPhase      OnboardingPhase?    @relation(fields: [onboardingPhaseId], references: [id], onDelete: Cascade)
+  qualificationPhaseId String?             @unique // QualificationPhase (payment method qualification)
+  qualificationPhase   QualificationPhase? @relation(fields: [qualificationPhaseId], references: [id], onDelete: Cascade)
 
   // Documentation plan reference (if created from a plan)
   documentationPlanId String?
@@ -2923,6 +2971,7 @@ model DocumentationPhase {
   @@index([tenantId])
   @@index([phaseId])
   @@index([onboardingPhaseId])
+  @@index([qualificationPhaseId])
   @@index([sourceQuestionnairePhaseId])
   @@map("documentation_phases")
 }
@@ -4230,4 +4279,248 @@ model DocumentExpiryWarning {
   @@index([expiresAt])
   @@index([resolved])
   @@map("document_expiry_warnings")
+}
+
+// =============================================================================
+// QUALIFICATION FLOW - Payment method qualification workflow templates
+// =============================================================================
+// QualificationFlow = reusable workflow template for org payment method access.
+// When a payment method has a qualificationFlowId, organizations must complete
+// this workflow before they can link the payment method to their properties.
+// Mirrors OnboardingFlow but scoped to payment method access (no PAYMENT phases).
+// Examples: "MREIF Lender Qualification", "NHF Developer Certification"
+// =============================================================================
+
+model QualificationFlow {
+  id          String  @id @default(cuid())
+  tenantId    String
+  tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
+  description String? @db.Text
+  isActive    Boolean @default(true)
+
+  // Whether phases auto-activate sequentially (default: yes)
+  autoActivatePhases Boolean @default(true)
+
+  // Qualification expiry — how many days the org has to complete
+  // NULL = no expiry (unlimited time)
+  expiresInDays Int? @default(90)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Ordered phases in this qualification workflow
+  phases QualificationFlowPhase[]
+
+  // Payment methods that use this qualification flow
+  paymentMethods PropertyPaymentMethod[]
+
+  // Instances created from this template
+  qualifications PaymentMethodQualification[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+  @@map("qualification_flows")
+}
+
+/// Phase template within a QualificationFlow
+/// Supports QUESTIONNAIRE, DOCUMENTATION, and GATE phases (no PAYMENT)
+model QualificationFlowPhase {
+  id                  String            @id @default(cuid())
+  tenantId            String
+  tenant              Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  qualificationFlowId String
+  qualificationFlow   QualificationFlow @relation(fields: [qualificationFlowId], references: [id], onDelete: Cascade)
+
+  // Plan references (only one set based on phaseCategory)
+  questionnairePlanId String? // Only for QUESTIONNAIRE phases
+  questionnairePlan   QuestionnairePlan? @relation(fields: [questionnairePlanId], references: [id])
+  documentationPlanId String? // Only for DOCUMENTATION phases
+  documentationPlan   DocumentationPlan? @relation(fields: [documentationPlanId], references: [id])
+  gatePlanId          String? // Only for GATE phases
+  gatePlan            GatePlan?          @relation(fields: [gatePlanId], references: [id])
+
+  name        String
+  description String? @db.Text
+
+  // Phase classification (only QUESTIONNAIRE, DOCUMENTATION, GATE — not PAYMENT)
+  phaseCategory PhaseCategory
+  phaseType     PhaseType
+  order         Int
+
+  // Activation rules
+  requiresPreviousPhaseCompletion Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Qualification phase instances created from this template
+  qualificationPhases QualificationPhase[]
+
+  @@unique([qualificationFlowId, order])
+  @@index([tenantId])
+  @@index([qualificationFlowId])
+  @@index([questionnairePlanId])
+  @@index([documentationPlanId])
+  @@index([gatePlanId])
+  @@index([phaseCategory])
+  @@map("qualification_flow_phases")
+}
+
+// =============================================================================
+// ORGANIZATION PAYMENT METHOD - Join table for org ↔ payment method access
+// =============================================================================
+// Created when an organization applies to use a payment method.
+// If the payment method has a QualificationFlow, a PaymentMethodQualification
+// instance is created and the org must complete it to reach QUALIFIED status.
+// If no flow, the platform admin can directly approve (QUALIFIED).
+// Only QUALIFIED orgs can link the payment method to their properties.
+// =============================================================================
+
+model OrganizationPaymentMethod {
+  id              String                @id @default(cuid())
+  tenantId        String
+  tenant          Tenant                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  organizationId  String
+  organization    Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  paymentMethodId String
+  paymentMethod   PropertyPaymentMethod @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
+
+  // Qualification status
+  status QualificationStatus @default(PENDING)
+
+  // Timing
+  appliedAt   DateTime  @default(now())
+  qualifiedAt DateTime?
+  suspendedAt DateTime?
+  expiresAt   DateTime?
+
+  // Notes
+  notes String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // One-to-one: the qualification workflow instance (if flow is required)
+  qualification PaymentMethodQualification?
+
+  @@unique([organizationId, paymentMethodId])
+  @@index([tenantId])
+  @@index([organizationId])
+  @@index([paymentMethodId])
+  @@index([status])
+  @@map("organization_payment_methods")
+}
+
+// =============================================================================
+// PAYMENT METHOD QUALIFICATION - Instance of a qualification workflow
+// =============================================================================
+// Created when an org applies to a payment method that has a QualificationFlow.
+// The assignee (org staff member) walks through phases to prove eligibility.
+// Platform admin gives final approval via the GATE phase → org becomes QUALIFIED.
+// Mirrors OrganizationOnboarding but for payment method access.
+// =============================================================================
+
+model PaymentMethodQualification {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // The org-payment-method assignment this qualification is for
+  organizationPaymentMethodId String                    @unique
+  organizationPaymentMethod   OrganizationPaymentMethod @relation(fields: [organizationPaymentMethodId], references: [id], onDelete: Cascade)
+
+  // Template this was created from
+  qualificationFlowId String
+  qualificationFlow   QualificationFlow @relation(fields: [qualificationFlowId], references: [id])
+
+  // Snapshot of the template at creation time (immutable audit trail)
+  templateSnapshot Json?
+
+  // The person walking through qualification (typically org admin/staff)
+  assigneeId String?
+  assignee   User?   @relation("QualificationAssignee", fields: [assigneeId], references: [id])
+
+  // Status tracking (reuses OnboardingStatus — same FSM)
+  status OnboardingStatus @default(PENDING)
+
+  // Current phase pointer for UX navigation
+  currentPhaseId String?             @unique
+  currentPhase   QualificationPhase? @relation("CurrentQualificationPhase", fields: [currentPhaseId], references: [id])
+
+  // Timing
+  startedAt   DateTime? // When assignee begins (first phase activated)
+  completedAt DateTime? // When final gate phase approved
+  expiresAt   DateTime? // Calculated from qualificationFlow.expiresInDays
+
+  // Outcome
+  approvedAt      DateTime?
+  approvedById    String?
+  approvedBy      User?     @relation("QualificationApprover", fields: [approvedById], references: [id])
+  rejectionReason String?   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Ordered phases in this qualification instance
+  phases QualificationPhase[]
+
+  @@index([tenantId])
+  @@index([organizationPaymentMethodId])
+  @@index([qualificationFlowId])
+  @@index([assigneeId])
+  @@index([status])
+  @@map("payment_method_qualifications")
+}
+
+/// Phase instance within a PaymentMethodQualification
+/// Mirrors OnboardingPhase but scoped to payment method qualification (no PAYMENT phases)
+model QualificationPhase {
+  id              String                     @id @default(cuid())
+  tenantId        String
+  tenant          Tenant                     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  qualificationId String
+  qualification   PaymentMethodQualification @relation(fields: [qualificationId], references: [id], onDelete: Cascade)
+
+  // Reference to the phase template this was instantiated from
+  phaseTemplateId String?
+  phaseTemplate   QualificationFlowPhase? @relation(fields: [phaseTemplateId], references: [id], onDelete: SetNull)
+
+  // Admin-defined naming
+  name        String
+  description String? @db.Text
+
+  // Phase classification
+  phaseCategory PhaseCategory
+  phaseType     PhaseType
+  order         Int
+
+  // FSM state (reuses PhaseStatus: PENDING → IN_PROGRESS → AWAITING_APPROVAL → COMPLETED)
+  status PhaseStatus @default(PENDING)
+
+  // Timing
+  activatedAt DateTime?
+  completedAt DateTime?
+
+  // Activation rules
+  requiresPreviousPhaseCompletion Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Polymorphic extensions (exactly one populated based on phaseCategory)
+  questionnairePhase QuestionnairePhase?
+  documentationPhase DocumentationPhase?
+  gatePhase          GatePhase?
+
+  // Back-relation for qualification where this is the current phase
+  currentForQualifications PaymentMethodQualification[] @relation("CurrentQualificationPhase")
+
+  @@unique([qualificationId, order])
+  @@index([tenantId])
+  @@index([qualificationId])
+  @@index([phaseTemplateId])
+  @@index([phaseCategory])
+  @@index([status])
+  @@map("qualification_phases")
 }

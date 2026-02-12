@@ -9,6 +9,7 @@ import {
     ReviewDecision,
 } from '@valentine-efagene/qshelter-common';
 import { getTenantPrisma } from '../lib/tenant-services';
+import { createQualificationFlowService } from '../services/qualification-flow.service';
 import { z } from 'zod';
 
 const router: Router = Router();
@@ -743,5 +744,23 @@ router.delete(
         res.json(successResponse({ deleted: true }));
     }
 );
+
+// =============================================================================
+// ORGANIZATION PAYMENT METHODS — View payment methods an org is assigned to
+// =============================================================================
+
+/**
+ * GET /organizations/:orgId/payment-methods
+ * List payment methods this organization has applied for / is qualified for
+ */
+router.get('/organizations/:orgId/payment-methods', requireTenant, async (req: Request, res: Response, next) => {
+    try {
+        const service = createQualificationFlowService(getTenantPrisma(req));
+        const results = await service.findOrgPaymentMethods(req.params.orgId);
+        res.json(successResponse(results));
+    } catch (error: any) {
+        next(error);
+    }
+});
 
 export default router;
