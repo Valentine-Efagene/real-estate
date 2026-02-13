@@ -10,6 +10,7 @@ export const PaymentFrequencyEnum = z.enum([
     'WEEKLY',
     'ONE_TIME',
     'CUSTOM',
+    'MINUTE',
 ]);
 
 // Base schema without transform for partial to work
@@ -19,6 +20,7 @@ const PaymentPlanBaseSchema = z.object({
     isActive: z.boolean().default(true),
     paymentFrequency: PaymentFrequencyEnum.optional().openapi({ example: 'MONTHLY' }),
     frequency: PaymentFrequencyEnum.optional().openapi({ example: 'MONTHLY' }), // alias for paymentFrequency
+    frequencyMultiplier: z.number().int().min(1).default(1).openapi({ example: 1, description: 'Multiplier for the period (e.g., MONTHLY × 3 = quarterly)' }),
     customFrequencyDays: z.number().int().positive().optional().openapi({ example: 14 }),
     numberOfInstallments: z.number().int().positive().optional().openapi({ example: 360 }),
     calculateInterestDaily: z.boolean().default(false),
@@ -54,6 +56,7 @@ export const PaymentPlanResponseSchema = z
         description: z.string().nullable(),
         isActive: z.boolean(),
         paymentFrequency: z.string(),
+        frequencyMultiplier: z.number(),
         customFrequencyDays: z.number().nullable(),
         numberOfInstallments: z.number(),
         calculateInterestDaily: z.boolean(),

@@ -15,7 +15,7 @@ export interface PaymentPlanService {
     update(id: string, data: UpdatePaymentPlanInput): Promise<any>;
     delete(id: string): Promise<{ success: boolean }>;
     clone(id: string, newName: string): Promise<any>;
-    getIntervalDays(plan: { paymentFrequency: string; customFrequencyDays: number | null }): number;
+    getIntervalDays(plan: { paymentFrequency: string; frequencyMultiplier?: number | null; customFrequencyDays: number | null }): number;
 }
 
 /**
@@ -36,6 +36,7 @@ export function createPaymentPlanService(prisma: AnyPrismaClient = defaultPrisma
                 description: data.description,
                 isActive: data.isActive ?? true,
                 paymentFrequency: data.paymentFrequency,
+                frequencyMultiplier: data.frequencyMultiplier ?? 1,
                 customFrequencyDays: data.customFrequencyDays,
                 numberOfInstallments: data.numberOfInstallments,
                 allowFlexibleTerm: data.allowFlexibleTerm ?? false,
@@ -135,6 +136,7 @@ export function createPaymentPlanService(prisma: AnyPrismaClient = defaultPrisma
                 description: source.description,
                 isActive: source.isActive,
                 paymentFrequency: source.paymentFrequency,
+                frequencyMultiplier: source.frequencyMultiplier,
                 customFrequencyDays: source.customFrequencyDays,
                 numberOfInstallments: source.numberOfInstallments,
                 allowFlexibleTerm: source.allowFlexibleTerm,
@@ -153,20 +155,25 @@ export function createPaymentPlanService(prisma: AnyPrismaClient = defaultPrisma
     /**
      * Calculate the interval in days between installments based on frequency
      */
-    function getIntervalDays(plan: { paymentFrequency: string; customFrequencyDays: number | null }): number {
+    function getIntervalDays(plan: { paymentFrequency: string; frequencyMultiplier?: number | null; customFrequencyDays: number | null }): number {
+        const multiplier = plan.frequencyMultiplier ?? 1;
         switch (plan.paymentFrequency) {
             case 'MONTHLY':
-                return 30;
+                return 30 * multiplier;
             case 'BIWEEKLY':
-                return 14;
+                return 14 * multiplier;
             case 'WEEKLY':
-                return 7;
+                return 7 * multiplier;
             case 'ONE_TIME':
                 return 0;
+            case 'MINUTE':
+                // For testing: returns fractional days (1 minute ≈ 0.000694 days)
+                // Multiplier applies: MINUTE × 5 = every 5 minutes
+                return (1 / 1440) * multiplier;
             case 'CUSTOM':
-                return plan.customFrequencyDays ?? 30;
+                return (plan.customFrequencyDays ?? 30) * multiplier;
             default:
-                return 30;
+                return 30 * multiplier;
         }
     }
 

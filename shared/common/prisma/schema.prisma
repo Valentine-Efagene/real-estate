@@ -55,6 +55,7 @@ enum PaymentFrequency {
   WEEKLY
   ONE_TIME
   CUSTOM
+  MINUTE // For testing only — allows minute-level scheduling
 }
 
 enum PropertyStatus {
@@ -2002,6 +2003,7 @@ model PaymentPlan {
 
   // Structure configuration
   paymentFrequency       PaymentFrequency
+  frequencyMultiplier    Int              @default(1) // Multiplier for the period (e.g., MONTHLY × 3 = quarterly)
   customFrequencyDays    Int?
   numberOfInstallments   Int? // Fixed number (1 for one-time, 360 for 30yr monthly) - NULL if flexible
   calculateInterestDaily Boolean          @default(false)

@@ -33,20 +33,24 @@ interface CalculatedInstallment {
 /**
  * Calculate the interval in days between installments based on frequency
  */
-function getIntervalDays(plan: { paymentFrequency: string; customFrequencyDays: number | null }): number {
+function getIntervalDays(plan: { paymentFrequency: string; frequencyMultiplier?: number | null; customFrequencyDays: number | null }): number {
+    const multiplier = plan.frequencyMultiplier ?? 1;
     switch (plan.paymentFrequency) {
         case 'MONTHLY':
-            return 30;
+            return 30 * multiplier;
         case 'BIWEEKLY':
-            return 14;
+            return 14 * multiplier;
         case 'WEEKLY':
-            return 7;
+            return 7 * multiplier;
         case 'ONE_TIME':
             return 0;
+        case 'MINUTE':
+            // For testing: returns fractional days (1 minute ≈ 0.000694 days)
+            return (1 / 1440) * multiplier;
         case 'CUSTOM':
-            return plan.customFrequencyDays ?? 30;
+            return (plan.customFrequencyDays ?? 30) * multiplier;
         default:
-            return 30;
+            return 30 * multiplier;
     }
 }
 
@@ -186,6 +190,7 @@ class InstallmentGenerationService {
         const startDate = new Date(startDateStr);
         const intervalDays = getIntervalDays({
             paymentFrequency: paymentPlan.paymentFrequency,
+            frequencyMultiplier: paymentPlan.frequencyMultiplier,
             customFrequencyDays: paymentPlan.customFrequencyDays,
         });
 

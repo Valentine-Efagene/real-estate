@@ -864,6 +864,7 @@ export const PaymentPlanScalarFieldEnum = {
   description: 'description',
   isActive: 'isActive',
   paymentFrequency: 'paymentFrequency',
+  frequencyMultiplier: 'frequencyMultiplier',
   customFrequencyDays: 'customFrequencyDays',
   numberOfInstallments: 'numberOfInstallments',
   calculateInterestDaily: 'calculateInterestDaily',

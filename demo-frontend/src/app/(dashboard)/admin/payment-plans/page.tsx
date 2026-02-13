@@ -49,6 +49,7 @@ const FREQUENCY_OPTIONS: { value: PaymentFrequency; label: string }[] = [
     { value: 'BIWEEKLY', label: 'Bi-Weekly' },
     { value: 'WEEKLY', label: 'Weekly' },
     { value: 'CUSTOM', label: 'Custom' },
+    { value: 'MINUTE', label: 'Minute (Testing)' },
 ];
 
 function CreatePaymentPlanDialog() {
@@ -57,6 +58,7 @@ function CreatePaymentPlanDialog() {
         name: '',
         description: '',
         paymentFrequency: 'MONTHLY',
+        frequencyMultiplier: 1,
         numberOfInstallments: 1,
         interestRate: 0,
         gracePeriodDays: 0,
@@ -76,6 +78,7 @@ function CreatePaymentPlanDialog() {
                 name: '',
                 description: '',
                 paymentFrequency: 'MONTHLY',
+                frequencyMultiplier: 1,
                 numberOfInstallments: 1,
                 interestRate: 0,
                 gracePeriodDays: 0,
@@ -123,7 +126,7 @@ function CreatePaymentPlanDialog() {
                                 placeholder="e.g., 20-year mortgage monthly payments"
                             />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-4">
                             <div className="grid gap-2">
                                 <Label htmlFor="frequency">Payment Frequency *</Label>
                                 <Select
@@ -143,6 +146,21 @@ function CreatePaymentPlanDialog() {
                                         ))}
                                     </SelectContent>
                                 </Select>
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="frequencyMultiplier">Every N Periods</Label>
+                                <Input
+                                    id="frequencyMultiplier"
+                                    type="number"
+                                    min="1"
+                                    value={formData.frequencyMultiplier ?? 1}
+                                    onChange={(e) => {
+                                        const v = e.target.value;
+                                        const parsed = v === '' ? 1 : parseInt(v, 10);
+                                        setFormData({ ...formData, frequencyMultiplier: Number.isNaN(parsed) || parsed < 1 ? 1 : parsed });
+                                    }}
+                                    placeholder="1"
+                                />
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="installments">Number of Installments</Label>
@@ -298,7 +316,11 @@ function PaymentPlanRow({ plan }: { plan: PaymentPlan }) {
             <TableCell className="font-medium">{plan.name}</TableCell>
             <TableCell>{plan.description || '-'}</TableCell>
             <TableCell>
-                <Badge variant="outline">{plan.paymentFrequency}</Badge>
+                <Badge variant="outline">
+                    {plan.frequencyMultiplier > 1
+                        ? `${plan.paymentFrequency} ×${plan.frequencyMultiplier}`
+                        : plan.paymentFrequency}
+                </Badge>
             </TableCell>
             <TableCell>{plan.numberOfInstallments}</TableCell>
             <TableCell>{plan.interestRate ? `${plan.interestRate}%` : '-'}</TableCell>

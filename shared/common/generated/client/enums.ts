@@ -41,7 +41,8 @@ export const PaymentFrequency = {
   BIWEEKLY: 'BIWEEKLY',
   WEEKLY: 'WEEKLY',
   ONE_TIME: 'ONE_TIME',
-  CUSTOM: 'CUSTOM'
+  CUSTOM: 'CUSTOM',
+  MINUTE: 'MINUTE'
 } as const
 
 export type PaymentFrequency = (typeof PaymentFrequency)[keyof typeof PaymentFrequency]

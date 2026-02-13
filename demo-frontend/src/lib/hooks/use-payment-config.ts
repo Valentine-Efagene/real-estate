@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query/query-keys';
 import { mortgageApi } from '@/lib/api/client';
 
-export type PaymentFrequency = 'MONTHLY' | 'BIWEEKLY' | 'WEEKLY' | 'ONE_TIME' | 'CUSTOM';
+export type PaymentFrequency = 'MONTHLY' | 'BIWEEKLY' | 'WEEKLY' | 'ONE_TIME' | 'CUSTOM' | 'MINUTE';
 
 export interface PaymentPlan {
     id: string;
@@ -12,6 +12,7 @@ export interface PaymentPlan {
     description: string | null;
     isActive: boolean;
     paymentFrequency: PaymentFrequency;
+    frequencyMultiplier: number;
     customFrequencyDays: number | null;
     numberOfInstallments: number;
     calculateInterestDaily: boolean;
@@ -31,6 +32,7 @@ export interface CreatePaymentPlanInput {
     name: string;
     description?: string;
     paymentFrequency: PaymentFrequency;
+    frequencyMultiplier?: number;
     numberOfInstallments?: number;
     interestRate?: number;
     gracePeriodDays?: number;
