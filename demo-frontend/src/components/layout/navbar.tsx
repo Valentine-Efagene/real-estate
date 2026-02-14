@@ -30,6 +30,7 @@ const adminNavigation = [
   { name: 'Users', href: '/admin/users' },
   { name: 'Organizations', href: '/admin/organizations' },
   { name: 'Onboarding Flows', href: '/admin/onboarding-flows' },
+  { name: 'Qualification Flows', href: '/admin/qualification-flows' },
   { name: 'Transactions', href: '/admin/transactions' },
   { name: 'Questionnaire Plans', href: '/admin/questionnaire-plans' },
   { name: 'Documentation Plans', href: '/admin/documentation-plans' },

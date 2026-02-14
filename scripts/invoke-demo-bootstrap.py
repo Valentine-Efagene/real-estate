@@ -35,9 +35,9 @@ print(f"   Got secret: {BOOTSTRAP_SECRET[:5]}...")
 
 # Build the API Gateway v2 event payload
 body_obj = {
-    "propertyServiceUrl": "https://3d8q4b1fk6.execute-api.us-east-1.amazonaws.com",
-    "mortgageServiceUrl": "https://ygaqg5xc26.execute-api.us-east-1.amazonaws.com",
-    "paymentServiceUrl": "https://fa56k6x6qc.execute-api.us-east-1.amazonaws.com",
+    "propertyServiceUrl": "https://z32oarlcp7.execute-api.us-east-1.amazonaws.com",
+    "mortgageServiceUrl": "https://el0slr8sg5.execute-api.us-east-1.amazonaws.com",
+    "paymentServiceUrl": "https://cmwxqd18ga.execute-api.us-east-1.amazonaws.com",
 }
 
 event = {
@@ -51,9 +51,9 @@ event = {
     },
     "requestContext": {
         "accountId": "anonymous",
-        "apiId": "388o2sdi4m",
-        "domainName": "388o2sdi4m.execute-api.us-east-1.amazonaws.com",
-        "domainPrefix": "388o2sdi4m",
+        "apiId": "1oi4sd5b4i",
+        "domainName": "1oi4sd5b4i.execute-api.us-east-1.amazonaws.com",
+        "domainPrefix": "1oi4sd5b4i",
         "http": {
             "method": "POST",
             "path": "/admin/demo-bootstrap",

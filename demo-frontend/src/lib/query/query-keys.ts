@@ -101,4 +101,31 @@ export const queryKeys = {
     list: (filters?: Record<string, unknown>) => ['documentation-plans', 'list', filters] as const,
     detail: (id: string) => ['documentation-plans', 'detail', id] as const,
   },
+
+  // Qualification Flows
+  qualificationFlows: {
+    all: ['qualification-flows'] as const,
+    list: (filters?: Record<string, unknown>) => ['qualification-flows', 'list', filters] as const,
+    detail: (id: string) => ['qualification-flows', 'detail', id] as const,
+  },
+
+  // Qualification Configs (per payment method)
+  qualificationConfigs: {
+    byPaymentMethod: (paymentMethodId: string) =>
+      ['qualification-configs', 'payment-method', paymentMethodId] as const,
+  },
+
+  // Organization Payment Methods (assignments)
+  orgPaymentMethods: {
+    byPaymentMethod: (paymentMethodId: string) =>
+      ['org-payment-methods', 'payment-method', paymentMethodId] as const,
+    detail: (paymentMethodId: string, assignmentId: string) =>
+      ['org-payment-methods', paymentMethodId, assignmentId] as const,
+    qualification: (paymentMethodId: string, assignmentId: string) =>
+      ['org-payment-methods', paymentMethodId, assignmentId, 'qualification'] as const,
+    waivers: (paymentMethodId: string, assignmentId: string) =>
+      ['org-payment-methods', paymentMethodId, assignmentId, 'waivers'] as const,
+    availableDocuments: (paymentMethodId: string, assignmentId: string) =>
+      ['org-payment-methods', paymentMethodId, assignmentId, 'available-documents'] as const,
+  },
 } as const;

@@ -1,37 +1,37 @@
 # Deployment Status
 
-Last Updated: February 3, 2026
+Last Updated: February 14, 2026
 
 ## AWS Staging Deployment (staging stage)
 
 All services deployed to AWS staging environment. Account: 898751738669, Region: us-east-1.
 
-**Cost Optimization**: Staging deployment does **NOT** use NAT Gateway (~$32-45/month savings). RDS is publicly accessible and Lambdas run outside VPC.
+**Cost Optimization**: Staging deployment does **NOT** use NAT Gateway (~$32-45/month savings). RDS is publicly accessible and Lambdas run outside VPC. Aurora Serverless v2 configured with scale-to-zero (minCapacity: 0, maxCapacity: 2).
 
 ### Service Endpoints
 
 | Service               | Package Size | Endpoint URL                                           | Status     |
 | --------------------- | ------------ | ------------------------------------------------------ | ---------- |
 | Authorizer            | 2.8 MB       | Lambda authorizer (stored in SSM)                      | ✅ Working |
-| User Service          | 6.1 MB       | https://v36afagxrk.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Property Service      | 6.5 MB       | https://y427o5k7cl.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Mortgage Service      | 6.7 MB       | https://runbad38je.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Documents Service     | 6.8 MB       | https://ke5vvijq0i.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Payment Service       | 4.6 MB       | https://o5515my974.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Notifications Service | 8.4 MB       | https://snodqcyha4.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Uploader Service      | 9 MB         | https://iv4vhpu7aa.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| User Service          | 6.8 MB       | https://1oi4sd5b4i.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Property Service      | 6.5 MB       | https://z32oarlcp7.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Mortgage Service      | 6.7 MB       | https://el0slr8sg5.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Documents Service     | 6.8 MB       | https://46mkwkht71.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Payment Service       | 4.6 MB       | https://cmwxqd18ga.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Notifications Service | 8.3 MB       | https://bu4wvejwzl.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Uploader Service      | 9 MB         | https://yvkc0irtqj.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
 | Policy Sync Service   | 5.9 MB       | SQS consumer only (no HTTP API)                        | ✅ Working |
 
 ### Health Check Commands
 
 ```bash
-curl -s https://v36afagxrk.execute-api.us-east-1.amazonaws.com/health  # user-service
-curl -s https://y427o5k7cl.execute-api.us-east-1.amazonaws.com/health  # property-service
-curl -s https://runbad38je.execute-api.us-east-1.amazonaws.com/health  # mortgage-service
-curl -s https://ke5vvijq0i.execute-api.us-east-1.amazonaws.com/health  # documents-service
-curl -s https://o5515my974.execute-api.us-east-1.amazonaws.com/health  # payment-service
-curl -s https://snodqcyha4.execute-api.us-east-1.amazonaws.com/health  # notification-service
-curl -s https://iv4vhpu7aa.execute-api.us-east-1.amazonaws.com/health  # uploader-service
+curl -s https://1oi4sd5b4i.execute-api.us-east-1.amazonaws.com/health  # user-service
+curl -s https://z32oarlcp7.execute-api.us-east-1.amazonaws.com/health  # property-service
+curl -s https://el0slr8sg5.execute-api.us-east-1.amazonaws.com/health  # mortgage-service
+curl -s https://46mkwkht71.execute-api.us-east-1.amazonaws.com/health  # documents-service
+curl -s https://cmwxqd18ga.execute-api.us-east-1.amazonaws.com/health  # payment-service
+curl -s https://bu4wvejwzl.execute-api.us-east-1.amazonaws.com/health  # notification-service
+curl -s https://yvkc0irtqj.execute-api.us-east-1.amazonaws.com/health  # uploader-service
 ```
 
 ### CDK Infrastructure
@@ -60,6 +60,19 @@ The CDK stack `RealEstateStack-staging` creates:
 ---
 
 ## Recent Changes
+
+### Full Redeployment (February 14, 2026)
+
+- ✅ Infrastructure: 109 resources deployed (RealEstateStack-staging)
+- ✅ Aurora Serverless v2 with scale-to-zero (minCapacity: 0, maxCapacity: 2)
+- ✅ Database: 12 Prisma migrations applied
+- ✅ All 9 services deployed (authorizer + 8 application services)
+- ✅ DynamoDB seeded with 6 role policies
+- ✅ All health endpoints verified (HTTP 200)
+- ✅ Deploy script fixed: `head` command replaced with `sed -n '1p'` (Perl conflict on macOS)
+- ✅ Deploy script fixed: CDK cleanup no longer deletes managed resources when CDKToolkit is healthy
+- ✅ Postman environment updated with new URLs
+- ✅ Demo frontend `.env` updated with new URLs
 
 ### NAT Gateway Removal for Staging (February 3, 2026)
 

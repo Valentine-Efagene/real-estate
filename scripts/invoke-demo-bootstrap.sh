@@ -4,9 +4,9 @@ set -euo pipefail
 # Invoke the demo-bootstrap endpoint directly via Lambda (bypasses API Gateway 30s timeout)
 
 FUNCTION_NAME="qshelter-user-service-staging-api"
-PROP_URL="https://3d8q4b1fk6.execute-api.us-east-1.amazonaws.com"
-MORT_URL="https://ygaqg5xc26.execute-api.us-east-1.amazonaws.com"
-PAY_URL="https://fa56k6x6qc.execute-api.us-east-1.amazonaws.com"
+PROP_URL="https://z32oarlcp7.execute-api.us-east-1.amazonaws.com"
+MORT_URL="https://el0slr8sg5.execute-api.us-east-1.amazonaws.com"
+PAY_URL="https://cmwxqd18ga.execute-api.us-east-1.amazonaws.com"
 
 echo "Fetching bootstrap secret from SSM..."
 BOOTSTRAP_SECRET=$(aws ssm get-parameter --name /qshelter/staging/bootstrap-secret --with-decryption --query Parameter.Value --output text)

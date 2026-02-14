@@ -22,6 +22,16 @@ import {
     type QuestionnairePlan,
     type DocumentationPlan,
 } from '@/lib/hooks/use-payment-config';
+import {
+    useQualificationConfigs,
+    useCreateQualificationConfig,
+    useDeleteQualificationConfig,
+    type PaymentMethodQualificationConfig,
+} from '@/lib/hooks/use-org-payment-methods';
+import {
+    useQualificationFlows,
+    type QualificationFlow,
+} from '@/lib/hooks/use-qualification-flows';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -68,6 +78,8 @@ import {
     Save,
     Loader2,
     Pencil,
+    ShieldCheck,
+    Building2,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -692,6 +704,176 @@ function PhaseCard({
     );
 }
 
+// Qualification Configs Section
+function QualificationConfigsSection({ paymentMethodId }: { paymentMethodId: string }) {
+    const { data: configs = [], isLoading } = useQualificationConfigs(paymentMethodId);
+    const { data: flows = [] } = useQualificationFlows();
+    const createConfigMutation = useCreateQualificationConfig();
+    const deleteConfigMutation = useDeleteQualificationConfig();
+
+    const [addOpen, setAddOpen] = useState(false);
+    const [orgTypeCode, setOrgTypeCode] = useState('');
+    const [flowId, setFlowId] = useState('');
+
+    const ORG_TYPE_CODES = ['PLATFORM', 'BANK', 'DEVELOPER', 'LEGAL', 'INSURER', 'GOVERNMENT'];
+    const usedOrgTypes = new Set(configs.map((c) => c.organizationTypeCode));
+    const availableOrgTypes = ORG_TYPE_CODES.filter((code) => !usedOrgTypes.has(code));
+    const activeFlows = flows.filter((f) => f.isActive);
+
+    const handleAdd = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!orgTypeCode || !flowId) {
+            toast.error('Both fields are required');
+            return;
+        }
+        try {
+            await createConfigMutation.mutateAsync({
+                paymentMethodId,
+                data: { organizationTypeCode: orgTypeCode, qualificationFlowId: flowId },
+            });
+            toast.success('Qualification config added');
+            setAddOpen(false);
+            setOrgTypeCode('');
+            setFlowId('');
+        } catch (error: any) {
+            toast.error(error.message || 'Failed to add config');
+        }
+    };
+
+    const handleDelete = async (config: PaymentMethodQualificationConfig) => {
+        if (!confirm(`Remove qualification requirement for ${config.organizationTypeCode}?`)) return;
+        try {
+            await deleteConfigMutation.mutateAsync({ paymentMethodId, configId: config.id });
+            toast.success('Config removed');
+        } catch (error: any) {
+            toast.error(error.message || 'Failed to remove config');
+        }
+    };
+
+    if (isLoading) return <Skeleton className="h-32 w-full" />;
+
+    return (
+        <Card>
+            <CardHeader>
+                <div className="flex justify-between items-center">
+                    <div>
+                        <CardTitle className="flex items-center gap-2">
+                            <ShieldCheck className="h-5 w-5" />
+                            Qualification Requirements
+                        </CardTitle>
+                        <CardDescription>
+                            Define which organization types need qualification before using this payment method
+                        </CardDescription>
+                    </div>
+                    {availableOrgTypes.length > 0 && (
+                        <Button size="sm" onClick={() => setAddOpen(true)}>
+                            <Plus className="h-4 w-4 mr-2" /> Add Requirement
+                        </Button>
+                    )}
+                </div>
+            </CardHeader>
+            <CardContent>
+                {configs.length === 0 ? (
+                    <div className="text-center py-8 border-2 border-dashed rounded-lg">
+                        <ShieldCheck className="h-10 w-10 mx-auto text-muted-foreground mb-3" />
+                        <p className="text-sm font-medium mb-1">No qualification requirements</p>
+                        <p className="text-xs text-muted-foreground mb-3">
+                            Organizations will be auto-qualified when enrolled.
+                        </p>
+                        {availableOrgTypes.length > 0 && (
+                            <Button size="sm" variant="outline" onClick={() => setAddOpen(true)}>
+                                <Plus className="h-4 w-4 mr-1" /> Add Requirement
+                            </Button>
+                        )}
+                    </div>
+                ) : (
+                    <div className="space-y-2">
+                        {configs.map((config) => (
+                            <div key={config.id} className="flex items-center justify-between p-3 border rounded-lg">
+                                <div className="flex items-center gap-3">
+                                    <Badge variant="outline" className="font-mono">
+                                        {config.organizationTypeCode}
+                                    </Badge>
+                                    <span className="text-sm">→</span>
+                                    <span className="text-sm font-medium">
+                                        {config.qualificationFlow?.name || 'Unknown Flow'}
+                                    </span>
+                                    {config.qualificationFlow && !config.qualificationFlow.isActive && (
+                                        <Badge variant="secondary" className="text-xs">Inactive</Badge>
+                                    )}
+                                </div>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-7 w-7 text-destructive"
+                                    onClick={() => handleDelete(config)}
+                                    disabled={deleteConfigMutation.isPending}
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </CardContent>
+
+            {/* Add Config Dialog */}
+            <Dialog open={addOpen} onOpenChange={setAddOpen}>
+                <DialogContent className="max-w-md">
+                    <form onSubmit={handleAdd}>
+                        <DialogHeader>
+                            <DialogTitle>Add Qualification Requirement</DialogTitle>
+                            <DialogDescription>
+                                Require organizations of a specific type to complete a qualification flow.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                            <div>
+                                <Label>Organization Type *</Label>
+                                <Select value={orgTypeCode} onValueChange={setOrgTypeCode}>
+                                    <SelectTrigger><SelectValue placeholder="Select org type" /></SelectTrigger>
+                                    <SelectContent>
+                                        {availableOrgTypes.map((code) => (
+                                            <SelectItem key={code} value={code}>{code}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div>
+                                <Label>Qualification Flow *</Label>
+                                <Select value={flowId} onValueChange={setFlowId}>
+                                    <SelectTrigger><SelectValue placeholder="Select flow" /></SelectTrigger>
+                                    <SelectContent>
+                                        {activeFlows.map((flow) => (
+                                            <SelectItem key={flow.id} value={flow.id}>
+                                                {flow.name} ({flow.phases?.length || 0} phases)
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                {activeFlows.length === 0 && (
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        No active qualification flows.{' '}
+                                        <Link href="/admin/qualification-flows" className="text-primary underline">
+                                            Create one
+                                        </Link>
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                        <DialogFooter>
+                            <Button type="button" variant="outline" onClick={() => setAddOpen(false)}>Cancel</Button>
+                            <Button type="submit" disabled={createConfigMutation.isPending || !orgTypeCode || !flowId}>
+                                {createConfigMutation.isPending ? 'Adding...' : 'Add Requirement'}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
+        </Card>
+    );
+}
+
 export default function EditPaymentMethodPage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = use(params);
     const router = useRouter();
@@ -948,6 +1130,32 @@ export default function EditPaymentMethodPage({ params }: { params: Promise<{ id
                 questionnairePlans={questionnairePlans}
                 documentationPlans={documentationPlans}
             />
+
+            {/* Qualification Requirements */}
+            <QualificationConfigsSection paymentMethodId={paymentMethodId} />
+
+            {/* Organization Enrollment Link */}
+            <Card>
+                <CardHeader>
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <CardTitle className="flex items-center gap-2">
+                                <Building2 className="h-5 w-5" />
+                                Organization Enrollment
+                            </CardTitle>
+                            <CardDescription>
+                                Manage which organizations are enrolled and qualified to use this payment method
+                            </CardDescription>
+                        </div>
+                        <Button asChild>
+                            <Link href={`/admin/payment-methods/${paymentMethodId}/organizations`}>
+                                <Building2 className="h-4 w-4 mr-2" />
+                                Manage Organizations
+                            </Link>
+                        </Button>
+                    </div>
+                </CardHeader>
+            </Card>
         </div>
     );
 }

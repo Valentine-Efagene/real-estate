@@ -82,7 +82,8 @@ clean_cdk_orphans() {
     
     ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
     
-    # Delete any stuck CDKToolkit stack
+    # Track whether CDKToolkit exists and is healthy
+    CDK_TOOLKIT_HEALTHY=false
     if aws cloudformation describe-stacks --stack-name CDKToolkit &>/dev/null; then
         STACK_STATUS=$(aws cloudformation describe-stacks --stack-name CDKToolkit --query "Stacks[0].StackStatus" --output text 2>/dev/null)
         if [[ "$STACK_STATUS" == "REVIEW_IN_PROGRESS" || "$STACK_STATUS" == "ROLLBACK_COMPLETE" || "$STACK_STATUS" == "ROLLBACK_FAILED" ]]; then
@@ -90,33 +91,41 @@ clean_cdk_orphans() {
             aws cloudformation delete-stack --stack-name CDKToolkit
             log_info "Waiting for CDKToolkit deletion..."
             aws cloudformation wait stack-delete-complete --stack-name CDKToolkit 2>/dev/null || true
+        else
+            CDK_TOOLKIT_HEALTHY=true
+            log_info "CDKToolkit stack is healthy ($STACK_STATUS) - preserving managed resources"
         fi
     fi
     
-    # Clean up orphaned CDK S3 bucket (versioned bucket needs special handling)
+    # Only clean up CDK bucket/role if CDKToolkit doesn't exist or was just deleted
+    # If CDKToolkit is healthy, these resources are managed by it — NOT orphaned
     CDK_BUCKET="cdk-hnb659fds-assets-${ACCOUNT_ID}-${REGION}"
-    if aws s3api head-bucket --bucket "$CDK_BUCKET" 2>/dev/null; then
-        log_warn "Found orphaned CDK bucket: $CDK_BUCKET, cleaning..."
-        
-        # Delete all object versions
-        VERSIONS=$(aws s3api list-object-versions --bucket "$CDK_BUCKET" --query '{Objects: Versions[].{Key: Key, VersionId: VersionId}}' --output json 2>/dev/null)
-        if [[ "$VERSIONS" != '{"Objects": null}' && "$VERSIONS" != '{"Objects": []}' ]]; then
-            echo "$VERSIONS" | aws s3api delete-objects --bucket "$CDK_BUCKET" --delete file:///dev/stdin 2>/dev/null || true
+    CDK_ROLE="cdk-hnb659fds-cfn-exec-role-${ACCOUNT_ID}-${REGION}"
+    
+    if [[ "$CDK_TOOLKIT_HEALTHY" == "false" ]]; then
+        # Clean up orphaned CDK S3 bucket (versioned bucket needs special handling)
+        if aws s3api head-bucket --bucket "$CDK_BUCKET" 2>/dev/null; then
+            log_warn "Found orphaned CDK bucket: $CDK_BUCKET, cleaning..."
+            
+            # Delete all object versions
+            VERSIONS=$(aws s3api list-object-versions --bucket "$CDK_BUCKET" --query '{Objects: Versions[].{Key: Key, VersionId: VersionId}}' --output json 2>/dev/null)
+            if [[ "$VERSIONS" != '{"Objects": null}' && "$VERSIONS" != '{"Objects": []}' ]]; then
+                echo "$VERSIONS" | aws s3api delete-objects --bucket "$CDK_BUCKET" --delete file:///dev/stdin 2>/dev/null || true
+            fi
+            
+            # Delete all delete markers
+            MARKERS=$(aws s3api list-object-versions --bucket "$CDK_BUCKET" --query '{Objects: DeleteMarkers[].{Key: Key, VersionId: VersionId}}' --output json 2>/dev/null)
+            if [[ "$MARKERS" != '{"Objects": null}' && "$MARKERS" != '{"Objects": []}' ]]; then
+                echo "$MARKERS" | aws s3api delete-objects --bucket "$CDK_BUCKET" --delete file:///dev/stdin 2>/dev/null || true
+            fi
+            
+            aws s3 rb "s3://$CDK_BUCKET" --force 2>/dev/null || true
+            log_info "CDK bucket deleted"
         fi
-        
-        # Delete all delete markers
-        MARKERS=$(aws s3api list-object-versions --bucket "$CDK_BUCKET" --query '{Objects: DeleteMarkers[].{Key: Key, VersionId: VersionId}}' --output json 2>/dev/null)
-        if [[ "$MARKERS" != '{"Objects": null}' && "$MARKERS" != '{"Objects": []}' ]]; then
-            echo "$MARKERS" | aws s3api delete-objects --bucket "$CDK_BUCKET" --delete file:///dev/stdin 2>/dev/null || true
-        fi
-        
-        aws s3 rb "s3://$CDK_BUCKET" --force 2>/dev/null || true
-        log_info "CDK bucket deleted"
     fi
     
-    # Clean up orphaned CDK IAM roles
-    CDK_ROLE="cdk-hnb659fds-cfn-exec-role-${ACCOUNT_ID}-${REGION}"
-    if aws iam get-role --role-name "$CDK_ROLE" &>/dev/null; then
+    # Clean up orphaned CDK IAM roles (only if CDKToolkit is gone)
+    if [[ "$CDK_TOOLKIT_HEALTHY" == "false" ]] && aws iam get-role --role-name "$CDK_ROLE" &>/dev/null; then
         log_warn "Found orphaned CDK role: $CDK_ROLE, deleting..."
         # Detach all policies first
         for policy_arn in $(aws iam list-attached-role-policies --role-name "$CDK_ROLE" --query "AttachedPolicies[].PolicyArn" --output text 2>/dev/null); do
@@ -149,17 +158,9 @@ bootstrap_cdk() {
     
     ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
     
-    # Check if the CDK assets bucket exists - if not, force a fresh bootstrap
-    CDK_BUCKET="cdk-hnb659fds-assets-${ACCOUNT_ID}-${REGION}"
-    if ! aws s3api head-bucket --bucket "$CDK_BUCKET" 2>/dev/null; then
-        log_warn "CDK assets bucket does not exist. Forcing fresh bootstrap..."
-        # Delete CDKToolkit stack if it exists to force complete re-bootstrap
-        if aws cloudformation describe-stacks --stack-name CDKToolkit &>/dev/null; then
-            log_info "Deleting existing CDKToolkit stack to force fresh bootstrap..."
-            aws cloudformation delete-stack --stack-name CDKToolkit
-            aws cloudformation wait stack-delete-complete --stack-name CDKToolkit 2>/dev/null || true
-        fi
-    fi
+    # IMPORTANT: Never delete CDKToolkit stack here. CDK bootstrap is idempotent
+    # and will recreate any missing resources (S3 bucket, roles) without needing
+    # to destroy the stack. Only the clean step handles truly stuck stacks.
     
     log_info "Bootstrapping CDK for account $ACCOUNT_ID in region $REGION..."
     npx cdk bootstrap "aws://${ACCOUNT_ID}/${REGION}" --context stage=$STAGE
@@ -463,7 +464,7 @@ print_endpoints() {
     for service in "${SERVICES[@]}"; do
         if [ -d "$ROOT_DIR/services/$service" ]; then
             cd "$ROOT_DIR/services/$service"
-            ENDPOINT=$(npx sls info --stage $STAGE 2>/dev/null | grep -o 'https://[^[:space:]]*' | head -1 || echo "N/A")
+            ENDPOINT=$(npx sls info --stage $STAGE 2>/dev/null | grep -o 'https://[^[:space:]]*' | sed -n '1p' || echo "N/A")
             echo "  $service: $ENDPOINT"
         fi
     done

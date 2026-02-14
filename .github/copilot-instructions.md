@@ -8,7 +8,7 @@
 - **Local development**: LocalStack for AWS emulation, Docker Compose for MySQL.
 - **Tech stack**: Node.js, TypeScript, Express, Prisma, Zod, AWS (Lambda, API Gateway, S3, SNS, SSM, Secrets Manager).
 
-Note: Please do not manually delete CDKToolkit from the AWS CloudFormation stacks - use the teardown script which handles it properly.
+Note: **NEVER delete the CDKToolkit CloudFormation stack** — not manually, not from scripts, not from the deploy script. CDKToolkit is the CDK bootstrap stack that persists across deploy/teardown cycles. The `cdk bootstrap` command is idempotent and will recreate any missing resources (S3 bucket, IAM roles) without needing to destroy the stack. Only the `clean` step in deploy-staging.sh may touch it, and only when it's stuck in a bad state (REVIEW_IN_PROGRESS, ROLLBACK_COMPLETE).
 
 **IMPORTANT - Database Migrations**: The local MySQL database is often not running. Always run Prisma migrations against the **AWS staging database** using:
 
