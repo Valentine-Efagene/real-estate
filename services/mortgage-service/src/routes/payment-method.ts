@@ -34,6 +34,8 @@ import {
     ReviewQualificationSchema,
     UpdateQualificationStatusSchema,
     AssignQualificationFlowSchema,
+    CreateDocumentWaiverSchema,
+    BulkCreateDocumentWaiverSchema,
 } from '../validators/qualification-flow.validator';
 
 const router: Router = Router();
@@ -692,6 +694,133 @@ router.post('/:id/assignments/:assignmentId/phases/:phaseId/review', requireTena
             res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
             return;
         }
+        next(error);
+    }
+});
+
+// =============================================================================
+// QUALIFICATION CONFIGS — Per-org-type qualification flows for a payment method
+// =============================================================================
+
+/**
+ * GET /payment-methods/:id/qualification-configs
+ * List all qualification configs (org type → flow mappings) for a payment method
+ */
+router.get('/:id/qualification-configs', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const service = getQualificationService(req);
+        const configs = await service.findQualificationConfigs(req.params.id);
+        res.json(successResponse(configs));
+    } catch (error: any) {
+        next(error);
+    }
+});
+
+/**
+ * DELETE /payment-methods/:id/qualification-configs/:orgTypeCode
+ * Remove a qualification config for a specific org type
+ */
+router.delete('/:id/qualification-configs/:orgTypeCode', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { tenantId } = getAuthContext(req);
+        const service = getQualificationService(req);
+        const result = await service.removeQualificationConfig(req.params.id, req.params.orgTypeCode, tenantId);
+        res.json(successResponse(result));
+    } catch (error: any) {
+        next(error);
+    }
+});
+
+// =============================================================================
+// DOCUMENT WAIVERS — Docs an org considers optional for a payment method
+// =============================================================================
+
+/**
+ * GET /payment-methods/:id/assignments/:assignmentId/waivable-documents
+ * List all document definitions across all DOCUMENTATION phases that can be waived
+ */
+router.get('/:id/assignments/:assignmentId/waivable-documents', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const service = getQualificationService(req);
+        const result = await service.findWaivableDocuments(req.params.assignmentId);
+        res.json(successResponse(result));
+    } catch (error: any) {
+        next(error);
+    }
+});
+
+/**
+ * GET /payment-methods/:id/assignments/:assignmentId/waivers
+ * List document waivers for an assignment
+ */
+router.get('/:id/assignments/:assignmentId/waivers', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const service = getQualificationService(req);
+        const result = await service.findDocumentWaivers(req.params.assignmentId);
+        res.json(successResponse(result));
+    } catch (error: any) {
+        next(error);
+    }
+});
+
+/**
+ * POST /payment-methods/:id/assignments/:assignmentId/waivers
+ * Create a document waiver (single)
+ */
+router.post('/:id/assignments/:assignmentId/waivers', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { tenantId, userId } = getAuthContext(req);
+        const data = CreateDocumentWaiverSchema.parse(req.body);
+        const service = getQualificationService(req);
+        const result = await service.createDocumentWaiver(req.params.assignmentId, tenantId, userId, data);
+        res.status(201).json(successResponse(result));
+    } catch (error: any) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+/**
+ * POST /payment-methods/:id/assignments/:assignmentId/waivers/bulk
+ * Create multiple document waivers at once
+ */
+router.post('/:id/assignments/:assignmentId/waivers/bulk', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { tenantId, userId } = getAuthContext(req);
+        const data = BulkCreateDocumentWaiverSchema.parse(req.body);
+        const service = getQualificationService(req);
+        const results = [];
+        for (const waiver of data.waivers) {
+            try {
+                const result = await service.createDocumentWaiver(req.params.assignmentId, tenantId, userId, waiver);
+                results.push(result);
+            } catch (error: any) {
+                results.push({ error: error.message, documentDefinitionId: waiver.documentDefinitionId });
+            }
+        }
+        res.status(201).json(successResponse(results));
+    } catch (error: any) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+/**
+ * DELETE /payment-methods/:id/assignments/:assignmentId/waivers/:waiverId
+ * Remove a document waiver
+ */
+router.delete('/:id/assignments/:assignmentId/waivers/:waiverId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const service = getQualificationService(req);
+        const result = await service.deleteDocumentWaiver(req.params.waiverId);
+        res.json(successResponse(result));
+    } catch (error: any) {
         next(error);
     }
 });

@@ -66,7 +66,14 @@ export interface DemoBootstrapResult {
         price: number;
     };
     paymentMethod: { id: string; name: string; phases: number };
-    qualificationFlow?: { id: string; name: string; gatePlanId: string; assignmentId: string };
+    qualificationFlow?: {
+        developerFlowId: string;
+        bankFlowId: string;
+        developerGatePlanId: string;
+        bankGatePlanId: string;
+        developerAssignmentId: string;
+        bankAssignmentId: string;
+    };
     steps: StepLog[];
 }
 
@@ -288,7 +295,12 @@ export async function runDemoBootstrap(
         'property', 'propertyPaymentMethod', 'paymentPlan',
         'documentDefinition', 'approvalStage', 'documentationPlan',
         'questionnairePlanQuestion', 'questionnairePlan', 'documentTemplate', 'amenity',
-        'bankDocumentRequirement', 'organizationMember', 'organization',
+        'organizationDocumentWaiver', 'bankDocumentRequirement',
+        'gatePhaseReview', 'gatePhase', 'qualificationPhase',
+        'paymentMethodQualification', 'organizationPaymentMethod',
+        'qualificationFlowPhase', 'paymentMethodQualificationConfig',
+        'qualificationFlow', 'gatePlan',
+        'organizationMember', 'organization',
         'eventHandler', 'eventType', 'eventChannel', 'apiKey',
         'refreshToken', 'passwordReset', 'userSuspension', 'emailPreference',
         'deviceEndpoint', 'social', 'rolePermission', 'tenantMembership',
@@ -762,12 +774,12 @@ export async function runDemoBootstrap(
     log('Create MREIF payment method', `${phaseCount} phases`);
 
     // =========================================================================
-    // Step 13: Create gate plan + qualification flow for MREIF
+    // Step 13: Create gate plans + qualification flows for MREIF
     // =========================================================================
-    // First create a gate plan that defines the approval requirements
-    const gatePlanRes = await fetchJson(`${mortgageServiceUrl}/gate-plans`, {
+    // Developer gate plan
+    const devGatePlanRes = await fetchJson(`${mortgageServiceUrl}/gate-plans`, {
         method: 'POST',
-        headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('create-gate-plan') },
+        headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('create-dev-gate-plan') },
         body: JSON.stringify({
             name: 'Developer Access Approval',
             description: 'Platform team reviews and approves developer organizations for payment method access',
@@ -776,17 +788,33 @@ export async function runDemoBootstrap(
             reviewerInstructions: 'Verify that the developer organization is a legitimate partner with valid credentials',
         }),
     });
-    if (gatePlanRes.status !== 201) throw new Error(`Gate plan creation failed: ${gatePlanRes.status}`);
-    const gatePlanId = gatePlanRes.data.data.id;
-    log('Create gate plan', 'Developer Access Approval');
+    if (devGatePlanRes.status !== 201) throw new Error(`Dev gate plan creation failed: ${devGatePlanRes.status}`);
+    const devGatePlanId = devGatePlanRes.data.data.id;
+    log('Create developer gate plan', 'Developer Access Approval');
 
-    // Now create the qualification flow referencing the gate plan
-    const qualFlowRes = await fetchJson(`${mortgageServiceUrl}/qualification-flows`, {
+    // Bank gate plan
+    const bankGatePlanRes = await fetchJson(`${mortgageServiceUrl}/gate-plans`, {
         method: 'POST',
-        headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('create-qual-flow') },
+        headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('create-bank-gate-plan') },
+        body: JSON.stringify({
+            name: 'Bank Access Approval',
+            description: 'Platform team reviews and approves bank organizations for payment method access',
+            requiredApprovals: 1,
+            reviewerOrganizationTypeCode: 'PLATFORM',
+            reviewerInstructions: 'Verify that the bank is an approved lending partner with valid banking license',
+        }),
+    });
+    if (bankGatePlanRes.status !== 201) throw new Error(`Bank gate plan creation failed: ${bankGatePlanRes.status}`);
+    const bankGatePlanId = bankGatePlanRes.data.data.id;
+    log('Create bank gate plan', 'Bank Access Approval');
+
+    // Developer qualification flow
+    const devQualFlowRes = await fetchJson(`${mortgageServiceUrl}/qualification-flows`, {
+        method: 'POST',
+        headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('create-dev-qual-flow') },
         body: JSON.stringify({
             name: 'MREIF Developer Qualification',
-            description: 'Simple platform approval gate for organizations to access the MREIF payment method',
+            description: 'Simple platform approval gate for developer organizations to access the MREIF payment method',
             expiresInDays: 90,
             phases: [
                 {
@@ -794,74 +822,180 @@ export async function runDemoBootstrap(
                     phaseCategory: 'GATE',
                     phaseType: 'APPROVAL_GATE',
                     order: 1,
-                    gatePlanId,
+                    gatePlanId: devGatePlanId,
                 },
             ],
         }),
     });
-    if (qualFlowRes.status !== 201) throw new Error(`Qualification flow creation failed: ${qualFlowRes.status}`);
-    const qualificationFlowId = qualFlowRes.data.data.id;
-    log('Create MREIF qualification flow');
+    if (devQualFlowRes.status !== 201) throw new Error(`Dev qualification flow creation failed: ${devQualFlowRes.status}`);
+    const devQualFlowId = devQualFlowRes.data.data.id;
+    log('Create developer qualification flow');
+
+    // Bank qualification flow
+    const bankQualFlowRes = await fetchJson(`${mortgageServiceUrl}/qualification-flows`, {
+        method: 'POST',
+        headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('create-bank-qual-flow') },
+        body: JSON.stringify({
+            name: 'MREIF Bank Qualification',
+            description: 'Platform approval gate for banks to participate as lenders in the MREIF payment method',
+            expiresInDays: 180,
+            phases: [
+                {
+                    name: 'Platform Approval',
+                    phaseCategory: 'GATE',
+                    phaseType: 'APPROVAL_GATE',
+                    order: 1,
+                    gatePlanId: bankGatePlanId,
+                },
+            ],
+        }),
+    });
+    if (bankQualFlowRes.status !== 201) throw new Error(`Bank qualification flow creation failed: ${bankQualFlowRes.status}`);
+    const bankQualFlowId = bankQualFlowRes.data.data.id;
+    log('Create bank qualification flow');
 
     // =========================================================================
-    // Step 14: Assign qualification flow to MREIF payment method
+    // Step 14: Assign both qualification flows to MREIF (per org type)
     // =========================================================================
-    const assignFlowRes = await fetchJson(
+    const assignDevFlowRes = await fetchJson(
         `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/qualification-flow`,
         {
             method: 'POST',
-            headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('assign-qual-flow') },
-            body: JSON.stringify({ qualificationFlowId }),
+            headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('assign-dev-qual-flow') },
+            body: JSON.stringify({ qualificationFlowId: devQualFlowId, organizationTypeCode: 'DEVELOPER' }),
         },
     );
-    if (assignFlowRes.status !== 200) throw new Error(`Assign qualification flow failed: ${assignFlowRes.status}`);
-    log('Assign qualification flow to MREIF');
+    if (assignDevFlowRes.status !== 200) throw new Error(`Assign dev qualification flow failed: ${assignDevFlowRes.status}`);
+    log('Assign developer qualification flow to MREIF', 'orgType=DEVELOPER');
+
+    const assignBankFlowRes = await fetchJson(
+        `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/qualification-flow`,
+        {
+            method: 'POST',
+            headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('assign-bank-qual-flow') },
+            body: JSON.stringify({ qualificationFlowId: bankQualFlowId, organizationTypeCode: 'BANK' }),
+        },
+    );
+    if (assignBankFlowRes.status !== 200) throw new Error(`Assign bank qualification flow failed: ${assignBankFlowRes.status}`);
+    log('Assign bank qualification flow to MREIF', 'orgType=BANK');
 
     // =========================================================================
     // Step 15: Lekki Gardens applies for MREIF access
     // =========================================================================
     // Nneka (agent at Lekki Gardens) applies her organization for the payment method.
-    const applyRes = await fetchJson(
+    const devApplyRes = await fetchJson(
         `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/apply`,
         {
             method: 'POST',
-            headers: { ...authHeaders(nnekaToken), 'x-idempotency-key': idempotencyKey('apply-mreif') },
+            headers: { ...authHeaders(nnekaToken), 'x-idempotency-key': idempotencyKey('apply-mreif-dev') },
             body: JSON.stringify({
                 organizationId: developerOrgId,
                 notes: 'Lekki Gardens applying for MREIF 10/90 Mortgage access',
             }),
         },
     );
-    if (applyRes.status !== 201) throw new Error(`Apply for MREIF failed: ${applyRes.status}`);
-    const assignmentId = applyRes.data.data.id;
-    // The GATE phase was auto-started — find its ID for review
-    const qualificationId = applyRes.data.data.qualification?.id;
-    const gatePhaseId = applyRes.data.data.qualification?.phases?.[0]?.id;
-    log('Lekki Gardens applies for MREIF', `assignmentId=${assignmentId}`);
+    if (devApplyRes.status !== 201) throw new Error(`Developer apply for MREIF failed: ${devApplyRes.status}`);
+    const devAssignmentId = devApplyRes.data.data.id;
+    const devGatePhaseId = devApplyRes.data.data.qualification?.phases?.[0]?.id;
+    log('Lekki Gardens applies for MREIF', `assignmentId=${devAssignmentId}`);
 
     // =========================================================================
-    // Step 16: Platform admin approves the qualification gate
+    // Step 16: Platform admin approves Lekki Gardens qualification
     // =========================================================================
-    if (gatePhaseId) {
+    if (devGatePhaseId) {
         const reviewRes = await fetchJson(
-            `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/assignments/${assignmentId}/phases/${gatePhaseId}/review`,
+            `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/assignments/${devAssignmentId}/phases/${devGatePhaseId}/review`,
             {
                 method: 'POST',
-                headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('approve-qual-gate') },
+                headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('approve-dev-qual-gate') },
                 body: JSON.stringify({
                     decision: 'APPROVED',
                     notes: 'Lekki Gardens is an approved developer partner',
                 }),
             },
         );
-        if (reviewRes.status !== 200) throw new Error(`Qualification gate review failed: ${reviewRes.status}`);
+        if (reviewRes.status !== 200) throw new Error(`Developer qualification gate review failed: ${reviewRes.status}`);
         log('Platform approves Lekki Gardens qualification', 'Status: QUALIFIED');
     } else {
-        log('Qualification auto-approved (no gate phase)', 'Status: QUALIFIED');
+        log('Developer qualification auto-approved (no gate phase)', 'Status: QUALIFIED');
     }
 
     // =========================================================================
-    // Step 17: Link MREIF to property
+    // Step 17: Access Bank applies for MREIF access
+    // =========================================================================
+    // Eniola (mortgage_ops at Access Bank) applies the bank for the payment method.
+    const bankApplyRes = await fetchJson(
+        `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/apply`,
+        {
+            method: 'POST',
+            headers: { ...authHeaders(eniolaToken), 'x-idempotency-key': idempotencyKey('apply-mreif-bank') },
+            body: JSON.stringify({
+                organizationId: bankOrgId,
+                notes: 'Access Bank applying for MREIF 10/90 Mortgage lending participation',
+            }),
+        },
+    );
+    if (bankApplyRes.status !== 201) throw new Error(`Bank apply for MREIF failed: ${bankApplyRes.status}`);
+    const bankAssignmentId = bankApplyRes.data.data.id;
+    const bankGatePhaseId = bankApplyRes.data.data.qualification?.phases?.[0]?.id;
+    log('Access Bank applies for MREIF', `assignmentId=${bankAssignmentId}`);
+
+    // =========================================================================
+    // Step 18: Platform admin approves Access Bank qualification
+    // =========================================================================
+    if (bankGatePhaseId) {
+        const reviewRes = await fetchJson(
+            `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/assignments/${bankAssignmentId}/phases/${bankGatePhaseId}/review`,
+            {
+                method: 'POST',
+                headers: { ...authHeaders(yinkaToken), 'x-idempotency-key': idempotencyKey('approve-bank-qual-gate') },
+                body: JSON.stringify({
+                    decision: 'APPROVED',
+                    notes: 'Access Bank is an approved lending partner',
+                }),
+            },
+        );
+        if (reviewRes.status !== 200) throw new Error(`Bank qualification gate review failed: ${reviewRes.status}`);
+        log('Platform approves Access Bank qualification', 'Status: QUALIFIED');
+    } else {
+        log('Bank qualification auto-approved (no gate phase)', 'Status: QUALIFIED');
+    }
+
+    // =========================================================================
+    // Step 19: Access Bank configures document waivers
+    // =========================================================================
+    // Now that Access Bank is QUALIFIED, Eniola can waive specific documents
+    // that Access Bank considers optional for their lending process.
+    // First, get the list of waivable documents for the bank's assignment.
+    const waivableDocsRes = await fetchJson(
+        `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/assignments/${bankAssignmentId}/waivable-documents`,
+        { method: 'GET', headers: authHeaders(eniolaToken) },
+    );
+    if (waivableDocsRes.status !== 200) throw new Error(`Get waivable documents failed: ${waivableDocsRes.status}`);
+    const waivableDocs: Array<{ id: string; documentType: string; documentName: string }> = waivableDocsRes.data.data ?? [];
+
+    // Waive PROOF_OF_ADDRESS — Access Bank has its own address verification
+    const proofOfAddress = waivableDocs.find((d: any) => d.documentType === 'PROOF_OF_ADDRESS');
+    if (proofOfAddress) {
+        const waiverRes = await fetchJson(
+            `${mortgageServiceUrl}/payment-methods/${paymentMethodId}/assignments/${bankAssignmentId}/waivers`,
+            {
+                method: 'POST',
+                headers: { ...authHeaders(eniolaToken), 'x-idempotency-key': idempotencyKey('waive-proof-of-address') },
+                body: JSON.stringify({
+                    documentDefinitionId: proofOfAddress.id,
+                    reason: 'Access Bank performs its own address verification during KYC',
+                }),
+            },
+        );
+        if (waiverRes.status !== 201) throw new Error(`Create document waiver failed: ${waiverRes.status}`);
+        log('Access Bank waives PROOF_OF_ADDRESS', 'Bank has own address verification');
+    } else {
+        log('PROOF_OF_ADDRESS not found in waivable documents', 'Skipping waiver');
+    }
+
+    // =========================================================================
+    // Step 20: Link MREIF to property
     // =========================================================================
     // Platform mortgage_ops links the payment method to the property
     const linkRes = await fetchJson(
@@ -875,7 +1009,7 @@ export async function runDemoBootstrap(
     if (linkRes.status !== 201) throw new Error(`Link MREIF failed: ${linkRes.status}`);
     log('Link MREIF to Sunrise Heights', 'Yinka links payment method to property');
 
-    log('Environment ready', '✅ All actors, orgs, property, payment method, and qualification created');
+    log('Environment ready', '✅ All actors, orgs, property, payment method, qualifications, and waivers created');
 
     // =========================================================================
     // Build result
@@ -905,7 +1039,14 @@ export async function runDemoBootstrap(
             price: PROPERTY_PRICE,
         },
         paymentMethod: { id: paymentMethodId, name: 'MREIF 10/90 Mortgage', phases: phaseCount },
-        qualificationFlow: { id: qualificationFlowId, name: 'MREIF Developer Qualification', gatePlanId, assignmentId },
+        qualificationFlow: {
+            developerFlowId: devQualFlowId,
+            bankFlowId: bankQualFlowId,
+            developerGatePlanId: devGatePlanId,
+            bankGatePlanId: bankGatePlanId,
+            developerAssignmentId: devAssignmentId,
+            bankAssignmentId: bankAssignmentId,
+        },
         steps,
     };
 }

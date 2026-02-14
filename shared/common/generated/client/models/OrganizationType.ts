@@ -224,6 +224,7 @@ export type OrganizationTypeWhereInput = {
   documentApprovals?: Prisma.DocumentApprovalListRelationFilter
   gatePlans?: Prisma.GatePlanListRelationFilter
   gatePhases?: Prisma.GatePhaseListRelationFilter
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigListRelationFilter
 }
 
 export type OrganizationTypeOrderByWithRelationInput = {
@@ -246,6 +247,7 @@ export type OrganizationTypeOrderByWithRelationInput = {
   documentApprovals?: Prisma.DocumentApprovalOrderByRelationAggregateInput
   gatePlans?: Prisma.GatePlanOrderByRelationAggregateInput
   gatePhases?: Prisma.GatePhaseOrderByRelationAggregateInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigOrderByRelationAggregateInput
   _relevance?: Prisma.OrganizationTypeOrderByRelevanceInput
 }
 
@@ -273,6 +275,7 @@ export type OrganizationTypeWhereUniqueInput = Prisma.AtLeast<{
   documentApprovals?: Prisma.DocumentApprovalListRelationFilter
   gatePlans?: Prisma.GatePlanListRelationFilter
   gatePhases?: Prisma.GatePhaseListRelationFilter
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigListRelationFilter
 }, "id" | "tenantId_code">
 
 export type OrganizationTypeOrderByWithAggregationInput = {
@@ -323,6 +326,7 @@ export type OrganizationTypeCreateInput = {
   documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateInput = {
@@ -343,6 +347,7 @@ export type OrganizationTypeUncheckedCreateInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUpdateInput = {
@@ -363,6 +368,7 @@ export type OrganizationTypeUpdateInput = {
   documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateInput = {
@@ -383,6 +389,7 @@ export type OrganizationTypeUncheckedUpdateInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeCreateManyInput = {
@@ -700,6 +707,20 @@ export type OrganizationTypeUpdateOneRequiredWithoutDocumentApprovalsNestedInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationTypeUpdateToOneWithWhereWithoutDocumentApprovalsInput, Prisma.OrganizationTypeUpdateWithoutDocumentApprovalsInput>, Prisma.OrganizationTypeUncheckedUpdateWithoutDocumentApprovalsInput>
 }
 
+export type OrganizationTypeCreateNestedOneWithoutQualificationConfigsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutQualificationConfigsInput, Prisma.OrganizationTypeUncheckedCreateWithoutQualificationConfigsInput>
+  connectOrCreate?: Prisma.OrganizationTypeCreateOrConnectWithoutQualificationConfigsInput
+  connect?: Prisma.OrganizationTypeWhereUniqueInput
+}
+
+export type OrganizationTypeUpdateOneRequiredWithoutQualificationConfigsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutQualificationConfigsInput, Prisma.OrganizationTypeUncheckedCreateWithoutQualificationConfigsInput>
+  connectOrCreate?: Prisma.OrganizationTypeCreateOrConnectWithoutQualificationConfigsInput
+  upsert?: Prisma.OrganizationTypeUpsertWithoutQualificationConfigsInput
+  connect?: Prisma.OrganizationTypeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationTypeUpdateToOneWithWhereWithoutQualificationConfigsInput, Prisma.OrganizationTypeUpdateWithoutQualificationConfigsInput>, Prisma.OrganizationTypeUncheckedUpdateWithoutQualificationConfigsInput>
+}
+
 export type OrganizationTypeCreateWithoutOrganizationsInput = {
   id?: string
   code: string
@@ -717,6 +738,7 @@ export type OrganizationTypeCreateWithoutOrganizationsInput = {
   documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateWithoutOrganizationsInput = {
@@ -736,6 +758,7 @@ export type OrganizationTypeUncheckedCreateWithoutOrganizationsInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeCreateOrConnectWithoutOrganizationsInput = {
@@ -771,6 +794,7 @@ export type OrganizationTypeUpdateWithoutOrganizationsInput = {
   documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateWithoutOrganizationsInput = {
@@ -790,6 +814,7 @@ export type OrganizationTypeUncheckedUpdateWithoutOrganizationsInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeCreateWithoutOnboardingFlowInput = {
@@ -809,6 +834,7 @@ export type OrganizationTypeCreateWithoutOnboardingFlowInput = {
   documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput = {
@@ -828,6 +854,7 @@ export type OrganizationTypeUncheckedCreateWithoutOnboardingFlowInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeCreateOrConnectWithoutOnboardingFlowInput = {
@@ -888,6 +915,7 @@ export type OrganizationTypeCreateWithoutTenantInput = {
   documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateWithoutTenantInput = {
@@ -907,6 +935,7 @@ export type OrganizationTypeUncheckedCreateWithoutTenantInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeCreateOrConnectWithoutTenantInput = {
@@ -952,6 +981,7 @@ export type OrganizationTypeCreateWithoutApprovalStagesInput = {
   documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateWithoutApprovalStagesInput = {
@@ -971,6 +1001,7 @@ export type OrganizationTypeUncheckedCreateWithoutApprovalStagesInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeCreateOrConnectWithoutApprovalStagesInput = {
@@ -1006,6 +1037,7 @@ export type OrganizationTypeUpdateWithoutApprovalStagesInput = {
   documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateWithoutApprovalStagesInput = {
@@ -1025,6 +1057,7 @@ export type OrganizationTypeUncheckedUpdateWithoutApprovalStagesInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeCreateWithoutGatePlansInput = {
@@ -1044,6 +1077,7 @@ export type OrganizationTypeCreateWithoutGatePlansInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutOrganizationTypeInput
   documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateWithoutGatePlansInput = {
@@ -1063,6 +1097,7 @@ export type OrganizationTypeUncheckedCreateWithoutGatePlansInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutOrganizationTypeInput
   documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeCreateOrConnectWithoutGatePlansInput = {
@@ -1098,6 +1133,7 @@ export type OrganizationTypeUpdateWithoutGatePlansInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutOrganizationTypeNestedInput
   documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateWithoutGatePlansInput = {
@@ -1117,6 +1153,7 @@ export type OrganizationTypeUncheckedUpdateWithoutGatePlansInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeCreateWithoutApplicationOrganizationsInput = {
@@ -1136,6 +1173,7 @@ export type OrganizationTypeCreateWithoutApplicationOrganizationsInput = {
   documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateWithoutApplicationOrganizationsInput = {
@@ -1155,6 +1193,7 @@ export type OrganizationTypeUncheckedCreateWithoutApplicationOrganizationsInput 
   documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeCreateOrConnectWithoutApplicationOrganizationsInput = {
@@ -1190,6 +1229,7 @@ export type OrganizationTypeUpdateWithoutApplicationOrganizationsInput = {
   documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateWithoutApplicationOrganizationsInput = {
@@ -1209,6 +1249,7 @@ export type OrganizationTypeUncheckedUpdateWithoutApplicationOrganizationsInput 
   documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeCreateWithoutGatePhasesInput = {
@@ -1228,6 +1269,7 @@ export type OrganizationTypeCreateWithoutGatePhasesInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutOrganizationTypeInput
   documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateWithoutGatePhasesInput = {
@@ -1247,6 +1289,7 @@ export type OrganizationTypeUncheckedCreateWithoutGatePhasesInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutOrganizationTypeInput
   documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeCreateOrConnectWithoutGatePhasesInput = {
@@ -1282,6 +1325,7 @@ export type OrganizationTypeUpdateWithoutGatePhasesInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutOrganizationTypeNestedInput
   documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateWithoutGatePhasesInput = {
@@ -1301,6 +1345,7 @@ export type OrganizationTypeUncheckedUpdateWithoutGatePhasesInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeCreateWithoutDocumentReviewsInput = {
@@ -1320,6 +1365,7 @@ export type OrganizationTypeCreateWithoutDocumentReviewsInput = {
   documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateWithoutDocumentReviewsInput = {
@@ -1339,6 +1385,7 @@ export type OrganizationTypeUncheckedCreateWithoutDocumentReviewsInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeCreateOrConnectWithoutDocumentReviewsInput = {
@@ -1374,6 +1421,7 @@ export type OrganizationTypeUpdateWithoutDocumentReviewsInput = {
   documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateWithoutDocumentReviewsInput = {
@@ -1393,6 +1441,7 @@ export type OrganizationTypeUncheckedUpdateWithoutDocumentReviewsInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeCreateWithoutApprovalStageProgressInput = {
@@ -1412,6 +1461,7 @@ export type OrganizationTypeCreateWithoutApprovalStageProgressInput = {
   documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateWithoutApprovalStageProgressInput = {
@@ -1431,6 +1481,7 @@ export type OrganizationTypeUncheckedCreateWithoutApprovalStageProgressInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeCreateOrConnectWithoutApprovalStageProgressInput = {
@@ -1466,6 +1517,7 @@ export type OrganizationTypeUpdateWithoutApprovalStageProgressInput = {
   documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateWithoutApprovalStageProgressInput = {
@@ -1485,6 +1537,7 @@ export type OrganizationTypeUncheckedUpdateWithoutApprovalStageProgressInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeCreateWithoutDocumentApprovalsInput = {
@@ -1504,6 +1557,7 @@ export type OrganizationTypeCreateWithoutDocumentApprovalsInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeUncheckedCreateWithoutDocumentApprovalsInput = {
@@ -1523,6 +1577,7 @@ export type OrganizationTypeUncheckedCreateWithoutDocumentApprovalsInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutOrganizationTypeInput
   gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
   gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutOrganizationTypeInput
 }
 
 export type OrganizationTypeCreateOrConnectWithoutDocumentApprovalsInput = {
@@ -1558,6 +1613,7 @@ export type OrganizationTypeUpdateWithoutDocumentApprovalsInput = {
   approvalStageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateWithoutDocumentApprovalsInput = {
@@ -1575,6 +1631,103 @@ export type OrganizationTypeUncheckedUpdateWithoutDocumentApprovalsInput = {
   approvalStages?: Prisma.ApprovalStageUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutOrganizationTypeNestedInput
+  gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
+}
+
+export type OrganizationTypeCreateWithoutQualificationConfigsInput = {
+  id?: string
+  code: string
+  name: string
+  description?: string | null
+  isSystemType?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutOrganizationTypesInput
+  onboardingFlow?: Prisma.OnboardingFlowCreateNestedOneWithoutOrganizationTypesInput
+  organizations?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrgTypeInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutAssignedAsTypeInput
+  approvalStages?: Prisma.ApprovalStageCreateNestedManyWithoutOrganizationTypeInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationTypeInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutOrganizationTypeInput
+  documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutOrganizationTypeInput
+  gatePlans?: Prisma.GatePlanCreateNestedManyWithoutReviewerOrganizationTypeInput
+  gatePhases?: Prisma.GatePhaseCreateNestedManyWithoutReviewerOrganizationTypeInput
+}
+
+export type OrganizationTypeUncheckedCreateWithoutQualificationConfigsInput = {
+  id?: string
+  tenantId: string
+  code: string
+  name: string
+  description?: string | null
+  isSystemType?: boolean
+  onboardingFlowId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organizations?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrgTypeInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutAssignedAsTypeInput
+  approvalStages?: Prisma.ApprovalStageUncheckedCreateNestedManyWithoutOrganizationTypeInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationTypeInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutOrganizationTypeInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutOrganizationTypeInput
+  gatePlans?: Prisma.GatePlanUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+  gatePhases?: Prisma.GatePhaseUncheckedCreateNestedManyWithoutReviewerOrganizationTypeInput
+}
+
+export type OrganizationTypeCreateOrConnectWithoutQualificationConfigsInput = {
+  where: Prisma.OrganizationTypeWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutQualificationConfigsInput, Prisma.OrganizationTypeUncheckedCreateWithoutQualificationConfigsInput>
+}
+
+export type OrganizationTypeUpsertWithoutQualificationConfigsInput = {
+  update: Prisma.XOR<Prisma.OrganizationTypeUpdateWithoutQualificationConfigsInput, Prisma.OrganizationTypeUncheckedUpdateWithoutQualificationConfigsInput>
+  create: Prisma.XOR<Prisma.OrganizationTypeCreateWithoutQualificationConfigsInput, Prisma.OrganizationTypeUncheckedCreateWithoutQualificationConfigsInput>
+  where?: Prisma.OrganizationTypeWhereInput
+}
+
+export type OrganizationTypeUpdateToOneWithWhereWithoutQualificationConfigsInput = {
+  where?: Prisma.OrganizationTypeWhereInput
+  data: Prisma.XOR<Prisma.OrganizationTypeUpdateWithoutQualificationConfigsInput, Prisma.OrganizationTypeUncheckedUpdateWithoutQualificationConfigsInput>
+}
+
+export type OrganizationTypeUpdateWithoutQualificationConfigsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationTypesNestedInput
+  onboardingFlow?: Prisma.OnboardingFlowUpdateOneWithoutOrganizationTypesNestedInput
+  organizations?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrgTypeNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutAssignedAsTypeNestedInput
+  approvalStages?: Prisma.ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationTypeNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutOrganizationTypeNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
+  gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+}
+
+export type OrganizationTypeUncheckedUpdateWithoutQualificationConfigsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSystemType?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingFlowId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizations?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrgTypeNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutAssignedAsTypeNestedInput
+  approvalStages?: Prisma.ApprovalStageUncheckedUpdateManyWithoutOrganizationTypeNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationTypeNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutOrganizationTypeNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
 }
@@ -1607,6 +1760,7 @@ export type OrganizationTypeUpdateWithoutOnboardingFlowInput = {
   documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateWithoutOnboardingFlowInput = {
@@ -1626,6 +1780,7 @@ export type OrganizationTypeUncheckedUpdateWithoutOnboardingFlowInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateManyWithoutOnboardingFlowInput = {
@@ -1667,6 +1822,7 @@ export type OrganizationTypeUpdateWithoutTenantInput = {
   documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateWithoutTenantInput = {
@@ -1686,6 +1842,7 @@ export type OrganizationTypeUncheckedUpdateWithoutTenantInput = {
   documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutOrganizationTypeNestedInput
   gatePlans?: Prisma.GatePlanUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
   gatePhases?: Prisma.GatePhaseUncheckedUpdateManyWithoutReviewerOrganizationTypeNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutOrganizationTypeNestedInput
 }
 
 export type OrganizationTypeUncheckedUpdateManyWithoutTenantInput = {
@@ -1713,6 +1870,7 @@ export type OrganizationTypeCountOutputType = {
   documentApprovals: number
   gatePlans: number
   gatePhases: number
+  qualificationConfigs: number
 }
 
 export type OrganizationTypeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1724,6 +1882,7 @@ export type OrganizationTypeCountOutputTypeSelect<ExtArgs extends runtime.Types.
   documentApprovals?: boolean | OrganizationTypeCountOutputTypeCountDocumentApprovalsArgs
   gatePlans?: boolean | OrganizationTypeCountOutputTypeCountGatePlansArgs
   gatePhases?: boolean | OrganizationTypeCountOutputTypeCountGatePhasesArgs
+  qualificationConfigs?: boolean | OrganizationTypeCountOutputTypeCountQualificationConfigsArgs
 }
 
 /**
@@ -1792,6 +1951,13 @@ export type OrganizationTypeCountOutputTypeCountGatePhasesArgs<ExtArgs extends r
   where?: Prisma.GatePhaseWhereInput
 }
 
+/**
+ * OrganizationTypeCountOutputType without action
+ */
+export type OrganizationTypeCountOutputTypeCountQualificationConfigsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentMethodQualificationConfigWhereInput
+}
+
 
 export type OrganizationTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1813,6 +1979,7 @@ export type OrganizationTypeSelect<ExtArgs extends runtime.Types.Extensions.Inte
   documentApprovals?: boolean | Prisma.OrganizationType$documentApprovalsArgs<ExtArgs>
   gatePlans?: boolean | Prisma.OrganizationType$gatePlansArgs<ExtArgs>
   gatePhases?: boolean | Prisma.OrganizationType$gatePhasesArgs<ExtArgs>
+  qualificationConfigs?: boolean | Prisma.OrganizationType$qualificationConfigsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationTypeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organizationType"]>
 
@@ -1842,6 +2009,7 @@ export type OrganizationTypeInclude<ExtArgs extends runtime.Types.Extensions.Int
   documentApprovals?: boolean | Prisma.OrganizationType$documentApprovalsArgs<ExtArgs>
   gatePlans?: boolean | Prisma.OrganizationType$gatePlansArgs<ExtArgs>
   gatePhases?: boolean | Prisma.OrganizationType$gatePhasesArgs<ExtArgs>
+  qualificationConfigs?: boolean | Prisma.OrganizationType$qualificationConfigsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationTypeCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1858,6 +2026,7 @@ export type $OrganizationTypePayload<ExtArgs extends runtime.Types.Extensions.In
     documentApprovals: Prisma.$DocumentApprovalPayload<ExtArgs>[]
     gatePlans: Prisma.$GatePlanPayload<ExtArgs>[]
     gatePhases: Prisma.$GatePhasePayload<ExtArgs>[]
+    qualificationConfigs: Prisma.$PaymentMethodQualificationConfigPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2219,6 +2388,7 @@ export interface Prisma__OrganizationTypeClient<T, Null = never, ExtArgs extends
   documentApprovals<T extends Prisma.OrganizationType$documentApprovalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationType$documentApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   gatePlans<T extends Prisma.OrganizationType$gatePlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationType$gatePlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   gatePhases<T extends Prisma.OrganizationType$gatePhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationType$gatePhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  qualificationConfigs<T extends Prisma.OrganizationType$qualificationConfigsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationType$qualificationConfigsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2808,6 +2978,30 @@ export type OrganizationType$gatePhasesArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.GatePhaseScalarFieldEnum | Prisma.GatePhaseScalarFieldEnum[]
+}
+
+/**
+ * OrganizationType.qualificationConfigs
+ */
+export type OrganizationType$qualificationConfigsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentMethodQualificationConfig
+   */
+  select?: Prisma.PaymentMethodQualificationConfigSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentMethodQualificationConfig
+   */
+  omit?: Prisma.PaymentMethodQualificationConfigOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentMethodQualificationConfigInclude<ExtArgs> | null
+  where?: Prisma.PaymentMethodQualificationConfigWhereInput
+  orderBy?: Prisma.PaymentMethodQualificationConfigOrderByWithRelationInput | Prisma.PaymentMethodQualificationConfigOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentMethodQualificationConfigWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentMethodQualificationConfigScalarFieldEnum | Prisma.PaymentMethodQualificationConfigScalarFieldEnum[]
 }
 
 /**

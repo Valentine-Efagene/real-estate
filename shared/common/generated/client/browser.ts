@@ -471,3 +471,13 @@ export type PaymentMethodQualification = Prisma.PaymentMethodQualificationModel
  * Mirrors OnboardingPhase but scoped to payment method qualification (no PAYMENT phases)
  */
 export type QualificationPhase = Prisma.QualificationPhaseModel
+/**
+ * Model PaymentMethodQualificationConfig
+ * 
+ */
+export type PaymentMethodQualificationConfig = Prisma.PaymentMethodQualificationConfigModel
+/**
+ * Model OrganizationDocumentWaiver
+ * 
+ */
+export type OrganizationDocumentWaiver = Prisma.OrganizationDocumentWaiverModel

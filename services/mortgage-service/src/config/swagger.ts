@@ -21,6 +21,8 @@ import {
   ReviewQualificationSchema,
   AssignQualificationFlowSchema,
   UpdateQualificationStatusSchema,
+  CreateDocumentWaiverSchema,
+  BulkCreateDocumentWaiverSchema,
 } from '../validators/qualification-flow.validator';
 import {
   CreateGatePlanSchema,
@@ -353,16 +355,43 @@ registry.registerPath({
   method: 'post',
   path: '/payment-methods/{id}/qualification-flow',
   tags: ['Payment Method Qualifications'],
-  summary: 'Assign qualification flow to payment method',
-  description: 'Assign a qualification flow template to a payment method. Organizations must complete this flow to use the payment method.',
+  summary: 'Assign qualification flow to payment method for an org type',
+  description: 'Assign a qualification flow template to a payment method for a specific organization type (e.g., DEVELOPER, BANK). Different org types can have different qualification flows for the same payment method. Creates or updates a PaymentMethodQualificationConfig.',
   security: [{ bearerAuth: [] }],
   request: {
     params: z.object({ id: z.string() }),
     body: { content: { 'application/json': { schema: AssignQualificationFlowSchema } } },
   },
   responses: {
-    200: { description: 'Qualification flow assigned', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
-    404: { description: 'Payment method or qualification flow not found' },
+    200: { description: 'Qualification flow assigned for org type', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    404: { description: 'Payment method, qualification flow, or org type not found' },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/payment-methods/{id}/qualification-configs',
+  tags: ['Payment Method Qualifications'],
+  summary: 'List qualification configs for payment method',
+  description: 'List all org-type → qualification flow mappings for a payment method. Shows which org types require qualification and which flow they use.',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ id: z.string() }) },
+  responses: {
+    200: { description: 'List of qualification configs', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.array(z.any()) }) } } },
+  },
+});
+
+registry.registerPath({
+  method: 'delete',
+  path: '/payment-methods/{id}/qualification-configs/{orgTypeCode}',
+  tags: ['Payment Method Qualifications'],
+  summary: 'Remove qualification config for org type',
+  description: 'Remove the qualification flow requirement for a specific organization type on this payment method.',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ id: z.string(), orgTypeCode: z.string() }) },
+  responses: {
+    200: { description: 'Config removed', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    404: { description: 'Config not found' },
   },
 });
 
@@ -371,7 +400,7 @@ registry.registerPath({
   path: '/payment-methods/{id}/apply',
   tags: ['Payment Method Qualifications'],
   summary: 'Apply for payment method access',
-  description: 'Organization applies to use a payment method. If the method has a qualification flow, a workflow instance is created. If no flow, org is auto-qualified.',
+  description: 'Organization applies to use a payment method. The system looks up the qualification config matching the org\'s type. If a flow exists for that type, a workflow instance is created. If no matching config, org is auto-qualified.',
   security: [{ bearerAuth: [] }],
   request: {
     params: z.object({ id: z.string() }),
@@ -443,6 +472,84 @@ registry.registerPath({
     200: { description: 'Review recorded', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
     400: { description: 'Phase not in reviewable state' },
     404: { description: 'Phase not found' },
+  },
+});
+
+// ============ Document Waivers ============
+registry.registerPath({
+  method: 'get',
+  path: '/payment-methods/{id}/assignments/{assignmentId}/waivable-documents',
+  tags: ['Document Waivers'],
+  summary: 'List waivable documents for assignment',
+  description: 'List all document definitions across all DOCUMENTATION phases of the payment method. Shows which docs are already waived and which can be waived.',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ id: z.string(), assignmentId: z.string() }) },
+  responses: {
+    200: { description: 'List of waivable documents with waiver status', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.array(z.any()) }) } } },
+    404: { description: 'Assignment not found' },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/payment-methods/{id}/assignments/{assignmentId}/waivers',
+  tags: ['Document Waivers'],
+  summary: 'List document waivers for assignment',
+  description: 'List all document waivers configured by this organization for this payment method.',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ id: z.string(), assignmentId: z.string() }) },
+  responses: {
+    200: { description: 'List of document waivers', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.array(z.any()) }) } } },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/payment-methods/{id}/assignments/{assignmentId}/waivers',
+  tags: ['Document Waivers'],
+  summary: 'Create a document waiver',
+  description: 'Waive a specific document definition for this organization\'s use of the payment method. The document will be treated as optional when this org is involved in customer applications.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string(), assignmentId: z.string() }),
+    body: { content: { 'application/json': { schema: CreateDocumentWaiverSchema } } },
+  },
+  responses: {
+    201: { description: 'Waiver created', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    400: { description: 'Org not qualified or doc not in payment method' },
+    404: { description: 'Assignment or document definition not found' },
+    409: { description: 'Waiver already exists' },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/payment-methods/{id}/assignments/{assignmentId}/waivers/bulk',
+  tags: ['Document Waivers'],
+  summary: 'Create multiple document waivers',
+  description: 'Waive multiple document definitions at once for this organization\'s use of the payment method.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string(), assignmentId: z.string() }),
+    body: { content: { 'application/json': { schema: BulkCreateDocumentWaiverSchema } } },
+  },
+  responses: {
+    201: { description: 'Waivers created', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.array(z.any()) }) } } },
+    400: { description: 'Validation error' },
+  },
+});
+
+registry.registerPath({
+  method: 'delete',
+  path: '/payment-methods/{id}/assignments/{assignmentId}/waivers/{waiverId}',
+  tags: ['Document Waivers'],
+  summary: 'Delete a document waiver',
+  description: 'Remove a document waiver, making the document required again.',
+  security: [{ bearerAuth: [] }],
+  request: { params: z.object({ id: z.string(), assignmentId: z.string(), waiverId: z.string() }) },
+  responses: {
+    200: { description: 'Waiver deleted', content: { 'application/json': { schema: z.object({ success: z.literal(true), data: z.any() }) } } },
+    404: { description: 'Waiver not found' },
   },
 });
 

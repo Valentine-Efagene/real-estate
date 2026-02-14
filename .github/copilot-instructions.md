@@ -53,6 +53,7 @@ We are in active development - **delete unused code, don't deprecate it**:
 - If tests fail after schema changes, fix the tests to use the new architecture
 - The goal is a clean codebase, not a museum of old approaches
 - Don't use the `head` command in bash. It conflicts with a PERL command, and the error just wastes time and tokens.
+- Maximize token efficiency using compact commands and avoiding unnecessary output
 
 ## Shared Library (`@valentine-efagene/qshelter-common`)
 
@@ -61,6 +62,8 @@ We are in active development - **delete unused code, don't deprecate it**:
 - **Never import directly from local paths or other services**. Always use the published package.
 - After schema changes: `npm run generate:prisma` then `npm run patch` to publish.
 - Services must update to the latest version after publishing: `npm i @valentine-efagene/qshelter-common@latest`.
+- Husky errors seem to be wasting tokens. Remove all husky settings and scripts to avoid this issue. The token cost of husky errors is not worth the benefit of pre-commit hooks in this case.
+- Whenever I ask to teardown the aws infrastructure, I mean everything, especially the database. The database is the most expensive part to maintain, and we want to avoid unnecessary costs. Please use the teardown script that handles everything properly, rather than manually deleting stacks or resources in the AWS console.
 
 ## Service Structure
 

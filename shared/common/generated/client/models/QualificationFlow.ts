@@ -250,7 +250,7 @@ export type QualificationFlowWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"QualificationFlow"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phases?: Prisma.QualificationFlowPhaseListRelationFilter
-  paymentMethods?: Prisma.PropertyPaymentMethodListRelationFilter
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigListRelationFilter
   qualifications?: Prisma.PaymentMethodQualificationListRelationFilter
 }
 
@@ -266,7 +266,7 @@ export type QualificationFlowOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
   phases?: Prisma.QualificationFlowPhaseOrderByRelationAggregateInput
-  paymentMethods?: Prisma.PropertyPaymentMethodOrderByRelationAggregateInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigOrderByRelationAggregateInput
   qualifications?: Prisma.PaymentMethodQualificationOrderByRelationAggregateInput
   _relevance?: Prisma.QualificationFlowOrderByRelevanceInput
 }
@@ -287,7 +287,7 @@ export type QualificationFlowWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"QualificationFlow"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phases?: Prisma.QualificationFlowPhaseListRelationFilter
-  paymentMethods?: Prisma.PropertyPaymentMethodListRelationFilter
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigListRelationFilter
   qualifications?: Prisma.PaymentMethodQualificationListRelationFilter
 }, "id" | "tenantId_name">
 
@@ -334,7 +334,7 @@ export type QualificationFlowCreateInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutQualificationFlowsInput
   phases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQualificationFlowInput
-  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutQualificationFlowInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutQualificationFlowInput
   qualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutQualificationFlowInput
 }
 
@@ -349,7 +349,7 @@ export type QualificationFlowUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   phases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQualificationFlowInput
-  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutQualificationFlowInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutQualificationFlowInput
   qualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutQualificationFlowInput
 }
 
@@ -364,7 +364,7 @@ export type QualificationFlowUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutQualificationFlowsNestedInput
   phases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQualificationFlowNestedInput
-  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutQualificationFlowNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutQualificationFlowNestedInput
   qualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutQualificationFlowNestedInput
 }
 
@@ -379,7 +379,7 @@ export type QualificationFlowUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   phases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQualificationFlowNestedInput
-  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutQualificationFlowNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutQualificationFlowNestedInput
   qualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutQualificationFlowNestedInput
 }
 
@@ -426,11 +426,6 @@ export type QualificationFlowListRelationFilter = {
 
 export type QualificationFlowOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type QualificationFlowNullableScalarRelationFilter = {
-  is?: Prisma.QualificationFlowWhereInput | null
-  isNot?: Prisma.QualificationFlowWhereInput | null
 }
 
 export type QualificationFlowOrderByRelevanceInput = {
@@ -535,22 +530,6 @@ export type QualificationFlowUncheckedUpdateManyWithoutTenantNestedInput = {
   deleteMany?: Prisma.QualificationFlowScalarWhereInput | Prisma.QualificationFlowScalarWhereInput[]
 }
 
-export type QualificationFlowCreateNestedOneWithoutPaymentMethodsInput = {
-  create?: Prisma.XOR<Prisma.QualificationFlowCreateWithoutPaymentMethodsInput, Prisma.QualificationFlowUncheckedCreateWithoutPaymentMethodsInput>
-  connectOrCreate?: Prisma.QualificationFlowCreateOrConnectWithoutPaymentMethodsInput
-  connect?: Prisma.QualificationFlowWhereUniqueInput
-}
-
-export type QualificationFlowUpdateOneWithoutPaymentMethodsNestedInput = {
-  create?: Prisma.XOR<Prisma.QualificationFlowCreateWithoutPaymentMethodsInput, Prisma.QualificationFlowUncheckedCreateWithoutPaymentMethodsInput>
-  connectOrCreate?: Prisma.QualificationFlowCreateOrConnectWithoutPaymentMethodsInput
-  upsert?: Prisma.QualificationFlowUpsertWithoutPaymentMethodsInput
-  disconnect?: Prisma.QualificationFlowWhereInput | boolean
-  delete?: Prisma.QualificationFlowWhereInput | boolean
-  connect?: Prisma.QualificationFlowWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.QualificationFlowUpdateToOneWithWhereWithoutPaymentMethodsInput, Prisma.QualificationFlowUpdateWithoutPaymentMethodsInput>, Prisma.QualificationFlowUncheckedUpdateWithoutPaymentMethodsInput>
-}
-
 export type QualificationFlowCreateNestedOneWithoutPhasesInput = {
   create?: Prisma.XOR<Prisma.QualificationFlowCreateWithoutPhasesInput, Prisma.QualificationFlowUncheckedCreateWithoutPhasesInput>
   connectOrCreate?: Prisma.QualificationFlowCreateOrConnectWithoutPhasesInput
@@ -579,6 +558,20 @@ export type QualificationFlowUpdateOneRequiredWithoutQualificationsNestedInput =
   update?: Prisma.XOR<Prisma.XOR<Prisma.QualificationFlowUpdateToOneWithWhereWithoutQualificationsInput, Prisma.QualificationFlowUpdateWithoutQualificationsInput>, Prisma.QualificationFlowUncheckedUpdateWithoutQualificationsInput>
 }
 
+export type QualificationFlowCreateNestedOneWithoutQualificationConfigsInput = {
+  create?: Prisma.XOR<Prisma.QualificationFlowCreateWithoutQualificationConfigsInput, Prisma.QualificationFlowUncheckedCreateWithoutQualificationConfigsInput>
+  connectOrCreate?: Prisma.QualificationFlowCreateOrConnectWithoutQualificationConfigsInput
+  connect?: Prisma.QualificationFlowWhereUniqueInput
+}
+
+export type QualificationFlowUpdateOneRequiredWithoutQualificationConfigsNestedInput = {
+  create?: Prisma.XOR<Prisma.QualificationFlowCreateWithoutQualificationConfigsInput, Prisma.QualificationFlowUncheckedCreateWithoutQualificationConfigsInput>
+  connectOrCreate?: Prisma.QualificationFlowCreateOrConnectWithoutQualificationConfigsInput
+  upsert?: Prisma.QualificationFlowUpsertWithoutQualificationConfigsInput
+  connect?: Prisma.QualificationFlowWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.QualificationFlowUpdateToOneWithWhereWithoutQualificationConfigsInput, Prisma.QualificationFlowUpdateWithoutQualificationConfigsInput>, Prisma.QualificationFlowUncheckedUpdateWithoutQualificationConfigsInput>
+}
+
 export type QualificationFlowCreateWithoutTenantInput = {
   id?: string
   name: string
@@ -589,7 +582,7 @@ export type QualificationFlowCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   phases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQualificationFlowInput
-  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutQualificationFlowInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutQualificationFlowInput
   qualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutQualificationFlowInput
 }
 
@@ -603,7 +596,7 @@ export type QualificationFlowUncheckedCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   phases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQualificationFlowInput
-  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutQualificationFlowInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutQualificationFlowInput
   qualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutQualificationFlowInput
 }
 
@@ -648,78 +641,6 @@ export type QualificationFlowScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"QualificationFlow"> | Date | string
 }
 
-export type QualificationFlowCreateWithoutPaymentMethodsInput = {
-  id?: string
-  name: string
-  description?: string | null
-  isActive?: boolean
-  autoActivatePhases?: boolean
-  expiresInDays?: number | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  tenant: Prisma.TenantCreateNestedOneWithoutQualificationFlowsInput
-  phases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQualificationFlowInput
-  qualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutQualificationFlowInput
-}
-
-export type QualificationFlowUncheckedCreateWithoutPaymentMethodsInput = {
-  id?: string
-  tenantId: string
-  name: string
-  description?: string | null
-  isActive?: boolean
-  autoActivatePhases?: boolean
-  expiresInDays?: number | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  phases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQualificationFlowInput
-  qualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutQualificationFlowInput
-}
-
-export type QualificationFlowCreateOrConnectWithoutPaymentMethodsInput = {
-  where: Prisma.QualificationFlowWhereUniqueInput
-  create: Prisma.XOR<Prisma.QualificationFlowCreateWithoutPaymentMethodsInput, Prisma.QualificationFlowUncheckedCreateWithoutPaymentMethodsInput>
-}
-
-export type QualificationFlowUpsertWithoutPaymentMethodsInput = {
-  update: Prisma.XOR<Prisma.QualificationFlowUpdateWithoutPaymentMethodsInput, Prisma.QualificationFlowUncheckedUpdateWithoutPaymentMethodsInput>
-  create: Prisma.XOR<Prisma.QualificationFlowCreateWithoutPaymentMethodsInput, Prisma.QualificationFlowUncheckedCreateWithoutPaymentMethodsInput>
-  where?: Prisma.QualificationFlowWhereInput
-}
-
-export type QualificationFlowUpdateToOneWithWhereWithoutPaymentMethodsInput = {
-  where?: Prisma.QualificationFlowWhereInput
-  data: Prisma.XOR<Prisma.QualificationFlowUpdateWithoutPaymentMethodsInput, Prisma.QualificationFlowUncheckedUpdateWithoutPaymentMethodsInput>
-}
-
-export type QualificationFlowUpdateWithoutPaymentMethodsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  autoActivatePhases?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  expiresInDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutQualificationFlowsNestedInput
-  phases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQualificationFlowNestedInput
-  qualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutQualificationFlowNestedInput
-}
-
-export type QualificationFlowUncheckedUpdateWithoutPaymentMethodsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  autoActivatePhases?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  expiresInDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQualificationFlowNestedInput
-  qualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutQualificationFlowNestedInput
-}
-
 export type QualificationFlowCreateWithoutPhasesInput = {
   id?: string
   name: string
@@ -730,7 +651,7 @@ export type QualificationFlowCreateWithoutPhasesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutQualificationFlowsInput
-  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutQualificationFlowInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutQualificationFlowInput
   qualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutQualificationFlowInput
 }
 
@@ -744,7 +665,7 @@ export type QualificationFlowUncheckedCreateWithoutPhasesInput = {
   expiresInDays?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutQualificationFlowInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutQualificationFlowInput
   qualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutQualificationFlowInput
 }
 
@@ -774,7 +695,7 @@ export type QualificationFlowUpdateWithoutPhasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutQualificationFlowsNestedInput
-  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutQualificationFlowNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutQualificationFlowNestedInput
   qualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutQualificationFlowNestedInput
 }
 
@@ -788,7 +709,7 @@ export type QualificationFlowUncheckedUpdateWithoutPhasesInput = {
   expiresInDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutQualificationFlowNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutQualificationFlowNestedInput
   qualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutQualificationFlowNestedInput
 }
 
@@ -803,7 +724,7 @@ export type QualificationFlowCreateWithoutQualificationsInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutQualificationFlowsInput
   phases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQualificationFlowInput
-  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutQualificationFlowInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutQualificationFlowInput
 }
 
 export type QualificationFlowUncheckedCreateWithoutQualificationsInput = {
@@ -817,7 +738,7 @@ export type QualificationFlowUncheckedCreateWithoutQualificationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   phases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQualificationFlowInput
-  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutQualificationFlowInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutQualificationFlowInput
 }
 
 export type QualificationFlowCreateOrConnectWithoutQualificationsInput = {
@@ -847,7 +768,7 @@ export type QualificationFlowUpdateWithoutQualificationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutQualificationFlowsNestedInput
   phases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQualificationFlowNestedInput
-  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutQualificationFlowNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutQualificationFlowNestedInput
 }
 
 export type QualificationFlowUncheckedUpdateWithoutQualificationsInput = {
@@ -861,7 +782,79 @@ export type QualificationFlowUncheckedUpdateWithoutQualificationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   phases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQualificationFlowNestedInput
-  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutQualificationFlowNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutQualificationFlowNestedInput
+}
+
+export type QualificationFlowCreateWithoutQualificationConfigsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  isActive?: boolean
+  autoActivatePhases?: boolean
+  expiresInDays?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutQualificationFlowsInput
+  phases?: Prisma.QualificationFlowPhaseCreateNestedManyWithoutQualificationFlowInput
+  qualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutQualificationFlowInput
+}
+
+export type QualificationFlowUncheckedCreateWithoutQualificationConfigsInput = {
+  id?: string
+  tenantId: string
+  name: string
+  description?: string | null
+  isActive?: boolean
+  autoActivatePhases?: boolean
+  expiresInDays?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phases?: Prisma.QualificationFlowPhaseUncheckedCreateNestedManyWithoutQualificationFlowInput
+  qualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutQualificationFlowInput
+}
+
+export type QualificationFlowCreateOrConnectWithoutQualificationConfigsInput = {
+  where: Prisma.QualificationFlowWhereUniqueInput
+  create: Prisma.XOR<Prisma.QualificationFlowCreateWithoutQualificationConfigsInput, Prisma.QualificationFlowUncheckedCreateWithoutQualificationConfigsInput>
+}
+
+export type QualificationFlowUpsertWithoutQualificationConfigsInput = {
+  update: Prisma.XOR<Prisma.QualificationFlowUpdateWithoutQualificationConfigsInput, Prisma.QualificationFlowUncheckedUpdateWithoutQualificationConfigsInput>
+  create: Prisma.XOR<Prisma.QualificationFlowCreateWithoutQualificationConfigsInput, Prisma.QualificationFlowUncheckedCreateWithoutQualificationConfigsInput>
+  where?: Prisma.QualificationFlowWhereInput
+}
+
+export type QualificationFlowUpdateToOneWithWhereWithoutQualificationConfigsInput = {
+  where?: Prisma.QualificationFlowWhereInput
+  data: Prisma.XOR<Prisma.QualificationFlowUpdateWithoutQualificationConfigsInput, Prisma.QualificationFlowUncheckedUpdateWithoutQualificationConfigsInput>
+}
+
+export type QualificationFlowUpdateWithoutQualificationConfigsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoActivatePhases?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiresInDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutQualificationFlowsNestedInput
+  phases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQualificationFlowNestedInput
+  qualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutQualificationFlowNestedInput
+}
+
+export type QualificationFlowUncheckedUpdateWithoutQualificationConfigsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoActivatePhases?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiresInDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQualificationFlowNestedInput
+  qualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutQualificationFlowNestedInput
 }
 
 export type QualificationFlowCreateManyTenantInput = {
@@ -885,7 +878,7 @@ export type QualificationFlowUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   phases?: Prisma.QualificationFlowPhaseUpdateManyWithoutQualificationFlowNestedInput
-  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutQualificationFlowNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutQualificationFlowNestedInput
   qualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutQualificationFlowNestedInput
 }
 
@@ -899,7 +892,7 @@ export type QualificationFlowUncheckedUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   phases?: Prisma.QualificationFlowPhaseUncheckedUpdateManyWithoutQualificationFlowNestedInput
-  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutQualificationFlowNestedInput
+  qualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutQualificationFlowNestedInput
   qualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutQualificationFlowNestedInput
 }
 
@@ -921,13 +914,13 @@ export type QualificationFlowUncheckedUpdateManyWithoutTenantInput = {
 
 export type QualificationFlowCountOutputType = {
   phases: number
-  paymentMethods: number
+  qualificationConfigs: number
   qualifications: number
 }
 
 export type QualificationFlowCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   phases?: boolean | QualificationFlowCountOutputTypeCountPhasesArgs
-  paymentMethods?: boolean | QualificationFlowCountOutputTypeCountPaymentMethodsArgs
+  qualificationConfigs?: boolean | QualificationFlowCountOutputTypeCountQualificationConfigsArgs
   qualifications?: boolean | QualificationFlowCountOutputTypeCountQualificationsArgs
 }
 
@@ -951,8 +944,8 @@ export type QualificationFlowCountOutputTypeCountPhasesArgs<ExtArgs extends runt
 /**
  * QualificationFlowCountOutputType without action
  */
-export type QualificationFlowCountOutputTypeCountPaymentMethodsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PropertyPaymentMethodWhereInput
+export type QualificationFlowCountOutputTypeCountQualificationConfigsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentMethodQualificationConfigWhereInput
 }
 
 /**
@@ -975,7 +968,7 @@ export type QualificationFlowSelect<ExtArgs extends runtime.Types.Extensions.Int
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phases?: boolean | Prisma.QualificationFlow$phasesArgs<ExtArgs>
-  paymentMethods?: boolean | Prisma.QualificationFlow$paymentMethodsArgs<ExtArgs>
+  qualificationConfigs?: boolean | Prisma.QualificationFlow$qualificationConfigsArgs<ExtArgs>
   qualifications?: boolean | Prisma.QualificationFlow$qualificationsArgs<ExtArgs>
   _count?: boolean | Prisma.QualificationFlowCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["qualificationFlow"]>
@@ -998,7 +991,7 @@ export type QualificationFlowOmit<ExtArgs extends runtime.Types.Extensions.Inter
 export type QualificationFlowInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phases?: boolean | Prisma.QualificationFlow$phasesArgs<ExtArgs>
-  paymentMethods?: boolean | Prisma.QualificationFlow$paymentMethodsArgs<ExtArgs>
+  qualificationConfigs?: boolean | Prisma.QualificationFlow$qualificationConfigsArgs<ExtArgs>
   qualifications?: boolean | Prisma.QualificationFlow$qualificationsArgs<ExtArgs>
   _count?: boolean | Prisma.QualificationFlowCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1008,7 +1001,7 @@ export type $QualificationFlowPayload<ExtArgs extends runtime.Types.Extensions.I
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>
     phases: Prisma.$QualificationFlowPhasePayload<ExtArgs>[]
-    paymentMethods: Prisma.$PropertyPaymentMethodPayload<ExtArgs>[]
+    qualificationConfigs: Prisma.$PaymentMethodQualificationConfigPayload<ExtArgs>[]
     qualifications: Prisma.$PaymentMethodQualificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1363,7 +1356,7 @@ export interface Prisma__QualificationFlowClient<T, Null = never, ExtArgs extend
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   phases<T extends Prisma.QualificationFlow$phasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualificationFlow$phasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualificationFlowPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  paymentMethods<T extends Prisma.QualificationFlow$paymentMethodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualificationFlow$paymentMethodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  qualificationConfigs<T extends Prisma.QualificationFlow$qualificationConfigsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualificationFlow$qualificationConfigsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   qualifications<T extends Prisma.QualificationFlow$qualificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualificationFlow$qualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1770,27 +1763,27 @@ export type QualificationFlow$phasesArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
- * QualificationFlow.paymentMethods
+ * QualificationFlow.qualificationConfigs
  */
-export type QualificationFlow$paymentMethodsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type QualificationFlow$qualificationConfigsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the PropertyPaymentMethod
+   * Select specific fields to fetch from the PaymentMethodQualificationConfig
    */
-  select?: Prisma.PropertyPaymentMethodSelect<ExtArgs> | null
+  select?: Prisma.PaymentMethodQualificationConfigSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the PropertyPaymentMethod
+   * Omit specific fields from the PaymentMethodQualificationConfig
    */
-  omit?: Prisma.PropertyPaymentMethodOmit<ExtArgs> | null
+  omit?: Prisma.PaymentMethodQualificationConfigOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PropertyPaymentMethodInclude<ExtArgs> | null
-  where?: Prisma.PropertyPaymentMethodWhereInput
-  orderBy?: Prisma.PropertyPaymentMethodOrderByWithRelationInput | Prisma.PropertyPaymentMethodOrderByWithRelationInput[]
-  cursor?: Prisma.PropertyPaymentMethodWhereUniqueInput
+  include?: Prisma.PaymentMethodQualificationConfigInclude<ExtArgs> | null
+  where?: Prisma.PaymentMethodQualificationConfigWhereInput
+  orderBy?: Prisma.PaymentMethodQualificationConfigOrderByWithRelationInput | Prisma.PaymentMethodQualificationConfigOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentMethodQualificationConfigWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.PropertyPaymentMethodScalarFieldEnum | Prisma.PropertyPaymentMethodScalarFieldEnum[]
+  distinct?: Prisma.PaymentMethodQualificationConfigScalarFieldEnum | Prisma.PaymentMethodQualificationConfigScalarFieldEnum[]
 }
 
 /**

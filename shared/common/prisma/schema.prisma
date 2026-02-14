@@ -259,6 +259,9 @@ model OrganizationType {
   // Gate phases that require this type as reviewer
   gatePhases GatePhase[]
 
+  // Payment method qualification configs for this org type
+  qualificationConfigs PaymentMethodQualificationConfig[]
+
   @@unique([tenantId, code])
   @@index([tenantId])
   @@index([code])
@@ -595,6 +598,9 @@ model User {
   // Payment method qualification workflow
   assignedQualifications PaymentMethodQualification[] @relation("QualificationAssignee")
   approvedQualifications PaymentMethodQualification[] @relation("QualificationApprover")
+
+  // Document waivers created by this user
+  documentWaivers OrganizationDocumentWaiver[] @relation("DocumentWaiverCreator")
 
   @@index([email])
   @@index([tenantId])
@@ -1245,6 +1251,10 @@ model Tenant {
   paymentMethodQualifications PaymentMethodQualification[]
   qualificationPhases         QualificationPhase[]
 
+  // Per-org-type qualification configs and document waivers
+  paymentMethodQualificationConfigs PaymentMethodQualificationConfig[]
+  organizationDocumentWaivers       OrganizationDocumentWaiver[]
+
   @@index([subdomain])
   @@map("tenants")
 }
@@ -1798,6 +1808,9 @@ model DocumentDefinition {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Organization waivers for this document definition
+  waivers OrganizationDocumentWaiver[]
+
   @@index([planId])
   @@map("document_definitions")
 }
@@ -2056,10 +2069,6 @@ model PropertyPaymentMethod {
   autoActivatePhases     Boolean @default(true)
   requiresManualApproval Boolean @default(false)
 
-  // Qualification flow — organizations must complete this to use the payment method
-  qualificationFlowId String?
-  qualificationFlow   QualificationFlow? @relation(fields: [qualificationFlowId], references: [id])
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -2082,9 +2091,12 @@ model PropertyPaymentMethod {
   // Organizations assigned/qualified for this payment method
   organizationAssignments OrganizationPaymentMethod[]
 
+  // Per-org-type qualification flow configs
+  // Each org type (DEVELOPER, BANK, etc.) can have its own qualification flow
+  qualificationConfigs PaymentMethodQualificationConfig[]
+
   @@unique([tenantId, name]) // Unique per tenant
   @@index([tenantId])
-  @@index([qualificationFlowId])
   @@map("property_payment_methods")
 }
 
@@ -4314,8 +4326,8 @@ model QualificationFlow {
   // Ordered phases in this qualification workflow
   phases QualificationFlowPhase[]
 
-  // Payment methods that use this qualification flow
-  paymentMethods PropertyPaymentMethod[]
+  // Payment method qualification configs that reference this flow
+  qualificationConfigs PaymentMethodQualificationConfig[]
 
   // Instances created from this template
   qualifications PaymentMethodQualification[]
@@ -4405,6 +4417,9 @@ model OrganizationPaymentMethod {
 
   // One-to-one: the qualification workflow instance (if flow is required)
   qualification PaymentMethodQualification?
+
+  // Document waivers — docs this org considers optional for this payment method
+  documentWaivers OrganizationDocumentWaiver[]
 
   @@unique([organizationId, paymentMethodId])
   @@index([tenantId])
@@ -4525,4 +4540,83 @@ model QualificationPhase {
   @@index([phaseCategory])
   @@index([status])
   @@map("qualification_phases")
+}
+
+// =============================================================================
+// PAYMENT METHOD QUALIFICATION CONFIG - Per-org-type qualification flows
+// =============================================================================
+// Maps (paymentMethod, organizationType) → qualificationFlow.
+// Each org type (DEVELOPER, BANK, etc.) can have a different qualification
+// process for the same payment method. When an org applies, the system looks up
+// the matching config for the org's type to determine which flow to use.
+// =============================================================================
+
+model PaymentMethodQualificationConfig {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  paymentMethodId String
+  paymentMethod   PropertyPaymentMethod @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
+
+  // Which org type this qualification flow applies to
+  organizationTypeId String
+  organizationType   OrganizationType @relation(fields: [organizationTypeId], references: [id], onDelete: Cascade)
+
+  // The qualification flow template to use
+  qualificationFlowId String
+  qualificationFlow   QualificationFlow @relation(fields: [qualificationFlowId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([paymentMethodId, organizationTypeId])
+  @@index([tenantId])
+  @@index([paymentMethodId])
+  @@index([organizationTypeId])
+  @@index([qualificationFlowId])
+  @@map("payment_method_qualification_configs")
+}
+
+// =============================================================================
+// ORGANIZATION DOCUMENT WAIVER - Docs an org considers optional for a method
+// =============================================================================
+// After a bank (or any org) qualifies for a payment method, they can waive
+// specific DocumentDefinitions across all documentation phases. When a customer
+// application involves this bank/org, waived documents become optional (not
+// required) in the effective documentation requirements.
+//
+// Example: Access Bank waives PROOF_OF_ADDRESS for the MREIF 10/90 Mortgage.
+// When Emeka's application uses Access Bank as lender, PROOF_OF_ADDRESS is
+// shown but marked optional in the preapproval documentation phase.
+// =============================================================================
+
+model OrganizationDocumentWaiver {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // The org's qualified assignment to a payment method
+  organizationPaymentMethodId String
+  organizationPaymentMethod   OrganizationPaymentMethod @relation(fields: [organizationPaymentMethodId], references: [id], onDelete: Cascade)
+
+  // The document definition being waived
+  documentDefinitionId String
+  documentDefinition   DocumentDefinition @relation(fields: [documentDefinitionId], references: [id], onDelete: Cascade)
+
+  // Reason for waiving (audit trail)
+  reason String? @db.Text
+
+  // Who created this waiver
+  waivedById String?
+  waivedBy   User?   @relation("DocumentWaiverCreator", fields: [waivedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationPaymentMethodId, documentDefinitionId])
+  @@index([tenantId])
+  @@index([organizationPaymentMethodId])
+  @@index([documentDefinitionId])
+  @@map("organization_document_waivers")
 }

@@ -138,7 +138,9 @@ export const ModelName = {
   QualificationFlowPhase: 'QualificationFlowPhase',
   OrganizationPaymentMethod: 'OrganizationPaymentMethod',
   PaymentMethodQualification: 'PaymentMethodQualification',
-  QualificationPhase: 'QualificationPhase'
+  QualificationPhase: 'QualificationPhase',
+  PaymentMethodQualificationConfig: 'PaymentMethodQualificationConfig',
+  OrganizationDocumentWaiver: 'OrganizationDocumentWaiver'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -892,7 +894,6 @@ export const PropertyPaymentMethodScalarFieldEnum = {
   earlyPayoffPenaltyRate: 'earlyPayoffPenaltyRate',
   autoActivatePhases: 'autoActivatePhases',
   requiresManualApproval: 'requiresManualApproval',
-  qualificationFlowId: 'qualificationFlowId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1895,6 +1896,33 @@ export const QualificationPhaseScalarFieldEnum = {
 export type QualificationPhaseScalarFieldEnum = (typeof QualificationPhaseScalarFieldEnum)[keyof typeof QualificationPhaseScalarFieldEnum]
 
 
+export const PaymentMethodQualificationConfigScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  paymentMethodId: 'paymentMethodId',
+  organizationTypeId: 'organizationTypeId',
+  qualificationFlowId: 'qualificationFlowId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentMethodQualificationConfigScalarFieldEnum = (typeof PaymentMethodQualificationConfigScalarFieldEnum)[keyof typeof PaymentMethodQualificationConfigScalarFieldEnum]
+
+
+export const OrganizationDocumentWaiverScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationPaymentMethodId: 'organizationPaymentMethodId',
+  documentDefinitionId: 'documentDefinitionId',
+  reason: 'reason',
+  waivedById: 'waivedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationDocumentWaiverScalarFieldEnum = (typeof OrganizationDocumentWaiverScalarFieldEnum)[keyof typeof OrganizationDocumentWaiverScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2452,8 +2480,7 @@ export const PropertyPaymentMethodOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  description: 'description',
-  qualificationFlowId: 'qualificationFlowId'
+  description: 'description'
 } as const
 
 export type PropertyPaymentMethodOrderByRelevanceFieldEnum = (typeof PropertyPaymentMethodOrderByRelevanceFieldEnum)[keyof typeof PropertyPaymentMethodOrderByRelevanceFieldEnum]
@@ -3056,4 +3083,27 @@ export const QualificationPhaseOrderByRelevanceFieldEnum = {
 } as const
 
 export type QualificationPhaseOrderByRelevanceFieldEnum = (typeof QualificationPhaseOrderByRelevanceFieldEnum)[keyof typeof QualificationPhaseOrderByRelevanceFieldEnum]
+
+
+export const PaymentMethodQualificationConfigOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  paymentMethodId: 'paymentMethodId',
+  organizationTypeId: 'organizationTypeId',
+  qualificationFlowId: 'qualificationFlowId'
+} as const
+
+export type PaymentMethodQualificationConfigOrderByRelevanceFieldEnum = (typeof PaymentMethodQualificationConfigOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodQualificationConfigOrderByRelevanceFieldEnum]
+
+
+export const OrganizationDocumentWaiverOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationPaymentMethodId: 'organizationPaymentMethodId',
+  documentDefinitionId: 'documentDefinitionId',
+  reason: 'reason',
+  waivedById: 'waivedById'
+} as const
+
+export type OrganizationDocumentWaiverOrderByRelevanceFieldEnum = (typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum)[keyof typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum]
 

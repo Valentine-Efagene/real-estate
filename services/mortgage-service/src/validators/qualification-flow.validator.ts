@@ -74,10 +74,22 @@ export const UpdateQualificationStatusSchema = z.object({
     notes: z.string().optional(),
 }).openapi('UpdateQualificationStatus');
 
-// Assign qualification flow to a payment method
+// Assign qualification flow to a payment method for a specific org type
 export const AssignQualificationFlowSchema = z.object({
     qualificationFlowId: z.string().min(1).openapi({ example: 'clflow123', description: 'ID of the qualification flow template' }),
+    organizationTypeCode: z.string().min(1).openapi({ example: 'DEVELOPER', description: 'Organization type code this flow applies to (e.g., DEVELOPER, BANK)' }),
 }).openapi('AssignQualificationFlow');
+
+// Document waiver — org marks a document as optional for their use of a payment method
+export const CreateDocumentWaiverSchema = z.object({
+    documentDefinitionId: z.string().min(1).openapi({ example: 'cldocdef123', description: 'ID of the document definition to waive' }),
+    reason: z.string().optional().openapi({ example: 'Access Bank does not require proof of address for standard mortgage applications' }),
+}).openapi('CreateDocumentWaiver');
+
+// Bulk document waiver — waive multiple documents at once
+export const BulkCreateDocumentWaiverSchema = z.object({
+    waivers: z.array(CreateDocumentWaiverSchema).min(1).openapi({ description: 'List of document waivers to create' }),
+}).openapi('BulkCreateDocumentWaiver');
 
 // =============================================================================
 // TYPE EXPORTS
@@ -89,3 +101,5 @@ export type ApplyForPaymentMethodInput = z.infer<typeof ApplyForPaymentMethodSch
 export type ReviewQualificationInput = z.infer<typeof ReviewQualificationSchema>;
 export type UpdateQualificationStatusInput = z.infer<typeof UpdateQualificationStatusSchema>;
 export type AssignQualificationFlowInput = z.infer<typeof AssignQualificationFlowSchema>;
+export type CreateDocumentWaiverInput = z.infer<typeof CreateDocumentWaiverSchema>;
+export type BulkCreateDocumentWaiverInput = z.infer<typeof BulkCreateDocumentWaiverSchema>;

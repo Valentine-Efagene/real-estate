@@ -7,6 +7,7 @@ import type {
     ReviewQualificationInput,
     UpdateQualificationStatusInput,
     AssignQualificationFlowInput,
+    CreateDocumentWaiverInput,
 } from '../validators/qualification-flow.validator';
 
 type AnyPrismaClient = PrismaClient;
@@ -20,8 +21,14 @@ export interface QualificationFlowService {
     updateFlow(id: string, data: UpdateQualificationFlowInput): Promise<any>;
     deleteFlow(id: string): Promise<{ success: boolean }>;
 
-    // Assign flow to payment method
+    // Assign flow to payment method (per org type)
     assignToPaymentMethod(paymentMethodId: string, data: AssignQualificationFlowInput): Promise<any>;
+
+    // List qualification configs for a payment method
+    findQualificationConfigs(paymentMethodId: string): Promise<any[]>;
+
+    // Remove a qualification config
+    removeQualificationConfig(paymentMethodId: string, organizationTypeCode: string, tenantId: string): Promise<{ success: boolean }>;
 
     // Organization applies for payment method access
     applyForPaymentMethod(paymentMethodId: string, tenantId: string, data: ApplyForPaymentMethodInput): Promise<any>;
@@ -40,6 +47,12 @@ export interface QualificationFlowService {
 
     // Find all payment methods an org is assigned to (with qualification status)
     findOrgPaymentMethods(organizationId: string): Promise<any[]>;
+
+    // Document waivers — docs an org considers optional for a payment method
+    createDocumentWaiver(assignmentId: string, tenantId: string, userId: string, data: CreateDocumentWaiverInput): Promise<any>;
+    deleteDocumentWaiver(waiverId: string): Promise<{ success: boolean }>;
+    findDocumentWaivers(assignmentId: string): Promise<any[]>;
+    findWaivableDocuments(assignmentId: string): Promise<any[]>;
 }
 
 export function createQualificationFlowService(prisma: AnyPrismaClient = defaultPrisma): QualificationFlowService {
@@ -87,7 +100,7 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
             where,
             include: {
                 phases: { orderBy: { order: 'asc' } },
-                _count: { select: { paymentMethods: true, qualifications: true } },
+                _count: { select: { qualificationConfigs: true, qualifications: true } },
             },
             orderBy: { createdAt: 'desc' },
         });
@@ -105,7 +118,12 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
                         gatePlan: true,
                     },
                 },
-                paymentMethods: { select: { id: true, name: true } },
+                qualificationConfigs: {
+                    include: {
+                        organizationType: { select: { id: true, code: true, name: true } },
+                        paymentMethod: { select: { id: true, name: true } },
+                    },
+                },
                 _count: { select: { qualifications: true } },
             },
         });
@@ -174,12 +192,35 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
             throw new AppError(400, 'Payment method and qualification flow must belong to the same tenant');
         }
 
-        const updated = await prisma.propertyPaymentMethod.update({
-            where: { id: paymentMethodId },
-            data: { qualificationFlowId: data.qualificationFlowId },
-            include: { qualificationFlow: { include: { phases: { orderBy: { order: 'asc' } } } } },
+        // Resolve organization type by code
+        const orgType = await prisma.organizationType.findFirst({
+            where: { tenantId: method.tenantId, code: data.organizationTypeCode },
         });
-        return updated;
+        if (!orgType) throw new AppError(404, `Organization type '${data.organizationTypeCode}' not found`);
+
+        // Upsert the qualification config for this org type
+        const config = await prisma.paymentMethodQualificationConfig.upsert({
+            where: {
+                paymentMethodId_organizationTypeId: {
+                    paymentMethodId,
+                    organizationTypeId: orgType.id,
+                },
+            },
+            create: {
+                tenantId: method.tenantId,
+                paymentMethodId,
+                organizationTypeId: orgType.id,
+                qualificationFlowId: data.qualificationFlowId,
+            },
+            update: {
+                qualificationFlowId: data.qualificationFlowId,
+            },
+            include: {
+                qualificationFlow: { include: { phases: { orderBy: { order: 'asc' } } } },
+                organizationType: true,
+            },
+        });
+        return config;
     }
 
     // =========================================================================
@@ -191,16 +232,26 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
         const method = await prisma.propertyPaymentMethod.findUnique({
             where: { id: paymentMethodId },
             include: {
-                qualificationFlow: {
-                    include: { phases: { orderBy: { order: 'asc' } } },
+                qualificationConfigs: {
+                    include: {
+                        qualificationFlow: {
+                            include: { phases: { orderBy: { order: 'asc' } } },
+                        },
+                        organizationType: true,
+                    },
                 },
             },
         });
         if (!method) throw new AppError(404, 'Payment method not found');
         if (!method.isActive) throw new AppError(400, 'Payment method is not active');
 
-        // Validate organization exists
-        const org = await prisma.organization.findUnique({ where: { id: data.organizationId } });
+        // Validate organization exists and get its types
+        const org = await prisma.organization.findUnique({
+            where: { id: data.organizationId },
+            include: {
+                types: { include: { orgType: true } },
+            },
+        });
         if (!org) throw new AppError(404, 'Organization not found');
 
         // Check not already assigned
@@ -216,6 +267,13 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
             throw new AppError(409, `Organization is already ${existing.status.toLowerCase()} for this payment method`);
         }
 
+        // Find matching qualification config by org type
+        const orgTypeIds = org.types.map((t: any) => t.typeId);
+        const matchingConfig = (method as any).qualificationConfigs.find(
+            (config: any) => orgTypeIds.includes(config.organizationTypeId),
+        );
+        const qualificationFlow = matchingConfig?.qualificationFlow || null;
+
         return prisma.$transaction(async (tx: any) => {
             // Create the org-payment-method assignment
             const assignment = await tx.organizationPaymentMethod.create({
@@ -223,15 +281,15 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
                     tenantId,
                     organizationId: data.organizationId,
                     paymentMethodId,
-                    status: method.qualificationFlow ? 'PENDING' : 'QUALIFIED', // Auto-qualify if no flow
-                    qualifiedAt: method.qualificationFlow ? null : new Date(),
+                    status: qualificationFlow ? 'PENDING' : 'QUALIFIED', // Auto-qualify if no flow for this org type
+                    qualifiedAt: qualificationFlow ? null : new Date(),
                     notes: data.notes,
                 },
             });
 
-            // If payment method has a qualification flow, create the workflow instance
-            if (method.qualificationFlow) {
-                const flow = method.qualificationFlow;
+            // If there's a qualification flow for this org type, create the workflow instance
+            if (qualificationFlow) {
+                const flow = qualificationFlow;
                 const expiresAt = flow.expiresInDays
                     ? new Date(Date.now() + flow.expiresInDays * 24 * 60 * 60 * 1000)
                     : null;
@@ -583,6 +641,170 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
     }
 
     // =========================================================================
+    // QUALIFICATION CONFIG — List / Remove per-org-type configs
+    // =========================================================================
+
+    async function findQualificationConfigs(paymentMethodId: string) {
+        return prisma.paymentMethodQualificationConfig.findMany({
+            where: { paymentMethodId },
+            include: {
+                qualificationFlow: { select: { id: true, name: true, isActive: true } },
+                organizationType: { select: { id: true, code: true, name: true } },
+            },
+            orderBy: { createdAt: 'asc' },
+        });
+    }
+
+    async function removeQualificationConfig(paymentMethodId: string, organizationTypeCode: string, tenantId: string) {
+        const orgType = await prisma.organizationType.findFirst({
+            where: { tenantId, code: organizationTypeCode },
+        });
+        if (!orgType) throw new AppError(404, `Organization type '${organizationTypeCode}' not found`);
+
+        const config = await prisma.paymentMethodQualificationConfig.findUnique({
+            where: {
+                paymentMethodId_organizationTypeId: {
+                    paymentMethodId,
+                    organizationTypeId: orgType.id,
+                },
+            },
+        });
+        if (!config) throw new AppError(404, 'Qualification config not found for this organization type');
+
+        await prisma.paymentMethodQualificationConfig.delete({ where: { id: config.id } });
+        return { success: true };
+    }
+
+    // =========================================================================
+    // DOCUMENT WAIVERS — Docs an org considers optional for a payment method
+    // =========================================================================
+
+    async function createDocumentWaiver(assignmentId: string, tenantId: string, userId: string, data: CreateDocumentWaiverInput) {
+        // Validate assignment exists and is QUALIFIED
+        const assignment = await prisma.organizationPaymentMethod.findUnique({
+            where: { id: assignmentId },
+        });
+        if (!assignment) throw new AppError(404, 'Assignment not found');
+        if (assignment.status !== 'QUALIFIED') {
+            throw new AppError(400, 'Organization must be QUALIFIED before configuring document waivers');
+        }
+
+        // Validate document definition exists
+        const docDef = await prisma.documentDefinition.findUnique({
+            where: { id: data.documentDefinitionId },
+        });
+        if (!docDef) throw new AppError(404, 'Document definition not found');
+
+        // Verify the document definition belongs to a documentation plan used by this payment method
+        const method = await prisma.propertyPaymentMethod.findUnique({
+            where: { id: assignment.paymentMethodId },
+            include: {
+                phases: {
+                    where: { phaseCategory: 'DOCUMENTATION' },
+                    select: { documentationPlanId: true },
+                },
+            },
+        });
+        const planIds = (method?.phases || []).map((p: any) => p.documentationPlanId).filter(Boolean);
+        if (!planIds.includes(docDef.planId)) {
+            throw new AppError(400, 'Document definition does not belong to any documentation phase of this payment method');
+        }
+
+        // Check for duplicate
+        const existing = await prisma.organizationDocumentWaiver.findUnique({
+            where: {
+                organizationPaymentMethodId_documentDefinitionId: {
+                    organizationPaymentMethodId: assignmentId,
+                    documentDefinitionId: data.documentDefinitionId,
+                },
+            },
+        });
+        if (existing) throw new AppError(409, 'Waiver already exists for this document');
+
+        return prisma.organizationDocumentWaiver.create({
+            data: {
+                tenantId,
+                organizationPaymentMethodId: assignmentId,
+                documentDefinitionId: data.documentDefinitionId,
+                reason: data.reason,
+                waivedById: userId,
+            },
+            include: {
+                documentDefinition: { select: { id: true, documentType: true, documentName: true, planId: true } },
+            },
+        });
+    }
+
+    async function deleteDocumentWaiver(waiverId: string) {
+        const waiver = await prisma.organizationDocumentWaiver.findUnique({ where: { id: waiverId } });
+        if (!waiver) throw new AppError(404, 'Document waiver not found');
+        await prisma.organizationDocumentWaiver.delete({ where: { id: waiverId } });
+        return { success: true };
+    }
+
+    async function findDocumentWaivers(assignmentId: string) {
+        return prisma.organizationDocumentWaiver.findMany({
+            where: { organizationPaymentMethodId: assignmentId },
+            include: {
+                documentDefinition: {
+                    select: { id: true, documentType: true, documentName: true, planId: true, isRequired: true, uploadedBy: true },
+                },
+                waivedBy: { select: { id: true, firstName: true, lastName: true, email: true } },
+            },
+            orderBy: { createdAt: 'asc' },
+        });
+    }
+
+    /**
+     * List all document definitions across all DOCUMENTATION phases of a payment method
+     * that can be waived by this org. Returns docs with waiver status.
+     */
+    async function findWaivableDocuments(assignmentId: string) {
+        const assignment = await prisma.organizationPaymentMethod.findUnique({
+            where: { id: assignmentId },
+            include: {
+                paymentMethod: {
+                    include: {
+                        phases: {
+                            where: { phaseCategory: 'DOCUMENTATION' },
+                            include: {
+                                documentationPlan: {
+                                    include: {
+                                        documentDefinitions: { orderBy: { order: 'asc' } },
+                                    },
+                                },
+                            },
+                            orderBy: { order: 'asc' },
+                        },
+                    },
+                },
+                documentWaivers: true,
+            },
+        });
+        if (!assignment) throw new AppError(404, 'Assignment not found');
+
+        const waivedDocIds = new Set(assignment.documentWaivers.map((w: any) => w.documentDefinitionId));
+
+        // Flatten all document definitions across all doc phases
+        const result: any[] = [];
+        for (const phase of (assignment as any).paymentMethod.phases) {
+            if (!phase.documentationPlan) continue;
+            for (const docDef of phase.documentationPlan.documentDefinitions) {
+                result.push({
+                    ...docDef,
+                    phaseName: phase.name,
+                    phaseId: phase.id,
+                    planName: phase.documentationPlan.name,
+                    isWaived: waivedDocIds.has(docDef.id),
+                    waiver: assignment.documentWaivers.find((w: any) => w.documentDefinitionId === docDef.id) || null,
+                });
+            }
+        }
+
+        return result;
+    }
+
+    // =========================================================================
     // RETURN INTERFACE
     // =========================================================================
 
@@ -593,12 +815,18 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
         updateFlow,
         deleteFlow,
         assignToPaymentMethod,
+        findQualificationConfigs,
+        removeQualificationConfig,
         applyForPaymentMethod,
         findAssignments,
         findQualification,
         reviewGatePhase,
         updateAssignmentStatus,
         findOrgPaymentMethods,
+        createDocumentWaiver,
+        deleteDocumentWaiver,
+        findDocumentWaivers,
+        findWaivableDocuments,
     };
 }
 

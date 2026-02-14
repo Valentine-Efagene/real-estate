@@ -471,7 +471,9 @@ export const ModelName = {
   QualificationFlowPhase: 'QualificationFlowPhase',
   OrganizationPaymentMethod: 'OrganizationPaymentMethod',
   PaymentMethodQualification: 'PaymentMethodQualification',
-  QualificationPhase: 'QualificationPhase'
+  QualificationPhase: 'QualificationPhase',
+  PaymentMethodQualificationConfig: 'PaymentMethodQualificationConfig',
+  OrganizationDocumentWaiver: 'OrganizationDocumentWaiver'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -487,7 +489,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase"
+    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -6299,6 +6301,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PaymentMethodQualificationConfig: {
+      payload: Prisma.$PaymentMethodQualificationConfigPayload<ExtArgs>
+      fields: Prisma.PaymentMethodQualificationConfigFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentMethodQualificationConfigFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodQualificationConfigPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentMethodQualificationConfigFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodQualificationConfigPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentMethodQualificationConfigFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodQualificationConfigPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentMethodQualificationConfigFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodQualificationConfigPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentMethodQualificationConfigFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodQualificationConfigPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentMethodQualificationConfigCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodQualificationConfigPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentMethodQualificationConfigCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PaymentMethodQualificationConfigDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodQualificationConfigPayload>
+        }
+        update: {
+          args: Prisma.PaymentMethodQualificationConfigUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodQualificationConfigPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentMethodQualificationConfigDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentMethodQualificationConfigUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PaymentMethodQualificationConfigUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodQualificationConfigPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentMethodQualificationConfigAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentMethodQualificationConfig>
+        }
+        groupBy: {
+          args: Prisma.PaymentMethodQualificationConfigGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodQualificationConfigGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentMethodQualificationConfigCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodQualificationConfigCountAggregateOutputType> | number
+        }
+      }
+    }
+    OrganizationDocumentWaiver: {
+      payload: Prisma.$OrganizationDocumentWaiverPayload<ExtArgs>
+      fields: Prisma.OrganizationDocumentWaiverFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrganizationDocumentWaiverFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrganizationDocumentWaiverFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+        }
+        findFirst: {
+          args: Prisma.OrganizationDocumentWaiverFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrganizationDocumentWaiverFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+        }
+        findMany: {
+          args: Prisma.OrganizationDocumentWaiverFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>[]
+        }
+        create: {
+          args: Prisma.OrganizationDocumentWaiverCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+        }
+        createMany: {
+          args: Prisma.OrganizationDocumentWaiverCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OrganizationDocumentWaiverDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+        }
+        update: {
+          args: Prisma.OrganizationDocumentWaiverUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+        }
+        deleteMany: {
+          args: Prisma.OrganizationDocumentWaiverDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrganizationDocumentWaiverUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OrganizationDocumentWaiverUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+        }
+        aggregate: {
+          args: Prisma.OrganizationDocumentWaiverAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganizationDocumentWaiver>
+        }
+        groupBy: {
+          args: Prisma.OrganizationDocumentWaiverGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationDocumentWaiverGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrganizationDocumentWaiverCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationDocumentWaiverCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -7073,7 +7207,6 @@ export const PropertyPaymentMethodScalarFieldEnum = {
   earlyPayoffPenaltyRate: 'earlyPayoffPenaltyRate',
   autoActivatePhases: 'autoActivatePhases',
   requiresManualApproval: 'requiresManualApproval',
-  qualificationFlowId: 'qualificationFlowId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -8076,6 +8209,33 @@ export const QualificationPhaseScalarFieldEnum = {
 export type QualificationPhaseScalarFieldEnum = (typeof QualificationPhaseScalarFieldEnum)[keyof typeof QualificationPhaseScalarFieldEnum]
 
 
+export const PaymentMethodQualificationConfigScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  paymentMethodId: 'paymentMethodId',
+  organizationTypeId: 'organizationTypeId',
+  qualificationFlowId: 'qualificationFlowId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentMethodQualificationConfigScalarFieldEnum = (typeof PaymentMethodQualificationConfigScalarFieldEnum)[keyof typeof PaymentMethodQualificationConfigScalarFieldEnum]
+
+
+export const OrganizationDocumentWaiverScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationPaymentMethodId: 'organizationPaymentMethodId',
+  documentDefinitionId: 'documentDefinitionId',
+  reason: 'reason',
+  waivedById: 'waivedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationDocumentWaiverScalarFieldEnum = (typeof OrganizationDocumentWaiverScalarFieldEnum)[keyof typeof OrganizationDocumentWaiverScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -8633,8 +8793,7 @@ export const PropertyPaymentMethodOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  description: 'description',
-  qualificationFlowId: 'qualificationFlowId'
+  description: 'description'
 } as const
 
 export type PropertyPaymentMethodOrderByRelevanceFieldEnum = (typeof PropertyPaymentMethodOrderByRelevanceFieldEnum)[keyof typeof PropertyPaymentMethodOrderByRelevanceFieldEnum]
@@ -9237,6 +9396,29 @@ export const QualificationPhaseOrderByRelevanceFieldEnum = {
 } as const
 
 export type QualificationPhaseOrderByRelevanceFieldEnum = (typeof QualificationPhaseOrderByRelevanceFieldEnum)[keyof typeof QualificationPhaseOrderByRelevanceFieldEnum]
+
+
+export const PaymentMethodQualificationConfigOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  paymentMethodId: 'paymentMethodId',
+  organizationTypeId: 'organizationTypeId',
+  qualificationFlowId: 'qualificationFlowId'
+} as const
+
+export type PaymentMethodQualificationConfigOrderByRelevanceFieldEnum = (typeof PaymentMethodQualificationConfigOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodQualificationConfigOrderByRelevanceFieldEnum]
+
+
+export const OrganizationDocumentWaiverOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationPaymentMethodId: 'organizationPaymentMethodId',
+  documentDefinitionId: 'documentDefinitionId',
+  reason: 'reason',
+  waivedById: 'waivedById'
+} as const
+
+export type OrganizationDocumentWaiverOrderByRelevanceFieldEnum = (typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum)[keyof typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum]
 
 
 
@@ -9847,6 +10029,8 @@ export type GlobalOmitConfig = {
   organizationPaymentMethod?: Prisma.OrganizationPaymentMethodOmit
   paymentMethodQualification?: Prisma.PaymentMethodQualificationOmit
   qualificationPhase?: Prisma.QualificationPhaseOmit
+  paymentMethodQualificationConfig?: Prisma.PaymentMethodQualificationConfigOmit
+  organizationDocumentWaiver?: Prisma.OrganizationDocumentWaiverOmit
 }
 
 /* Types for Logging */
