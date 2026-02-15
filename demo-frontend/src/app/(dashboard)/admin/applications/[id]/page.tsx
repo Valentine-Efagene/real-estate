@@ -1095,34 +1095,15 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
           <>
             <Separator />
             <div className="grid gap-4 md:grid-cols-1">
-              {/* Show upload section with pending documents from party actions */}
-              {userUploadType === 'DEVELOPER' && boundOrganizations?.some(org => org.assignedAsType?.code === 'DEVELOPER') && (
-                <PartnerDocumentUpload
-                  applicationId={applicationId}
-                  phaseId={currentAction.currentPhase!.id}
-                  phaseName={currentAction.currentPhase!.name}
-                  role="DEVELOPER"
-                  pendingDocuments={pendingDocs}
-                />
-              )}
-              {userUploadType === 'LENDER' && boundOrganizations?.some(org => org.assignedAsType?.code === 'BANK') && (
-                <PartnerDocumentUpload
-                  applicationId={applicationId}
-                  phaseId={currentAction.currentPhase!.id}
-                  phaseName={currentAction.currentPhase!.name}
-                  role="LENDER"
-                  pendingDocuments={pendingDocs}
-                />
-              )}
-              {userUploadType === 'PLATFORM' && (
-                <PartnerDocumentUpload
-                  applicationId={applicationId}
-                  phaseId={currentAction.currentPhase!.id}
-                  phaseName={currentAction.currentPhase!.name}
-                  role="PLATFORM"
-                  pendingDocuments={pendingDocs}
-                />
-              )}
+              {/* The partyActions API already validated canCurrentUserAct — render upload form
+                  based on userUploadType without additional boundOrganizations checks */}
+              <PartnerDocumentUpload
+                applicationId={applicationId}
+                phaseId={currentAction.currentPhase!.id}
+                phaseName={currentAction.currentPhase!.name}
+                role={userUploadType}
+                pendingDocuments={pendingDocs}
+              />
             </div>
           </>
         );

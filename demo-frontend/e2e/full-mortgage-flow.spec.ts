@@ -3,24 +3,37 @@ import { test, expect, Page } from '@playwright/test';
 /**
  * Full Mortgage Flow — Playwright E2E Test
  *
- * Exercises the complete MREIF 10/90 Mortgage lifecycle through the demo-frontend UI:
+ * Exercises the COMPLETE platform lifecycle through the demo-frontend UI,
+ * from tenant bootstrap all the way to a completed mortgage application:
  *
- *   Demo Bootstrap → Emeka browses → starts application → prequalification →
- *   sales offer → KYC docs → downpayment → mortgage offer → COMPLETED
+ *   SETUP (via UI):
+ *     Reset DB → Bootstrap tenant → Invite staff → Create orgs →
+ *     Complete onboarding → Create property → Configure plans →
+ *     Create payment method → Set up qualification flows →
+ *     Enroll & qualify orgs → Add document waivers → Link to property
+ *
+ *   APPLICATION FLOW (via UI):
+ *     Register Emeka → Browse property → Start application →
+ *     Questionnaire → Sales offer → KYC docs → Downpayment →
+ *     Mortgage offer → COMPLETED
+ *
+ * This test does NOT call the demo-bootstrap API. Every setup step is performed
+ * through the UI, exactly as an admin user would do it manually.
+ *
+ * NOTE FOR COPILOT: Never replace this test's UI-driven setup with API calls
+ * or the demo-bootstrap endpoint. The purpose of this test is to exercise
+ * the admin UI for all entity creation flows, not just the application flow.
  *
  * Actors (all share password "password"):
- *   Adaeze  (admin)        – platform admin, reviews questionnaires & documents
- *   Yinka   (mortgage_ops) – platform mortgage ops, created by bootstrap
- *   Nneka   (agent)        – Lekki Gardens developer agent, uploads sales offer
- *   Eniola  (mortgage_ops) – Access Bank loan officer, uploads bank docs
- *   Emeka   (customer)     – first-time homebuyer, the applicant
+ *   Adaeze  (admin)        – platform admin, creates everything
+ *   Yinka   (mortgage_ops) – platform mortgage ops
+ *   Nneka   (agent)        – Lekki Gardens developer agent
+ *   Eniola  (mortgage_ops) – Access Bank loan officer
+ *   Emeka   (customer)     – first-time homebuyer
  *
  * Property:
  *   Sunrise Heights Estate → 3-Bedroom Luxury Apartment → Unit A-201 → ₦75M
  *   Payment method: MREIF 10/90 Mortgage (5 phases, 10% down)
- *
- * Mirrors the API-level test at tests/aws/full-mortgage-flow/ — same scenario,
- * different layer (UI vs API).
  */
 
 // ─── Config ─────────────────────────────────────────────────────────────────
@@ -61,8 +74,6 @@ function testPdf(label: string) {
  * Preserves the tenantId in localStorage across the login switch.
  */
 async function loginAs(page: Page, email: string) {
-    // Capture tenantId before clearing cookies (cookie clear doesn't touch localStorage,
-    // but some logout flows might)
     const tenantId = await page.evaluate(() =>
         localStorage.getItem('qshelter_tenant_id'),
     );
@@ -70,7 +81,6 @@ async function loginAs(page: Page, email: string) {
     await page.context().clearCookies();
     await page.goto('/login');
 
-    // Restore tenantId if it was cleared by the navigation
     if (tenantId) {
         await page.evaluate(
             (tid) => localStorage.setItem('qshelter_tenant_id', tid),
@@ -82,13 +92,11 @@ async function loginAs(page: Page, email: string) {
     await page.locator('input[type="password"]').fill(PASSWORD);
     await page.locator('button[type="submit"]').click();
 
-    // Admin/agent/mortgage_ops → /admin/applications, customer → /dashboard
     await expect(page).toHaveURL(/\/(dashboard|admin)/, { timeout: 15_000 });
 }
 
 /**
  * Reload the page in a loop until `textOrRegex` becomes visible.
- * Useful for waiting on async / event-driven phase transitions.
  */
 async function pollUntilVisible(
     page: Page,
@@ -103,13 +111,11 @@ async function pollUntilVisible(
         await page.waitForTimeout(interval);
         await page.reload();
     }
-    // Final assertion — will throw a useful error message
     await expect(page.getByText(textOrRegex).first()).toBeVisible();
 }
 
 /**
  * Approve all documents that have a "Review" button on the admin application page.
- * Keeps clicking Review → Approve until no more Review buttons remain.
  */
 async function approveAllDocuments(page: Page) {
     let iterations = 0;
@@ -122,468 +128,1115 @@ async function approveAllDocuments(page: Page) {
 
         await reviewBtn.first().click();
         await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5_000 });
-
-        // Click Approve inside the dialog
         await page.getByRole('dialog').getByRole('button', { name: 'Approve' }).click();
         await page.waitForTimeout(2_000);
     }
 }
 
+/**
+ * Pick an option from a shadcn Select combobox by finding the container
+ * with the given label text and clicking the combobox inside it.
+ * @param page     Page object (options portal to <body>, so we always search from page root)
+ * @param scope    A page or locator to search within (e.g. dialog locator)
+ * @param labelText  Regex matching the label text
+ * @param optionName  Option text to click in the dropdown
+ */
+async function pickSelect(
+    page: Page,
+    scope: Page | import('@playwright/test').Locator,
+    labelText: RegExp,
+    optionName: string | RegExp,
+) {
+    const container = scope.locator('div.space-y-2').filter({ hasText: labelText });
+    await container.getByRole('combobox').click();
+    await page.getByRole('option', { name: optionName }).click();
+}
+
 // ─── Test ───────────────────────────────────────────────────────────────────
 
 test.describe('Full Mortgage Flow — MREIF 10/90', () => {
-    // The full flow includes bootstrap (up to 3 min) + 5 phases with persona
-    // switches, document uploads, and event-driven transitions.
-    test.setTimeout(600_000); // 10 minutes
+    // Setup + 5 application phases with persona switches = long test
+    test.setTimeout(900_000); // 15 minutes
 
-    test('Emeka applies for Sunrise Heights A-201 via MREIF 10/90 Mortgage', async ({ page }) => {
+    test('Full platform setup + Emeka applies for Sunrise Heights A-201', async ({ page }) => {
         test.skip(!BOOTSTRAP_SECRET, 'Set BOOTSTRAP_SECRET env var to run this test');
+
+        // Forward page console to Node for debugging
+        page.on('console', (msg) => console.log(`[PAGE ${msg.type()}]`, msg.text()));
 
         let applicationId: string;
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 1 — Demo Bootstrap (reset DB + create all actors/orgs/
-        //           property/payment method/qualification flows)
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 1: Demo Bootstrap — set up environment', async () => {
+        // ╔═══════════════════════════════════════════════════════════════╗
+        // ║               PART A — ENVIRONMENT SETUP                     ║
+        // ║   Reset DB, bootstrap tenant, create all entities via UI     ║
+        // ╚═══════════════════════════════════════════════════════════════╝
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 1 — Reset database + Bootstrap tenant via UI
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 1: Reset DB and bootstrap tenant', async () => {
             await page.goto('/');
 
-            // Open the Demo Bootstrap dialog
-            await page.getByRole('button', { name: '🚀 Demo Bootstrap' }).click();
+            // Reset database via the UI dialog
+            await page.getByRole('button', { name: /Reset Database/i }).click();
+            await page.locator('#resetSecret').fill(BOOTSTRAP_SECRET);
+            await page.locator('#confirmReset').fill('RESET');
+            await page.getByRole('button', { name: /Reset Everything/i }).click();
 
-            // Fill bootstrap secret
-            await page.locator('#demoBootstrapSecret').fill(BOOTSTRAP_SECRET);
+            await expect(page.getByText(/reset.*success|database.*reset/i).first())
+                .toBeVisible({ timeout: 30_000 });
+            console.log('[Step 1] Database reset');
 
-            // Submit — the proxy polls the backend worker Lambda until done
-            await page.getByRole('button', { name: '🚀 Reset & Bootstrap Demo' }).click();
+            await page.keyboard.press('Escape');
+            await page.waitForTimeout(1_000);
 
-            // Wait for the success banner (cold start + 20 steps ≈ 30–120 s)
-            await expect(
-                page.getByText('🎉 Demo Environment Ready!'),
-            ).toBeVisible({ timeout: 180_000 });
+            // Bootstrap tenant via the UI dialog
+            await page.getByRole('button', { name: /Bootstrap Project/i }).click();
 
-            // Verify tenantId was stored
-            const tenantId = await page.evaluate(() =>
-                localStorage.getItem('qshelter_tenant_id'),
-            );
+            const dialog = page.getByRole('dialog');
+            await dialog.getByLabel(/Bootstrap Secret/i).fill(BOOTSTRAP_SECRET);
+            await dialog.getByLabel(/Admin Password/i).fill(PASSWORD);
+
+            await dialog.getByRole('button', { name: 'Bootstrap' }).click();
+
+            await expect(page.getByText(/Bootstrap Successful/i).first())
+                .toBeVisible({ timeout: 60_000 });
+
+            // Extract tenantId from the success card text "Tenant: Name (id)"
+            // The component should also store it in localStorage, but we extract
+            // from the visible text for robustness.
+            const tenantText = await dialog.locator('dd').first().textContent();
+            const tenantIdMatch = tenantText?.match(/\(([^)]+)\)/);
+            let tenantId = tenantIdMatch?.[1] ?? null;
+
+            // Fallback: check localStorage in case component stored it
+            if (!tenantId) {
+                tenantId = await page.evaluate(() =>
+                    localStorage.getItem('qshelter_tenant_id'),
+                );
+            }
+
             expect(tenantId).toBeTruthy();
-            console.log('✅ Demo Bootstrap complete. tenantId:', tenantId);
+
+            // Ensure localStorage has the tenantId for later steps
+            await page.evaluate(
+                (tid) => localStorage.setItem('qshelter_tenant_id', tid),
+                tenantId!,
+            );
+
+            console.log('[Step 1] Tenant bootstrapped. tenantId:', tenantId);
+
+            await page.keyboard.press('Escape');
+            await page.waitForTimeout(1_000);
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 2 — Emeka logs in and browses properties
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 2: Emeka logs in', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 2 — Adaeze logs in
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 2: Adaeze logs in as admin', async () => {
+            await loginAs(page, EMAILS.adaeze);
+            console.log('[Step 2] Logged in as Adaeze (admin)');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 3 — Invite Yinka to Platform org + register
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 3: Invite Yinka to platform org', async () => {
+            await page.goto('/admin/organizations');
+            await expect(page.getByRole('heading', { name: 'Organizations' })).toBeVisible({ timeout: 10_000 });
+
+            const platformRow = page.getByRole('row').filter({ hasText: /QShelter Demo/i });
+            await platformRow.getByRole('button', { name: 'Invite' }).click();
+
+            const dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+
+            await dialog.getByLabel(/Email/i).fill(EMAILS.yinka);
+            await dialog.getByLabel(/First Name/i).fill('Yinka');
+            await dialog.getByLabel(/Last Name/i).fill('Adewale');
+            await pickSelect(page, dialog, /Role/i, /mortgage_ops/i);
+            await dialog.getByLabel(/Job Title/i).fill('Mortgage Operations Manager');
+            await dialog.getByLabel(/Department/i).fill('Mortgage Operations');
+
+            await dialog.getByRole('button', { name: 'Send Invitation' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 3] Yinka invited to platform org');
+
+            // Register Yinka
+            await page.context().clearCookies();
+            await page.goto('/register');
+            await page.getByLabel(/First Name/i).fill('Yinka');
+            await page.getByLabel(/Last Name/i).fill('Adewale');
+            await page.getByLabel('Email').fill(EMAILS.yinka);
+            await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
+            await page.getByLabel('Confirm Password').fill(PASSWORD);
+            await page.getByRole('button', { name: 'Create account' }).click();
+            await expect(page).toHaveURL(/\/(dashboard|admin|login)/, { timeout: 15_000 });
+            console.log('[Step 3] Yinka registered');
+
+            await loginAs(page, EMAILS.adaeze);
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 4 — Create Lekki Gardens org (DEVELOPER) + invite Nneka
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 4: Create Lekki Gardens + invite Nneka', async () => {
+            await page.goto('/admin/organizations');
+            await expect(page.getByRole('heading', { name: 'Organizations' })).toBeVisible({ timeout: 10_000 });
+
+            await page.getByRole('button', { name: 'Create Organization' }).click();
+            let dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+
+            await dialog.getByLabel(/Organization Name/i).fill('Lekki Gardens Development Company');
+            await dialog.locator('#type-DEVELOPER').check();
+            await dialog.getByLabel(/Email/i).fill('lekkigardens@mailsac.com');
+            await dialog.getByLabel(/Phone/i).fill('+2348012345678');
+            await dialog.getByLabel(/Address/i).fill('15 Admiralty Way, Lekki, Lagos');
+
+            await dialog.getByRole('button', { name: 'Create Organization' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 4] Lekki Gardens org created');
+
+            // Invite Nneka
+            await page.goto('/admin/organizations');
+            await page.waitForTimeout(2_000);
+
+            const devRow = page.getByRole('row').filter({ hasText: /Lekki Gardens/i });
+            await devRow.getByRole('button', { name: 'Invite' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+
+            await dialog.getByLabel(/Email/i).fill(EMAILS.nneka);
+            await dialog.getByLabel(/First Name/i).fill('Nneka');
+            await dialog.getByLabel(/Last Name/i).fill('Obi');
+            await pickSelect(page, dialog, /Role/i, /agent/i);
+            await dialog.getByLabel(/Job Title/i).fill('Development Manager');
+            await dialog.getByLabel(/Department/i).fill('Development');
+
+            await dialog.getByRole('button', { name: 'Send Invitation' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 4] Nneka invited to Lekki Gardens');
+
+            // Register Nneka
+            await page.context().clearCookies();
+            await page.goto('/register');
+            await page.getByLabel(/First Name/i).fill('Nneka');
+            await page.getByLabel(/Last Name/i).fill('Obi');
+            await page.getByLabel('Email').fill(EMAILS.nneka);
+            await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
+            await page.getByLabel('Confirm Password').fill(PASSWORD);
+            await page.getByRole('button', { name: 'Create account' }).click();
+            await expect(page).toHaveURL(/\/(dashboard|admin|login)/, { timeout: 15_000 });
+            console.log('[Step 4] Nneka registered');
+
+            await loginAs(page, EMAILS.adaeze);
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 5 — Complete Lekki Gardens onboarding
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 5: Complete Lekki Gardens onboarding', async () => {
+            await page.goto('/admin/organizations');
+            await page.waitForTimeout(2_000);
+
+            const devRow = page.getByRole('row').filter({ hasText: /Lekki Gardens/i });
+            await devRow.getByRole('link').first().click();
+            await page.waitForTimeout(2_000);
+
+            // Create onboarding if needed
+            const createBtn = page.getByRole('button', { name: 'Create Onboarding' });
+            if (await createBtn.isVisible({ timeout: 5_000 }).catch(() => false)) {
+                await createBtn.click();
+                await page.waitForTimeout(3_000);
+            }
+
+            // Assign Nneka as onboarder if needed
+            const assignBtn = page.getByRole('button', { name: /Assign Staff|Assign/i });
+            if (await assignBtn.first().isVisible({ timeout: 5_000 }).catch(() => false)) {
+                await assignBtn.first().click();
+                const assignDialog = page.getByRole('dialog');
+                await expect(assignDialog).toBeVisible({ timeout: 5_000 });
+                await assignDialog.getByRole('combobox').click();
+                await page.getByRole('option', { name: /Nneka/i }).click();
+                await assignDialog.getByRole('button', { name: /^Assign$/i }).click();
+                await page.waitForTimeout(3_000);
+            }
+
+            // Start onboarding
+            const startBtn = page.getByRole('button', { name: 'Start Onboarding' });
+            if (await startBtn.isVisible({ timeout: 5_000 }).catch(() => false)) {
+                await startBtn.click();
+                await page.waitForTimeout(3_000);
+            }
+
+            // Complete questionnaire phases if any
+            const submitAnswers = page.getByRole('button', { name: /Submit Answers/i });
+            if (await submitAnswers.isVisible({ timeout: 5_000 }).catch(() => false)) {
+                const textInputs = page.locator('input[type="text"]:visible');
+                const count = await textInputs.count();
+                for (let i = 0; i < count; i++) {
+                    const input = textInputs.nth(i);
+                    const value = await input.inputValue();
+                    if (!value) await input.fill('Sample Value');
+                }
+                await submitAnswers.click();
+                await page.waitForTimeout(3_000);
+            }
+
+            // Approve gate phase if visible
+            const submitReview = page.getByRole('button', { name: 'Submit Review' });
+            if (await submitReview.isVisible({ timeout: 5_000 }).catch(() => false)) {
+                await submitReview.click();
+                const gateDialog = page.getByRole('dialog');
+                await expect(gateDialog).toBeVisible({ timeout: 5_000 });
+                await gateDialog.getByLabel(/Decision/i).click();
+                await page.getByRole('option', { name: /Approve/i }).click();
+                await gateDialog.getByRole('button', { name: /Submit APPROVED/i }).click();
+                await page.waitForTimeout(3_000);
+            }
+
+            await page.reload();
+            await page.waitForTimeout(2_000);
+            console.log('[Step 5] Lekki Gardens onboarding completed');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 6 — Create Access Bank org (BANK) + invite Eniola
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 6: Create Access Bank + invite Eniola', async () => {
+            await page.goto('/admin/organizations');
+            await page.waitForTimeout(2_000);
+
+            await page.getByRole('button', { name: 'Create Organization' }).click();
+            let dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+
+            await dialog.getByLabel(/Organization Name/i).fill('Access Bank PLC');
+            await dialog.locator('#type-BANK').check();
+            await dialog.getByLabel(/Email/i).fill('mortgages@mailsac.com');
+            await dialog.getByLabel(/Phone/i).fill('+2341234567890');
+            await dialog.getByLabel(/Address/i).fill('999C Danmole Street, Victoria Island, Lagos');
+
+            await dialog.getByRole('button', { name: 'Create Organization' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 6] Access Bank org created');
+
+            // Invite Eniola
+            await page.goto('/admin/organizations');
+            await page.waitForTimeout(2_000);
+
+            const bankRow = page.getByRole('row').filter({ hasText: /Access Bank/i });
+            await bankRow.getByRole('button', { name: 'Invite' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+
+            await dialog.getByLabel(/Email/i).fill(EMAILS.eniola);
+            await dialog.getByLabel(/First Name/i).fill('Eniola');
+            await dialog.getByLabel(/Last Name/i).fill('Adeyemi');
+            await pickSelect(page, dialog, /Role/i, /mortgage_ops/i);
+            await dialog.getByLabel(/Job Title/i).fill('Mortgage Operations Officer');
+            await dialog.getByLabel(/Department/i).fill('Mortgage Lending');
+
+            await dialog.getByRole('button', { name: 'Send Invitation' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 6] Eniola invited to Access Bank');
+
+            // Register Eniola
+            await page.context().clearCookies();
+            await page.goto('/register');
+            await page.getByLabel(/First Name/i).fill('Eniola');
+            await page.getByLabel(/Last Name/i).fill('Adeyemi');
+            await page.getByLabel('Email').fill(EMAILS.eniola);
+            await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
+            await page.getByLabel('Confirm Password').fill(PASSWORD);
+            await page.getByRole('button', { name: 'Create account' }).click();
+            await expect(page).toHaveURL(/\/(dashboard|admin|login)/, { timeout: 15_000 });
+            console.log('[Step 6] Eniola registered');
+
+            await loginAs(page, EMAILS.adaeze);
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 7 — Complete Access Bank onboarding
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 7: Complete Access Bank onboarding', async () => {
+            await page.goto('/admin/organizations');
+            await page.waitForTimeout(2_000);
+
+            const bankRow = page.getByRole('row').filter({ hasText: /Access Bank/i });
+            await bankRow.getByRole('link').first().click();
+            await page.waitForTimeout(2_000);
+
+            const createBtn = page.getByRole('button', { name: 'Create Onboarding' });
+            if (await createBtn.isVisible({ timeout: 5_000 }).catch(() => false)) {
+                await createBtn.click();
+                await page.waitForTimeout(3_000);
+            }
+
+            const assignBtn = page.getByRole('button', { name: /Assign Staff|Assign/i });
+            if (await assignBtn.first().isVisible({ timeout: 5_000 }).catch(() => false)) {
+                await assignBtn.first().click();
+                const assignDialog = page.getByRole('dialog');
+                await expect(assignDialog).toBeVisible({ timeout: 5_000 });
+                await assignDialog.getByRole('combobox').click();
+                await page.getByRole('option', { name: /Eniola/i }).click();
+                await assignDialog.getByRole('button', { name: /^Assign$/i }).click();
+                await page.waitForTimeout(3_000);
+            }
+
+            const startBtn = page.getByRole('button', { name: 'Start Onboarding' });
+            if (await startBtn.isVisible({ timeout: 5_000 }).catch(() => false)) {
+                await startBtn.click();
+                await page.waitForTimeout(3_000);
+            }
+
+            const submitAnswers = page.getByRole('button', { name: /Submit Answers/i });
+            if (await submitAnswers.isVisible({ timeout: 5_000 }).catch(() => false)) {
+                const textInputs = page.locator('input[type="text"]:visible');
+                const count = await textInputs.count();
+                for (let i = 0; i < count; i++) {
+                    const input = textInputs.nth(i);
+                    const value = await input.inputValue();
+                    if (!value) await input.fill('Sample Value');
+                }
+                await submitAnswers.click();
+                await page.waitForTimeout(3_000);
+            }
+
+            const submitReview = page.getByRole('button', { name: 'Submit Review' });
+            if (await submitReview.isVisible({ timeout: 5_000 }).catch(() => false)) {
+                await submitReview.click();
+                const gateDialog = page.getByRole('dialog');
+                await expect(gateDialog).toBeVisible({ timeout: 5_000 });
+                await gateDialog.getByLabel(/Decision/i).click();
+                await page.getByRole('option', { name: /Approve/i }).click();
+                await gateDialog.getByRole('button', { name: /Submit APPROVED/i }).click();
+                await page.waitForTimeout(3_000);
+            }
+
+            await page.reload();
+            await page.waitForTimeout(2_000);
+            console.log('[Step 7] Access Bank onboarding completed');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 8 — Create Sunrise Heights property + variant + unit
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 8: Create Sunrise Heights property', async () => {
+            await page.goto('/admin/properties/new');
+            await page.waitForTimeout(2_000);
+
+            // Step 1: Property Details
+            await page.getByLabel(/Title/i).fill('Sunrise Heights Estate');
+            await page.getByLabel(/Description/i).first().fill(
+                'Premium residential estate in Lekki Phase 1, Lagos.',
+            );
+            await page.getByLabel(/Category/i).click();
+            await page.getByRole('option', { name: /For Sale/i }).click();
+            await page.getByLabel(/Property Type/i).click();
+            await page.getByRole('option', { name: /Apartment/i }).click();
+            await page.getByLabel(/City/i).fill('Lagos');
+            await page.getByLabel(/District/i).fill('Lekki Phase 1');
+
+            await page.getByRole('button', { name: /Continue to Media/i }).click();
+            await page.waitForTimeout(1_000);
+
+            // Step 2: Media — skip
+            await page.getByRole('button', { name: /Continue/i }).click();
+            await page.waitForTimeout(1_000);
+
+            // Step 3: Variants — skip (add later)
+            await page.getByRole('button', { name: /Continue/i }).click();
+            await page.waitForTimeout(1_000);
+
+            // Step 4: Units — skip
+            await page.getByRole('button', { name: /Continue/i }).click();
+            await page.waitForTimeout(1_000);
+
+            // Step 5: Review & Publish
+            await page.getByLabel(/Publish Immediately/i).check();
+            await page.getByRole('button', { name: /Create Property/i }).click();
+            await page.waitForTimeout(5_000);
+            console.log('[Step 8] Property created');
+
+            // Navigate to properties list to add variant + unit
+            await page.goto('/admin/properties');
+            await page.waitForTimeout(2_000);
+
+            await page.getByText('Sunrise Heights Estate').first().click();
+            await page.waitForTimeout(1_000);
+
+            // Add variant
+            await page.getByRole('button', { name: 'Add Variant' }).click();
+            let variantDialog = page.getByRole('dialog');
+            await expect(variantDialog).toBeVisible({ timeout: 5_000 });
+
+            await variantDialog.locator('#variantName').fill('3-Bedroom Luxury Apartment');
+            await variantDialog.locator('#nBedrooms').fill('3');
+            await variantDialog.locator('#nBathrooms').fill('3');
+            await variantDialog.locator('#nParkingSpots').fill('1');
+            await variantDialog.locator('#area').fill('180');
+            await variantDialog.locator('#price').fill('75000000');
+            await variantDialog.locator('#totalUnits').fill('24');
+
+            await variantDialog.getByRole('button', { name: 'Create Variant' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 8] Variant created');
+
+            // Add unit
+            await page.getByRole('button', { name: 'Add Unit' }).click();
+            const unitDialog = page.getByRole('dialog');
+            await expect(unitDialog).toBeVisible({ timeout: 5_000 });
+
+            await unitDialog.locator('#unitNumber').fill('A-201');
+            await unitDialog.locator('#floorNumber').fill('2');
+            await unitDialog.locator('#blockName').fill('Block A');
+
+            await unitDialog.getByRole('button', { name: 'Create Unit' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 8] Unit A-201 created');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 9 — Create questionnaire plan
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 9: Create questionnaire plan', async () => {
+            await page.goto('/admin/questionnaire-plans');
+            await page.waitForTimeout(2_000);
+
+            await page.getByRole('button', { name: 'Create Questionnaire Plan' }).click();
+            const dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+
+            await dialog.locator('#planName').fill('MREIF Prequalification');
+
+            // Add 5 questions
+            const questions = [
+                { key: 'employment_status', text: 'What is your employment status?', type: 'SELECT' },
+                { key: 'monthly_income', text: 'What is your monthly net income?', type: 'CURRENCY' },
+                { key: 'years_employed', text: 'How many years at your current employer?', type: 'NUMBER' },
+                { key: 'existing_mortgage', text: 'Do you have an existing mortgage?', type: 'SELECT' },
+                { key: 'property_purpose', text: 'What is the purpose of this property?', type: 'SELECT' },
+            ];
+
+            for (const q of questions) {
+                await dialog.getByRole('button', { name: 'Add Question' }).click();
+                await page.waitForTimeout(500);
+
+                const qCards = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Question Key/i });
+                const lastQ = qCards.last();
+                await lastQ.getByPlaceholder(/question_key/i).first().fill(q.key);
+                await lastQ.getByPlaceholder(/Enter question text/i).first().fill(q.text);
+                await lastQ.locator('button[role="combobox"]').first().click();
+                await page.getByRole('option', { name: q.type, exact: true }).click();
+            }
+
+            await dialog.getByRole('button', { name: 'Create Plan' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 9] Questionnaire plan created');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 10 — Create 3 documentation plans
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 10: Create documentation plans', async () => {
+            await page.goto('/admin/documentation-plans');
+            await page.waitForTimeout(2_000);
+
+            // --- Plan 1: Sales Offer Documentation ---
+            await page.getByRole('button', { name: 'Create Documentation Plan' }).click();
+            let dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.locator('#planName').fill('Sales Offer Documentation');
+
+            await dialog.getByRole('button', { name: 'Add Document' }).click();
+            await page.waitForTimeout(500);
+            let lastDoc = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Document Type/i }).last();
+            await lastDoc.getByPlaceholder(/DOCUMENT_TYPE/i).first().fill('SALES_OFFER_LETTER');
+            await lastDoc.getByPlaceholder(/Display name/i).first().fill('Sales Offer Letter');
+            await lastDoc.locator('button[role="combobox"]').first().click();
+            await page.getByRole('option', { name: 'DEVELOPER', exact: true }).click();
+
+            await dialog.getByRole('button', { name: 'Add Stage' }).click();
+            await page.waitForTimeout(500);
+            let lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
+            await lastStage.getByPlaceholder(/Stage name/i).first().fill('Developer Document Verification');
+            await lastStage.locator('button[role="combobox"]').first().click();
+            await page.getByRole('option', { name: 'DEVELOPER', exact: true }).click();
+
+            await dialog.getByRole('button', { name: 'Create Plan' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 10] Sales Offer plan created');
+
+            // --- Plan 2: MREIF Preapproval Documentation ---
+            await page.getByRole('button', { name: 'Create Documentation Plan' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.locator('#planName').fill('MREIF Preapproval Documentation');
+
+            const preapprovalDocs = [
+                { type: 'ID_CARD', name: 'Valid Government ID', uploader: 'CUSTOMER' },
+                { type: 'BANK_STATEMENT', name: 'Bank Statement (6 months)', uploader: 'CUSTOMER' },
+                { type: 'EMPLOYMENT_LETTER', name: 'Employment Confirmation Letter', uploader: 'CUSTOMER' },
+                { type: 'PROOF_OF_ADDRESS', name: 'Proof of Address', uploader: 'CUSTOMER' },
+                { type: 'PREAPPROVAL_LETTER', name: 'Bank Preapproval Letter', uploader: 'LENDER' },
+            ];
+            for (const doc of preapprovalDocs) {
+                await dialog.getByRole('button', { name: 'Add Document' }).click();
+                await page.waitForTimeout(500);
+                lastDoc = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Document Type/i }).last();
+                await lastDoc.getByPlaceholder(/DOCUMENT_TYPE/i).first().fill(doc.type);
+                await lastDoc.getByPlaceholder(/Display name/i).first().fill(doc.name);
+                await lastDoc.locator('button[role="combobox"]').first().click();
+                await page.getByRole('option', { name: doc.uploader, exact: true }).click();
+            }
+
+            // 2 stages: PLATFORM then BANK
+            await dialog.getByRole('button', { name: 'Add Stage' }).click();
+            await page.waitForTimeout(500);
+            lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
+            await lastStage.getByPlaceholder(/Stage name/i).first().fill('QShelter Staff Review');
+            await lastStage.locator('button[role="combobox"]').first().click();
+            await page.getByRole('option', { name: 'PLATFORM', exact: true }).click();
+
+            await dialog.getByRole('button', { name: 'Add Stage' }).click();
+            await page.waitForTimeout(500);
+            lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
+            await lastStage.getByPlaceholder(/Stage name/i).first().fill('Bank Review');
+            await lastStage.locator('button[role="combobox"]').first().click();
+            await page.getByRole('option', { name: 'BANK', exact: true }).click();
+
+            await dialog.getByRole('button', { name: 'Create Plan' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 10] Preapproval plan created');
+
+            // --- Plan 3: Mortgage Offer Documentation ---
+            await page.getByRole('button', { name: 'Create Documentation Plan' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.locator('#planName').fill('Mortgage Offer Documentation');
+
+            await dialog.getByRole('button', { name: 'Add Document' }).click();
+            await page.waitForTimeout(500);
+            lastDoc = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Document Type/i }).last();
+            await lastDoc.getByPlaceholder(/DOCUMENT_TYPE/i).first().fill('MORTGAGE_OFFER_LETTER');
+            await lastDoc.getByPlaceholder(/Display name/i).first().fill('Mortgage Offer Letter');
+            await lastDoc.locator('button[role="combobox"]').first().click();
+            await page.getByRole('option', { name: 'LENDER', exact: true }).click();
+
+            await dialog.getByRole('button', { name: 'Add Stage' }).click();
+            await page.waitForTimeout(500);
+            lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
+            await lastStage.getByPlaceholder(/Stage name/i).first().fill('Bank Document Upload');
+            await lastStage.locator('button[role="combobox"]').first().click();
+            await page.getByRole('option', { name: 'BANK', exact: true }).click();
+
+            await dialog.getByRole('button', { name: 'Create Plan' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 10] Mortgage Offer plan created');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 11 — Create payment plan (ONE_TIME 10% downpayment)
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 11: Create payment plan', async () => {
+            await page.goto('/admin/payment-plans');
+            await page.waitForTimeout(2_000);
+
+            await page.getByRole('button', { name: 'Create Payment Plan' }).click();
+            const dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+
+            await dialog.locator('#planName').fill('MREIF 10% Downpayment');
+            await dialog.getByLabel(/Payment Frequency/i).click();
+            await page.getByRole('option', { name: 'ONE_TIME', exact: true }).click();
+
+            await dialog.getByRole('button', { name: 'Create Plan' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 11] Payment plan created');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 12 — Create MREIF 10/90 Payment Method (5 phases)
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 12: Create MREIF payment method', async () => {
+            await page.goto('/admin/payment-methods');
+            await page.waitForTimeout(2_000);
+
+            await page.getByRole('button', { name: 'Create Payment Method' }).click();
+            const dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+
+            await dialog.locator('#methodName').fill('MREIF 10/90 Mortgage');
+
+            const phases = [
+                { name: 'Prequalification', category: /Questionnaire/i, type: /Pre-Approval/i, plan: /MREIF Prequalification/i },
+                { name: 'Sales Offer', category: /Documentation/i, type: /Document Verification/i, plan: /Sales Offer Documentation/i },
+                { name: 'Preapproval Documentation', category: /Documentation/i, type: /KYC Verification/i, plan: /MREIF Preapproval Documentation/i },
+                { name: '10% Downpayment', category: /Payment/i, type: /Downpayment/i, plan: /MREIF 10% Downpayment/i },
+                { name: 'Mortgage Offer', category: /Documentation/i, type: /Document Verification/i, plan: /Mortgage Offer Documentation/i },
+            ];
+
+            for (const p of phases) {
+                await dialog.getByRole('button', { name: 'Add Phase' }).click();
+                await page.waitForTimeout(500);
+
+                const phaseCard = dialog.locator('.border.rounded-lg, [class*="Card"]').filter({ hasText: /Phase Name/i }).last();
+                await phaseCard.getByPlaceholder(/Phase name/i).fill(p.name);
+
+                const combos = phaseCard.locator('button[role="combobox"]');
+                await combos.first().click();
+                await page.getByRole('option', { name: p.category }).click();
+
+                await combos.nth(1).click();
+                await page.getByRole('option', { name: p.type }).click();
+
+                // For payment phases, set the percentage
+                if (p.name === '10% Downpayment') {
+                    const percentInput = phaseCard.getByPlaceholder(/10/i);
+                    if (await percentInput.isVisible().catch(() => false)) {
+                        await percentInput.fill('10');
+                    }
+                }
+
+                // Select the plan
+                await phaseCard.locator('button[role="combobox"]').last().click();
+                await page.getByRole('option', { name: p.plan }).click();
+            }
+
+            await dialog.getByRole('button', { name: 'Create Method' }).click();
+            await page.waitForTimeout(5_000);
+            console.log('[Step 12] MREIF payment method created (5 phases)');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 13 — Create qualification flows
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 13: Create qualification flows', async () => {
+            await page.goto('/admin/qualification-flows');
+            await page.waitForTimeout(2_000);
+
+            // Developer qualification flow
+            await page.getByRole('button', { name: 'Create Flow' }).click();
+            let dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByLabel(/Flow Name/i).fill('MREIF Developer Qualification');
+            await dialog.getByRole('button', { name: 'Add Phase' }).click();
+            await page.waitForTimeout(500);
+            await dialog.getByPlaceholder(/Phase name/i).fill('Platform Approval');
+            await dialog.locator('[class*="card"]').last().locator('button[role="combobox"]').first().click();
+            await page.getByRole('option', { name: /Approval Gate/i }).click();
+            await dialog.getByRole('button', { name: 'Create Flow' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 13] Developer qualification flow created');
+
+            // Bank qualification flow
+            await page.getByRole('button', { name: 'Create Flow' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByLabel(/Flow Name/i).fill('MREIF Bank Qualification');
+            await dialog.getByRole('button', { name: 'Add Phase' }).click();
+            await page.waitForTimeout(500);
+            await dialog.getByPlaceholder(/Phase name/i).fill('Platform Approval');
+            await dialog.locator('[class*="card"]').last().locator('button[role="combobox"]').first().click();
+            await page.getByRole('option', { name: /Approval Gate/i }).click();
+            await dialog.getByRole('button', { name: 'Create Flow' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 13] Bank qualification flow created');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 14 — Assign qualification flows + enroll + qualify orgs
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 14: Configure MREIF qualification and enroll orgs', async () => {
+            await page.goto('/admin/payment-methods');
+            await page.waitForTimeout(2_000);
+
+            // Navigate to MREIF edit page
+            const mreifCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /MREIF 10\/90/i });
+            await mreifCard.locator('button').filter({ has: page.locator('svg') }).last().click();
+            await page.getByRole('menuitem', { name: /Edit/i }).click();
+            await page.waitForTimeout(2_000);
+
+            // Add DEVELOPER qualification requirement
+            await page.getByRole('button', { name: 'Add Requirement' }).click();
+            let dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByLabel(/Organization Type/i).click();
+            await page.getByRole('option', { name: 'DEVELOPER', exact: true }).click();
+            await dialog.getByLabel(/Qualification Flow/i).click();
+            await page.getByRole('option', { name: /MREIF Developer/i }).click();
+            await dialog.getByRole('button', { name: 'Add Requirement' }).click();
+            await page.waitForTimeout(3_000);
+
+            // Add BANK qualification requirement
+            await page.getByRole('button', { name: 'Add Requirement' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByLabel(/Organization Type/i).click();
+            await page.getByRole('option', { name: 'BANK', exact: true }).click();
+            await dialog.getByLabel(/Qualification Flow/i).click();
+            await page.getByRole('option', { name: /MREIF Bank/i }).click();
+            await dialog.getByRole('button', { name: 'Add Requirement' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 14] Qualification requirements added');
+
+            // Manage Organizations — enroll + qualify
+            await page.getByRole('button', { name: /Manage Organizations/i }).click();
+            await page.waitForTimeout(2_000);
+
+            // Enroll + qualify Lekki Gardens
+            await page.getByRole('button', { name: /Enroll Organization/i }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByLabel(/Organization/i).click();
+            await page.getByRole('option', { name: /Lekki Gardens/i }).click();
+            await dialog.getByRole('button', { name: 'Enroll' }).click();
+            await page.waitForTimeout(3_000);
+
+            let devCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /Lekki Gardens/i });
+            await devCard.getByRole('button', { name: /Start Qualification/i }).click();
+            await page.waitForTimeout(3_000);
+            devCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /Lekki Gardens/i });
+            await devCard.getByRole('button', { name: /Mark Qualified/i }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 14] Lekki Gardens enrolled and qualified');
+
+            // Enroll + qualify Access Bank
+            await page.getByRole('button', { name: /Enroll Organization/i }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByLabel(/Organization/i).click();
+            await page.getByRole('option', { name: /Access Bank/i }).click();
+            await dialog.getByRole('button', { name: 'Enroll' }).click();
+            await page.waitForTimeout(3_000);
+
+            let bankCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /Access Bank/i });
+            await bankCard.getByRole('button', { name: /Start Qualification/i }).click();
+            await page.waitForTimeout(3_000);
+            bankCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /Access Bank/i });
+            await bankCard.getByRole('button', { name: /Mark Qualified/i }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 14] Access Bank enrolled and qualified');
+
+            // Add PROOF_OF_ADDRESS waiver for Access Bank
+            bankCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /Access Bank/i });
+            await bankCard.locator('button').filter({ has: page.locator('svg') }).first().click();
+            await page.waitForTimeout(1_000);
+
+            await page.getByRole('button', { name: /Add Waiver|Add First Waiver/i }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByLabel(/Document/i).click();
+            await page.getByRole('option', { name: /PROOF_OF_ADDRESS|Proof of Address/i }).click();
+            const reasonInput = dialog.getByPlaceholder(/waived/i);
+            if (await reasonInput.isVisible().catch(() => false)) {
+                await reasonInput.fill('Access Bank performs its own address verification');
+            }
+            await dialog.getByRole('button', { name: 'Create Waiver' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 14] PROOF_OF_ADDRESS waived for Access Bank');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 15 — Link MREIF to property
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 15: Link MREIF to Sunrise Heights', async () => {
+            await page.goto('/admin/payment-methods');
+            await page.waitForTimeout(2_000);
+
+            const mreifCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /MREIF 10\/90/i });
+            await mreifCard.locator('button').filter({ has: page.locator('svg') }).last().click();
+            await page.getByRole('menuitem', { name: /Attach to Property/i }).click();
+
+            const dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByLabel(/Property/i).click();
+            await page.getByRole('option', { name: /Sunrise Heights/i }).click();
+            await dialog.getByRole('button', { name: /Link/i }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 15] MREIF linked to Sunrise Heights');
+            console.log('--- SETUP COMPLETE ---');
+        });
+
+        // ╔═══════════════════════════════════════════════════════════════╗
+        // ║             PART B — APPLICATION FLOW                        ║
+        // ║   Register Emeka -> browse -> apply -> 5 phases -> COMPLETED ║
+        // ╚═══════════════════════════════════════════════════════════════╝
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 16 — Register Emeka as customer
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 16: Register Emeka (customer)', async () => {
+            await page.context().clearCookies();
+            await page.goto('/register');
+            await page.getByLabel(/First Name/i).fill('Emeka');
+            await page.getByLabel(/Last Name/i).fill('Okoro');
+            await page.getByLabel('Email').fill(EMAILS.emeka);
+            await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
+            await page.getByLabel('Confirm Password').fill(PASSWORD);
+            await page.getByRole('button', { name: 'Create account' }).click();
+            await expect(page).toHaveURL(/\/(dashboard|admin|login)/, { timeout: 15_000 });
             await loginAs(page, EMAILS.emeka);
-            console.log('✅ Logged in as Emeka');
+            console.log('[Step 16] Emeka registered and logged in');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 3 — Browse property → select variant/unit/payment method
-        //           → start application
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 3: Browse property and start application', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 17 — Browse property and start application
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 17: Browse property and start application', async () => {
             await page.goto('/properties');
             await expect(page.getByText('Sunrise Heights Estate')).toBeVisible({ timeout: 10_000 });
-
-            // View property detail
             await page.getByRole('link', { name: 'View Details' }).first().click();
             await expect(page.getByText('Sunrise Heights Estate')).toBeVisible();
 
-            // Select variant — "3-Bedroom Luxury Apartment"
             await page.getByText('3-Bedroom Luxury Apartment').first().click();
-
-            // Wait for units section and select A-201
             await expect(page.getByText('Available Units')).toBeVisible({ timeout: 10_000 });
             await page.getByRole('button', { name: /A-201/ }).click();
 
-            // Switch to Payment Options tab and select MREIF
             await page.getByRole('tab', { name: 'Payment Options' }).click();
             await expect(page.getByText('MREIF 10/90 Mortgage')).toBeVisible({ timeout: 10_000 });
             await page.getByText('MREIF 10/90 Mortgage').first().click();
 
-            // Start application → Confirm dialog
             await page.getByRole('button', { name: 'Start Application' }).click();
             await expect(page.getByText('Confirm Application')).toBeVisible({ timeout: 5_000 });
             await page.getByRole('button', { name: /Confirm.*Start/i }).click();
 
-            // Should redirect to the new application detail page
             await expect(page).toHaveURL(/\/applications\/[a-f0-9-]+/, { timeout: 30_000 });
             applicationId = page.url().split('/applications/')[1].split(/[?#]/)[0];
-            console.log('✅ Application created:', applicationId);
+            console.log('[Step 17] Application created:', applicationId);
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 4 — Prequalification: Emeka fills questionnaire
-        //
-        //   5 questions configured by demo-bootstrap:
-        //     Q1  employment_status   SELECT    → "Employed"
-        //     Q2  monthly_income      CURRENCY  → 2,500,000
-        //     Q3  years_employed      NUMBER    → 5
-        //     Q4  existing_mortgage   SELECT    → "No"
-        //     Q5  property_purpose    SELECT    → "Primary Residence"
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 4: Emeka fills prequalification questionnaire', async () => {
-            // Wait for the questionnaire form to render (button is "Submit Answers")
-            await expect(
-                page.getByRole('button', { name: /Submit Answers/i }),
-            ).toBeVisible({ timeout: 30_000 });
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 18 — Prequalification: Emeka fills questionnaire
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 18: Emeka fills prequalification questionnaire', async () => {
+            await expect(page.getByRole('button', { name: /Submit Answers/i }))
+                .toBeVisible({ timeout: 30_000 });
 
-            // Helper: select a shadcn <Select> option by clicking the combobox
-            // near a label, then picking the option from the popover.
-            async function pickSelect(labelText: RegExp, optionName: string) {
-                // Find the field container that has the label text, then the combobox trigger inside it
-                const container = page.locator('div.space-y-2').filter({ hasText: labelText });
-                await container.getByRole('combobox').click();
-                await page.getByRole('option', { name: optionName, exact: true }).click();
-            }
-
-            // Q1: Employment status (SELECT)
-            await pickSelect(/employment status/i, 'Employed');
-
-            // Q2: Monthly net income (CURRENCY — rendered as <input type="number">)
+            await pickSelect(page, page, /employment status/i, 'Employed');
             await page.getByRole('spinbutton', { name: /monthly.*income/i }).fill('2500000');
-
-            // Q3: Years at current employer (NUMBER — rendered as <input type="number">)
             await page.getByRole('spinbutton', { name: /years.*employer/i }).fill('5');
+            await pickSelect(page, page, /existing mortgage/i, 'No');
+            await pickSelect(page, page, /purpose.*property/i, 'Primary Residence');
 
-            // Q4: Existing mortgage (SELECT)
-            await pickSelect(/existing mortgage/i, 'No');
-
-            // Q5: Property purpose (SELECT)
-            await pickSelect(/purpose.*property/i, 'Primary Residence');
-
-            // Submit
             await page.getByRole('button', { name: /Submit Answers/i }).click();
-
-            // Should transition to "under review" or similar
-            await expect(
-                page.getByText(/under review|submitted|awaiting/i).first(),
-            ).toBeVisible({ timeout: 15_000 });
-            console.log('✅ Questionnaire submitted');
+            await expect(page.getByText(/under review|submitted|awaiting/i).first())
+                .toBeVisible({ timeout: 15_000 });
+            console.log('[Step 18] Questionnaire submitted');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 5 — Prequalification: Adaeze reviews & approves
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 5: Adaeze approves prequalification', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 19 — Adaeze approves prequalification
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 19: Adaeze approves prequalification', async () => {
             await loginAs(page, EMAILS.adaeze);
-            await page.goto(`/admin/applications/${applicationId}`);
-            await expect(page.getByText('Admin Review')).toBeVisible({ timeout: 10_000 });
+            await page.goto('/admin/applications/' + applicationId);
+            await expect(page.getByText(applicationId)).toBeVisible({ timeout: 20_000 });
 
-            // Click "Review Questionnaire" button
-            await page.getByRole('button', { name: /Review Questionnaire/i }).click();
+            const reviewBtn = page.getByRole('button', { name: /Review Questionnaire/i });
+            await expect(reviewBtn).toBeVisible({ timeout: 10_000 });
+            await reviewBtn.click();
             await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5_000 });
-
-            // Approve
             await page.getByRole('dialog').getByRole('button', { name: 'Approve' }).click();
             await page.waitForTimeout(5_000);
-            console.log('✅ Questionnaire approved by Adaeze');
+            console.log('[Step 19] Questionnaire approved by Adaeze');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 6 — Sales Offer: Nneka (developer agent) uploads
-        //           The DEVELOPER approval stage auto-approves the upload.
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 6: Nneka uploads sales offer letter', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 20 — Nneka uploads sales offer (auto-approved)
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 20: Nneka uploads sales offer letter', async () => {
             await loginAs(page, EMAILS.nneka);
-            await page.goto(`/admin/applications/${applicationId}`);
-            await expect(page.getByText('Admin Review')).toBeVisible({ timeout: 10_000 });
+            await page.goto('/admin/applications/' + applicationId);
+            await expect(page.getByText(applicationId)).toBeVisible({ timeout: 20_000 });
 
-            // Wait for the partner document upload section to appear
-            // (sales offer phase must be active)
-            await pollUntilVisible(page, /Upload.*Document/i, {
-                timeout: 30_000,
-                interval: 3_000,
-            });
+            await pollUntilVisible(page, /Upload.*Document/i, { timeout: 30_000, interval: 3_000 });
 
-            // Select the document type
             const docTypeSelect = page.getByRole('combobox').last();
             await docTypeSelect.click();
             await page.getByRole('option', { name: /Sales Offer/i }).click();
-
-            // Upload the file
-            await page.locator('input[type="file"]').last().setInputFiles(testPdf('sales-offer-letter'));
-
-            // Click "Upload Document"
+            await page.locator('input[type="file"]').last().setInputFiles(testPdf('sales-offer'));
             await page.getByRole('button', { name: /Upload Document/i }).click();
-
-            // Wait for upload to process (auto-approved by DEVELOPER stage)
             await page.waitForTimeout(5_000);
-            console.log('✅ Sales offer uploaded by Nneka (auto-approved)');
+            console.log('[Step 20] Sales offer uploaded by Nneka');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 7 — Sales Offer: Emeka accepts the partner document
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 7: Emeka accepts sales offer', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 21 — Emeka accepts sales offer
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 21: Emeka accepts sales offer', async () => {
             await loginAs(page, EMAILS.emeka);
-            await page.goto(`/applications/${applicationId}`);
-
-            // The phase may need a moment to transition to WAIT_FOR_ACCEPTANCE
+            await page.goto('/applications/' + applicationId);
             const acceptBtn = page.getByRole('button', { name: 'Accept' });
-            const isAcceptVisible = await acceptBtn
-                .first()
-                .isVisible({ timeout: 15_000 })
-                .catch(() => false);
-
-            if (isAcceptVisible) {
+            if (await acceptBtn.first().isVisible({ timeout: 15_000 }).catch(() => false)) {
                 await acceptBtn.first().click();
                 await page.waitForTimeout(3_000);
-                console.log('✅ Sales offer accepted by Emeka');
+                console.log('[Step 21] Sales offer accepted by Emeka');
             } else {
-                // Phase may have auto-completed (some configs skip acceptance)
-                console.log('ℹ️  No Accept button — sales offer phase auto-completed');
+                console.log('[Step 21] Sales offer phase auto-completed');
             }
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 8 — KYC Documentation: Emeka uploads customer docs
-        //
-        //   Required docs (from demo-bootstrap preapproval plan):
-        //     1. Valid Government ID
-        //     2. Bank Statement (6 months)
-        //     3. Employment Confirmation Letter
-        //     (PROOF_OF_ADDRESS waived by Access Bank)
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 8: Emeka uploads KYC documents', async () => {
-            await page.goto(`/applications/${applicationId}`);
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 22 — Emeka uploads KYC documents
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 22: Emeka uploads KYC documents', async () => {
+            await page.goto('/applications/' + applicationId);
+            await pollUntilVisible(page, /Required Documents|Action Required/i, { timeout: 60_000, interval: 5_000 });
 
-            // Wait for the document upload section to appear
-            // (KYC phase must be active and showing upload controls)
-            await pollUntilVisible(page, /Required Documents|Upload.*Government|Upload.*Bank/i, {
-                timeout: 60_000,
-                interval: 5_000,
-            });
-
-            // Upload to each visible file input
-            const fileInputs = page.locator('input[type="file"]');
-            const inputCount = await fileInputs.count();
-            console.log(`Found ${inputCount} file input(s) for customer docs`);
-
-            for (let i = 0; i < inputCount; i++) {
-                await fileInputs.nth(i).setInputFiles(testPdf(`kyc-doc-${i + 1}`));
-                // Wait for each upload to complete before the next
-                await page.waitForTimeout(3_000);
+            const docTypes = ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER', 'PROOF_OF_ADDRESS'];
+            for (const docType of docTypes) {
+                const fileInput = page.locator('#file-' + docType);
+                if (await fileInput.count() > 0) {
+                    await fileInput.setInputFiles(testPdf(docType.toLowerCase()));
+                    await page.waitForTimeout(5_000);
+                    console.log('  Uploaded ' + docType);
+                } else {
+                    console.log('  ' + docType + ' waived');
+                }
             }
-
-            // Wait for all uploads to settle
-            await page.waitForTimeout(5_000);
-            console.log('✅ Customer KYC documents uploaded');
+            console.log('[Step 22] KYC documents uploaded');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 9 — KYC Documentation: Adaeze reviews & approves
-        //           customer documents (Stage 1: PLATFORM)
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 9: Adaeze reviews and approves KYC documents', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 23 — Adaeze approves KYC documents
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 23: Adaeze approves KYC documents', async () => {
             await loginAs(page, EMAILS.adaeze);
-            await page.goto(`/admin/applications/${applicationId}`);
+            await page.goto('/admin/applications/' + applicationId);
             await page.waitForTimeout(5_000);
-
             await approveAllDocuments(page);
-            console.log('✅ KYC documents approved by Adaeze (PLATFORM stage)');
+            console.log('[Step 23] KYC documents approved by Adaeze');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 10 — KYC Documentation: Eniola (bank) uploads preapproval
-        //            letter. Auto-approved by BANK stage.
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 10: Eniola uploads bank preapproval letter', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 24 — Eniola uploads bank preapproval letter
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 24: Eniola uploads bank preapproval letter', async () => {
             await loginAs(page, EMAILS.eniola);
-            await page.goto(`/admin/applications/${applicationId}`);
-            await expect(page.getByText('Admin Review')).toBeVisible({ timeout: 10_000 });
+            await page.goto('/admin/applications/' + applicationId);
+            await expect(page.getByText(applicationId)).toBeVisible({ timeout: 20_000 });
 
-            // Wait for partner upload section (BANK stage should be active after
-            // PLATFORM stage completes)
-            await pollUntilVisible(page, /Upload.*Document/i, {
-                timeout: 30_000,
-                interval: 3_000,
-            });
+            await pollUntilVisible(page, /Upload.*Document/i, { timeout: 30_000, interval: 3_000 });
 
-            // Select document type
             const docTypeSelect = page.getByRole('combobox').last();
             await docTypeSelect.click();
             await page.getByRole('option', { name: /Preapproval/i }).click();
-
-            // Upload
             await page.locator('input[type="file"]').last().setInputFiles(testPdf('bank-preapproval'));
             await page.getByRole('button', { name: /Upload Document/i }).click();
-
             await page.waitForTimeout(5_000);
-            console.log('✅ Bank preapproval letter uploaded by Eniola (auto-approved)');
+            console.log('[Step 24] Bank preapproval uploaded by Eniola');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 11 — KYC Documentation: Emeka accepts partner docs
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 11: Emeka accepts bank preapproval', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 25 — Emeka accepts bank preapproval
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 25: Emeka accepts bank preapproval', async () => {
             await loginAs(page, EMAILS.emeka);
-            await page.goto(`/applications/${applicationId}`);
-
+            await page.goto('/applications/' + applicationId);
             const acceptBtn = page.getByRole('button', { name: 'Accept' });
-            const isAcceptVisible = await acceptBtn
-                .first()
-                .isVisible({ timeout: 15_000 })
-                .catch(() => false);
-
-            if (isAcceptVisible) {
+            if (await acceptBtn.first().isVisible({ timeout: 15_000 }).catch(() => false)) {
                 await acceptBtn.first().click();
                 await page.waitForTimeout(3_000);
-                console.log('✅ Bank preapproval accepted by Emeka');
+                console.log('[Step 25] Bank preapproval accepted');
             } else {
-                console.log('ℹ️  No Accept button — KYC phase auto-completed');
+                console.log('[Step 25] KYC phase auto-completed');
             }
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 12 — 10% Downpayment: Emeka creates wallet & generates
-        //            installment
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 12: Emeka creates wallet and generates installment', async () => {
-            await page.goto(`/applications/${applicationId}`);
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 26 — Emeka creates wallet + generates installment
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 26: Emeka creates wallet', async () => {
+            await page.goto('/applications/' + applicationId);
+            await pollUntilVisible(page, /Create Wallet|wallet|Payment/i, { timeout: 60_000, interval: 5_000 });
 
-            // Wait for the payment phase to activate
-            await pollUntilVisible(page, /Create Wallet|wallet|Payment/i, {
-                timeout: 60_000,
-                interval: 5_000,
-            });
-
-            // Create wallet (if button is visible)
             const createWalletBtn = page.getByRole('button', { name: /Create Wallet/i });
             if (await createWalletBtn.isVisible({ timeout: 10_000 }).catch(() => false)) {
                 await createWalletBtn.click();
                 await page.waitForTimeout(3_000);
             }
-
-            // Generate installments (if button is visible)
             const generateBtn = page.getByRole('button', { name: /Generate Installments/i });
             if (await generateBtn.isVisible({ timeout: 10_000 }).catch(() => false)) {
                 await generateBtn.click();
                 await page.waitForTimeout(3_000);
             }
-
-            console.log('✅ Wallet created & installment generated');
+            console.log('[Step 26] Wallet created');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 13 — 10% Downpayment: Adaeze credits Emeka's wallet
-        //            ₦7,500,000 (10% of ₦75M)
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 13: Adaeze credits wallet ₦7,500,000', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 27 — Adaeze credits wallet
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 27: Adaeze credits wallet', async () => {
             await loginAs(page, EMAILS.adaeze);
-            await page.goto(`/admin/applications/${applicationId}`);
+            await page.goto('/admin/applications/' + applicationId);
             await page.waitForTimeout(5_000);
 
-            // Click "Credit Wallet"
             await page.getByRole('button', { name: /Credit Wallet/i }).click();
             await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5_000 });
-
-            // Fill amount
             await page.getByRole('dialog').getByLabel(/Amount/i).fill('7500000');
-
-            // Fill description (optional)
-            const descInput = page.getByRole('dialog').getByLabel(/Description/i);
-            if (await descInput.isVisible({ timeout: 2_000 }).catch(() => false)) {
-                await descInput.fill('Admin credit for 10% downpayment');
-            }
-
-            // Submit — button text includes formatted amount, e.g. "Credit ₦7,500,000"
-            await page
-                .getByRole('dialog')
-                .getByRole('button', { name: /^Credit/i })
-                .click();
-
+            await page.getByRole('dialog').getByRole('button', { name: /^Credit/i }).click();
             await page.waitForTimeout(5_000);
-            console.log('✅ Wallet credited ₦7,500,000 by Adaeze');
+            console.log('[Step 27] Wallet credited 7,500,000');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 14 — 10% Downpayment: Emeka pays the installment
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 14: Emeka pays downpayment installment', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 28 — Emeka pays downpayment
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 28: Emeka pays downpayment', async () => {
             await loginAs(page, EMAILS.emeka);
-            await page.goto(`/applications/${applicationId}`);
+            await page.goto('/applications/' + applicationId);
             await page.waitForTimeout(5_000);
 
-            // Click "Pay Now" on the first (and only) pending installment
             await page.getByRole('button', { name: /Pay Now/i }).first().click();
             await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5_000 });
-
-            // Confirm payment — "Fund Wallet & Pay" or similar
-            await page
-                .getByRole('dialog')
-                .getByRole('button', { name: /Fund Wallet.*Pay|Pay|Confirm/i })
-                .click();
-
-            // Payment processing is event-driven — wait for it to settle
+            await page.getByRole('dialog').getByRole('button', { name: /Fund Wallet.*Pay|Pay|Confirm/i }).click();
             await page.waitForTimeout(10_000);
-            console.log('✅ Downpayment of ₦7,500,000 paid by Emeka');
+            console.log('[Step 28] Downpayment paid');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 15 — Mortgage Offer: Eniola uploads mortgage offer letter
-        //            Auto-approved by BANK approval stage.
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 15: Eniola uploads mortgage offer letter', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 29 — Eniola uploads mortgage offer letter
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 29: Eniola uploads mortgage offer letter', async () => {
             await loginAs(page, EMAILS.eniola);
-            await page.goto(`/admin/applications/${applicationId}`);
+            await page.goto('/admin/applications/' + applicationId);
+            await pollUntilVisible(page, /Upload.*Document/i, { timeout: 60_000, interval: 5_000 });
 
-            // Wait for the mortgage offer phase to be active
-            await pollUntilVisible(page, /Upload.*Document/i, {
-                timeout: 60_000,
-                interval: 5_000,
-            });
-
-            // Select document type
             const docTypeSelect = page.getByRole('combobox').last();
             await docTypeSelect.click();
             await page.getByRole('option', { name: /Mortgage Offer/i }).click();
-
-            // Upload
-            await page.locator('input[type="file"]').last().setInputFiles(testPdf('mortgage-offer-letter'));
+            await page.locator('input[type="file"]').last().setInputFiles(testPdf('mortgage-offer'));
             await page.getByRole('button', { name: /Upload Document/i }).click();
-
             await page.waitForTimeout(5_000);
-            console.log('✅ Mortgage offer letter uploaded by Eniola (auto-approved)');
+            console.log('[Step 29] Mortgage offer uploaded by Eniola');
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 16 — Mortgage Offer: Emeka accepts
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 16: Emeka accepts mortgage offer', async () => {
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 30 — Emeka accepts mortgage offer
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 30: Emeka accepts mortgage offer', async () => {
             await loginAs(page, EMAILS.emeka);
-            await page.goto(`/applications/${applicationId}`);
-
+            await page.goto('/applications/' + applicationId);
             const acceptBtn = page.getByRole('button', { name: 'Accept' });
-            const isAcceptVisible = await acceptBtn
-                .first()
-                .isVisible({ timeout: 15_000 })
-                .catch(() => false);
-
-            if (isAcceptVisible) {
+            if (await acceptBtn.first().isVisible({ timeout: 15_000 }).catch(() => false)) {
                 await acceptBtn.first().click();
                 await page.waitForTimeout(3_000);
-                console.log('✅ Mortgage offer accepted by Emeka');
+                console.log('[Step 30] Mortgage offer accepted');
             } else {
-                console.log('ℹ️  No Accept button — mortgage offer phase auto-completed');
+                console.log('[Step 30] Mortgage offer phase auto-completed');
             }
         });
 
-        // ═════════════════════════════════════════════════════════════════
-        // PHASE 17 — Verify application is COMPLETED
-        // ═════════════════════════════════════════════════════════════════
-        await test.step('Phase 17: Verify application COMPLETED', async () => {
-            await page.goto(`/applications/${applicationId}`);
-
-            // The status badge should show "COMPLETED" once all 5 phases are done.
-            // Event-driven transitions may need a moment to propagate.
-            await pollUntilVisible(page, /COMPLETED/i, {
-                timeout: 60_000,
-                interval: 5_000,
-            });
-
-            console.log('🎉 Application COMPLETED:', applicationId);
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 31 — Verify application is COMPLETED
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 31: Verify application COMPLETED', async () => {
+            await page.goto('/applications/' + applicationId);
+            await pollUntilVisible(page, /COMPLETED/i, { timeout: 60_000, interval: 5_000 });
+            console.log('Application COMPLETED:', applicationId);
         });
     });
 });

@@ -1,16 +1,17 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { bootstrapService } from '../services/bootstrap.service';
 import { bootstrapTenantSchema } from '../validators/bootstrap.validator';
-import { AppError, ConfigService } from '@valentine-efagene/qshelter-common';
+import { AppError, ConfigService, AsyncJobStore } from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
-import { randomUUID } from 'crypto';
 import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
-import { DynamoDBClient, PutItemCommand, GetItemCommand } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 const lambdaClient = new LambdaClient({ region: process.env.AWS_REGION || 'us-east-1' });
 const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION || 'us-east-1' });
 const ROLE_POLICIES_TABLE = process.env.ROLE_POLICIES_TABLE_NAME || 'qshelter-staging-role-policies';
 const BOOTSTRAP_WORKER_FUNCTION = process.env.BOOTSTRAP_WORKER_FUNCTION_NAME || '';
+
+const bootstrapJobStore = new AsyncJobStore(dynamoClient, ROLE_POLICIES_TABLE, 'BOOTSTRAP_JOB');
 
 const router = Router();
 
@@ -572,19 +573,7 @@ router.post(
                 throw new AppError(500, 'BOOTSTRAP_WORKER_FUNCTION_NAME not configured');
             }
 
-            const jobId = randomUUID();
-
-            // Write PENDING job to DynamoDB
-            await dynamoClient.send(new PutItemCommand({
-                TableName: ROLE_POLICIES_TABLE,
-                Item: {
-                    PK: { S: `BOOTSTRAP_JOB#${jobId}` },
-                    SK: { S: 'STATUS' },
-                    status: { S: 'PENDING' },
-                    createdAt: { S: new Date().toISOString() },
-                    updatedAt: { S: new Date().toISOString() },
-                },
-            }));
+            const jobId = await bootstrapJobStore.create();
 
             // Invoke worker Lambda asynchronously (fire-and-forget)
             console.log(`[Demo Bootstrap] Dispatching job ${jobId} to ${BOOTSTRAP_WORKER_FUNCTION}`);
@@ -623,35 +612,13 @@ router.get(
         try {
             const { jobId } = req.params;
 
-            const result = await dynamoClient.send(new GetItemCommand({
-                TableName: ROLE_POLICIES_TABLE,
-                Key: {
-                    PK: { S: `BOOTSTRAP_JOB#${jobId}` },
-                    SK: { S: 'STATUS' },
-                },
-            }));
+            const job = await bootstrapJobStore.get(jobId);
 
-            if (!result.Item) {
+            if (!job) {
                 throw new AppError(404, `Bootstrap job ${jobId} not found`);
             }
 
-            const status = result.Item.status?.S || 'UNKNOWN';
-            const response: Record<string, any> = {
-                jobId,
-                status,
-                createdAt: result.Item.createdAt?.S,
-                updatedAt: result.Item.updatedAt?.S,
-            };
-
-            if (status === 'COMPLETED' && result.Item.result?.S) {
-                response.result = JSON.parse(result.Item.result.S);
-            }
-
-            if (status === 'FAILED' && result.Item.error?.S) {
-                response.error = result.Item.error.S;
-            }
-
-            res.json(response);
+            res.json(job);
         } catch (error) {
             next(error);
         }

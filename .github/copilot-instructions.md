@@ -26,6 +26,14 @@ The demo-frontend is a **Next.js application** for interactively testing the QSh
 - Provide a UI for both admin (Adaeze) and customer (Chidi) personas
 - Test property browsing, mortgage applications, document uploads, and payments
 
+### Playwright Full Mortgage Flow Test (`demo-frontend/e2e/full-mortgage-flow.spec.ts`)
+
+**This test must be kept in sync with the app.** Whenever you change the demo-frontend UI (field labels, button text, dialog structure, page routes, form flows, admin pages, etc.), update the Playwright test to match. The test exercises every admin page for entity creation and the full customer application flow — if the UI changes but the test doesn't, it will break.
+
+- The test does ALL setup through the UI (reset DB, bootstrap, create orgs, properties, plans, payment methods, qualification flows, enroll orgs, etc.) — it does **not** call the demo-bootstrap API.
+- **Never replace the UI-driven setup with API calls.** The purpose is to exercise the admin UI end-to-end.
+- Run with: `cd demo-frontend && BOOTSTRAP_SECRET=<secret> npx playwright test full-mortgage-flow --reporter=line`
+
 **Key Demo Scenario (Lekki-Chidi Mortgage):**
 
 | Actor      | Role     | Email                | Description                 |
@@ -61,6 +69,7 @@ We are in active development - **delete unused code, don't deprecate it**:
 - Frontend also imports this package—ensure all necessary types/enums are exported.
 - **Never import directly from local paths or other services**. Always use the published package.
 - After schema changes: `npm run generate:prisma` then `npm run patch` to publish.
+ - IMPORTANT (publish): Do NOT attempt interactive `npm publish` flows that require a one-time password (OTP). Copilot should avoid automating a publish that prompts for OTP — these attempts waste time and tokens. If publishing is needed, run `npm run patch` manually or use a CI/CD pipeline with an npm auth token, or provide `--otp=<code>` when you already have a valid OTP.
 - Services must update to the latest version after publishing: `npm i @valentine-efagene/qshelter-common@latest`.
 - **CRITICAL — Always publish before deploying**: When you change code in `shared/common/`, you **must** publish a new version (`npm run patch`) and update the consuming services (`npm i @valentine-efagene/qshelter-common@latest`) **before** deploying those services. Services resolve `@valentine-efagene/qshelter-common` from the npm registry at build time, not from the local workspace. If you skip publishing, the deployed Lambda will run with the **old** version of the common package. Never use workspace links, `file:` references, or local path imports as a shortcut — the published npm package is the only source of truth.
 - Husky errors seem to be wasting tokens. Remove all husky settings and scripts to avoid this issue. The token cost of husky errors is not worth the benefit of pre-commit hooks in this case.

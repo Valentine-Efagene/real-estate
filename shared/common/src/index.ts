@@ -3,6 +3,7 @@ export * from './types/action-status';
 export * from './utils/errors';
 export * from './utils/condition-operators';
 export * from './utils/documentation-enums';
+export * from './utils/async-job';
 export * from './config';
 export { PrismaClient, Prisma } from '../generated/client/client';
 export * from '../generated/client/enums';
