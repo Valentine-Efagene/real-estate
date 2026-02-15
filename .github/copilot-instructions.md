@@ -62,8 +62,10 @@ We are in active development - **delete unused code, don't deprecate it**:
 - **Never import directly from local paths or other services**. Always use the published package.
 - After schema changes: `npm run generate:prisma` then `npm run patch` to publish.
 - Services must update to the latest version after publishing: `npm i @valentine-efagene/qshelter-common@latest`.
+- **CRITICAL — Always publish before deploying**: When you change code in `shared/common/`, you **must** publish a new version (`npm run patch`) and update the consuming services (`npm i @valentine-efagene/qshelter-common@latest`) **before** deploying those services. Services resolve `@valentine-efagene/qshelter-common` from the npm registry at build time, not from the local workspace. If you skip publishing, the deployed Lambda will run with the **old** version of the common package. Never use workspace links, `file:` references, or local path imports as a shortcut — the published npm package is the only source of truth.
 - Husky errors seem to be wasting tokens. Remove all husky settings and scripts to avoid this issue. The token cost of husky errors is not worth the benefit of pre-commit hooks in this case.
 - Whenever I ask to teardown the aws infrastructure, I mean everything, especially the database. The database is the most expensive part to maintain, and we want to avoid unnecessary costs. Please use the teardown script that handles everything properly, rather than manually deleting stacks or resources in the AWS console.
+- I like the full mortgage flow to have a counterpart playwright test, so we have a matching front end and backend test for the same scenario. This way we can ensure that the API documentation and the actual API implementation remain in sync, and we have both an API-level test and a UI-level test for the critical mortgage flow scenario.
 
 ## Service Structure
 

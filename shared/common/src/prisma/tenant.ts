@@ -27,6 +27,10 @@ const GLOBAL_MODELS = [
     "organizationmember",
     // Join table - no tenantId, tenant access via related org/type
     "organizationtypeassignment",
+    // Child models with no tenantId — scoped via parent plan relation
+    "documentdefinition",
+    "approvalstage",
+    "questionnaireplanquestion",
 ] as const;
 
 type GlobalModel = (typeof GLOBAL_MODELS)[number];

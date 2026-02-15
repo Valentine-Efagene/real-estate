@@ -10,6 +10,7 @@
     "start": "npm run build && node dist/index.js",
     "build": "tsc && node esbuild.config.js",
     "deploy:dev": "npm run build && npx sls deploy --stage dev",
+    "deploy:staging": "npm run build && npx sls deploy --stage staging",
     "build:offline": "tsc && node esbuild.config.js",
     "deploy:localstack": "npm run build && npx sls deploy --stage localstack --config serverless.localstack.yml && ../../local-dev/scripts/fix-apigw-stage.sh",
     "test": "node --experimental-vm-modules --no-warnings=ExperimentalWarning node_modules/jest/bin/jest.js",
