@@ -1,52 +1,69 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { env } from '@/lib/env';
+import { pollAsyncJob, AsyncJobDispatchError } from '@/lib/async-job';
+
+export const maxDuration = 300; // 5 min (Vercel limit; no-op locally)
 
 export async function POST(request: NextRequest) {
+    const bootstrapSecret = request.headers.get('X-Bootstrap-Secret');
+    if (!bootstrapSecret) {
+        return NextResponse.json(
+            { success: false, error: 'Bootstrap secret is required' },
+            { status: 400 },
+        );
+    }
+
+    let body: unknown;
     try {
-        const body = await request.json();
-        const bootstrapSecret = request.headers.get('X-Bootstrap-Secret');
+        body = await request.json();
+    } catch {
+        body = {};
+    }
 
-        if (!bootstrapSecret) {
-            return NextResponse.json(
-                { success: false, error: 'Bootstrap secret is required' },
-                { status: 400 }
-            );
-        }
-
-        const backendUrl = `${env.userServiceUrl}/admin/bootstrap-tenant`;
-        console.log('[Bootstrap Proxy] Calling:', backendUrl);
-
-        const response = await fetch(backendUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Bootstrap-Secret': bootstrapSecret,
+    try {
+        const pollResult = await pollAsyncJob({
+            dispatchUrl: `${env.userServiceUrl}/admin/bootstrap-tenant`,
+            dispatchInit: {
+                method: 'POST',
+                headers: {
+                    'x-bootstrap-secret': bootstrapSecret,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
             },
-            body: JSON.stringify(body),
+            pollUrlFromJobId: (jobId) =>
+                `${env.userServiceUrl}/admin/bootstrap-tenant/${jobId}`,
+            pollHeaders: { 'x-bootstrap-secret': bootstrapSecret },
         });
 
-        const text = await response.text();
-        console.log('[Bootstrap Proxy] Response status:', response.status);
-        console.log('[Bootstrap Proxy] Response body:', text.substring(0, 500));
+        if (pollResult.status === 'COMPLETED' && pollResult.result) {
+            return NextResponse.json(pollResult.result);
+        }
 
-        // Try to parse as JSON
-        let data;
-        try {
-            data = JSON.parse(text);
-        } catch {
-            // If not JSON, return the raw text as error
+        if (pollResult.status === 'FAILED') {
             return NextResponse.json(
-                { success: false, error: `Backend returned non-JSON: ${text.substring(0, 200)}` },
-                { status: response.status || 500 }
+                { success: false, error: pollResult.error || 'Bootstrap job failed' },
+                { status: 500 },
             );
         }
 
-        return NextResponse.json(data, { status: response.status });
-    } catch (error) {
-        console.error('Bootstrap proxy error:', error);
+        // TIMEOUT
         return NextResponse.json(
-            { success: false, error: `Failed to connect to backend: ${error instanceof Error ? error.message : 'Unknown error'}` },
-            { status: 500 }
+            { success: false, error: pollResult.error },
+            { status: 504 },
+        );
+    } catch (error) {
+        if (error instanceof AsyncJobDispatchError) {
+            return NextResponse.json(
+                { success: false, error: error.message },
+                { status: error.statusCode },
+            );
+        }
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        console.error('[Bootstrap Proxy] Error:', message);
+        return NextResponse.json(
+            { success: false, error: `Failed to reach user-service: ${message}` },
+            { status: 502 },
         );
     }
 }

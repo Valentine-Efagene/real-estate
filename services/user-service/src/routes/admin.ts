@@ -1,5 +1,4 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { bootstrapService } from '../services/bootstrap.service';
 import { bootstrapTenantSchema } from '../validators/bootstrap.validator';
 import { AppError, ConfigService, AsyncJobStore } from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
@@ -117,24 +116,12 @@ router.get(
  * POST /admin/bootstrap-tenant
  * 
  * Bootstrap a new tenant with roles, permissions, and first admin user.
+ * Dispatches to the bootstrap worker Lambda asynchronously (returns 202 + jobId).
+ * Poll GET /admin/bootstrap-tenant/:jobId for status.
+ * 
  * Idempotent - safe to call multiple times with same subdomain.
  * 
  * Security: Requires x-bootstrap-secret header
- * 
- * Request Body:
- * {
- *   "tenant": { "name": "Acme Real Estate", "subdomain": "acme" },
- *   "admin": { "email": "admin@acme.com", "firstName": "Admin", "lastName": "User" },
- *   "roles": [...] // Optional - uses defaults if omitted
- * }
- * 
- * Response:
- * {
- *   "tenant": { "id": "...", "name": "...", "subdomain": "...", "isNew": true },
- *   "admin": { "id": "...", "email": "...", "isNew": true, "temporaryPassword": "..." },
- *   "roles": [{ "id": "...", "name": "admin", "isNew": true, "permissionsCount": 1 }, ...],
- *   "syncTriggered": true
- * }
  */
 router.post(
     '/bootstrap-tenant',
@@ -147,19 +134,56 @@ router.post(
                 throw new AppError(400, 'Validation failed');
             }
 
-            const result = await bootstrapService.bootstrapTenant(parsed.data);
+            if (!BOOTSTRAP_WORKER_FUNCTION) {
+                throw new AppError(500, 'BOOTSTRAP_WORKER_FUNCTION_NAME not configured');
+            }
 
-            // Log for audit
-            console.log(`[Bootstrap] Tenant bootstrapped: ${result.tenant.subdomain}`, {
-                tenantId: result.tenant.id,
-                isNewTenant: result.tenant.isNew,
-                adminEmail: result.admin.email,
-                isNewAdmin: result.admin.isNew,
-                rolesCreated: result.roles.filter((r) => r.isNew).length,
-                syncTriggered: result.syncTriggered,
+            const jobId = await bootstrapJobStore.create();
+
+            console.log(`[Bootstrap] Dispatching tenant bootstrap job ${jobId} to ${BOOTSTRAP_WORKER_FUNCTION}`);
+            await lambdaClient.send(new InvokeCommand({
+                FunctionName: BOOTSTRAP_WORKER_FUNCTION,
+                InvocationType: 'Event',
+                Payload: Buffer.from(JSON.stringify({
+                    jobId,
+                    mode: 'tenant',
+                    input: parsed.data,
+                })),
+            }));
+
+            res.status(202).json({
+                jobId,
+                status: 'PENDING',
+                message: 'Bootstrap job dispatched. Poll GET /admin/bootstrap-tenant/:jobId for status.',
+                pollUrl: `/admin/bootstrap-tenant/${jobId}`,
             });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 
-            res.status(result.tenant.isNew ? 201 : 200).json(result);
+/**
+ * GET /admin/bootstrap-tenant/:jobId
+ * 
+ * Poll for the status of an async bootstrap-tenant job.
+ * Returns { status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED', result?, error? }
+ * 
+ * Security: Requires x-bootstrap-secret header
+ */
+router.get(
+    '/bootstrap-tenant/:jobId',
+    verifyBootstrapSecret,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const jobId = req.params.jobId as string;
+            const job = await bootstrapJobStore.get(jobId);
+
+            if (!job) {
+                throw new AppError(404, `Bootstrap job ${jobId} not found`);
+            }
+
+            res.json(job);
         } catch (error) {
             next(error);
         }
@@ -610,7 +634,7 @@ router.get(
     verifyBootstrapSecret,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { jobId } = req.params;
+            const jobId = req.params.jobId as string;
 
             const job = await bootstrapJobStore.get(jobId);
 

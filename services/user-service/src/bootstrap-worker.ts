@@ -1,15 +1,14 @@
 /**
  * Bootstrap Worker Lambda
  *
- * Standalone Lambda function (NOT behind API Gateway) that runs the
- * demo-bootstrap orchestration. Invoked asynchronously by the API Lambda
- * so it can run for up to 120s without hitting the 30s API Gateway timeout.
+ * Standalone Lambda function (NOT behind API Gateway) that runs bootstrap
+ * operations asynchronously. Supports two modes:
  *
- * Event shape:
- * {
- *   jobId: string;
- *   input: DemoBootstrapInput;
- * }
+ *  - `tenant`  — runs bootstrapService.bootstrapTenant() (tenant + roles + admin)
+ *  - `demo`    — runs the full demo-bootstrap orchestration (reset + tenant + orgs + property + payment method)
+ *
+ * Invoked asynchronously by the API Lambda so it can run for up to 300s
+ * without hitting the 30s API Gateway timeout.
  *
  * On completion, writes the result to DynamoDB so the API can poll for it.
  */
@@ -17,6 +16,7 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { AsyncJobStore } from '@valentine-efagene/qshelter-common';
 import { runDemoBootstrap } from './services/demo-bootstrap.service';
+import { bootstrapService } from './services/bootstrap.service';
 
 const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION || 'us-east-1' });
 const ROLE_POLICIES_TABLE = process.env.ROLE_POLICIES_TABLE_NAME || 'qshelter-staging-role-policies';
@@ -25,18 +25,14 @@ const jobStore = new AsyncJobStore(dynamoClient, ROLE_POLICIES_TABLE, 'BOOTSTRAP
 
 interface BootstrapWorkerEvent {
     jobId: string;
-    input: {
-        propertyServiceUrl: string;
-        mortgageServiceUrl: string;
-        paymentServiceUrl: string;
-    };
+    mode: 'tenant' | 'demo';
+    input: Record<string, unknown>;
 }
 
 export const handler = async (event: BootstrapWorkerEvent): Promise<void> => {
-    const { jobId, input } = event;
-    console.log(`[BootstrapWorker] Starting job ${jobId}`);
+    const { jobId, mode = 'demo', input } = event;
+    console.log(`[BootstrapWorker] Starting ${mode} job ${jobId}`);
 
-    // Mark job as RUNNING
     try {
         await jobStore.markRunning(jobId);
     } catch (err) {
@@ -44,9 +40,16 @@ export const handler = async (event: BootstrapWorkerEvent): Promise<void> => {
     }
 
     try {
-        const result = await runDemoBootstrap(input);
+        let result: unknown;
+
+        if (mode === 'tenant') {
+            result = await bootstrapService.bootstrapTenant(input as any);
+        } else {
+            result = await runDemoBootstrap(input as any);
+        }
+
         await jobStore.markCompleted(jobId, result);
-        console.log(`[BootstrapWorker] Job ${jobId} completed. ${result.steps.length} steps.`);
+        console.log(`[BootstrapWorker] Job ${jobId} (${mode}) completed.`);
     } catch (error: any) {
         console.error(`[BootstrapWorker] Job ${jobId} failed:`, error);
 
