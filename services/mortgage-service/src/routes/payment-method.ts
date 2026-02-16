@@ -703,6 +703,25 @@ router.post('/:id/assignments/:assignmentId/phases/:phaseId/review', requireTena
 // =============================================================================
 
 /**
+ * POST /payment-methods/:id/qualification-configs
+ * Assign a qualification flow to a payment method for a specific org type (admin only)
+ */
+router.post('/:id/qualification-configs', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = AssignQualificationFlowSchema.parse(req.body);
+        const service = getQualificationService(req);
+        const result = await service.assignToPaymentMethod(req.params.id, data);
+        res.status(201).json(successResponse(result));
+    } catch (error: any) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+/**
  * GET /payment-methods/:id/qualification-configs
  * List all qualification configs (org type → flow mappings) for a payment method
  */

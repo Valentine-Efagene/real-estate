@@ -147,7 +147,8 @@ async function pickSelect(
     labelText: RegExp,
     optionName: string | RegExp,
 ) {
-    const container = scope.locator('div.space-y-2').filter({ hasText: labelText });
+    // Find the <label> matching text, go up to parent container, find combobox
+    const container = scope.locator('label').filter({ hasText: labelText }).locator('..');
     await container.getByRole('combobox').click();
     await page.getByRole('option', { name: optionName }).click();
 }
@@ -900,15 +901,19 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await dialog.getByRole('button', { name: 'Add Phase' }).click();
                 await page.waitForTimeout(500);
 
-                const phaseCard = dialog.locator('.border.rounded-lg, [class*="Card"]').filter({ hasText: /Phase Name/i }).last();
+                const phaseCard = dialog.locator('[data-slot="card"]').filter({ hasText: /Phase Name/i }).last();
                 await phaseCard.getByPlaceholder(/KYC Verification/i).fill(p.name);
 
+                // Select Category
                 const combos = phaseCard.locator('button[role="combobox"]');
                 await combos.first().click();
                 await page.getByRole('option', { name: p.category }).click();
+                await page.waitForTimeout(500); // Wait for conditional Plan combobox to render
 
+                // Select Type
                 await combos.nth(1).click();
                 await page.getByRole('option', { name: p.type }).click();
+                await page.waitForTimeout(500); // Wait for Type dropdown to close
 
                 // For payment phases, set the percentage
                 if (p.name === '10% Downpayment') {
@@ -919,7 +924,9 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 }
 
                 // Select the plan
-                await phaseCard.locator('button[role="combobox"]').last().click();
+                const planCombo = phaseCard.locator('button[role="combobox"]').last();
+                await expect(planCombo).toBeVisible({ timeout: 5_000 });
+                await planCombo.click();
                 await page.getByRole('option', { name: p.plan }).click();
             }
 
@@ -943,10 +950,21 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Add Phase' }).click();
             await page.waitForTimeout(500);
             await dialog.getByPlaceholder(/Phase name/i).first().fill('Platform Approval');
-            await dialog.locator('[class*="card"]').last().locator('button[role="combobox"]').first().click();
+            // Select Approval Gate category
+            const devPhaseCard = dialog.locator('[class*="card"]').last();
+            await devPhaseCard.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: /Approval Gate/i }).click();
+            await page.waitForTimeout(500);
+            // Explicitly select Approval Gate type (auto-selection via React state may leave phaseType empty)
+            await devPhaseCard.locator('button[role="combobox"]').nth(1).click();
+            await page.getByRole('option', { name: /Approval Gate/i }).click();
+            await page.waitForTimeout(500);
+
             await dialog.getByRole('button', { name: 'Create Flow' }).click();
-            await page.waitForTimeout(3_000);
+            // Wait for dialog to close (indicates success)
+            await expect(dialog).not.toBeVisible({ timeout: 15_000 });
+            // Verify flow appears in list
+            await expect(page.getByText('MREIF Developer Qualification')).toBeVisible({ timeout: 10_000 });
             console.log('[Step 13] Developer qualification flow created');
 
             // Bank qualification flow
@@ -957,10 +975,21 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Add Phase' }).click();
             await page.waitForTimeout(500);
             await dialog.getByPlaceholder(/Phase name/i).first().fill('Platform Approval');
-            await dialog.locator('[class*="card"]').last().locator('button[role="combobox"]').first().click();
+            // Select Approval Gate category
+            const bankPhaseCard = dialog.locator('[class*="card"]').last();
+            await bankPhaseCard.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: /Approval Gate/i }).click();
+            await page.waitForTimeout(500);
+            // Explicitly select Approval Gate type
+            await bankPhaseCard.locator('button[role="combobox"]').nth(1).click();
+            await page.getByRole('option', { name: /Approval Gate/i }).click();
+            await page.waitForTimeout(500);
+
             await dialog.getByRole('button', { name: 'Create Flow' }).click();
-            await page.waitForTimeout(3_000);
+            // Wait for dialog to close (indicates success)
+            await expect(dialog).not.toBeVisible({ timeout: 15_000 });
+            // Verify flow appears in list
+            await expect(page.getByText('MREIF Bank Qualification')).toBeVisible({ timeout: 10_000 });
             console.log('[Step 13] Bank qualification flow created');
         });
 
@@ -978,7 +1007,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.waitForTimeout(2_000);
 
             // Add DEVELOPER qualification requirement
-            await page.getByRole('button', { name: 'Add Requirement' }).click();
+            await page.getByRole('button', { name: 'Add Requirement' }).first().click();
             let dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
             await dialog.locator('button[role="combobox"]').first().click();
@@ -986,10 +1015,11 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.locator('button[role="combobox"]').nth(1).click();
             await page.getByRole('option', { name: /MREIF Developer/i }).click();
             await dialog.getByRole('button', { name: 'Add Requirement' }).click();
-            await page.waitForTimeout(3_000);
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(1_000);
 
             // Add BANK qualification requirement
-            await page.getByRole('button', { name: 'Add Requirement' }).click();
+            await page.getByRole('button', { name: 'Add Requirement' }).first().click();
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
             await dialog.locator('button[role="combobox"]').first().click();
@@ -997,11 +1027,12 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.locator('button[role="combobox"]').nth(1).click();
             await page.getByRole('option', { name: /MREIF Bank/i }).click();
             await dialog.getByRole('button', { name: 'Add Requirement' }).click();
-            await page.waitForTimeout(3_000);
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(1_000);
             console.log('[Step 14] Qualification requirements added');
 
             // Manage Organizations — enroll + qualify
-            await page.getByRole('button', { name: /Manage Organizations/i }).click();
+            await page.getByRole('link', { name: /Manage Organizations/i }).click();
             await page.waitForTimeout(2_000);
 
             // Enroll + qualify Lekki Gardens
