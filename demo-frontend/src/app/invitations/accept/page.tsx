@@ -102,8 +102,9 @@ function AcceptInvitationContent() {
 
             toast.success(`Welcome to ${invitation?.organizationName}!`);
 
-            // Redirect to dashboard - user is now logged in
-            router.push('/dashboard');
+            // Full page reload to ensure AuthProvider picks up the new cookies
+            // (router.push would do a client-side nav where the auth context still has user=null)
+            window.location.href = '/dashboard';
         } catch (err) {
             const message = err instanceof Error ? err.message : 'Failed to accept invitation';
             setSubmitError(message);

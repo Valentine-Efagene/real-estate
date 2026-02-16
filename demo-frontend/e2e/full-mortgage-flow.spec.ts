@@ -152,6 +152,67 @@ async function pickSelect(
     await page.getByRole('option', { name: optionName }).click();
 }
 
+/**
+ * Send an invitation via the UI and capture the invitation token from
+ * the API response, then accept it via the /invitations/accept page.
+ *
+ * This mirrors what a real user would do: receive the email, click the
+ * link, and set their password.
+ *
+ * @param page       Playwright page (logged in as admin)
+ * @param dialog     The open invite dialog locator
+ * @param formFill   Callback that fills out the invite form fields
+ * @param password   Password for the new account
+ * @returns          The invitation token (for debugging)
+ */
+async function sendInviteAndAccept(
+    page: Page,
+    dialog: import('@playwright/test').Locator,
+    formFill: () => Promise<void>,
+    password: string,
+) {
+    // Fill the invitation form
+    await formFill();
+
+    // Listen for the invitation POST response to capture the token
+    const responsePromise = page.waitForResponse(
+        (resp) => resp.url().includes('/invitations') && resp.request().method() === 'POST' && resp.status() < 400,
+        { timeout: 15_000 },
+    );
+
+    await dialog.getByRole('button', { name: 'Send Invitation' }).click();
+
+    const response = await responsePromise;
+    const body = await response.json();
+    // Backend returns { success: true, data: { token: '...', ... } }
+    const token = body.data?.token;
+    if (!token) {
+        throw new Error(`Invitation response missing token: ${JSON.stringify(body).slice(0, 200)}`);
+    }
+    console.log(`[Invite] Captured invitation token: ${token.slice(0, 8)}…`);
+
+    // Wait for toast / UI to settle
+    await page.waitForTimeout(2_000);
+
+    // Now accept the invitation as the invitee: clear admin cookies and go to accept page
+    await page.context().clearCookies();
+    await page.goto(`/invitations/accept?token=${token}`);
+
+    // Wait for the accept page to load and show the form
+    await expect(page.getByRole('button', { name: /Accept Invitation/i })).toBeVisible({ timeout: 15_000 });
+
+    // Fill password and confirm
+    await page.getByLabel('Create Password').fill(password);
+    await page.getByLabel('Confirm Password').fill(password);
+
+    await page.getByRole('button', { name: /Accept Invitation/i }).click();
+
+    // After accepting, user is auto-logged-in and redirected to dashboard
+    await expect(page).toHaveURL(/\/(dashboard|admin)/, { timeout: 15_000 });
+
+    return token;
+}
+
 // ─── Test ───────────────────────────────────────────────────────────────────
 
 test.describe('Full Mortgage Flow — MREIF 10/90', () => {
@@ -251,28 +312,15 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             const dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
 
-            await dialog.getByLabel(/Email/i).fill(EMAILS.yinka);
-            await dialog.getByLabel(/First Name/i).fill('Yinka');
-            await dialog.getByLabel(/Last Name/i).fill('Adewale');
-            await pickSelect(page, dialog, /Role/i, /mortgage_ops/i);
-            await dialog.getByLabel(/Job Title/i).fill('Mortgage Operations Manager');
-            await dialog.getByLabel(/Department/i).fill('Mortgage Operations');
-
-            await dialog.getByRole('button', { name: 'Send Invitation' }).click();
-            await page.waitForTimeout(3_000);
-            console.log('[Step 3] Yinka invited to platform org');
-
-            // Register Yinka
-            await page.context().clearCookies();
-            await page.goto('/register');
-            await page.getByLabel(/First Name/i).fill('Yinka');
-            await page.getByLabel(/Last Name/i).fill('Adewale');
-            await page.getByLabel('Email').fill(EMAILS.yinka);
-            await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
-            await page.getByLabel('Confirm Password').fill(PASSWORD);
-            await page.getByRole('button', { name: 'Create account' }).click();
-            await expect(page).toHaveURL(/\/(dashboard|admin|login)/, { timeout: 15_000 });
-            console.log('[Step 3] Yinka registered');
+            await sendInviteAndAccept(page, dialog, async () => {
+                await dialog.getByLabel(/Email/i).fill(EMAILS.yinka);
+                await dialog.getByLabel(/First Name/i).fill('Yinka');
+                await dialog.getByLabel(/Last Name/i).fill('Adewale');
+                await pickSelect(page, dialog, /Role/i, /mortgage_ops/i);
+                await dialog.getByLabel(/Job Title/i).fill('Mortgage Operations Manager');
+                await dialog.getByLabel(/Department/i).fill('Mortgage Operations');
+            }, PASSWORD);
+            console.log('[Step 3] Yinka invited and accepted');
 
             await loginAs(page, EMAILS.adaeze);
         });
@@ -307,28 +355,15 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
 
-            await dialog.getByLabel(/Email/i).fill(EMAILS.nneka);
-            await dialog.getByLabel(/First Name/i).fill('Nneka');
-            await dialog.getByLabel(/Last Name/i).fill('Obi');
-            await pickSelect(page, dialog, /Role/i, /agent/i);
-            await dialog.getByLabel(/Job Title/i).fill('Development Manager');
-            await dialog.getByLabel(/Department/i).fill('Development');
-
-            await dialog.getByRole('button', { name: 'Send Invitation' }).click();
-            await page.waitForTimeout(3_000);
-            console.log('[Step 4] Nneka invited to Lekki Gardens');
-
-            // Register Nneka
-            await page.context().clearCookies();
-            await page.goto('/register');
-            await page.getByLabel(/First Name/i).fill('Nneka');
-            await page.getByLabel(/Last Name/i).fill('Obi');
-            await page.getByLabel('Email').fill(EMAILS.nneka);
-            await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
-            await page.getByLabel('Confirm Password').fill(PASSWORD);
-            await page.getByRole('button', { name: 'Create account' }).click();
-            await expect(page).toHaveURL(/\/(dashboard|admin|login)/, { timeout: 15_000 });
-            console.log('[Step 4] Nneka registered');
+            await sendInviteAndAccept(page, dialog, async () => {
+                await dialog.getByLabel(/Email/i).fill(EMAILS.nneka);
+                await dialog.getByLabel(/First Name/i).fill('Nneka');
+                await dialog.getByLabel(/Last Name/i).fill('Obi');
+                await pickSelect(page, dialog, /Role/i, /agent/i);
+                await dialog.getByLabel(/Job Title/i).fill('Development Manager');
+                await dialog.getByLabel(/Department/i).fill('Development');
+            }, PASSWORD);
+            console.log('[Step 4] Nneka invited and accepted');
 
             await loginAs(page, EMAILS.adaeze);
         });
@@ -431,28 +466,15 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
 
-            await dialog.getByLabel(/Email/i).fill(EMAILS.eniola);
-            await dialog.getByLabel(/First Name/i).fill('Eniola');
-            await dialog.getByLabel(/Last Name/i).fill('Adeyemi');
-            await pickSelect(page, dialog, /Role/i, /mortgage_ops/i);
-            await dialog.getByLabel(/Job Title/i).fill('Mortgage Operations Officer');
-            await dialog.getByLabel(/Department/i).fill('Mortgage Lending');
-
-            await dialog.getByRole('button', { name: 'Send Invitation' }).click();
-            await page.waitForTimeout(3_000);
-            console.log('[Step 6] Eniola invited to Access Bank');
-
-            // Register Eniola
-            await page.context().clearCookies();
-            await page.goto('/register');
-            await page.getByLabel(/First Name/i).fill('Eniola');
-            await page.getByLabel(/Last Name/i).fill('Adeyemi');
-            await page.getByLabel('Email').fill(EMAILS.eniola);
-            await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
-            await page.getByLabel('Confirm Password').fill(PASSWORD);
-            await page.getByRole('button', { name: 'Create account' }).click();
-            await expect(page).toHaveURL(/\/(dashboard|admin|login)/, { timeout: 15_000 });
-            console.log('[Step 6] Eniola registered');
+            await sendInviteAndAccept(page, dialog, async () => {
+                await dialog.getByLabel(/Email/i).fill(EMAILS.eniola);
+                await dialog.getByLabel(/First Name/i).fill('Eniola');
+                await dialog.getByLabel(/Last Name/i).fill('Adeyemi');
+                await pickSelect(page, dialog, /Role/i, /mortgage_ops/i);
+                await dialog.getByLabel(/Job Title/i).fill('Mortgage Operations Officer');
+                await dialog.getByLabel(/Department/i).fill('Mortgage Lending');
+            }, PASSWORD);
+            console.log('[Step 6] Eniola invited and accepted');
 
             await loginAs(page, EMAILS.adaeze);
         });

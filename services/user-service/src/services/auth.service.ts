@@ -42,6 +42,18 @@ class AuthService {
             throw new ConflictError('Email already registered');
         }
 
+        // Check for pending organization invitations — user should accept those instead of signing up separately
+        const pendingInvitation = await prisma.organizationInvitation.findFirst({
+            where: { email: data.email, status: 'PENDING' },
+            include: { organization: { select: { name: true } } },
+        });
+        if (pendingInvitation) {
+            throw new ConflictError(
+                `You have a pending invitation to join ${pendingInvitation.organization.name}. ` +
+                `Please check your email and use the invitation link to sign up.`,
+            );
+        }
+
         // Validate tenant exists
         const tenant = await prisma.tenant.findUnique({ where: { id: data.tenantId } });
         if (!tenant) {
@@ -127,10 +139,13 @@ class AuthService {
         });
 
         if (!user || !user.password) {
+            console.log(`[Login DEBUG] User lookup for ${data.email}: found=${!!user}, hasPassword=${!!user?.password}`);
             throw new UnauthorizedError('Invalid credentials');
         }
 
+        console.log(`[Login DEBUG] User ${data.email}: id=${user.id}, hashPrefix=${user.password.substring(0, 15)}, hashLen=${user.password.length}, inputLen=${data.password.length}`);
         const isValid = await bcrypt.compare(data.password, user.password);
+        console.log(`[Login DEBUG] bcrypt.compare result: ${isValid}`);
         if (!isValid) {
             throw new UnauthorizedError('Invalid credentials');
         }
