@@ -531,7 +531,7 @@ export function createApprovalWorkflowService() {
                 'DEVELOPER': ['DEVELOPER'],
                 'LEGAL': ['LEGAL'],
                 'INSURER': ['INSURER'],
-                'CUSTOMER': ['CUSTOMER'],
+                'CUSTOMER': ['DEVELOPER', 'LENDER'],    // Customer reviews offers from other parties (nobody reviews their own)
                 'GOVERNMENT': ['GOVERNMENT'],
             };
 

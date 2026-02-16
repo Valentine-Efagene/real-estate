@@ -1,0 +1,129 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "QShelter" [ref=e8] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e9]:
+            - link "Dashboard" [ref=e10] [cursor=pointer]:
+              - /url: /dashboard
+            - link "Properties" [ref=e11] [cursor=pointer]:
+              - /url: /properties
+            - link "My Applications" [ref=e12] [cursor=pointer]:
+              - /url: /applications
+            - link "Transactions" [ref=e13] [cursor=pointer]:
+              - /url: /transactions
+        - generic [ref=e14]:
+          - button "emeka@mailsac.com" [ref=e15]:
+            - img
+            - text: emeka@mailsac.com
+          - button "EM" [ref=e16]:
+            - generic [ref=e18]: EM
+    - main [ref=e19]:
+      - generic [ref=e20]:
+        - link "← Back to Applications" [ref=e21] [cursor=pointer]:
+          - /url: /applications
+          - button "← Back to Applications" [ref=e22]
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - heading "Purchase - Sunrise Heights Estate Unit A-201" [level=1] [ref=e25]
+            - paragraph [ref=e26]: "Application ID: cmlpimnsn000802ldweqs2h8h"
+          - generic [ref=e27]:
+            - button "Cancel Application" [ref=e28]
+            - generic [ref=e29]: PENDING
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e33]: Applicant
+            - generic [ref=e35]:
+              - generic [ref=e37]: EO
+              - generic [ref=e38]:
+                - paragraph [ref=e39]: Emeka Okoro
+                - paragraph [ref=e40]: emeka@mailsac.com
+          - generic [ref=e41]:
+            - generic [ref=e43]: Application Details
+            - generic [ref=e45]:
+              - generic [ref=e46]: "Type:"
+              - generic [ref=e47]: FULL_PAYMENT
+              - generic [ref=e48]: "Total Amount:"
+              - generic [ref=e49]: ₦75,000,000
+              - generic [ref=e50]: "Created:"
+              - generic [ref=e51]: 2/16/2026
+              - generic [ref=e52]: "Last Updated:"
+              - generic [ref=e53]: 2/16/2026
+          - generic [ref=e56]: Financial Summary
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - generic [ref=e59]: Organizations Involved
+            - generic [ref=e60]: Partner organizations working on your application
+          - generic [ref=e63]:
+            - generic [ref=e65]: L
+            - generic [ref=e66]:
+              - paragraph [ref=e67]: Lekki Gardens Development Company
+              - generic [ref=e68]:
+                - generic [ref=e69]: Property Developer
+                - generic [ref=e70]: ACTIVE
+        - generic [ref=e71]:
+          - generic [ref=e73]:
+            - generic [ref=e74]: Application Progress
+            - generic [ref=e75]: 1/5 phases complete
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - generic [ref=e82]: ✓
+              - generic [ref=e84]:
+                - generic [ref=e85]:
+                  - heading "Prequalification" [level=4] [ref=e86]
+                  - generic [ref=e87]: COMPLETED
+                - paragraph [ref=e88]: QUESTIONNAIRE • PRE_APPROVAL
+                - paragraph [ref=e89]: "Completed: 2/16/2026"
+            - generic [ref=e90]:
+              - generic [ref=e93]: 📄
+              - generic [ref=e95]:
+                - generic [ref=e96]:
+                  - heading "Sales Offer" [level=4] [ref=e97]
+                  - generic [ref=e98]: IN_PROGRESS
+                  - generic [ref=e99]: 🏢 Awaiting Admin
+                - paragraph [ref=e100]: DOCUMENTATION • VERIFICATION
+                - paragraph [ref=e101]: "Platform review: Customer Acceptance"
+            - generic [ref=e102]:
+              - generic [ref=e105]: 📄
+              - generic [ref=e107]:
+                - generic [ref=e108]:
+                  - heading "Preapproval Documentation" [level=4] [ref=e109]
+                  - generic [ref=e110]: PENDING
+                - paragraph [ref=e111]: DOCUMENTATION • KYC
+            - generic [ref=e112]:
+              - generic [ref=e115]: 💳
+              - generic [ref=e117]:
+                - generic [ref=e118]:
+                  - heading "10% Downpayment" [level=4] [ref=e119]
+                  - generic [ref=e120]: PENDING
+                - paragraph [ref=e121]: PAYMENT • DOWNPAYMENT
+            - generic [ref=e122]:
+              - generic [ref=e125]: 📄
+              - generic [ref=e126]:
+                - generic [ref=e127]:
+                  - heading "Mortgage Offer" [level=4] [ref=e128]
+                  - generic [ref=e129]: PENDING
+                - paragraph [ref=e130]: DOCUMENTATION • VERIFICATION
+        - generic [ref=e131]:
+          - generic [ref=e133]:
+            - generic [ref=e134]: ⏳
+            - generic [ref=e135]:
+              - generic [ref=e136]: In Progress
+              - generic [ref=e137]: Waiting for developer to upload documents
+          - generic [ref=e139]:
+            - paragraph [ref=e140]: Your documents are being reviewed by the reviewing team.
+            - paragraph [ref=e141]: You will be notified when action is required from you.
+  - region "Notifications alt+T"
+  - generic [ref=e142]:
+    - img [ref=e144]
+    - button "Open Tanstack query devtools" [ref=e192] [cursor=pointer]:
+      - img [ref=e193]
+  - button "Open Next.js Dev Tools" [ref=e246] [cursor=pointer]:
+    - img [ref=e247]
+  - alert [ref=e250]
+```

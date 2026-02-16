@@ -873,18 +873,10 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await lastDoc.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: 'Developer', exact: true }).click();
 
-            // Stage 1: Developer upload (auto-approved since uploader = stage reviewer)
+            // Single stage: Customer reviews/accepts the sales offer (nobody reviews their own)
             await dialog.getByRole('button', { name: 'Add Stage' }).click();
             await page.waitForTimeout(500);
             let lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
-            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Developer Upload');
-            await lastStage.locator('button[role="combobox"]').first().click();
-            await page.getByRole('option', { name: 'Developer', exact: true }).click();
-
-            // Stage 2: Customer reviews/accepts the sales offer
-            await dialog.getByRole('button', { name: 'Add Stage' }).click();
-            await page.waitForTimeout(500);
-            lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
             await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Customer Acceptance');
             await lastStage.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: 'Customer (Applicant)', exact: true }).click();
@@ -917,7 +909,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await page.getByRole('option', { name: doc.uploader, exact: true }).click();
             }
 
-            // 2 stages: PLATFORM then BANK
+            // 2 stages: PLATFORM then CUSTOMER (nobody reviews their own)
             await dialog.getByRole('button', { name: 'Add Stage' }).click();
             await page.waitForTimeout(500);
             lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
@@ -928,9 +920,9 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Add Stage' }).click();
             await page.waitForTimeout(500);
             lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
-            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Bank Review');
+            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Customer Acceptance');
             await lastStage.locator('button[role="combobox"]').first().click();
-            await page.getByRole('option', { name: 'Bank', exact: true }).click();
+            await page.getByRole('option', { name: 'Customer (Applicant)', exact: true }).click();
 
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
             await expect(dialog).toBeHidden({ timeout: 15_000 });
@@ -951,15 +943,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await lastDoc.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: 'Lender (Bank)', exact: true }).click();
 
-            // Stage 1: Bank upload (auto-approved since uploader = stage reviewer)
-            await dialog.getByRole('button', { name: 'Add Stage' }).click();
-            await page.waitForTimeout(500);
-            lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
-            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Bank Upload');
-            await lastStage.locator('button[role="combobox"]').first().click();
-            await page.getByRole('option', { name: 'Bank', exact: true }).click();
-
-            // Stage 2: Customer reviews/accepts the mortgage offer
+            // Single stage: Customer reviews/accepts the mortgage offer (nobody reviews their own)
             await dialog.getByRole('button', { name: 'Add Stage' }).click();
             await page.waitForTimeout(500);
             lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
@@ -1357,7 +1341,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 20 — Nneka uploads sales offer (auto-approved)
+        // STEP 20 — Nneka uploads sales offer (pending customer acceptance)
         // ═══════════════════════════════════════════════════════════════
         await test.step('Step 20: Nneka uploads sales offer letter', async () => {
             await loginAs(page, EMAILS.nneka);
@@ -1449,14 +1433,12 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
         await test.step('Step 25: Emeka accepts bank preapproval', async () => {
             await loginAs(page, EMAILS.emeka);
             await page.goto('/applications/' + applicationId);
+            await pollUntilVisible(page, /Action Required|Documents Requiring/i, { timeout: 60_000, interval: 5_000 });
             const acceptBtn = page.getByRole('button', { name: 'Accept' });
-            if (await acceptBtn.first().isVisible({ timeout: 15_000 }).catch(() => false)) {
-                await acceptBtn.first().click();
-                await page.waitForTimeout(3_000);
-                console.log('[Step 25] Bank preapproval accepted');
-            } else {
-                console.log('[Step 25] KYC phase auto-completed');
-            }
+            await expect(acceptBtn.first()).toBeVisible({ timeout: 15_000 });
+            await acceptBtn.first().click();
+            await page.waitForTimeout(5_000);
+            console.log('[Step 25] Bank preapproval accepted by Emeka');
         });
 
         // ═══════════════════════════════════════════════════════════════

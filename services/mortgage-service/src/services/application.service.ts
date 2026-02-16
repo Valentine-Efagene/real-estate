@@ -1551,6 +1551,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             // Map: which uploaders does a given stage org type review?
             const getUploadersForStage = (stageOrgType: string): string[] => {
                 if (stageOrgType === 'PLATFORM') return ['CUSTOMER', 'PLATFORM'];
+                if (stageOrgType === 'CUSTOMER') return ['DEVELOPER', 'BANK']; // Customer reviews offers (nobody reviews their own)
                 return [stageOrgType]; // BANK reviews BANK (normalized from LENDER), DEVELOPER reviews DEVELOPER, etc.
             };
 
