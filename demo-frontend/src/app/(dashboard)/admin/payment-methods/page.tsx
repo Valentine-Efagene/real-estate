@@ -564,9 +564,9 @@ function AttachToPropertyDialog({ method, open, onOpenChange }: { method: Paymen
                                 </SelectTrigger>
                                 <SelectContent>
                                     {properties.length === 0 ? (
-                                        <SelectItem value="" disabled>
+                                        <div className="py-2 px-2 text-sm text-muted-foreground">
                                             No published properties available
-                                        </SelectItem>
+                                        </div>
                                     ) : (
                                         properties.map((property: Property) => (
                                             <SelectItem key={property.id} value={property.id}>

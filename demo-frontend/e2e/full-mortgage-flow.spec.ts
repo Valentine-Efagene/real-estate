@@ -39,6 +39,7 @@ import { test, expect, Page } from '@playwright/test';
 // ─── Config ─────────────────────────────────────────────────────────────────
 
 const BOOTSTRAP_SECRET = process.env.BOOTSTRAP_SECRET || '';
+const USER_SERVICE_URL = process.env.NEXT_PUBLIC_USER_SERVICE_URL || 'https://1oi4sd5b4i.execute-api.us-east-1.amazonaws.com';
 const PASSWORD = 'password';
 
 const EMAILS = {
@@ -150,7 +151,7 @@ async function pickSelect(
     // Find the <label> matching text, go up to parent container, find combobox
     const container = scope.locator('label').filter({ hasText: labelText }).locator('..');
     await container.getByRole('combobox').click();
-    await page.getByRole('option', { name: optionName }).click();
+    await page.getByRole('option', { name: optionName, exact: true }).click();
 }
 
 /**
@@ -473,14 +474,40 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await page.waitForTimeout(3_000);
             }
 
+            // Upload documents for documentation phase (auto-approved on upload)
+            await page.reload();
+            await page.waitForTimeout(3_000);
+
+            // Collect all doc types to upload before we start (inputs disappear after upload)
+            const docFileInputs = page.locator('input[type="file"][data-doc-type]');
+            const docInputCount = await docFileInputs.count();
+            const docTypes: string[] = [];
+            for (let i = 0; i < docInputCount; i++) {
+                const dt = await docFileInputs.nth(i).getAttribute('data-doc-type');
+                if (dt) docTypes.push(dt);
+            }
+            console.log(`  Found ${docTypes.length} documents to upload: ${docTypes.join(', ')}`);
+
+            for (const docType of docTypes) {
+                const fileInput = page.locator(`input[type="file"][data-doc-type="${docType}"]`);
+                if (await fileInput.count() > 0) {
+                    await fileInput.setInputFiles(testPdf(`onboarding-${docType}`));
+                    await page.waitForTimeout(3_000);
+                    console.log(`  Uploaded onboarding document: ${docType}`);
+                }
+            }
+
+            // Reload to see gate phase (documentation auto-completed after all uploads)
+            await page.reload();
+            await page.waitForTimeout(3_000);
+
             // Approve gate phase if visible
             const submitReview = page.getByRole('button', { name: 'Submit Review' });
             if (await submitReview.isVisible({ timeout: 5_000 }).catch(() => false)) {
                 await submitReview.click();
                 const gateDialog = page.getByRole('dialog');
                 await expect(gateDialog).toBeVisible({ timeout: 5_000 });
-                await gateDialog.getByLabel(/Decision/i).click();
-                await page.getByRole('option', { name: /Approve/i }).click();
+                // Decision defaults to "Approve" — just click Submit APPROVED
                 await gateDialog.getByRole('button', { name: /Submit APPROVED/i }).click();
                 await page.waitForTimeout(3_000);
             }
@@ -610,13 +637,38 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await page.waitForTimeout(3_000);
             }
 
+            // Upload documents for documentation phase (auto-approved on upload)
+            await page.reload();
+            await page.waitForTimeout(3_000);
+
+            const bankDocInputs = page.locator('input[type="file"][data-doc-type]');
+            const bankDocInputCount = await bankDocInputs.count();
+            const bankDocTypes: string[] = [];
+            for (let i = 0; i < bankDocInputCount; i++) {
+                const dt = await bankDocInputs.nth(i).getAttribute('data-doc-type');
+                if (dt) bankDocTypes.push(dt);
+            }
+            console.log(`  Found ${bankDocTypes.length} bank documents to upload: ${bankDocTypes.join(', ')}`);
+
+            for (const docType of bankDocTypes) {
+                const fileInput = page.locator(`input[type="file"][data-doc-type="${docType}"]`);
+                if (await fileInput.count() > 0) {
+                    await fileInput.setInputFiles(testPdf(`bank-onboarding-${docType}`));
+                    await page.waitForTimeout(3_000);
+                    console.log(`  Uploaded bank onboarding document: ${docType}`);
+                }
+            }
+
+            // Reload to see gate phase (documentation auto-completed after all uploads)
+            await page.reload();
+            await page.waitForTimeout(3_000);
+
             const submitReview = page.getByRole('button', { name: 'Submit Review' });
             if (await submitReview.isVisible({ timeout: 5_000 }).catch(() => false)) {
                 await submitReview.click();
                 const gateDialog = page.getByRole('dialog');
                 await expect(gateDialog).toBeVisible({ timeout: 5_000 });
-                await gateDialog.getByLabel(/Decision/i).click();
-                await page.getByRole('option', { name: /Approve/i }).click();
+                // Decision defaults to "Approve" — just click Submit APPROVED
                 await gateDialog.getByRole('button', { name: /Submit APPROVED/i }).click();
                 await page.waitForTimeout(3_000);
             }
@@ -731,13 +783,37 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             await dialog.locator('#name').fill('MREIF Prequalification');
 
-            // Add 5 questions
-            const questions = [
-                { key: 'employment_status', text: 'What is your employment status?', type: 'Single Select' },
+            // Add 5 questions — SELECT questions need options added
+            const questions: Array<{
+                key: string; text: string; type: string;
+                options?: Array<{ value: string; label: string; score?: number }>;
+            }> = [
+                {
+                    key: 'employment_status', text: 'What is your employment status?', type: 'Single Select',
+                    options: [
+                        { value: 'EMPLOYED', label: 'Employed', score: 100 },
+                        { value: 'SELF_EMPLOYED', label: 'Self-Employed', score: 100 },
+                        { value: 'RETIRED', label: 'Retired', score: 50 },
+                        { value: 'UNEMPLOYED', label: 'Unemployed', score: 0 },
+                    ],
+                },
                 { key: 'monthly_income', text: 'What is your monthly net income?', type: 'Currency' },
                 { key: 'years_employed', text: 'How many years at your current employer?', type: 'Number' },
-                { key: 'existing_mortgage', text: 'Do you have an existing mortgage?', type: 'Single Select' },
-                { key: 'property_purpose', text: 'What is the purpose of this property?', type: 'Single Select' },
+                {
+                    key: 'existing_mortgage', text: 'Do you have an existing mortgage?', type: 'Single Select',
+                    options: [
+                        { value: 'YES', label: 'Yes', score: 0 },
+                        { value: 'NO', label: 'No', score: 100 },
+                    ],
+                },
+                {
+                    key: 'property_purpose', text: 'What is the purpose of this property?', type: 'Single Select',
+                    options: [
+                        { value: 'PRIMARY_RESIDENCE', label: 'Primary Residence', score: 100 },
+                        { value: 'INVESTMENT', label: 'Investment', score: 80 },
+                        { value: 'SECOND_HOME', label: 'Second Home', score: 60 },
+                    ],
+                },
             ];
 
             for (const q of questions) {
@@ -750,10 +826,29 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await lastQ.getByPlaceholder(/What is your age/i).first().fill(q.text);
                 await lastQ.locator('button[role="combobox"]').first().click();
                 await page.getByRole('option', { name: q.type, exact: true }).click();
+
+                // For SELECT questions, the card is already expanded after Add Question
+                // So we can directly add options
+                if (q.options && q.options.length > 0) {
+                    for (const opt of q.options) {
+                        await lastQ.getByRole('button', { name: 'Add Option' }).click();
+                        await page.waitForTimeout(300);
+                        // Fill in the last option row (VALUE, Display Label, Score)
+                        const optionRows = lastQ.locator('.flex.items-center.gap-2').filter({ has: page.locator('input[placeholder="VALUE"]') });
+                        const lastRow = optionRows.last();
+                        await lastRow.locator('input[placeholder="VALUE"]').fill(opt.value);
+                        await lastRow.locator('input[placeholder="Display Label"]').fill(opt.label);
+                        if (opt.score !== undefined) {
+                            await lastRow.locator('input[placeholder="Score"]').clear();
+                            await lastRow.locator('input[placeholder="Score"]').fill(String(opt.score));
+                        }
+                    }
+                }
             }
 
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
-            await page.waitForTimeout(3_000);
+            await expect(dialog).toBeHidden({ timeout: 15_000 });
+            await page.waitForTimeout(1_000);
             console.log('[Step 9] Questionnaire plan created');
         });
 
@@ -778,15 +873,25 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await lastDoc.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: 'Developer', exact: true }).click();
 
+            // Stage 1: Developer upload (auto-approved since uploader = stage reviewer)
             await dialog.getByRole('button', { name: 'Add Stage' }).click();
             await page.waitForTimeout(500);
             let lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
-            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Developer Document Verification');
+            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Developer Upload');
             await lastStage.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: 'Developer', exact: true }).click();
 
+            // Stage 2: Customer reviews/accepts the sales offer
+            await dialog.getByRole('button', { name: 'Add Stage' }).click();
+            await page.waitForTimeout(500);
+            lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
+            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Customer Acceptance');
+            await lastStage.locator('button[role="combobox"]').first().click();
+            await page.getByRole('option', { name: 'Customer (Applicant)', exact: true }).click();
+
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
-            await page.waitForTimeout(3_000);
+            await expect(dialog).toBeHidden({ timeout: 15_000 });
+            await page.waitForTimeout(1_000);
             console.log('[Step 10] Sales Offer plan created');
 
             // --- Plan 2: MREIF Preapproval Documentation ---
@@ -828,7 +933,8 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('option', { name: 'Bank', exact: true }).click();
 
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
-            await page.waitForTimeout(3_000);
+            await expect(dialog).toBeHidden({ timeout: 15_000 });
+            await page.waitForTimeout(1_000);
             console.log('[Step 10] Preapproval plan created');
 
             // --- Plan 3: Mortgage Offer Documentation ---
@@ -845,15 +951,25 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await lastDoc.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: 'Lender (Bank)', exact: true }).click();
 
+            // Stage 1: Bank upload (auto-approved since uploader = stage reviewer)
             await dialog.getByRole('button', { name: 'Add Stage' }).click();
             await page.waitForTimeout(500);
             lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
-            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Bank Document Upload');
+            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Bank Upload');
             await lastStage.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: 'Bank', exact: true }).click();
 
+            // Stage 2: Customer reviews/accepts the mortgage offer
+            await dialog.getByRole('button', { name: 'Add Stage' }).click();
+            await page.waitForTimeout(500);
+            lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
+            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Customer Acceptance');
+            await lastStage.locator('button[role="combobox"]').first().click();
+            await page.getByRole('option', { name: 'Customer (Applicant)', exact: true }).click();
+
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
-            await page.waitForTimeout(3_000);
+            await expect(dialog).toBeHidden({ timeout: 15_000 });
+            await page.waitForTimeout(1_000);
             console.log('[Step 10] Mortgage Offer plan created');
         });
 
@@ -872,7 +988,8 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await pickSelect(page, dialog, /Payment Frequency/i, /One-Time/i);
 
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
-            await page.waitForTimeout(3_000);
+            await expect(dialog).toBeHidden({ timeout: 15_000 });
+            await page.waitForTimeout(1_000);
             console.log('[Step 11] Payment plan created');
         });
 
@@ -908,12 +1025,14 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 const combos = phaseCard.locator('button[role="combobox"]');
                 await combos.first().click();
                 await page.getByRole('option', { name: p.category }).click();
-                await page.waitForTimeout(500); // Wait for conditional Plan combobox to render
+                await page.waitForTimeout(1_000); // Wait for conditional Plan combobox to render
 
                 // Select Type
                 await combos.nth(1).click();
                 await page.getByRole('option', { name: p.type }).click();
-                await page.waitForTimeout(500); // Wait for Type dropdown to close
+                // Click phase name input to dismiss any lingering dropdown (Escape would close the dialog)
+                await phaseCard.getByPlaceholder(/KYC Verification/i).click();
+                await page.waitForTimeout(1_000); // Wait for Type dropdown to fully close
 
                 // For payment phases, set the percentage
                 if (p.name === '10% Downpayment') {
@@ -928,10 +1047,14 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await expect(planCombo).toBeVisible({ timeout: 5_000 });
                 await planCombo.click();
                 await page.getByRole('option', { name: p.plan }).click();
+                // Click phase name input to dismiss any lingering dropdown (Escape would close the dialog)
+                await phaseCard.getByPlaceholder(/KYC Verification/i).click();
+                await page.waitForTimeout(500);
             }
 
             await dialog.getByRole('button', { name: 'Create Method' }).click();
-            await page.waitForTimeout(5_000);
+            await expect(dialog).toBeHidden({ timeout: 15_000 });
+            await page.waitForTimeout(1_000);
             console.log('[Step 12] MREIF payment method created (5 phases)');
         });
 
@@ -1001,7 +1124,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.waitForTimeout(2_000);
 
             // Navigate to MREIF edit page
-            const mreifCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /MREIF 10\/90/i });
+            const mreifCard = page.locator('[data-slot="card"], [class*="card"], [class*="Card"]').filter({ hasText: /MREIF 10\/90/i });
             await mreifCard.locator('button').filter({ has: page.locator('svg') }).last().click();
             await page.getByRole('menuitem', { name: /Edit/i }).click();
             await page.waitForTimeout(2_000);
@@ -1033,6 +1156,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             // Manage Organizations — enroll + qualify
             await page.getByRole('link', { name: /Manage Organizations/i }).click();
+            await page.waitForLoadState('networkidle', { timeout: 15_000 });
             await page.waitForTimeout(2_000);
 
             // Enroll + qualify Lekki Gardens
@@ -1042,12 +1166,11 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.locator('button[role="combobox"]').click();
             await page.getByRole('option', { name: /Lekki Gardens/i }).click();
             await dialog.getByRole('button', { name: 'Enroll' }).click();
-            await page.waitForTimeout(3_000);
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(2_000);
 
-            let devCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /Lekki Gardens/i });
-            await devCard.getByRole('button', { name: /Start Qualification/i }).click();
-            await page.waitForTimeout(3_000);
-            devCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /Lekki Gardens/i });
+            // Enrollment auto-starts qualification (IN_PROGRESS), so go directly to Mark Qualified
+            let devCard = page.locator('[data-slot="card"], [class*="card"], [class*="Card"]').filter({ hasText: /Lekki Gardens/i });
             await devCard.getByRole('button', { name: /Mark Qualified/i }).click();
             await page.waitForTimeout(3_000);
             console.log('[Step 14] Lekki Gardens enrolled and qualified');
@@ -1059,22 +1182,21 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.locator('button[role="combobox"]').click();
             await page.getByRole('option', { name: /Access Bank/i }).click();
             await dialog.getByRole('button', { name: 'Enroll' }).click();
-            await page.waitForTimeout(3_000);
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(2_000);
 
-            let bankCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /Access Bank/i });
-            await bankCard.getByRole('button', { name: /Start Qualification/i }).click();
-            await page.waitForTimeout(3_000);
-            bankCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /Access Bank/i });
+            // Enrollment auto-starts qualification (IN_PROGRESS), so go directly to Mark Qualified
+            let bankCard = page.locator('[data-slot="card"], [class*="card"], [class*="Card"]').filter({ hasText: /Access Bank/i });
             await bankCard.getByRole('button', { name: /Mark Qualified/i }).click();
             await page.waitForTimeout(3_000);
             console.log('[Step 14] Access Bank enrolled and qualified');
 
             // Add PROOF_OF_ADDRESS waiver for Access Bank
-            bankCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /Access Bank/i });
+            bankCard = page.locator('[data-slot="card"], [class*="card"], [class*="Card"]').filter({ hasText: /Access Bank/i });
             await bankCard.locator('button').filter({ has: page.locator('svg') }).first().click();
             await page.waitForTimeout(1_000);
 
-            await page.getByRole('button', { name: /Add Waiver|Add First Waiver/i }).click();
+            await page.getByRole('button', { name: /Add Waiver|Add First Waiver/i }).first().click();
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
             await dialog.locator('button[role="combobox"]').click();
@@ -1095,7 +1217,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.goto('/admin/payment-methods');
             await page.waitForTimeout(2_000);
 
-            const mreifCard = page.locator('[class*="card"], [class*="Card"]').filter({ hasText: /MREIF 10\/90/i });
+            const mreifCard = page.locator('[data-slot="card"], [class*="card"], [class*="Card"]').filter({ hasText: /MREIF 10\/90/i });
             await mreifCard.locator('button').filter({ has: page.locator('svg') }).last().click();
             await page.getByRole('menuitem', { name: /Attach to Property/i }).click();
 
@@ -1125,10 +1247,51 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByLabel('Email').fill(EMAILS.emeka);
             await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
             await page.getByLabel('Confirm Password').fill(PASSWORD);
+
+            // Intercept signup response to get the JWT (contains userId)
+            const signupRespPromise = page.waitForResponse(
+                (resp) => resp.url().includes('/auth/signup') && resp.request().method() === 'POST',
+                { timeout: 30_000 },
+            );
             await page.getByRole('button', { name: 'Create account' }).click();
+            const signupResp = await signupRespPromise;
+            const signupData = await signupResp.json();
+            console.log(`[Step 16] Signup API status: ${signupResp.status()}`);
+
+            if (!signupData.success || !signupData.data?.accessToken) {
+                console.log('[Step 16] Signup response:', JSON.stringify(signupData));
+                throw new Error(`Registration failed: ${signupData.error?.message || 'unknown'}`);
+            }
+
+            // Decode JWT to extract userId
+            const jwtPayload = JSON.parse(
+                Buffer.from(signupData.data.accessToken.split('.')[1], 'base64').toString(),
+            );
+            const userId = jwtPayload.userId || jwtPayload.sub;
+            console.log(`[Step 16] Emeka userId: ${userId}`);
+
+            // Call admin API to get the email verification token
+            const adminResp = await page.request.get(
+                `${USER_SERVICE_URL}/admin/users/${userId}`,
+                { headers: { 'x-bootstrap-secret': BOOTSTRAP_SECRET } },
+            );
+            const adminData = await adminResp.json();
+            const verificationToken = adminData.data?.emailVerificationToken;
+            console.log(`[Step 16] Got verification token: ${verificationToken ? 'yes' : 'no'}`);
+
+            if (!verificationToken) {
+                throw new Error('No email verification token found for Emeka');
+            }
+
+            // Verify Emeka's email
+            const verifyResp = await page.request.get(
+                `${USER_SERVICE_URL}/auth/verify-email?token=${verificationToken}`,
+            );
+            console.log(`[Step 16] Email verification status: ${verifyResp.status()}`);
+
             await expect(page).toHaveURL(/\/(dashboard|admin|login)/, { timeout: 15_000 });
             await loginAs(page, EMAILS.emeka);
-            console.log('[Step 16] Emeka registered and logged in');
+            console.log('[Step 16] Emeka registered, verified, and logged in');
         });
 
         // ═══════════════════════════════════════════════════════════════
@@ -1213,25 +1376,26 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 21 — Emeka accepts sales offer
+        // STEP 21 — Emeka reviews and accepts the sales offer document
         // ═══════════════════════════════════════════════════════════════
         await test.step('Step 21: Emeka accepts sales offer', async () => {
             await loginAs(page, EMAILS.emeka);
             await page.goto('/applications/' + applicationId);
+            await pollUntilVisible(page, /Action Required|Documents Requiring/i, { timeout: 60_000, interval: 5_000 });
+
+            // Customer page shows "Accept" button for each document requiring review
             const acceptBtn = page.getByRole('button', { name: 'Accept' });
-            if (await acceptBtn.first().isVisible({ timeout: 15_000 }).catch(() => false)) {
-                await acceptBtn.first().click();
-                await page.waitForTimeout(3_000);
-                console.log('[Step 21] Sales offer accepted by Emeka');
-            } else {
-                console.log('[Step 21] Sales offer phase auto-completed');
-            }
+            await expect(acceptBtn.first()).toBeVisible({ timeout: 15_000 });
+            await acceptBtn.first().click();
+            await page.waitForTimeout(5_000);
+            console.log('[Step 21] Sales offer accepted by Emeka');
         });
 
         // ═══════════════════════════════════════════════════════════════
         // STEP 22 — Emeka uploads KYC documents
         // ═══════════════════════════════════════════════════════════════
         await test.step('Step 22: Emeka uploads KYC documents', async () => {
+            await loginAs(page, EMAILS.emeka);
             await page.goto('/applications/' + applicationId);
             await pollUntilVisible(page, /Required Documents|Action Required/i, { timeout: 60_000, interval: 5_000 });
 
@@ -1364,19 +1528,19 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 30 — Emeka accepts mortgage offer
+        // STEP 30 — Emeka reviews and accepts the mortgage offer
         // ═══════════════════════════════════════════════════════════════
         await test.step('Step 30: Emeka accepts mortgage offer', async () => {
             await loginAs(page, EMAILS.emeka);
             await page.goto('/applications/' + applicationId);
+            await pollUntilVisible(page, /Action Required|Documents Requiring/i, { timeout: 60_000, interval: 5_000 });
+
+            // Customer page shows "Accept" button for each document requiring review
             const acceptBtn = page.getByRole('button', { name: 'Accept' });
-            if (await acceptBtn.first().isVisible({ timeout: 15_000 }).catch(() => false)) {
-                await acceptBtn.first().click();
-                await page.waitForTimeout(3_000);
-                console.log('[Step 30] Mortgage offer accepted');
-            } else {
-                console.log('[Step 30] Mortgage offer phase auto-completed');
-            }
+            await expect(acceptBtn.first()).toBeVisible({ timeout: 15_000 });
+            await acceptBtn.first().click();
+            await page.waitForTimeout(5_000);
+            console.log('[Step 30] Mortgage offer accepted by Emeka');
         });
 
         // ═══════════════════════════════════════════════════════════════

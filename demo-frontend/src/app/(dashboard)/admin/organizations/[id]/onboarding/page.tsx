@@ -22,7 +22,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { Clock } from 'lucide-react';
+import { Clock, Upload, CheckCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
     useOnboarding,
@@ -32,6 +32,7 @@ import {
     useReviewGatePhase,
     useReassignOnboarder,
     useCreateOnboarding,
+    useUploadOnboardingDocument,
     type OnboardingPhase,
     type PhaseCategory,
     type OnboardingStatus,
@@ -445,8 +446,10 @@ function renderFieldInput(
 // Documentation Phase Component
 // ============================================================================
 
-function DocumentationPhaseCard({ phase }: { phase: OnboardingPhase }) {
+function DocumentationPhaseCard({ phase, organizationId }: { phase: OnboardingPhase; organizationId: string }) {
     const dp = phase.documentationPhase;
+    const uploadMutation = useUploadOnboardingDocument();
+    const [uploadingType, setUploadingType] = useState<string | null>(null);
     if (!dp) return null;
 
     const progressPercent = dp.requiredDocumentsCount > 0
@@ -454,6 +457,28 @@ function DocumentationPhaseCard({ phase }: { phase: OnboardingPhase }) {
         : 0;
 
     const docDefs = dp.documentDefinitionsSnapshot || [];
+    const isActive = phase.status === 'IN_PROGRESS';
+
+    const handleFileUpload = async (documentType: string, file: File) => {
+        setUploadingType(documentType);
+        try {
+            // For onboarding, documents are auto-approved on upload.
+            // We use a placeholder URL since the backend just stores the reference.
+            const url = URL.createObjectURL(file);
+            await uploadMutation.mutateAsync({
+                organizationId,
+                phaseId: phase.id,
+                documentType,
+                url: `https://uploads.qshelter.com/onboarding/${organizationId}/${file.name}`,
+                fileName: file.name,
+            });
+            toast.success(`${file.name} uploaded successfully`);
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : 'Upload failed');
+        } finally {
+            setUploadingType(null);
+        }
+    };
 
     return (
         <Card>
@@ -501,24 +526,65 @@ function DocumentationPhaseCard({ phase }: { phase: OnboardingPhase }) {
                     </div>
                 )}
 
-                {/* Required documents from snapshot */}
+                {/* Required documents with upload */}
                 {docDefs.length > 0 && (
                     <div className="space-y-2">
                         <h4 className="text-sm font-medium">Required Documents</h4>
-                        {docDefs.sort((a, b) => a.order - b.order).map((doc, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-2 border rounded-md">
-                                <div>
-                                    <p className="text-sm font-medium">{doc.documentName}</p>
-                                    {doc.description && <p className="text-xs text-muted-foreground">{doc.description}</p>}
-                                    <p className="text-xs text-muted-foreground">
-                                        Uploaded by: {doc.uploadedBy} · Type: {doc.documentType}
-                                    </p>
+                        {docDefs.sort((a, b) => a.order - b.order).map((doc, idx) => {
+                            const isUploaded = !!(doc as Record<string, unknown>).uploadedUrl;
+                            const isUploading = uploadingType === doc.documentType;
+
+                            return (
+                                <div key={idx} className="flex items-center justify-between p-3 border rounded-md">
+                                    <div className="flex-1">
+                                        <p className="text-sm font-medium flex items-center gap-2">
+                                            {doc.documentName}
+                                            {isUploaded && <CheckCircle className="h-4 w-4 text-green-500" />}
+                                        </p>
+                                        {doc.description && <p className="text-xs text-muted-foreground">{doc.description}</p>}
+                                        <p className="text-xs text-muted-foreground">
+                                            Uploaded by: {doc.uploadedBy} · Type: {doc.documentType}
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        {doc.isRequired && <Badge variant="outline" className="text-xs">Required</Badge>}
+                                        {isActive && !isUploaded && (
+                                            <div className="flex items-center gap-1">
+                                                <input
+                                                    type="file"
+                                                    className="hidden"
+                                                    id={`onboarding-doc-${doc.documentType}`}
+                                                    data-doc-type={doc.documentType}
+                                                    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                                                    onChange={(e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (file) handleFileUpload(doc.documentType, file);
+                                                    }}
+                                                />
+                                                <Button
+                                                    type="button"
+                                                    size="sm"
+                                                    variant="outline"
+                                                    disabled={isUploading}
+                                                    onClick={() => {
+                                                        document.getElementById(`onboarding-doc-${doc.documentType}`)?.click();
+                                                    }}
+                                                >
+                                                    {isUploading ? (
+                                                        <><Loader2 className="h-3 w-3 mr-1 animate-spin" /> Uploading…</>
+                                                    ) : (
+                                                        <><Upload className="h-3 w-3 mr-1" /> Upload</>
+                                                    )}
+                                                </Button>
+                                            </div>
+                                        )}
+                                        {isUploaded && (
+                                            <Badge variant="default" className="text-xs">Uploaded</Badge>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    {doc.isRequired && <Badge variant="outline" className="text-xs">Required</Badge>}
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
 
@@ -1066,7 +1132,7 @@ function OnboardingDetailContent({ organizationId }: { organizationId: string })
                                 />
                             );
                         case 'DOCUMENTATION':
-                            return <DocumentationPhaseCard key={phase.id} phase={phase} />;
+                            return <DocumentationPhaseCard key={phase.id} phase={phase} organizationId={organizationId} />;
                         case 'GATE':
                             return (
                                 <GatePhaseCard

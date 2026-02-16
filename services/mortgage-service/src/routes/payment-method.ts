@@ -631,6 +631,59 @@ router.post('/:id/apply', requireTenant, async (req: Request, res: Response, nex
 });
 
 /**
+ * POST /payment-methods/:id/assignments
+ * Enroll an organization to this payment method (alias for POST /:id/apply)
+ */
+router.post('/:id/assignments', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { tenantId } = getAuthContext(req);
+        const data = ApplyForPaymentMethodSchema.parse(req.body);
+        const service = getQualificationService(req);
+        const result = await service.applyForPaymentMethod(req.params.id, tenantId, data);
+        res.status(201).json(successResponse(result));
+    } catch (error: any) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+/**
+ * POST /payment-methods/:id/assignments/:assignmentId/apply
+ * Start qualification process for an enrolled organization (PENDING → IN_PROGRESS)
+ */
+router.post('/:id/assignments/:assignmentId/apply', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const service = getQualificationService(req);
+        const result = await service.updateAssignmentStatus(req.params.assignmentId, { status: 'IN_PROGRESS' as any });
+        res.json(successResponse(result));
+    } catch (error: any) {
+        next(error);
+    }
+});
+
+/**
+ * PATCH /payment-methods/:id/assignments/:assignmentId
+ * Update assignment status (alias for PATCH /:id/assignments/:assignmentId/status)
+ */
+router.patch('/:id/assignments/:assignmentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = UpdateQualificationStatusSchema.parse(req.body);
+        const service = getQualificationService(req);
+        const result = await service.updateAssignmentStatus(req.params.assignmentId, data);
+        res.json(successResponse(result));
+    } catch (error: any) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+/**
  * GET /payment-methods/:id/assignments
  * List organizations assigned to this payment method (with qualification status)
  */
@@ -650,6 +703,20 @@ router.get('/:id/assignments', requireTenant, async (req: Request, res: Response
  * Get detailed qualification progress for an assignment
  */
 router.get('/:id/assignments/:assignmentId', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const service = getQualificationService(req);
+        const result = await service.findQualification(req.params.assignmentId);
+        res.json(successResponse(result));
+    } catch (error: any) {
+        next(error);
+    }
+});
+
+/**
+ * GET /payment-methods/:id/assignments/:assignmentId/qualification
+ * Get qualification progress (alias for GET /:id/assignments/:assignmentId)
+ */
+router.get('/:id/assignments/:assignmentId/qualification', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getQualificationService(req);
         const result = await service.findQualification(req.params.assignmentId);
@@ -756,9 +823,10 @@ router.delete('/:id/qualification-configs/:orgTypeCode', requireTenant, requireR
 
 /**
  * GET /payment-methods/:id/assignments/:assignmentId/waivable-documents
+ * GET /payment-methods/:id/assignments/:assignmentId/available-documents (alias)
  * List all document definitions across all DOCUMENTATION phases that can be waived
  */
-router.get('/:id/assignments/:assignmentId/waivable-documents', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+router.get(['/:id/assignments/:assignmentId/waivable-documents', '/:id/assignments/:assignmentId/available-documents'], requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getQualificationService(req);
         const result = await service.findWaivableDocuments(req.params.assignmentId);

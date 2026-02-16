@@ -304,6 +304,42 @@ export function useReviewGatePhase() {
 }
 
 /**
+ * Upload a document for an onboarding documentation phase.
+ * Documents are auto-approved on upload. Phase auto-completes when all required docs are uploaded.
+ */
+export function useUploadOnboardingDocument() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({
+            organizationId,
+            phaseId,
+            documentType,
+            url,
+            fileName,
+        }: {
+            organizationId: string;
+            phaseId: string;
+            documentType: string;
+            url: string;
+            fileName: string;
+        }) => {
+            const response = await userApi.post<OrganizationOnboarding>(
+                `/organizations/${organizationId}/onboarding/phases/${phaseId}/documents`,
+                { documentType, url, fileName }
+            );
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to upload document');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: onboardingKeys.byOrg(variables.organizationId) });
+        },
+    });
+}
+
+/**
  * Reassign the onboarder to a different org member.
  */
 export function useReassignOnboarder() {

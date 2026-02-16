@@ -395,9 +395,9 @@ export default function OrgPaymentMethodsPage({ params }: { params: Promise<{ id
     const { data: orgs = [] } = useQuery({
         queryKey: ['organizations', 'list-for-enroll'],
         queryFn: async () => {
-            const response = await userApi.get<OrgOption[]>('/organizations');
+            const response = await userApi.get<{ items: OrgOption[]; pagination: unknown }>('/organizations');
             if (!response.success) throw new Error('Failed to fetch organizations');
-            return response.data!;
+            return response.data!.items;
         },
     });
 
