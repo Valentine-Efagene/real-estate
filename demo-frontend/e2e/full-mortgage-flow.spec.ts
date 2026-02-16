@@ -217,13 +217,20 @@ async function sendInviteAndAccept(
 
 test.describe('Full Mortgage Flow — MREIF 10/90', () => {
     // Setup + 5 application phases with persona switches = long test
-    test.setTimeout(900_000); // 15 minutes
+    test.setTimeout(1_800_000); // 30 minutes
 
     test('Full platform setup + Emeka applies for Sunrise Heights A-201', async ({ page }) => {
         test.skip(!BOOTSTRAP_SECRET, 'Set BOOTSTRAP_SECRET env var to run this test');
 
-        // Forward page console to Node for debugging
-        page.on('console', (msg) => console.log(`[PAGE ${msg.type()}]`, msg.text()));
+        // Forward page console to Node for debugging (filter noise)
+        page.on('console', (msg) => {
+            const text = msg.text();
+            // Skip noisy React DevTools, HMR, Fast Refresh and long stack traces
+            if (text.includes('React DevTools') || text.includes('[HMR]')) return;
+            if (text.includes('Fast Refresh')) return;
+            if (text.includes('at ') && text.includes('.js:')) return; // stack trace lines
+            console.log(`[PAGE ${msg.type()}]`, text);
+        });
 
         let applicationId: string;
 
@@ -366,6 +373,21 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             console.log('[Step 4] Nneka invited and accepted');
 
             await loginAs(page, EMAILS.adaeze);
+
+            // Also add Adaeze as staff of Lekki Gardens (DEVELOPER org)
+            // so she can create properties (API requires DEVELOPER org membership)
+            await page.goto('/admin/organizations');
+            await page.waitForTimeout(2_000);
+
+            const lekkiRow2 = page.getByRole('row').filter({ hasText: /Lekki Gardens/i });
+            await lekkiRow2.getByRole('button', { name: 'Add Staff' }).click();
+            const addStaffDialog = page.getByRole('dialog');
+            await expect(addStaffDialog).toBeVisible({ timeout: 5_000 });
+
+            await pickSelect(page, addStaffDialog, /Select User/i, /adaeze/i);
+            await addStaffDialog.getByRole('button', { name: 'Add Member' }).click();
+            await page.waitForTimeout(3_000);
+            console.log('[Step 4] Adaeze added to Lekki Gardens as staff');
         });
 
         // ═══════════════════════════════════════════════════════════════
@@ -408,12 +430,43 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             // Complete questionnaire phases if any
             const submitAnswers = page.getByRole('button', { name: /Submit Answers/i });
             if (await submitAnswers.isVisible({ timeout: 5_000 }).catch(() => false)) {
-                const textInputs = page.locator('input[type="text"]:visible');
-                const count = await textInputs.count();
-                for (let i = 0; i < count; i++) {
-                    const input = textInputs.nth(i);
+                // Fill all visible text/number inputs (shadcn Input renders without explicit type)
+                const allInputs = page.locator('input:visible').filter({ hasNot: page.locator('[role="combobox"]') });
+                const inputCount = await allInputs.count();
+                for (let i = 0; i < inputCount; i++) {
+                    const input = allInputs.nth(i);
+                    const inputType = await input.getAttribute('type');
                     const value = await input.inputValue();
-                    if (!value) await input.fill('Sample Value');
+                    if (!value) {
+                        if (inputType === 'number') {
+                            await input.fill('100');
+                        } else {
+                            await input.fill('Sample Value');
+                        }
+                    }
+                }
+                // Fill all visible textareas
+                const textareas = page.locator('textarea:visible');
+                const taCount = await textareas.count();
+                for (let i = 0; i < taCount; i++) {
+                    const ta = textareas.nth(i);
+                    const value = await ta.inputValue();
+                    if (!value) await ta.fill('Sample answer text');
+                }
+                // Handle shadcn Select triggers (BOOLEAN/SELECT fields)
+                const selectTriggers = page.locator('[role="combobox"]:visible');
+                const selCount = await selectTriggers.count();
+                for (let i = 0; i < selCount; i++) {
+                    const trigger = selectTriggers.nth(i);
+                    // Only interact if no value selected yet (placeholder still showing)
+                    const text = await trigger.textContent();
+                    if (text?.includes('Select')) {
+                        await trigger.click();
+                        const option = page.getByRole('option').first();
+                        if (await option.isVisible({ timeout: 2_000 }).catch(() => false)) {
+                            await option.click();
+                        }
+                    }
                 }
                 await submitAnswers.click();
                 await page.waitForTimeout(3_000);
@@ -515,12 +568,42 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             const submitAnswers = page.getByRole('button', { name: /Submit Answers/i });
             if (await submitAnswers.isVisible({ timeout: 5_000 }).catch(() => false)) {
-                const textInputs = page.locator('input[type="text"]:visible');
-                const count = await textInputs.count();
-                for (let i = 0; i < count; i++) {
-                    const input = textInputs.nth(i);
+                // Fill all visible text/number inputs (shadcn Input renders without explicit type)
+                const allInputs = page.locator('input:visible').filter({ hasNot: page.locator('[role="combobox"]') });
+                const inputCount = await allInputs.count();
+                for (let i = 0; i < inputCount; i++) {
+                    const input = allInputs.nth(i);
+                    const inputType = await input.getAttribute('type');
                     const value = await input.inputValue();
-                    if (!value) await input.fill('Sample Value');
+                    if (!value) {
+                        if (inputType === 'number') {
+                            await input.fill('100');
+                        } else {
+                            await input.fill('Sample Value');
+                        }
+                    }
+                }
+                // Fill all visible textareas
+                const textareas = page.locator('textarea:visible');
+                const taCount = await textareas.count();
+                for (let i = 0; i < taCount; i++) {
+                    const ta = textareas.nth(i);
+                    const value = await ta.inputValue();
+                    if (!value) await ta.fill('Sample answer text');
+                }
+                // Handle shadcn Select triggers (BOOLEAN/SELECT fields)
+                const selectTriggers = page.locator('[role="combobox"]:visible');
+                const selCount = await selectTriggers.count();
+                for (let i = 0; i < selCount; i++) {
+                    const trigger = selectTriggers.nth(i);
+                    const text = await trigger.textContent();
+                    if (text?.includes('Select')) {
+                        await trigger.click();
+                        const option = page.getByRole('option').first();
+                        if (await option.isVisible({ timeout: 2_000 }).catch(() => false)) {
+                            await option.click();
+                        }
+                    }
                 }
                 await submitAnswers.click();
                 await page.waitForTimeout(3_000);
@@ -546,52 +629,66 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
         // STEP 8 — Create Sunrise Heights property + variant + unit
         // ═══════════════════════════════════════════════════════════════
         await test.step('Step 8: Create Sunrise Heights property', async () => {
+            // Adaeze was added to Lekki Gardens (DEVELOPER) in Step 4,
+            // so she has DEVELOPER org membership for the API check.
             await page.goto('/admin/properties/new');
             await page.waitForTimeout(2_000);
 
             // Step 1: Property Details
+            // Category defaults to "For Sale" (SALE), Property Type to "Apartment" (APARTMENT),
+            // Country to "Nigeria", Currency to "NGN" — all correct for our scenario.
             await page.getByLabel(/Title/i).fill('Sunrise Heights Estate');
             await page.getByLabel(/Description/i).first().fill(
                 'Premium residential estate in Lekki Phase 1, Lagos.',
             );
-            await page.getByLabel(/Category/i).click();
-            await page.getByRole('option', { name: /For Sale/i }).click();
-            await page.getByLabel(/Property Type/i).click();
-            await page.getByRole('option', { name: /Apartment/i }).click();
-            await page.getByLabel(/City/i).fill('Lagos');
-            await page.getByLabel(/District/i).fill('Lekki Phase 1');
+            // Explicitly fill country (even though it defaults to Nigeria)
+            await page.locator('#country').fill('Nigeria');
+            await page.locator('#city').fill('Lagos');
+            await page.locator('#district').fill('Lekki Phase 1');
+            // Lat/lng required by API validation (Lekki Phase 1 coordinates)
+            await page.locator('#latitude').fill('6.4541');
+            await page.locator('#longitude').fill('3.3947');
 
+            // Validate details step by clicking "Continue to Media"
             await page.getByRole('button', { name: /Continue to Media/i }).click();
+            await page.waitForTimeout(500);
+
+            // Skip Media (requires image upload) — jump to Review via step button
+            await page.getByRole('button', { name: /Review & Publish/i }).click();
             await page.waitForTimeout(1_000);
 
-            // Step 2: Media — skip
-            await page.getByRole('button', { name: /Continue/i }).click();
-            await page.waitForTimeout(1_000);
-
-            // Step 3: Variants — skip (add later)
-            await page.getByRole('button', { name: /Continue/i }).click();
-            await page.waitForTimeout(1_000);
-
-            // Step 4: Units — skip
-            await page.getByRole('button', { name: /Continue/i }).click();
-            await page.waitForTimeout(1_000);
-
-            // Step 5: Review & Publish
+            // Review & Publish
             await page.getByLabel(/Publish Immediately/i).check();
+
+            // Intercept the create property API response
+            const createPropRespPromise = page.waitForResponse(
+                (resp) => resp.url().includes('/properties') && resp.request().method() === 'POST',
+                { timeout: 30_000 },
+            );
             await page.getByRole('button', { name: /Create Property/i }).click();
-            await page.waitForTimeout(5_000);
+            const propResp = await createPropRespPromise;
+            const propStatus = propResp.status();
+            console.log(`[Step 8] Create property API: ${propStatus}`);
+            if (propStatus >= 400) {
+                const body = await propResp.text();
+                console.log(`[Step 8] ERROR creating property: ${body}`);
+                throw new Error(`Property creation API returned ${propStatus}: ${body}`);
+            }
+
+            // Wait for redirect to properties list (handleSubmit does router.push)
+            await page.waitForURL('**/admin/properties', { timeout: 15_000 });
             console.log('[Step 8] Property created');
 
-            // Navigate to properties list to add variant + unit
-            await page.goto('/admin/properties');
-            await page.waitForTimeout(2_000);
+            // Wait for properties list to load and show our property
+            await expect(page.getByText('Sunrise Heights Estate').first()).toBeVisible({ timeout: 15_000 });
 
+            // Expand the property accordion
             await page.getByText('Sunrise Heights Estate').first().click();
             await page.waitForTimeout(1_000);
 
             // Add variant
             await page.getByRole('button', { name: 'Add Variant' }).click();
-            let variantDialog = page.getByRole('dialog');
+            const variantDialog = page.getByRole('dialog');
             await expect(variantDialog).toBeVisible({ timeout: 5_000 });
 
             await variantDialog.locator('#variantName').fill('3-Bedroom Luxury Apartment');
@@ -606,7 +703,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.waitForTimeout(3_000);
             console.log('[Step 8] Variant created');
 
-            // Add unit
+            // Add unit (button is on the variant card, not behind "Show Units")
             await page.getByRole('button', { name: 'Add Unit' }).click();
             const unitDialog = page.getByRole('dialog');
             await expect(unitDialog).toBeVisible({ timeout: 5_000 });
@@ -631,15 +728,15 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             const dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
 
-            await dialog.locator('#planName').fill('MREIF Prequalification');
+            await dialog.locator('#name').fill('MREIF Prequalification');
 
             // Add 5 questions
             const questions = [
-                { key: 'employment_status', text: 'What is your employment status?', type: 'SELECT' },
-                { key: 'monthly_income', text: 'What is your monthly net income?', type: 'CURRENCY' },
-                { key: 'years_employed', text: 'How many years at your current employer?', type: 'NUMBER' },
-                { key: 'existing_mortgage', text: 'Do you have an existing mortgage?', type: 'SELECT' },
-                { key: 'property_purpose', text: 'What is the purpose of this property?', type: 'SELECT' },
+                { key: 'employment_status', text: 'What is your employment status?', type: 'Single Select' },
+                { key: 'monthly_income', text: 'What is your monthly net income?', type: 'Currency' },
+                { key: 'years_employed', text: 'How many years at your current employer?', type: 'Number' },
+                { key: 'existing_mortgage', text: 'Do you have an existing mortgage?', type: 'Single Select' },
+                { key: 'property_purpose', text: 'What is the purpose of this property?', type: 'Single Select' },
             ];
 
             for (const q of questions) {
@@ -648,8 +745,8 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
                 const qCards = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Question Key/i });
                 const lastQ = qCards.last();
-                await lastQ.getByPlaceholder(/question_key/i).first().fill(q.key);
-                await lastQ.getByPlaceholder(/Enter question text/i).first().fill(q.text);
+                await lastQ.getByPlaceholder(/applicant_age/i).first().fill(q.key);
+                await lastQ.getByPlaceholder(/What is your age/i).first().fill(q.text);
                 await lastQ.locator('button[role="combobox"]').first().click();
                 await page.getByRole('option', { name: q.type, exact: true }).click();
             }
@@ -670,22 +767,22 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: 'Create Documentation Plan' }).click();
             let dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.locator('#planName').fill('Sales Offer Documentation');
+            await dialog.locator('#name').fill('Sales Offer Documentation');
 
             await dialog.getByRole('button', { name: 'Add Document' }).click();
             await page.waitForTimeout(500);
             let lastDoc = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Document Type/i }).last();
-            await lastDoc.getByPlaceholder(/DOCUMENT_TYPE/i).first().fill('SALES_OFFER_LETTER');
-            await lastDoc.getByPlaceholder(/Display name/i).first().fill('Sales Offer Letter');
+            await lastDoc.getByPlaceholder(/ID_CARD/i).first().fill('SALES_OFFER_LETTER');
+            await lastDoc.getByPlaceholder(/Valid ID Card/i).first().fill('Sales Offer Letter');
             await lastDoc.locator('button[role="combobox"]').first().click();
-            await page.getByRole('option', { name: 'DEVELOPER', exact: true }).click();
+            await page.getByRole('option', { name: 'Developer', exact: true }).click();
 
             await dialog.getByRole('button', { name: 'Add Stage' }).click();
             await page.waitForTimeout(500);
             let lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
-            await lastStage.getByPlaceholder(/Stage name/i).first().fill('Developer Document Verification');
+            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Developer Document Verification');
             await lastStage.locator('button[role="combobox"]').first().click();
-            await page.getByRole('option', { name: 'DEVELOPER', exact: true }).click();
+            await page.getByRole('option', { name: 'Developer', exact: true }).click();
 
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
             await page.waitForTimeout(3_000);
@@ -695,21 +792,21 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: 'Create Documentation Plan' }).click();
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.locator('#planName').fill('MREIF Preapproval Documentation');
+            await dialog.locator('#name').fill('MREIF Preapproval Documentation');
 
             const preapprovalDocs = [
-                { type: 'ID_CARD', name: 'Valid Government ID', uploader: 'CUSTOMER' },
-                { type: 'BANK_STATEMENT', name: 'Bank Statement (6 months)', uploader: 'CUSTOMER' },
-                { type: 'EMPLOYMENT_LETTER', name: 'Employment Confirmation Letter', uploader: 'CUSTOMER' },
-                { type: 'PROOF_OF_ADDRESS', name: 'Proof of Address', uploader: 'CUSTOMER' },
-                { type: 'PREAPPROVAL_LETTER', name: 'Bank Preapproval Letter', uploader: 'LENDER' },
+                { type: 'ID_CARD', name: 'Valid Government ID', uploader: 'Customer' },
+                { type: 'BANK_STATEMENT', name: 'Bank Statement (6 months)', uploader: 'Customer' },
+                { type: 'EMPLOYMENT_LETTER', name: 'Employment Confirmation Letter', uploader: 'Customer' },
+                { type: 'PROOF_OF_ADDRESS', name: 'Proof of Address', uploader: 'Customer' },
+                { type: 'PREAPPROVAL_LETTER', name: 'Bank Preapproval Letter', uploader: 'Lender (Bank)' },
             ];
             for (const doc of preapprovalDocs) {
                 await dialog.getByRole('button', { name: 'Add Document' }).click();
                 await page.waitForTimeout(500);
                 lastDoc = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Document Type/i }).last();
-                await lastDoc.getByPlaceholder(/DOCUMENT_TYPE/i).first().fill(doc.type);
-                await lastDoc.getByPlaceholder(/Display name/i).first().fill(doc.name);
+                await lastDoc.getByPlaceholder(/ID_CARD/i).first().fill(doc.type);
+                await lastDoc.getByPlaceholder(/Valid ID Card/i).first().fill(doc.name);
                 await lastDoc.locator('button[role="combobox"]').first().click();
                 await page.getByRole('option', { name: doc.uploader, exact: true }).click();
             }
@@ -718,16 +815,16 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Add Stage' }).click();
             await page.waitForTimeout(500);
             lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
-            await lastStage.getByPlaceholder(/Stage name/i).first().fill('QShelter Staff Review');
+            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('QShelter Staff Review');
             await lastStage.locator('button[role="combobox"]').first().click();
-            await page.getByRole('option', { name: 'PLATFORM', exact: true }).click();
+            await page.getByRole('option', { name: 'Platform (QShelter)', exact: true }).click();
 
             await dialog.getByRole('button', { name: 'Add Stage' }).click();
             await page.waitForTimeout(500);
             lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
-            await lastStage.getByPlaceholder(/Stage name/i).first().fill('Bank Review');
+            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Bank Review');
             await lastStage.locator('button[role="combobox"]').first().click();
-            await page.getByRole('option', { name: 'BANK', exact: true }).click();
+            await page.getByRole('option', { name: 'Bank', exact: true }).click();
 
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
             await page.waitForTimeout(3_000);
@@ -737,22 +834,22 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: 'Create Documentation Plan' }).click();
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.locator('#planName').fill('Mortgage Offer Documentation');
+            await dialog.locator('#name').fill('Mortgage Offer Documentation');
 
             await dialog.getByRole('button', { name: 'Add Document' }).click();
             await page.waitForTimeout(500);
             lastDoc = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Document Type/i }).last();
-            await lastDoc.getByPlaceholder(/DOCUMENT_TYPE/i).first().fill('MORTGAGE_OFFER_LETTER');
-            await lastDoc.getByPlaceholder(/Display name/i).first().fill('Mortgage Offer Letter');
+            await lastDoc.getByPlaceholder(/ID_CARD/i).first().fill('MORTGAGE_OFFER_LETTER');
+            await lastDoc.getByPlaceholder(/Valid ID Card/i).first().fill('Mortgage Offer Letter');
             await lastDoc.locator('button[role="combobox"]').first().click();
-            await page.getByRole('option', { name: 'LENDER', exact: true }).click();
+            await page.getByRole('option', { name: 'Lender (Bank)', exact: true }).click();
 
             await dialog.getByRole('button', { name: 'Add Stage' }).click();
             await page.waitForTimeout(500);
             lastStage = dialog.locator('.border.rounded-lg, [class*="card"]').filter({ hasText: /Stage Name/i }).last();
-            await lastStage.getByPlaceholder(/Stage name/i).first().fill('Bank Document Upload');
+            await lastStage.getByPlaceholder(/QShelter Review/i).first().fill('Bank Document Upload');
             await lastStage.locator('button[role="combobox"]').first().click();
-            await page.getByRole('option', { name: 'BANK', exact: true }).click();
+            await page.getByRole('option', { name: 'Bank', exact: true }).click();
 
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
             await page.waitForTimeout(3_000);
@@ -770,9 +867,8 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             const dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
 
-            await dialog.locator('#planName').fill('MREIF 10% Downpayment');
-            await dialog.getByLabel(/Payment Frequency/i).click();
-            await page.getByRole('option', { name: 'ONE_TIME', exact: true }).click();
+            await dialog.locator('#name').fill('MREIF 10% Downpayment');
+            await pickSelect(page, dialog, /Payment Frequency/i, /One-Time/i);
 
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
             await page.waitForTimeout(3_000);
@@ -790,7 +886,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             const dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
 
-            await dialog.locator('#methodName').fill('MREIF 10/90 Mortgage');
+            await dialog.locator('#name').fill('MREIF 10/90 Mortgage');
 
             const phases = [
                 { name: 'Prequalification', category: /Questionnaire/i, type: /Pre-Approval/i, plan: /MREIF Prequalification/i },
@@ -805,7 +901,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await page.waitForTimeout(500);
 
                 const phaseCard = dialog.locator('.border.rounded-lg, [class*="Card"]').filter({ hasText: /Phase Name/i }).last();
-                await phaseCard.getByPlaceholder(/Phase name/i).fill(p.name);
+                await phaseCard.getByPlaceholder(/KYC Verification/i).fill(p.name);
 
                 const combos = phaseCard.locator('button[role="combobox"]');
                 await combos.first().click();
@@ -843,10 +939,10 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: 'Create Flow' }).click();
             let dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.getByLabel(/Flow Name/i).fill('MREIF Developer Qualification');
+            await dialog.getByPlaceholder(/Developer Qualification/i).fill('MREIF Developer Qualification');
             await dialog.getByRole('button', { name: 'Add Phase' }).click();
             await page.waitForTimeout(500);
-            await dialog.getByPlaceholder(/Phase name/i).fill('Platform Approval');
+            await dialog.getByPlaceholder(/Phase name/i).first().fill('Platform Approval');
             await dialog.locator('[class*="card"]').last().locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: /Approval Gate/i }).click();
             await dialog.getByRole('button', { name: 'Create Flow' }).click();
@@ -857,10 +953,10 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: 'Create Flow' }).click();
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.getByLabel(/Flow Name/i).fill('MREIF Bank Qualification');
+            await dialog.getByPlaceholder(/Developer Qualification/i).fill('MREIF Bank Qualification');
             await dialog.getByRole('button', { name: 'Add Phase' }).click();
             await page.waitForTimeout(500);
-            await dialog.getByPlaceholder(/Phase name/i).fill('Platform Approval');
+            await dialog.getByPlaceholder(/Phase name/i).first().fill('Platform Approval');
             await dialog.locator('[class*="card"]').last().locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: /Approval Gate/i }).click();
             await dialog.getByRole('button', { name: 'Create Flow' }).click();
@@ -885,9 +981,9 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: 'Add Requirement' }).click();
             let dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.getByLabel(/Organization Type/i).click();
+            await dialog.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: 'DEVELOPER', exact: true }).click();
-            await dialog.getByLabel(/Qualification Flow/i).click();
+            await dialog.locator('button[role="combobox"]').nth(1).click();
             await page.getByRole('option', { name: /MREIF Developer/i }).click();
             await dialog.getByRole('button', { name: 'Add Requirement' }).click();
             await page.waitForTimeout(3_000);
@@ -896,9 +992,9 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: 'Add Requirement' }).click();
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.getByLabel(/Organization Type/i).click();
+            await dialog.locator('button[role="combobox"]').first().click();
             await page.getByRole('option', { name: 'BANK', exact: true }).click();
-            await dialog.getByLabel(/Qualification Flow/i).click();
+            await dialog.locator('button[role="combobox"]').nth(1).click();
             await page.getByRole('option', { name: /MREIF Bank/i }).click();
             await dialog.getByRole('button', { name: 'Add Requirement' }).click();
             await page.waitForTimeout(3_000);
@@ -912,7 +1008,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: /Enroll Organization/i }).click();
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.getByLabel(/Organization/i).click();
+            await dialog.locator('button[role="combobox"]').click();
             await page.getByRole('option', { name: /Lekki Gardens/i }).click();
             await dialog.getByRole('button', { name: 'Enroll' }).click();
             await page.waitForTimeout(3_000);
@@ -929,7 +1025,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: /Enroll Organization/i }).click();
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.getByLabel(/Organization/i).click();
+            await dialog.locator('button[role="combobox"]').click();
             await page.getByRole('option', { name: /Access Bank/i }).click();
             await dialog.getByRole('button', { name: 'Enroll' }).click();
             await page.waitForTimeout(3_000);
@@ -950,7 +1046,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: /Add Waiver|Add First Waiver/i }).click();
             dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.getByLabel(/Document/i).click();
+            await dialog.locator('button[role="combobox"]').click();
             await page.getByRole('option', { name: /PROOF_OF_ADDRESS|Proof of Address/i }).click();
             const reasonInput = dialog.getByPlaceholder(/waived/i);
             if (await reasonInput.isVisible().catch(() => false)) {
@@ -974,7 +1070,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             const dialog = page.getByRole('dialog');
             await expect(dialog).toBeVisible({ timeout: 5_000 });
-            await dialog.getByLabel(/Property/i).click();
+            await dialog.locator('button[role="combobox"]').click();
             await page.getByRole('option', { name: /Sunrise Heights/i }).click();
             await dialog.getByRole('button', { name: /Link/i }).click();
             await page.waitForTimeout(3_000);

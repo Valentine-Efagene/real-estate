@@ -18,6 +18,10 @@ Note: **NEVER delete the CDKToolkit CloudFormation stack** — not manually, not
 
 This script handles fetching credentials from AWS Secrets Manager and running migrations against the staging RDS instance.
 
+## Terinal
+
+- Errors like this `The test was interrupted (exit code 130 — SIGINT) at Step 8 because my ps aux | grep command ran in the same terminal as the Playwright test, killing it. Step 8 wasn't a real failure — the test was waiting for getByLabel(/Category/i) when it got killed.` are a problem, and must be avoided. Don't inject commands in a way that they could break running tasks.
+
 ## Demo Frontend (`demo-frontend/`)
 
 The demo-frontend is a **Next.js application** for interactively testing the QShelter API. Its purpose is to:
