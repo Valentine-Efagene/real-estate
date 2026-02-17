@@ -141,7 +141,7 @@ const ROLE_POLICIES_TABLE = process.env.ROLE_POLICIES_TABLE_NAME || 'qshelter-st
  * @param maxWaitMs Maximum time to wait before giving up (default 30s)
  * @param intervalMs Polling interval (default 500ms)
  */
-async function waitForPolicies(
+export async function waitForPolicies(
     tenantId: string,
     roleNames: string[],
     maxWaitMs = 30_000,

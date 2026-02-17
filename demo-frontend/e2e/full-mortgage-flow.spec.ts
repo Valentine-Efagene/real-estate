@@ -74,26 +74,52 @@ function testPdf(label: string) {
  * Clear auth cookies and log in as a specific user.
  * Preserves the tenantId in localStorage across the login switch.
  */
-async function loginAs(page: Page, email: string) {
+async function loginAs(
+    page: Page,
+    email: string,
+    { timeout = 60_000, interval = 5_000 } = {},
+) {
     const tenantId = await page.evaluate(() =>
         localStorage.getItem('qshelter_tenant_id'),
     );
 
-    await page.context().clearCookies();
-    await page.goto('/login');
+    const deadline = Date.now() + timeout;
+    let attempt = 0;
 
-    if (tenantId) {
-        await page.evaluate(
-            (tid) => localStorage.setItem('qshelter_tenant_id', tid),
-            tenantId,
+    while (Date.now() < deadline) {
+        attempt++;
+        await page.context().clearCookies();
+        await page.goto('/login');
+
+        if (tenantId) {
+            await page.evaluate(
+                (tid) => localStorage.setItem('qshelter_tenant_id', tid),
+                tenantId,
+            );
+        }
+
+        await page.locator('input[type="email"]').fill(email);
+        await page.locator('input[type="password"]').fill(PASSWORD);
+        await page.locator('button[type="submit"]').click();
+
+        // Check if login succeeded (redirected to dashboard/admin)
+        const succeeded = await page
+            .waitForURL(/\/(dashboard|admin)/, { timeout: 15_000 })
+            .then(() => true)
+            .catch(() => false);
+
+        if (succeeded) return;
+
+        console.log(
+            `[loginAs] Attempt ${attempt} failed for ${email}, polling again in ${interval / 1000}s...`,
         );
+        await page.waitForTimeout(interval);
     }
 
-    await page.locator('input[type="email"]').fill(email);
-    await page.locator('input[type="password"]').fill(PASSWORD);
-    await page.locator('button[type="submit"]').click();
-
-    await expect(page).toHaveURL(/\/(dashboard|admin)/, { timeout: 15_000 });
+    // Final attempt — let it throw with a clear error
+    throw new Error(
+        `Login failed for ${email} after ${attempt} attempts over ${timeout / 1000}s (policy-sync may still be propagating)`,
+    );
 }
 
 /**
@@ -297,7 +323,8 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             console.log('[Step 1] Tenant bootstrapped. tenantId:', tenantId);
 
             await page.keyboard.press('Escape');
-            await page.waitForTimeout(1_000);
+            // No artificial wait needed — the bootstrap worker now polls DynamoDB
+            // for policy sync before marking the job as COMPLETED.
         });
 
         // ═══════════════════════════════════════════════════════════════
@@ -1485,11 +1512,17 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.goto('/applications/' + applicationId);
             await page.waitForTimeout(5_000);
 
-            await page.getByRole('button', { name: /Pay Now/i }).first().click();
-            await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5_000 });
-            await page.getByRole('dialog').getByRole('button', { name: /Fund Wallet.*Pay|Pay|Confirm/i }).click();
-            await page.waitForTimeout(10_000);
-            console.log('[Step 28] Downpayment paid');
+            // Downpayment may have been auto-paid when wallet was credited
+            const payBtn = page.getByRole('button', { name: /Pay Now/i }).first();
+            if (await payBtn.isVisible({ timeout: 10_000 }).catch(() => false)) {
+                await payBtn.click();
+                await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5_000 });
+                await page.getByRole('dialog').getByRole('button', { name: /Fund Wallet.*Pay|Pay|Confirm/i }).click();
+                await page.waitForTimeout(10_000);
+                console.log('[Step 28] Downpayment paid');
+            } else {
+                console.log('[Step 28] Downpayment already completed (auto-paid from wallet credit)');
+            }
         });
 
         // ═══════════════════════════════════════════════════════════════

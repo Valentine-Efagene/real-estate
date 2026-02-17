@@ -15,7 +15,7 @@
 
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { AsyncJobStore } from '@valentine-efagene/qshelter-common';
-import { runDemoBootstrap } from './services/demo-bootstrap.service';
+import { runDemoBootstrap, waitForPolicies } from './services/demo-bootstrap.service';
 import { bootstrapService } from './services/bootstrap.service';
 
 const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION || 'us-east-1' });
@@ -44,6 +44,22 @@ export const handler = async (event: BootstrapWorkerEvent): Promise<void> => {
 
         if (mode === 'tenant') {
             result = await bootstrapService.bootstrapTenant(input as any);
+
+            // Wait for policies to land in DynamoDB before marking COMPLETED.
+            // bootstrapTenant() publishes SNS events but returns immediately;
+            // the SNS → SQS → policy-sync Lambda → DynamoDB pipeline needs time.
+            const tenantResult = result as { tenant: { id: string }; roles: Array<{ name: string }> };
+            const roleNames = tenantResult.roles.map((r) => r.name);
+            const pollResult = await waitForPolicies(tenantResult.tenant.id, roleNames);
+            if (!pollResult.foundAll) {
+                console.warn(
+                    `[BootstrapWorker] Policy sync incomplete after ${pollResult.elapsed}ms. Missing: ${pollResult.missing.join(', ')}`,
+                );
+            } else {
+                console.log(
+                    `[BootstrapWorker] All ${roleNames.length} role policies synced in ${pollResult.elapsed}ms`,
+                );
+            }
         } else {
             result = await runDemoBootstrap(input as any);
         }
