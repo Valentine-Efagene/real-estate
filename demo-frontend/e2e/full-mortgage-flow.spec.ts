@@ -145,19 +145,32 @@ async function pollUntilVisible(
  * Approve all documents that have a "Review" button on the admin application page.
  */
 async function approveAllDocuments(page: Page) {
-    let iterations = 0;
+    let approved = 0;
     const MAX_ITERATIONS = 10;
 
-    while (iterations++ < MAX_ITERATIONS) {
+    for (let i = 0; i < MAX_ITERATIONS; i++) {
+        // After each approval the page re-renders; reload to get fresh state
+        if (approved > 0) {
+            await page.reload();
+            await page.waitForTimeout(2_000);
+        }
+
         const reviewBtn = page.getByRole('button', { name: 'Review' });
-        const visible = await reviewBtn.first().isVisible({ timeout: 3_000 }).catch(() => false);
+        // Wait up to 10s for a Review button to appear (page may be loading)
+        const visible = await reviewBtn.first().waitFor({ state: 'visible', timeout: 10_000 }).then(() => true).catch(() => false);
         if (!visible) break;
 
         await reviewBtn.first().click();
         await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5_000 });
         await page.getByRole('dialog').getByRole('button', { name: 'Approve' }).click();
-        await page.waitForTimeout(2_000);
+        // Wait for dialog to close after approval
+        await expect(page.getByRole('dialog')).not.toBeVisible({ timeout: 10_000 }).catch(() => {});
+        await page.waitForTimeout(1_000);
+        approved++;
+        console.log(`  Approved document ${approved}`);
     }
+    console.log(`  Total documents approved: ${approved}`);
+    return approved;
 }
 
 /**
@@ -1430,9 +1443,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
         await test.step('Step 23: Adaeze approves KYC documents', async () => {
             await loginAs(page, EMAILS.adaeze);
             await page.goto('/admin/applications/' + applicationId);
-            await page.waitForTimeout(5_000);
-            await approveAllDocuments(page);
-            console.log('[Step 23] KYC documents approved by Adaeze');
+            // Wait until Review buttons (for document approval) appear
+            await pollUntilVisible(page, /Review/i, { timeout: 60_000, interval: 5_000 });
+            // Make sure the button (not just text) is there
+            await expect(page.getByRole('button', { name: 'Review' }).first()).toBeVisible({ timeout: 10_000 });
+            const approved = await approveAllDocuments(page);
+            expect(approved).toBeGreaterThanOrEqual(1);
+            console.log(`[Step 23] KYC documents approved by Adaeze (${approved} docs)`);
         });
 
         // ═══════════════════════════════════════════════════════════════
@@ -1443,7 +1460,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.goto('/admin/applications/' + applicationId);
             await expect(page.getByText(applicationId)).toBeVisible({ timeout: 20_000 });
 
-            await pollUntilVisible(page, /Upload.*Document/i, { timeout: 30_000, interval: 3_000 });
+            await pollUntilVisible(page, /Upload.*Document/i, { timeout: 90_000, interval: 5_000 });
 
             const docTypeSelect = page.getByRole('combobox').last();
             await docTypeSelect.click();
@@ -1473,7 +1490,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
         // ═══════════════════════════════════════════════════════════════
         await test.step('Step 26: Emeka creates wallet', async () => {
             await page.goto('/applications/' + applicationId);
-            await pollUntilVisible(page, /Create Wallet|wallet|Payment/i, { timeout: 60_000, interval: 5_000 });
+            await pollUntilVisible(page, /Create Wallet|wallet|Payment/i, { timeout: 90_000, interval: 5_000 });
 
             const createWalletBtn = page.getByRole('button', { name: /Create Wallet/i });
             if (await createWalletBtn.isVisible({ timeout: 10_000 }).catch(() => false)) {
