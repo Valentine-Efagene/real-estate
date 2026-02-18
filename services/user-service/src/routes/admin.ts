@@ -3,7 +3,7 @@ import { bootstrapTenantSchema } from '../validators/bootstrap.validator';
 import { AppError, ConfigService, AsyncJobStore } from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
 import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, ScanCommand, DeleteItemCommand } from '@aws-sdk/client-dynamodb';
 
 const lambdaClient = new LambdaClient({ region: process.env.AWS_REGION || 'us-east-1' });
 const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION || 'us-east-1' });
@@ -344,9 +344,66 @@ router.post(
 
             console.log(`[Admin Reset] Starting database reset for stage: ${stage}`);
 
+            // ── DynamoDB cleanup ──────────────────────────────────────────
+            // Scan and delete ALL items from the role-policies table so the
+            // authorizer doesn't cache stale policies from a previous tenant.
+            let dynamoDeleted = 0;
+            try {
+                console.log(`[Admin Reset] Clearing DynamoDB table: ${ROLE_POLICIES_TABLE}`);
+                let lastEvaluatedKey: Record<string, any> | undefined;
+                do {
+                    const scanResult = await dynamoClient.send(new ScanCommand({
+                        TableName: ROLE_POLICIES_TABLE,
+                        ProjectionExpression: 'PK, SK',
+                        ExclusiveStartKey: lastEvaluatedKey as any,
+                    }));
+                    const items = scanResult.Items || [];
+                    for (const item of items) {
+                        await dynamoClient.send(new DeleteItemCommand({
+                            TableName: ROLE_POLICIES_TABLE,
+                            Key: { PK: item.PK, SK: item.SK },
+                        }));
+                        dynamoDeleted++;
+                    }
+                    lastEvaluatedKey = scanResult.LastEvaluatedKey as Record<string, any> | undefined;
+                } while (lastEvaluatedKey);
+                console.log(`[Admin Reset] Deleted ${dynamoDeleted} items from DynamoDB`);
+            } catch (e) {
+                console.log(`[Admin Reset] DynamoDB cleanup error (non-fatal): ${(e as Error).message}`);
+            }
+
+            // ── Relational DB cleanup ────────────────────────────────────
             // Delete in order respecting foreign key constraints
             // Child tables first, then parent tables
             const deleted: Record<string, number> = {};
+            deleted['dynamodb'] = dynamoDeleted;
+
+            // Level 0: Qualification & onboarding instance tables
+            const level0Tables = [
+                'gatePhaseReview',
+                'gatePhase',
+                'qualificationPhase',
+                'onboardingPhase',
+                'organizationOnboarding',
+                'organizationDocumentWaiver',
+                'paymentMethodQualificationConfig',
+                'paymentMethodQualification',
+                'organizationPaymentMethod',
+                'qualificationFlowPhase',
+                'qualificationFlow',
+                'scheduledJob',
+                'documentExpiryWarning',
+                'organizationInvitation',
+            ];
+
+            for (const table of level0Tables) {
+                try {
+                    const result = await (prisma as any)[table].deleteMany({});
+                    deleted[table] = result.count;
+                } catch (e) {
+                    console.log(`[Admin Reset] Skipping ${table}: ${(e as Error).message}`);
+                }
+            }
 
             // Level 1: Deepest children (no dependencies on them)
             const level1Tables = [
@@ -438,7 +495,7 @@ router.post(
                 }
             }
 
-            // Level 5: Property and payment methods
+            // Level 5: Property, payment methods, and plan config
             const level5Tables = [
                 'property',
                 'propertyPaymentMethod',
@@ -448,6 +505,8 @@ router.post(
                 'documentationPlan',
                 'questionnairePlanQuestion',
                 'questionnairePlan',
+                'gatePlan',
+                'onboardingFlowPhase',
                 'documentTemplate',
                 'amenity',
             ];
@@ -461,11 +520,14 @@ router.post(
                 }
             }
 
-            // Level 6: Organizations
+            // Level 6: Organizations, org types, and onboarding flows
             const level6Tables = [
                 'bankDocumentRequirement',
                 'organizationMember',
+                'organizationTypeAssignment',
                 'organization',
+                'onboardingFlow',
+                'organizationType',
             ];
 
             for (const table of level6Tables) {

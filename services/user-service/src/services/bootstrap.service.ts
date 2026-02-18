@@ -451,16 +451,10 @@ class BootstrapService {
             }
         }
 
-        // 8. Seed onboarding templates for BANK and DEVELOPER org types (outside transaction, idempotent)
-        if (isNewTenant) {
-            try {
-                await this.seedOnboardingTemplates(tenant!.id);
-                console.log(`[Bootstrap] Seeded onboarding templates`);
-            } catch (error) {
-                console.error(`[Bootstrap] Failed to seed onboarding templates:`, error);
-                // Non-critical — templates can be created manually
-            }
-        }
+        // 8. Onboarding templates are NO LONGER seeded at bootstrap.
+        // Admins create onboarding flows through the UI at /admin/onboarding-flows.
+        // This keeps the bootstrap minimal (tenant + admin + platform org + roles/permissions)
+        // and ensures the video shows the admin configuring everything.
 
         return {
             tenant: {

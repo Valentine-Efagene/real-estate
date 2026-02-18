@@ -349,9 +349,141 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 3 — Invite Yinka to Platform org + register
+        // STEP 3 — Adaeze creates gate plans + onboarding flows
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 3: Invite Yinka to platform org', async () => {
+        await test.step('Step 3: Create onboarding flows for DEVELOPER and BANK', async () => {
+            // --- 3a: Create gate plans ---
+            await page.goto('/admin/gate-plans');
+            await page.waitForTimeout(2_000);
+
+            // Developer Approval Gate
+            await page.getByRole('button', { name: 'Create Gate Plan' }).first().click();
+            let dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.locator('#gatePlanName').fill('Developer Approval Gate');
+            await dialog.locator('#gatePlanDesc').fill('Platform admin reviews and approves developer organizations');
+            await dialog.locator('button[role="combobox"]').click();
+            await page.getByRole('option', { name: /PLATFORM/i }).click();
+            await dialog.locator('#gatePlanInstructions').fill('Review developer KYB information. Approve if the developer meets requirements.');
+            await dialog.getByRole('button', { name: 'Create' }).click();
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(1_000);
+            console.log('[Step 3] Developer Approval Gate plan created');
+
+            // Bank Approval Gate
+            await page.getByRole('button', { name: 'Create Gate Plan' }).first().click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.locator('#gatePlanName').fill('Bank Approval Gate');
+            await dialog.locator('#gatePlanDesc').fill('Platform admin reviews and approves banking institutions');
+            await dialog.locator('button[role="combobox"]').click();
+            await page.getByRole('option', { name: /PLATFORM/i }).click();
+            await dialog.locator('#gatePlanInstructions').fill('Review bank KYB documents and compliance. Approve if the bank meets requirements.');
+            await dialog.getByRole('button', { name: 'Create' }).click();
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(1_000);
+            console.log('[Step 3] Bank Approval Gate plan created');
+
+            // --- 3b: Create onboarding flows ---
+            await page.goto('/admin/onboarding-flows');
+            await page.waitForTimeout(2_000);
+
+            // Developer Onboarding flow
+            await page.getByRole('button', { name: 'New Flow' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByPlaceholder(/Bank Onboarding/i).fill('Developer Onboarding');
+            await dialog.getByPlaceholder(/Describe the onboarding/i).fill('Onboarding workflow for property developers joining the platform');
+            await dialog.getByRole('button', { name: 'Create' }).click();
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(1_000);
+            console.log('[Step 3] Developer Onboarding flow created');
+
+            // Add GATE phase to Developer Onboarding
+            const devFlowCard = page.locator('[data-slot="card"]').filter({ hasText: /Developer Onboarding/i });
+            await devFlowCard.getByRole('button', { name: 'Add Phase' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByPlaceholder(/Bank KYB Questionnaire/i).fill('Platform Approval');
+            // Select GATE category
+            const devCategorySelect = dialog.locator('button[role="combobox"]').first();
+            await devCategorySelect.click();
+            await page.getByRole('option', { name: /Gate/i }).click();
+            await page.waitForTimeout(500);
+            // Select APPROVAL_GATE type
+            const devTypeSelect = dialog.locator('button[role="combobox"]').nth(1);
+            await devTypeSelect.click();
+            await page.getByRole('option', { name: /Approval Gate/i }).click();
+            await page.waitForTimeout(500);
+            // Select gate plan
+            const devPlanSelect = dialog.locator('button[role="combobox"]').last();
+            await devPlanSelect.click();
+            await page.getByRole('option', { name: /Developer Approval Gate/i }).click();
+            await dialog.getByRole('button', { name: 'Add Phase' }).click();
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(1_000);
+            console.log('[Step 3] GATE phase added to Developer Onboarding');
+
+            // Link DEVELOPER org type
+            await devFlowCard.getByRole('button', { name: 'Link Org Type' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.locator('button[role="combobox"]').click();
+            await page.getByRole('option', { name: /DEVELOPER/i }).click();
+            await dialog.getByRole('button', { name: 'Link' }).click();
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(1_000);
+            console.log('[Step 3] DEVELOPER org type linked');
+
+            // Bank Onboarding flow
+            await page.getByRole('button', { name: 'New Flow' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByPlaceholder(/Bank Onboarding/i).fill('Bank Onboarding');
+            await dialog.getByPlaceholder(/Describe the onboarding/i).fill('Onboarding workflow for banks and financial institutions joining the platform');
+            await dialog.getByRole('button', { name: 'Create' }).click();
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(1_000);
+            console.log('[Step 3] Bank Onboarding flow created');
+
+            // Add GATE phase to Bank Onboarding
+            const bankFlowCard = page.locator('[data-slot="card"]').filter({ hasText: /Bank Onboarding/i });
+            await bankFlowCard.getByRole('button', { name: 'Add Phase' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.getByPlaceholder(/Bank KYB Questionnaire/i).fill('Platform Approval');
+            const bankCategorySelect = dialog.locator('button[role="combobox"]').first();
+            await bankCategorySelect.click();
+            await page.getByRole('option', { name: /Gate/i }).click();
+            await page.waitForTimeout(500);
+            const bankTypeSelect = dialog.locator('button[role="combobox"]').nth(1);
+            await bankTypeSelect.click();
+            await page.getByRole('option', { name: /Approval Gate/i }).click();
+            await page.waitForTimeout(500);
+            const bankPlanSelect = dialog.locator('button[role="combobox"]').last();
+            await bankPlanSelect.click();
+            await page.getByRole('option', { name: /Bank Approval Gate/i }).click();
+            await dialog.getByRole('button', { name: 'Add Phase' }).click();
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(1_000);
+            console.log('[Step 3] GATE phase added to Bank Onboarding');
+
+            // Link BANK org type
+            await bankFlowCard.getByRole('button', { name: 'Link Org Type' }).click();
+            dialog = page.getByRole('dialog');
+            await expect(dialog).toBeVisible({ timeout: 5_000 });
+            await dialog.locator('button[role="combobox"]').click();
+            await page.getByRole('option', { name: /BANK/i }).click();
+            await dialog.getByRole('button', { name: 'Link' }).click();
+            await expect(dialog).not.toBeVisible({ timeout: 10_000 });
+            await page.waitForTimeout(1_000);
+            console.log('[Step 3] BANK org type linked. Onboarding flows configured.');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // STEP 4 — Invite Yinka to Platform org + register
+        // ═══════════════════════════════════════════════════════════════
+        await test.step('Step 4: Invite Yinka to platform org', async () => {
             await page.goto('/admin/organizations');
             await expect(page.getByRole('heading', { name: 'Organizations' })).toBeVisible({ timeout: 10_000 });
 
@@ -369,15 +501,15 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await dialog.getByLabel(/Job Title/i).fill('Mortgage Operations Manager');
                 await dialog.getByLabel(/Department/i).fill('Mortgage Operations');
             }, PASSWORD);
-            console.log('[Step 3] Yinka invited and accepted');
+            console.log('[Step 4] Yinka invited and accepted');
 
             await loginAs(page, EMAILS.adaeze);
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 4 — Create Lekki Gardens org (DEVELOPER) + invite Nneka
+        // STEP 5 — Create Lekki Gardens org (DEVELOPER) + invite Nneka
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 4: Create Lekki Gardens + invite Nneka', async () => {
+        await test.step('Step 5: Create Lekki Gardens + invite Nneka', async () => {
             await page.goto('/admin/organizations');
             await expect(page.getByRole('heading', { name: 'Organizations' })).toBeVisible({ timeout: 10_000 });
 
@@ -393,7 +525,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             await dialog.getByRole('button', { name: 'Create Organization' }).click();
             await page.waitForTimeout(3_000);
-            console.log('[Step 4] Lekki Gardens org created');
+            console.log('[Step 5] Lekki Gardens org created');
 
             // Invite Nneka
             await page.goto('/admin/organizations');
@@ -412,7 +544,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await dialog.getByLabel(/Job Title/i).fill('Development Manager');
                 await dialog.getByLabel(/Department/i).fill('Development');
             }, PASSWORD);
-            console.log('[Step 4] Nneka invited and accepted');
+            console.log('[Step 5] Nneka invited and accepted');
 
             await loginAs(page, EMAILS.adaeze);
 
@@ -429,13 +561,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await pickSelect(page, addStaffDialog, /Select User/i, /adaeze/i);
             await addStaffDialog.getByRole('button', { name: 'Add Member' }).click();
             await page.waitForTimeout(3_000);
-            console.log('[Step 4] Adaeze added to Lekki Gardens as staff');
+            console.log('[Step 5] Adaeze added to Lekki Gardens as staff');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 5 — Complete Lekki Gardens onboarding
+        // STEP 6 — Complete Lekki Gardens onboarding
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 5: Complete Lekki Gardens onboarding', async () => {
+        await test.step('Step 6: Complete Lekki Gardens onboarding', async () => {
             await page.goto('/admin/organizations');
             await page.waitForTimeout(2_000);
 
@@ -554,13 +686,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             await page.reload();
             await page.waitForTimeout(2_000);
-            console.log('[Step 5] Lekki Gardens onboarding completed');
+            console.log('[Step 6] Lekki Gardens onboarding completed');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 6 — Create Access Bank org (BANK) + invite Eniola
+        // STEP 7 — Create Access Bank org (BANK) + invite Eniola
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 6: Create Access Bank + invite Eniola', async () => {
+        await test.step('Step 7: Create Access Bank + invite Eniola', async () => {
             await page.goto('/admin/organizations');
             await page.waitForTimeout(2_000);
 
@@ -576,7 +708,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             await dialog.getByRole('button', { name: 'Create Organization' }).click();
             await page.waitForTimeout(3_000);
-            console.log('[Step 6] Access Bank org created');
+            console.log('[Step 7] Access Bank org created');
 
             // Invite Eniola
             await page.goto('/admin/organizations');
@@ -595,15 +727,15 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await dialog.getByLabel(/Job Title/i).fill('Mortgage Operations Officer');
                 await dialog.getByLabel(/Department/i).fill('Mortgage Lending');
             }, PASSWORD);
-            console.log('[Step 6] Eniola invited and accepted');
+            console.log('[Step 7] Eniola invited and accepted');
 
             await loginAs(page, EMAILS.adaeze);
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 7 — Complete Access Bank onboarding
+        // STEP 8 — Complete Access Bank onboarding
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 7: Complete Access Bank onboarding', async () => {
+        await test.step('Step 8: Complete Access Bank onboarding', async () => {
             await page.goto('/admin/organizations');
             await page.waitForTimeout(2_000);
 
@@ -715,14 +847,14 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             await page.reload();
             await page.waitForTimeout(2_000);
-            console.log('[Step 7] Access Bank onboarding completed');
+            console.log('[Step 8] Access Bank onboarding completed');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 8 — Create Sunrise Heights property + variant + unit
+        // STEP 9 — Create Sunrise Heights property + variant + unit
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 8: Create Sunrise Heights property', async () => {
-            // Adaeze was added to Lekki Gardens (DEVELOPER) in Step 4,
+        await test.step('Step 9: Create Sunrise Heights property', async () => {
+            // Adaeze was added to Lekki Gardens (DEVELOPER) in Step 5,
             // so she has DEVELOPER org membership for the API check.
             await page.goto('/admin/properties/new');
             await page.waitForTimeout(2_000);
@@ -761,16 +893,16 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: /Create Property/i }).click();
             const propResp = await createPropRespPromise;
             const propStatus = propResp.status();
-            console.log(`[Step 8] Create property API: ${propStatus}`);
+            console.log(`[Step 9] Create property API: ${propStatus}`);
             if (propStatus >= 400) {
                 const body = await propResp.text();
-                console.log(`[Step 8] ERROR creating property: ${body}`);
+                console.log(`[Step 9] ERROR creating property: ${body}`);
                 throw new Error(`Property creation API returned ${propStatus}: ${body}`);
             }
 
             // Wait for redirect to properties list (handleSubmit does router.push)
             await page.waitForURL('**/admin/properties', { timeout: 15_000 });
-            console.log('[Step 8] Property created');
+            console.log('[Step 9] Property created');
 
             // Wait for properties list to load and show our property
             await expect(page.getByText('Sunrise Heights Estate').first()).toBeVisible({ timeout: 15_000 });
@@ -794,7 +926,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             await variantDialog.getByRole('button', { name: 'Create Variant' }).click();
             await page.waitForTimeout(3_000);
-            console.log('[Step 8] Variant created');
+            console.log('[Step 9] Variant created');
 
             // Add unit (button is on the variant card, not behind "Show Units")
             await page.getByRole('button', { name: 'Add Unit' }).click();
@@ -807,13 +939,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             await unitDialog.getByRole('button', { name: 'Create Unit' }).click();
             await page.waitForTimeout(3_000);
-            console.log('[Step 8] Unit A-201 created');
+            console.log('[Step 9] Unit A-201 created');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 9 — Create questionnaire plan
+        // STEP 10 — Create questionnaire plan
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 9: Create questionnaire plan', async () => {
+        await test.step('Step 10: Create questionnaire plan', async () => {
             await page.goto('/admin/questionnaire-plans');
             await page.waitForTimeout(2_000);
 
@@ -889,13 +1021,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
             await expect(dialog).toBeHidden({ timeout: 15_000 });
             await page.waitForTimeout(1_000);
-            console.log('[Step 9] Questionnaire plan created');
+            console.log('[Step 10] Questionnaire plan created');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 10 — Create 3 documentation plans
+        // STEP 11 — Create 3 documentation plans
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 10: Create documentation plans', async () => {
+        await test.step('Step 11: Create documentation plans', async () => {
             await page.goto('/admin/documentation-plans');
             await page.waitForTimeout(2_000);
 
@@ -924,7 +1056,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
             await expect(dialog).toBeHidden({ timeout: 15_000 });
             await page.waitForTimeout(1_000);
-            console.log('[Step 10] Sales Offer plan created');
+            console.log('[Step 11] Sales Offer plan created');
 
             // --- Plan 2: MREIF Preapproval Documentation ---
             await page.getByRole('button', { name: 'Create Documentation Plan' }).click();
@@ -967,7 +1099,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
             await expect(dialog).toBeHidden({ timeout: 15_000 });
             await page.waitForTimeout(1_000);
-            console.log('[Step 10] Preapproval plan created');
+            console.log('[Step 11] Preapproval plan created');
 
             // --- Plan 3: Mortgage Offer Documentation ---
             await page.getByRole('button', { name: 'Create Documentation Plan' }).click();
@@ -994,13 +1126,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
             await expect(dialog).toBeHidden({ timeout: 15_000 });
             await page.waitForTimeout(1_000);
-            console.log('[Step 10] Mortgage Offer plan created');
+            console.log('[Step 11] Mortgage Offer plan created');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 11 — Create payment plan (ONE_TIME 10% downpayment)
+        // STEP 12 — Create payment plan (ONE_TIME 10% downpayment)
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 11: Create payment plan', async () => {
+        await test.step('Step 12: Create payment plan', async () => {
             await page.goto('/admin/payment-plans');
             await page.waitForTimeout(2_000);
 
@@ -1014,13 +1146,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Create Plan' }).click();
             await expect(dialog).toBeHidden({ timeout: 15_000 });
             await page.waitForTimeout(1_000);
-            console.log('[Step 11] Payment plan created');
+            console.log('[Step 12] Payment plan created');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 12 — Create MREIF 10/90 Payment Method (5 phases)
+        // STEP 13 — Create MREIF 10/90 Payment Method (5 phases)
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 12: Create MREIF payment method', async () => {
+        await test.step('Step 13: Create MREIF payment method', async () => {
             await page.goto('/admin/payment-methods');
             await page.waitForTimeout(2_000);
 
@@ -1079,13 +1211,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Create Method' }).click();
             await expect(dialog).toBeHidden({ timeout: 15_000 });
             await page.waitForTimeout(1_000);
-            console.log('[Step 12] MREIF payment method created (5 phases)');
+            console.log('[Step 13] MREIF payment method created (5 phases)');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 13 — Create qualification flows
+        // STEP 14 — Create qualification flows
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 13: Create qualification flows', async () => {
+        await test.step('Step 14: Create qualification flows', async () => {
             await page.goto('/admin/qualification-flows');
             await page.waitForTimeout(2_000);
 
@@ -1112,7 +1244,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await expect(dialog).not.toBeVisible({ timeout: 15_000 });
             // Verify flow appears in list
             await expect(page.getByText('MREIF Developer Qualification')).toBeVisible({ timeout: 10_000 });
-            console.log('[Step 13] Developer qualification flow created');
+            console.log('[Step 14] Developer qualification flow created');
 
             // Bank qualification flow
             await page.getByRole('button', { name: 'Create Flow' }).click();
@@ -1137,13 +1269,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await expect(dialog).not.toBeVisible({ timeout: 15_000 });
             // Verify flow appears in list
             await expect(page.getByText('MREIF Bank Qualification')).toBeVisible({ timeout: 10_000 });
-            console.log('[Step 13] Bank qualification flow created');
+            console.log('[Step 14] Bank qualification flow created');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 14 — Assign qualification flows + enroll + qualify orgs
+        // STEP 15 — Assign qualification flows + enroll + qualify orgs
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 14: Configure MREIF qualification and enroll orgs', async () => {
+        await test.step('Step 15: Configure MREIF qualification and enroll orgs', async () => {
             await page.goto('/admin/payment-methods');
             await page.waitForTimeout(2_000);
 
@@ -1176,7 +1308,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await dialog.getByRole('button', { name: 'Add Requirement' }).click();
             await expect(dialog).not.toBeVisible({ timeout: 10_000 });
             await page.waitForTimeout(1_000);
-            console.log('[Step 14] Qualification requirements added');
+            console.log('[Step 15] Qualification requirements added');
 
             // Manage Organizations — enroll + qualify
             await page.getByRole('link', { name: /Manage Organizations/i }).click();
@@ -1197,7 +1329,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             let devCard = page.locator('[data-slot="card"], [class*="card"], [class*="Card"]').filter({ hasText: /Lekki Gardens/i });
             await devCard.getByRole('button', { name: /Mark Qualified/i }).click();
             await page.waitForTimeout(3_000);
-            console.log('[Step 14] Lekki Gardens enrolled and qualified');
+            console.log('[Step 15] Lekki Gardens enrolled and qualified');
 
             // Enroll + qualify Access Bank
             await page.getByRole('button', { name: /Enroll Organization/i }).click();
@@ -1213,7 +1345,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             let bankCard = page.locator('[data-slot="card"], [class*="card"], [class*="Card"]').filter({ hasText: /Access Bank/i });
             await bankCard.getByRole('button', { name: /Mark Qualified/i }).click();
             await page.waitForTimeout(3_000);
-            console.log('[Step 14] Access Bank enrolled and qualified');
+            console.log('[Step 15] Access Bank enrolled and qualified');
 
             // Add PROOF_OF_ADDRESS waiver for Access Bank
             bankCard = page.locator('[data-slot="card"], [class*="card"], [class*="Card"]').filter({ hasText: /Access Bank/i });
@@ -1231,13 +1363,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             }
             await dialog.getByRole('button', { name: 'Create Waiver' }).click();
             await page.waitForTimeout(3_000);
-            console.log('[Step 14] PROOF_OF_ADDRESS waived for Access Bank');
+            console.log('[Step 15] PROOF_OF_ADDRESS waived for Access Bank');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 15 — Link MREIF to property
+        // STEP 16 — Link MREIF to property
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 15: Link MREIF to Sunrise Heights', async () => {
+        await test.step('Step 16: Link MREIF to Sunrise Heights', async () => {
             await page.goto('/admin/payment-methods');
             await page.waitForTimeout(2_000);
 
@@ -1251,7 +1383,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('option', { name: /Sunrise Heights/i }).click();
             await dialog.getByRole('button', { name: /Link/i }).click();
             await page.waitForTimeout(3_000);
-            console.log('[Step 15] MREIF linked to Sunrise Heights');
+            console.log('[Step 16] MREIF linked to Sunrise Heights');
             console.log('--- SETUP COMPLETE ---');
         });
 
@@ -1261,9 +1393,9 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
         // ╚═══════════════════════════════════════════════════════════════╝
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 16 — Register Emeka as customer
+        // STEP 17 — Register Emeka as customer
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 16: Register Emeka (customer)', async () => {
+        await test.step('Step 17: Register Emeka (customer)', async () => {
             await page.context().clearCookies();
             await page.goto('/register');
             await page.getByLabel(/First Name/i).fill('Emeka');
@@ -1280,10 +1412,10 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: 'Create account' }).click();
             const signupResp = await signupRespPromise;
             const signupData = await signupResp.json();
-            console.log(`[Step 16] Signup API status: ${signupResp.status()}`);
+            console.log(`[Step 17] Signup API status: ${signupResp.status()}`);
 
             if (!signupData.success || !signupData.data?.accessToken) {
-                console.log('[Step 16] Signup response:', JSON.stringify(signupData));
+                console.log('[Step 17] Signup response:', JSON.stringify(signupData));
                 throw new Error(`Registration failed: ${signupData.error?.message || 'unknown'}`);
             }
 
@@ -1292,7 +1424,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 Buffer.from(signupData.data.accessToken.split('.')[1], 'base64').toString(),
             );
             const userId = jwtPayload.userId || jwtPayload.sub;
-            console.log(`[Step 16] Emeka userId: ${userId}`);
+            console.log(`[Step 17] Emeka userId: ${userId}`);
 
             // Call admin API to get the email verification token
             const adminResp = await page.request.get(
@@ -1301,7 +1433,7 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             );
             const adminData = await adminResp.json();
             const verificationToken = adminData.data?.emailVerificationToken;
-            console.log(`[Step 16] Got verification token: ${verificationToken ? 'yes' : 'no'}`);
+            console.log(`[Step 17] Got verification token: ${verificationToken ? 'yes' : 'no'}`);
 
             if (!verificationToken) {
                 throw new Error('No email verification token found for Emeka');
@@ -1311,17 +1443,17 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             const verifyResp = await page.request.get(
                 `${USER_SERVICE_URL}/auth/verify-email?token=${verificationToken}`,
             );
-            console.log(`[Step 16] Email verification status: ${verifyResp.status()}`);
+            console.log(`[Step 17] Email verification status: ${verifyResp.status()}`);
 
             await expect(page).toHaveURL(/\/(dashboard|admin|login)/, { timeout: 15_000 });
             await loginAs(page, EMAILS.emeka);
-            console.log('[Step 16] Emeka registered, verified, and logged in');
+            console.log('[Step 17] Emeka registered, verified, and logged in');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 17 — Browse property and start application
+        // STEP 18 — Browse property and start application
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 17: Browse property and start application', async () => {
+        await test.step('Step 18: Browse property and start application', async () => {
             await page.goto('/properties');
             await expect(page.getByText('Sunrise Heights Estate')).toBeVisible({ timeout: 10_000 });
             await page.getByRole('link', { name: 'View Details' }).first().click();
@@ -1341,13 +1473,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
 
             await expect(page).toHaveURL(/\/applications\/[a-f0-9-]+/, { timeout: 30_000 });
             applicationId = page.url().split('/applications/')[1].split(/[?#]/)[0];
-            console.log('[Step 17] Application created:', applicationId);
+            console.log('[Step 18] Application created:', applicationId);
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 18 — Prequalification: Emeka fills questionnaire
+        // STEP 19 — Prequalification: Emeka fills questionnaire
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 18: Emeka fills prequalification questionnaire', async () => {
+        await test.step('Step 19: Emeka fills prequalification questionnaire', async () => {
             await expect(page.getByRole('button', { name: /Submit Answers/i }))
                 .toBeVisible({ timeout: 30_000 });
 
@@ -1360,13 +1492,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('button', { name: /Submit Answers/i }).click();
             await expect(page.getByText(/under review|submitted|awaiting/i).first())
                 .toBeVisible({ timeout: 15_000 });
-            console.log('[Step 18] Questionnaire submitted');
+            console.log('[Step 19] Questionnaire submitted');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 19 — Adaeze approves prequalification
+        // STEP 20 — Adaeze approves prequalification
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 19: Adaeze approves prequalification', async () => {
+        await test.step('Step 20: Adaeze approves prequalification', async () => {
             await loginAs(page, EMAILS.adaeze);
             await page.goto('/admin/applications/' + applicationId);
             await expect(page.getByText(applicationId)).toBeVisible({ timeout: 20_000 });
@@ -1377,13 +1509,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5_000 });
             await page.getByRole('dialog').getByRole('button', { name: 'Approve' }).click();
             await page.waitForTimeout(5_000);
-            console.log('[Step 19] Questionnaire approved by Adaeze');
+            console.log('[Step 20] Questionnaire approved by Adaeze');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 20 — Nneka uploads sales offer (pending customer acceptance)
+        // STEP 21 — Nneka uploads sales offer (pending customer acceptance)
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 20: Nneka uploads sales offer letter', async () => {
+        await test.step('Step 21: Nneka uploads sales offer letter', async () => {
             await loginAs(page, EMAILS.nneka);
             await page.goto('/admin/applications/' + applicationId);
             await expect(page.getByText(applicationId)).toBeVisible({ timeout: 20_000 });
@@ -1396,13 +1528,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.locator('input[type="file"]').last().setInputFiles(testPdf('sales-offer'));
             await page.getByRole('button', { name: /Upload Document/i }).click();
             await page.waitForTimeout(5_000);
-            console.log('[Step 20] Sales offer uploaded by Nneka');
+            console.log('[Step 21] Sales offer uploaded by Nneka');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 21 — Emeka reviews and accepts the sales offer document
+        // STEP 22 — Emeka reviews and accepts the sales offer document
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 21: Emeka accepts sales offer', async () => {
+        await test.step('Step 22: Emeka accepts sales offer', async () => {
             await loginAs(page, EMAILS.emeka);
             await page.goto('/applications/' + applicationId);
             await pollUntilVisible(page, /Action Required|Documents Requiring/i, { timeout: 60_000, interval: 5_000 });
@@ -1412,13 +1544,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await expect(acceptBtn.first()).toBeVisible({ timeout: 15_000 });
             await acceptBtn.first().click();
             await page.waitForTimeout(5_000);
-            console.log('[Step 21] Sales offer accepted by Emeka');
+            console.log('[Step 22] Sales offer accepted by Emeka');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 22 — Emeka uploads KYC documents
+        // STEP 23 — Emeka uploads KYC documents
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 22: Emeka uploads KYC documents', async () => {
+        await test.step('Step 23: Emeka uploads KYC documents', async () => {
             await loginAs(page, EMAILS.emeka);
             await page.goto('/applications/' + applicationId);
             await pollUntilVisible(page, /Required Documents|Action Required/i, { timeout: 60_000, interval: 5_000 });
@@ -1434,13 +1566,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                     console.log('  ' + docType + ' waived');
                 }
             }
-            console.log('[Step 22] KYC documents uploaded');
+            console.log('[Step 23] KYC documents uploaded');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 23 — Adaeze approves KYC documents
+        // STEP 24 — Adaeze approves KYC documents
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 23: Adaeze approves KYC documents', async () => {
+        await test.step('Step 24: Adaeze approves KYC documents', async () => {
             await loginAs(page, EMAILS.adaeze);
             await page.goto('/admin/applications/' + applicationId);
             // Wait until Review buttons (for document approval) appear
@@ -1449,13 +1581,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await expect(page.getByRole('button', { name: 'Review' }).first()).toBeVisible({ timeout: 10_000 });
             const approved = await approveAllDocuments(page);
             expect(approved).toBeGreaterThanOrEqual(1);
-            console.log(`[Step 23] KYC documents approved by Adaeze (${approved} docs)`);
+            console.log(`[Step 24] KYC documents approved by Adaeze (${approved} docs)`);
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 24 — Eniola uploads bank preapproval letter
+        // STEP 25 — Eniola uploads bank preapproval letter
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 24: Eniola uploads bank preapproval letter', async () => {
+        await test.step('Step 25: Eniola uploads bank preapproval letter', async () => {
             await loginAs(page, EMAILS.eniola);
             await page.goto('/admin/applications/' + applicationId);
             await expect(page.getByText(applicationId)).toBeVisible({ timeout: 20_000 });
@@ -1468,13 +1600,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.locator('input[type="file"]').last().setInputFiles(testPdf('bank-preapproval'));
             await page.getByRole('button', { name: /Upload Document/i }).click();
             await page.waitForTimeout(5_000);
-            console.log('[Step 24] Bank preapproval uploaded by Eniola');
+            console.log('[Step 25] Bank preapproval uploaded by Eniola');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 25 — Emeka accepts bank preapproval
+        // STEP 26 — Emeka accepts bank preapproval
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 25: Emeka accepts bank preapproval', async () => {
+        await test.step('Step 26: Emeka accepts bank preapproval', async () => {
             await loginAs(page, EMAILS.emeka);
             await page.goto('/applications/' + applicationId);
             await pollUntilVisible(page, /Action Required|Documents Requiring/i, { timeout: 60_000, interval: 5_000 });
@@ -1482,13 +1614,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await expect(acceptBtn.first()).toBeVisible({ timeout: 15_000 });
             await acceptBtn.first().click();
             await page.waitForTimeout(5_000);
-            console.log('[Step 25] Bank preapproval accepted by Emeka');
+            console.log('[Step 26] Bank preapproval accepted by Emeka');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 26 — Emeka creates wallet + generates installment
+        // STEP 27 — Emeka creates wallet + generates installment
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 26: Emeka creates wallet', async () => {
+        await test.step('Step 27: Emeka creates wallet', async () => {
             await page.goto('/applications/' + applicationId);
             await pollUntilVisible(page, /Create Wallet|wallet|Payment/i, { timeout: 90_000, interval: 5_000 });
 
@@ -1502,13 +1634,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await generateBtn.click();
                 await page.waitForTimeout(3_000);
             }
-            console.log('[Step 26] Wallet created');
+            console.log('[Step 27] Wallet created');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 27 — Adaeze credits wallet
+        // STEP 28 — Adaeze credits wallet
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 27: Adaeze credits wallet', async () => {
+        await test.step('Step 28: Adaeze credits wallet', async () => {
             await loginAs(page, EMAILS.adaeze);
             await page.goto('/admin/applications/' + applicationId);
             await page.waitForTimeout(5_000);
@@ -1518,13 +1650,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.getByRole('dialog').getByLabel(/Amount/i).fill('7500000');
             await page.getByRole('dialog').getByRole('button', { name: /^Credit/i }).click();
             await page.waitForTimeout(5_000);
-            console.log('[Step 27] Wallet credited 7,500,000');
+            console.log('[Step 28] Wallet credited 7,500,000');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 28 — Emeka pays downpayment
+        // STEP 29 — Emeka pays downpayment
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 28: Emeka pays downpayment', async () => {
+        await test.step('Step 29: Emeka pays downpayment', async () => {
             await loginAs(page, EMAILS.emeka);
             await page.goto('/applications/' + applicationId);
             await page.waitForTimeout(5_000);
@@ -1536,16 +1668,16 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
                 await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5_000 });
                 await page.getByRole('dialog').getByRole('button', { name: /Fund Wallet.*Pay|Pay|Confirm/i }).click();
                 await page.waitForTimeout(10_000);
-                console.log('[Step 28] Downpayment paid');
+                console.log('[Step 29] Downpayment paid');
             } else {
-                console.log('[Step 28] Downpayment already completed (auto-paid from wallet credit)');
+                console.log('[Step 29] Downpayment already completed (auto-paid from wallet credit)');
             }
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 29 — Eniola uploads mortgage offer letter
+        // STEP 30 — Eniola uploads mortgage offer letter
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 29: Eniola uploads mortgage offer letter', async () => {
+        await test.step('Step 30: Eniola uploads mortgage offer letter', async () => {
             await loginAs(page, EMAILS.eniola);
             await page.goto('/admin/applications/' + applicationId);
             await pollUntilVisible(page, /Upload.*Document/i, { timeout: 60_000, interval: 5_000 });
@@ -1556,13 +1688,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await page.locator('input[type="file"]').last().setInputFiles(testPdf('mortgage-offer'));
             await page.getByRole('button', { name: /Upload Document/i }).click();
             await page.waitForTimeout(5_000);
-            console.log('[Step 29] Mortgage offer uploaded by Eniola');
+            console.log('[Step 30] Mortgage offer uploaded by Eniola');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 30 — Emeka reviews and accepts the mortgage offer
+        // STEP 31 — Emeka reviews and accepts the mortgage offer
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 30: Emeka accepts mortgage offer', async () => {
+        await test.step('Step 31: Emeka accepts mortgage offer', async () => {
             await loginAs(page, EMAILS.emeka);
             await page.goto('/applications/' + applicationId);
             await pollUntilVisible(page, /Action Required|Documents Requiring/i, { timeout: 60_000, interval: 5_000 });
@@ -1572,13 +1704,13 @@ test.describe('Full Mortgage Flow — MREIF 10/90', () => {
             await expect(acceptBtn.first()).toBeVisible({ timeout: 15_000 });
             await acceptBtn.first().click();
             await page.waitForTimeout(5_000);
-            console.log('[Step 30] Mortgage offer accepted by Emeka');
+            console.log('[Step 31] Mortgage offer accepted by Emeka');
         });
 
         // ═══════════════════════════════════════════════════════════════
-        // STEP 31 — Verify application is COMPLETED
+        // STEP 32 — Verify application is COMPLETED
         // ═══════════════════════════════════════════════════════════════
-        await test.step('Step 31: Verify application COMPLETED', async () => {
+        await test.step('Step 32: Verify application COMPLETED', async () => {
             await page.goto('/applications/' + applicationId);
             await pollUntilVisible(page, /COMPLETED/i, { timeout: 60_000, interval: 5_000 });
             console.log('Application COMPLETED:', applicationId);

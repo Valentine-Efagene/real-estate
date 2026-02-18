@@ -721,11 +721,8 @@ function OnboardingFlowsContent() {
                         <Settings2 className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                         <h3 className="text-lg font-semibold">No onboarding flows</h3>
                         <p className="text-muted-foreground mt-1">
-                            Create your first onboarding flow to define how partner organizations are verified.
+                            Create your first onboarding flow using the &quot;New Flow&quot; button above.
                         </p>
-                        <div className="mt-4">
-                            <CreateFlowDialog />
-                        </div>
                     </CardContent>
                 </Card>
             ) : (
