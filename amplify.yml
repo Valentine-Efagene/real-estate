@@ -6,8 +6,8 @@ applications:
         preBuild:
           commands:
             - corepack enable
-            # Install from workspace root so pnpm resolves all workspace dependencies
-            - cd .. && pnpm install
+            # Install from workspace root (subshell to preserve cwd)
+            - (cd .. && pnpm install)
         build:
           commands:
             - pnpm run build
