@@ -7,7 +7,7 @@ applications:
           commands:
             - corepack enable
             # Install from workspace root so pnpm resolves all workspace dependencies
-            - cd ${CODEBUILD_SRC_DIR} && pnpm install
+            - cd .. && pnpm install
         build:
           commands:
             - pnpm run build
