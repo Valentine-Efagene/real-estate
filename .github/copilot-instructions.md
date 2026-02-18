@@ -22,21 +22,13 @@ This script handles fetching credentials from AWS Secrets Manager and running mi
 
 - Errors like this `The test was interrupted (exit code 130 — SIGINT) at Step 8 because my ps aux | grep command ran in the same terminal as the Playwright test, killing it. Step 8 wasn't a real failure — the test was waiting for getByLabel(/Category/i) when it got killed.` are a problem, and must be avoided. Don't inject commands in a way that they could break running tasks.
 
-## Demo Frontend (`demo-frontend/`)
+## Demo Frontend (Separate Repo)
 
-The demo-frontend is a **Next.js application** for interactively testing the QShelter API. Its purpose is to:
+The demo frontend lives in a **separate repository**: `Valentine-Efagene/real-estate-demo-frontend`. It is a Next.js app hosted on **AWS Amplify** (App ID: `dkiw3bsawk8ek`, branch: `main`, auto-build disabled).
 
-- **Demo the full mortgage flow scenario** from `docs/FULL_E2E_MORTGAGE_FLOW.md`
-- Provide a UI for both admin (Adaeze) and customer (Chidi) personas
-- Test property browsing, mortgage applications, document uploads, and payments
-
-### Playwright Full Mortgage Flow Test (`demo-frontend/e2e/full-mortgage-flow.spec.ts`)
-
-**This test must be kept in sync with the app.** Whenever you change the demo-frontend UI (field labels, button text, dialog structure, page routes, form flows, admin pages, etc.), update the Playwright test to match. The test exercises every admin page for entity creation and the full customer application flow — if the UI changes but the test doesn't, it will break.
-
-- The test does ALL setup through the UI (reset DB, bootstrap, create orgs, properties, plans, payment methods, qualification flows, enroll orgs, etc.) — it does **not** call the demo-bootstrap API.
-- **Never replace the UI-driven setup with API calls.** The purpose is to exercise the admin UI end-to-end.
-- Run with: `cd demo-frontend && BOOTSTRAP_SECRET=<secret> npx playwright test full-mortgage-flow --reporter=line`
+- It imports `@valentine-efagene/qshelter-common` from the **npm registry** (not a workspace link).
+- After backend deployments that change service URLs, you must sync env vars to Amplify and trigger a rebuild (see Post-Deployment Checklist).
+- **CRITICAL — Auto-sync Amplify after any `.env` change**: Whenever Copilot edits the demo frontend's `.env` file (e.g., updating service URLs after a deployment), you **must** immediately sync the changed `NEXT_PUBLIC_*` values to Amplify and trigger a rebuild. Do not wait to be asked.
 
 **Key Demo Scenario (Lekki-Chidi Mortgage):**
 
@@ -46,43 +38,6 @@ The demo-frontend is a **Next.js application** for interactively testing the QSh
 | **Chidi**  | Customer | `chidi@mailsac.com`  | First-time homebuyer        |
 
 **Property:** Lekki Gardens Estate, Unit 14B, ₦85M, 10% down + 90% mortgage @ 9.5% p.a.
-
-**Tech Stack:** Next.js 15+, React 19, TailwindCSS, shadcn/ui, TanStack Query, Zod
-
-```bash
-cd demo-frontend && pnpm dev  # Runs on http://localhost:3000
-```
-
-### AWS Amplify Hosting
-
-The demo frontend is hosted on **AWS Amplify**. Environment variables on Amplify must stay in sync with `demo-frontend/.env` — especially the `NEXT_PUBLIC_*_SERVICE_URL` values, which change after every teardown/redeploy.
-
-**After every deployment or action that changes service URLs or env values**, sync them to Amplify:
-
-```bash
-# Sync all NEXT_PUBLIC_ env vars to Amplify
-# Replace <APP_ID> and <BRANCH> with your Amplify app ID and branch name
-aws amplify update-branch \
-  --app-id <APP_ID> \
-  --branch-name <BRANCH> \
-  --environment-variables \
-    NEXT_PUBLIC_USER_SERVICE_URL=https://<new-url>,\
-    NEXT_PUBLIC_PROPERTY_SERVICE_URL=https://<new-url>,\
-    NEXT_PUBLIC_MORTGAGE_SERVICE_URL=https://<new-url>,\
-    NEXT_PUBLIC_DOCUMENTS_SERVICE_URL=https://<new-url>,\
-    NEXT_PUBLIC_PAYMENT_SERVICE_URL=https://<new-url>,\
-    NEXT_PUBLIC_NOTIFICATION_SERVICE_URL=https://<new-url>,\
-    NEXT_PUBLIC_UPLOADER_SERVICE_URL=https://<new-url>,\
-    NEXT_PUBLIC_GOOGLE_CLIENT_ID=<client-id>
-```
-
-**IMPORTANT**: Updating Amplify environment variables does **not** automatically trigger a rebuild. After updating, you must either:
-- Push a new commit to the connected branch, OR
-- Trigger a manual build: `aws amplify start-job --app-id <APP_ID> --branch-name <BRANCH> --job-type RELEASE`
-
-This is because Next.js inlines `NEXT_PUBLIC_*` variables at **build time**, so a rebuild is required for changes to take effect.
-
-**Automation goal**: The `deploy-staging.sh` script should be extended with an `amplify-sync` step that reads the new service URLs from CloudFormation/Serverless outputs, updates Amplify env vars via the CLI, and triggers a rebuild. This ensures the hosted frontend never drifts from the backend.
 
 ## Development Philosophy
 
@@ -107,7 +62,6 @@ We are in active development - **delete unused code, don't deprecate it**:
 - IMPORTANT (publish): Do NOT attempt interactive `npm publish` flows that require a one-time password (OTP). Copilot should avoid automating a publish that prompts for OTP — these attempts waste time and tokens. If publishing is needed, run `npm run patch` manually or use a CI/CD pipeline with an npm auth token, or provide `--otp=<code>` when you already have a valid OTP.
 - Services must update to the latest version after publishing: `npm i @valentine-efagene/qshelter-common@latest`.
 - **CRITICAL — Always publish before deploying**: When you change code in `shared/common/`, you **must** publish a new version (`npm run patch`) and update the consuming services (`npm i @valentine-efagene/qshelter-common@latest`) **before** deploying those services. Services resolve `@valentine-efagene/qshelter-common` from the npm registry at build time, not from the local workspace. If you skip publishing, the deployed Lambda will run with the **old** version of the common package. Never use workspace links, `file:` references, or local path imports as a shortcut — the published npm package is the only source of truth.
-- **CRITICAL — Always regenerate root lockfile after dependency bumps**: This is a pnpm monorepo. AWS Amplify (and CI in general) runs `pnpm install` with `--frozen-lockfile` by default, which refuses to install if any `package.json` specifier doesn't match `pnpm-lock.yaml`. Whenever you bump a dependency in **any** service or package (e.g., `npm i @valentine-efagene/qshelter-common@latest` in a service), you **must** run `pnpm install` from the **workspace root** before committing, so the lockfile stays in sync. Always commit the updated `pnpm-lock.yaml` alongside the `package.json` changes.
 - Husky errors seem to be wasting tokens. Remove all husky settings and scripts to avoid this issue. The token cost of husky errors is not worth the benefit of pre-commit hooks in this case.
 - Whenever I ask to teardown the aws infrastructure, I mean everything, especially the database. The database is the most expensive part to maintain, and we want to avoid unnecessary costs. Please use the teardown script that handles everything properly, rather than manually deleting stacks or resources in the AWS console.
 - I like the full mortgage flow to have a counterpart playwright test, so we have a matching front end and backend test for the same scenario. This way we can ensure that the API documentation and the actual API implementation remain in sync, and we have both an API-level test and a UI-level test for the critical mortgage flow scenario.
@@ -725,21 +679,33 @@ After every AWS deployment, you MUST:
    # ... all services
    ```
 
-4. **Update demo-frontend `.env`** (`demo-frontend/.env`):
-   - Update all `NEXT_PUBLIC_*_SERVICE_URL` variables with new endpoints
-   - This is critical after teardown/redeploy since URLs change each deployment
+4. **Sync Amplify environment variables for the demo frontend** (separate repo: `Valentine-Efagene/real-estate-demo-frontend`):
+   - Update all `NEXT_PUBLIC_*` env vars on AWS Amplify to match the new service URLs
+   - Trigger an Amplify rebuild (auto-build is disabled):
 
    ```bash
-   # Quick way to get all service URLs
+   # Get all new service URLs
    for service in user property mortgage documents payment notification uploader; do
      echo "NEXT_PUBLIC_${service^^}_SERVICE_URL=$(cd services/${service}-service && npx serverless info --stage staging 2>/dev/null | grep -o 'https://[^ ]*')"
    done
-   ```
 
-5. **Sync Amplify environment variables**:
-   - Update all `NEXT_PUBLIC_*` env vars on AWS Amplify to match the new service URLs
-   - Trigger an Amplify rebuild so the new values are inlined at build time
-   - See [Demo Frontend → AWS Amplify Hosting](#aws-amplify-hosting) for commands
+   # Update Amplify env vars
+   aws amplify update-branch \
+     --app-id d3rsdsiydtdawo \
+     --branch-name main \
+     --environment-variables \
+       NEXT_PUBLIC_USER_SERVICE_URL=https://<url>,\
+       NEXT_PUBLIC_PROPERTY_SERVICE_URL=https://<url>,\
+       NEXT_PUBLIC_MORTGAGE_SERVICE_URL=https://<url>,\
+       NEXT_PUBLIC_DOCUMENTS_SERVICE_URL=https://<url>,\
+       NEXT_PUBLIC_PAYMENT_SERVICE_URL=https://<url>,\
+       NEXT_PUBLIC_NOTIFICATION_SERVICE_URL=https://<url>,\
+       NEXT_PUBLIC_UPLOADER_SERVICE_URL=https://<url>,\
+       NEXT_PUBLIC_GOOGLE_CLIENT_ID=<client-id>
+
+   # Trigger rebuild (NEXT_PUBLIC_* vars are inlined at build time)
+   aws amplify start-job --app-id d3rsdsiydtdawo --branch-name main --job-type RELEASE
+   ```
 
 ### Postman Environments
 
