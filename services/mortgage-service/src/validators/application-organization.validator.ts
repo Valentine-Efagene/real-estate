@@ -25,6 +25,10 @@ export const BindOrganizationSchema = z
             description: 'Expected response time in hours for this organization',
             example: 48,
         }),
+        assignedStaffId: z.string().optional().openapi({
+            description: 'Specific staff member from the organization assigned to handle this application. If omitted, any org member can act.',
+            example: 'user_nkechi_456',
+        }),
     })
     .openapi('BindOrganizationRequest');
 
@@ -48,6 +52,10 @@ export const UpdateOrganizationBindingSchema = z
         offeredTerms: z.record(z.string(), z.unknown()).optional().openapi({
             description: 'Organization-specific terms (e.g., interest rate, conditions)',
             example: { interestRate: 9.5, termMonths: 240 },
+        }),
+        assignedStaffId: z.string().nullable().optional().openapi({
+            description: 'Specific staff member assigned to this application. Set to null to unassign (any org member can act).',
+            example: 'user_nkechi_456',
         }),
     })
     .openapi('UpdateOrganizationBindingRequest');

@@ -81,7 +81,7 @@ export function createApplicationOrganizationService(prisma: AnyPrismaClient): a
             input: BindOrganizationInput,
             assignedById: string
         ) {
-            const { organizationId, organizationTypeCode, isPrimary, slaHours } = input;
+            const { organizationId, organizationTypeCode, isPrimary, slaHours, assignedStaffId } = input;
 
             // Verify application exists
             const application = await prisma.application.findUnique({
@@ -144,6 +144,45 @@ export function createApplicationOrganizationService(prisma: AnyPrismaClient): a
                 });
             }
 
+            // Determine assigned staff: explicit > preferredStaff from payment method > null
+            let resolvedStaffId = assignedStaffId || null;
+
+            if (!resolvedStaffId) {
+                // Auto-populate from OrganizationPaymentMethod.preferredStaffId if available
+                const application = await prisma.application.findUnique({
+                    where: { id: applicationId },
+                    select: { paymentMethodId: true },
+                });
+                if (application?.paymentMethodId) {
+                    const orgPaymentMethod = await prisma.organizationPaymentMethod.findUnique({
+                        where: {
+                            organizationId_paymentMethodId: {
+                                organizationId,
+                                paymentMethodId: application.paymentMethodId,
+                            },
+                        },
+                        select: { preferredStaffId: true },
+                    });
+                    if (orgPaymentMethod?.preferredStaffId) {
+                        resolvedStaffId = orgPaymentMethod.preferredStaffId;
+                    }
+                }
+            }
+
+            // Validate the assigned staff is actually a member of the organization
+            if (resolvedStaffId) {
+                const isMember = await prisma.organizationMember.findFirst({
+                    where: {
+                        organizationId,
+                        userId: resolvedStaffId,
+                        isActive: true,
+                    },
+                });
+                if (!isMember) {
+                    throw new AppError(400, 'Assigned staff member is not an active member of this organization');
+                }
+            }
+
             // Create the binding
             const binding = await prisma.applicationOrganization.create({
                 data: {
@@ -154,12 +193,14 @@ export function createApplicationOrganizationService(prisma: AnyPrismaClient): a
                     status: 'PENDING',
                     isPrimary: isPrimary ?? false,
                     slaHours,
+                    assignedStaffId: resolvedStaffId,
                     assignedById,
                     assignedAt: new Date(),
                 },
                 include: {
                     organization: { select: { id: true, name: true } },
                     assignedAsType: { select: { code: true, name: true } },
+                    assignedStaff: { select: { id: true, firstName: true, lastName: true, email: true } },
                 },
             });
 
@@ -186,6 +227,14 @@ export function createApplicationOrganizationService(prisma: AnyPrismaClient): a
                             id: true,
                             code: true,
                             name: true,
+                        },
+                    },
+                    assignedStaff: {
+                        select: {
+                            id: true,
+                            firstName: true,
+                            lastName: true,
+                            email: true,
                         },
                     },
                 },
@@ -256,6 +305,26 @@ export function createApplicationOrganizationService(prisma: AnyPrismaClient): a
                 updateData.termsOfferedAt = new Date();
             }
 
+            // Handle assignedStaffId — null to unassign, string to assign
+            if (input.assignedStaffId !== undefined) {
+                if (input.assignedStaffId === null) {
+                    updateData.assignedStaffId = null;
+                } else {
+                    // Validate staff is an active member of the bound organization
+                    const isMember = await prisma.organizationMember.findFirst({
+                        where: {
+                            organizationId: binding.organizationId,
+                            userId: input.assignedStaffId,
+                            isActive: true,
+                        },
+                    });
+                    if (!isMember) {
+                        throw new AppError(400, 'Assigned staff member is not an active member of this organization');
+                    }
+                    updateData.assignedStaffId = input.assignedStaffId;
+                }
+            }
+
             // Handle status-specific timestamps
             if (input.status === 'ACTIVE') {
                 updateData.activatedAt = new Date();
@@ -271,6 +340,7 @@ export function createApplicationOrganizationService(prisma: AnyPrismaClient): a
                 include: {
                     organization: { select: { id: true, name: true } },
                     assignedAsType: { select: { code: true, name: true } },
+                    assignedStaff: { select: { id: true, firstName: true, lastName: true, email: true } },
                 },
             });
 

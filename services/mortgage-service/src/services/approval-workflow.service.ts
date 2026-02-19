@@ -1070,6 +1070,14 @@ export function createApprovalWorkflowService() {
                         applicationId: application.id,
                     },
                     include: {
+                        assignedStaff: {
+                            select: {
+                                id: true,
+                                firstName: true,
+                                lastName: true,
+                                email: true,
+                            },
+                        },
                         organization: {
                             include: {
                                 types: {
@@ -1119,12 +1127,20 @@ export function createApprovalWorkflowService() {
                     },
                 });
 
-                // Notify all organization members (role-based filtering removed - use RBAC permissions instead)
-                const members = appOrg.organization.members.filter(
-                    (m: any) => m.user?.email
-                );
+                // Notify assigned staff or fall back to all organization members
+                let recipients: Array<{ user: any }>;
 
-                for (const member of members) {
+                if (appOrg.assignedStaffId && appOrg.assignedStaff?.email) {
+                    // Assigned account officer — notify only them
+                    recipients = [{ user: appOrg.assignedStaff }];
+                } else {
+                    // No assigned staff — notify all org members with email
+                    recipients = appOrg.organization.members.filter(
+                        (m: any) => m.user?.email
+                    );
+                }
+
+                for (const member of recipients) {
                     try {
                         await sendBankReviewRequiredNotification({
                             email: member.user.email,
@@ -1145,7 +1161,7 @@ export function createApprovalWorkflowService() {
                     }
                 }
 
-                console.log(`[ApprovalWorkflow] Notified ${members.length} reviewers at ${appOrg.organization.name} for stage ${stage.name}`);
+                console.log(`[ApprovalWorkflow] Notified ${recipients.length} reviewer(s) at ${appOrg.organization.name} for stage ${stage.name}${appOrg.assignedStaffId ? ` (assigned: ${appOrg.assignedStaff?.email})` : ' (all members)'}`);
             } catch (error) {
                 // Notification failures should not break the main flow
                 console.error('[ApprovalWorkflow] Error notifying organization:', error);

@@ -586,6 +586,9 @@ model User {
   // Applications where this user is assigned as the staff handler for an org
   assignedApplicationOrgs ApplicationOrganization[] @relation("ApplicationOrgAssignedStaff")
 
+  // Payment methods where this user is the preferred account officer
+  preferredPaymentMethods OrganizationPaymentMethod[] @relation("OrgPaymentMethodPreferredStaff")
+
   // Gate phase reviews by this user
   gatePhaseReviews GatePhaseReview[] @relation("GatePhaseReviewer")
 
@@ -4399,6 +4402,11 @@ model OrganizationPaymentMethod {
   organization    Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   paymentMethodId String
   paymentMethod   PropertyPaymentMethod @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
+
+  // Preferred staff member — auto-assigned to new applications when this org is bound
+  // If set, bindOrganization auto-populates ApplicationOrganization.assignedStaffId
+  preferredStaffId String?
+  preferredStaff   User?   @relation("OrgPaymentMethodPreferredStaff", fields: [preferredStaffId], references: [id])
 
   // Qualification status
   status QualificationStatus @default(PENDING)

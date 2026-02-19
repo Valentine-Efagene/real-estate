@@ -283,6 +283,7 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
                     paymentMethodId,
                     status: qualificationFlow ? 'PENDING' : 'QUALIFIED', // Auto-qualify if no flow for this org type
                     qualifiedAt: qualificationFlow ? null : new Date(),
+                    preferredStaffId: data.preferredStaffId || null,
                     notes: data.notes,
                 },
             });
@@ -630,12 +631,33 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
         if (data.status === 'QUALIFIED') updateData.qualifiedAt = new Date();
         if (data.status === 'SUSPENDED') updateData.suspendedAt = new Date();
 
+        // Handle preferredStaffId: null = unassign, string = assign
+        if (data.preferredStaffId !== undefined) {
+            if (data.preferredStaffId === null) {
+                updateData.preferredStaffId = null;
+            } else {
+                // Validate the staff member belongs to this organization
+                const membership = await prisma.organizationMember.findFirst({
+                    where: {
+                        organizationId: assignment.organizationId,
+                        userId: data.preferredStaffId,
+                        isActive: true,
+                    },
+                });
+                if (!membership) {
+                    throw new AppError(400, 'Preferred staff must be an active member of the organization');
+                }
+                updateData.preferredStaffId = data.preferredStaffId;
+            }
+        }
+
         return prisma.organizationPaymentMethod.update({
             where: { id: assignmentId },
             data: updateData,
             include: {
                 organization: { select: { id: true, name: true } },
                 paymentMethod: { select: { id: true, name: true } },
+                preferredStaff: { select: { id: true, firstName: true, lastName: true, email: true } },
             },
         });
     }

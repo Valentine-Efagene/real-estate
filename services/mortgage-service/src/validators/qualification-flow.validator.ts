@@ -61,6 +61,7 @@ export const UpdateQualificationFlowSchema = CreateQualificationFlowSchema.parti
 
 export const ApplyForPaymentMethodSchema = z.object({
     organizationId: z.string().min(1).openapi({ example: 'clorg123', description: 'Organization applying for access' }),
+    preferredStaffId: z.string().optional().openapi({ example: 'clusr456', description: 'Preferred staff member (account officer) for this payment method' }),
     notes: z.string().optional().openapi({ example: 'Lekki Gardens applying for MREIF access' }),
 }).openapi('ApplyForPaymentMethod');
 
@@ -71,6 +72,7 @@ export const ReviewQualificationSchema = z.object({
 
 export const UpdateQualificationStatusSchema = z.object({
     status: QualificationStatusEnum.openapi({ example: 'SUSPENDED' }),
+    preferredStaffId: z.string().nullable().optional().openapi({ example: 'clusr456', description: 'Set or clear the preferred staff member (account officer). Pass null to unassign.' }),
     notes: z.string().optional(),
 }).openapi('UpdateQualificationStatus');
 

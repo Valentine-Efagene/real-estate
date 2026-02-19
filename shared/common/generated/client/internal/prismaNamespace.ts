@@ -8153,6 +8153,7 @@ export const OrganizationPaymentMethodScalarFieldEnum = {
   tenantId: 'tenantId',
   organizationId: 'organizationId',
   paymentMethodId: 'paymentMethodId',
+  preferredStaffId: 'preferredStaffId',
   status: 'status',
   appliedAt: 'appliedAt',
   qualifiedAt: 'qualifiedAt',
@@ -9366,6 +9367,7 @@ export const OrganizationPaymentMethodOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   organizationId: 'organizationId',
   paymentMethodId: 'paymentMethodId',
+  preferredStaffId: 'preferredStaffId',
   notes: 'notes'
 } as const
 
