@@ -609,6 +609,16 @@ export const QuestionCategory = {
 export type QuestionCategory = (typeof QuestionCategory)[keyof typeof QuestionCategory]
 
 
+export const CoApplicantStatus = {
+  INVITED: 'INVITED',
+  ACTIVE: 'ACTIVE',
+  REMOVED: 'REMOVED',
+  DECLINED: 'DECLINED'
+} as const
+
+export type CoApplicantStatus = (typeof CoApplicantStatus)[keyof typeof CoApplicantStatus]
+
+
 export const ApplicationOrganizationStatus = {
   PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',

@@ -287,6 +287,11 @@ export type PaymentMethodPhaseField = Prisma.PaymentMethodPhaseFieldModel
  */
 export type Application = Prisma.ApplicationModel
 /**
+ * Model CoApplicant
+ * 
+ */
+export type CoApplicant = Prisma.CoApplicantModel
+/**
  * Model ApplicationOrganization
  * 
  */

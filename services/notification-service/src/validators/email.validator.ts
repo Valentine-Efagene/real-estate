@@ -43,6 +43,29 @@ export const TemplateType = z.enum([
     // Organization
     'organizationInvitation',
     'organizationInvitationAccepted',
+    'organizationInvitationExpired',
+    // Application lifecycle
+    'applicationSuperseded',
+    // Unit locking
+    'unitLocked',
+    'unitReleased',
+    // Phase completions
+    'questionnairePhaseCompleted',
+    'documentationPhaseCompleted',
+    'paymentPhaseCompleted',
+    // Offer letter expiry
+    'offerLetterExpired',
+    // Underwriting
+    'underwritingApproved',
+    'underwritingRejected',
+    'underwritingConditional',
+    // Bank review
+    'bankReviewRequired',
+    // Stage completion
+    'stageCompleted',
+    // SLA
+    'slaWarning',
+    'slaBreached',
 ]);
 
 export type TemplateTypeValue = z.infer<typeof TemplateType>;
@@ -252,6 +275,155 @@ export const TestTempSchema = z.object({
     path: z.string().min(1),
 }).openapi('TestTemp');
 
+// ============== Application Lifecycle Schemas ==============
+
+export const ApplicationSupersededSchema = BaseEmailSchema.extend({
+    homeBuyerName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    supersededDate: z.string().optional(),
+    dashboardLink: z.url(),
+}).openapi('ApplicationSuperseded');
+
+// ============== Unit Locking Schemas ==============
+
+export const UnitLockedSchema = BaseEmailSchema.extend({
+    homeBuyerName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    unitName: z.string().min(1),
+    lockExpiryDate: z.string().optional(),
+    dashboardLink: z.url(),
+}).openapi('UnitLocked');
+
+export const UnitReleasedSchema = BaseEmailSchema.extend({
+    homeBuyerName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    unitName: z.string().min(1),
+    reason: z.string().optional(),
+    dashboardLink: z.url(),
+}).openapi('UnitReleased');
+
+// ============== Phase Completion Schemas ==============
+
+export const PhaseCompletedSchema = BaseEmailSchema.extend({
+    homeBuyerName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    phaseName: z.string().min(1),
+    completedDate: z.string().min(1),
+    nextPhaseName: z.string().optional(),
+    dashboardLink: z.url(),
+}).openapi('PhaseCompleted');
+
+export const PaymentPhaseCompletedSchema = BaseEmailSchema.extend({
+    homeBuyerName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    phaseName: z.string().min(1),
+    totalAmountPaid: z.string().min(1),
+    completedDate: z.string().min(1),
+    nextPhaseName: z.string().optional(),
+    dashboardLink: z.url(),
+}).openapi('PaymentPhaseCompleted');
+
+// ============== Offer Letter Expiry Schema ==============
+
+export const OfferLetterExpiredSchema = BaseEmailSchema.extend({
+    homeBuyerName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    offerLetterType: z.string().min(1),
+    expiryDate: z.string().min(1),
+    dashboardLink: z.url(),
+}).openapi('OfferLetterExpired');
+
+// ============== Underwriting Schemas ==============
+
+export const UnderwritingApprovedSchema = BaseEmailSchema.extend({
+    homeBuyerName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    approvedAmount: z.string().optional(),
+    approvedDate: z.string().optional(),
+    dashboardLink: z.url(),
+}).openapi('UnderwritingApproved');
+
+export const UnderwritingRejectedSchema = BaseEmailSchema.extend({
+    homeBuyerName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    reason: z.string().optional(),
+    reviewedDate: z.string().optional(),
+    dashboardLink: z.url(),
+}).openapi('UnderwritingRejected');
+
+export const UnderwritingConditionalSchema = BaseEmailSchema.extend({
+    homeBuyerName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    conditions: z.string().optional(),
+    reviewedDate: z.string().optional(),
+    dashboardLink: z.url(),
+}).openapi('UnderwritingConditional');
+
+// ============== Bank Review Schema ==============
+
+export const BankReviewRequiredSchema = BaseEmailSchema.extend({
+    reviewerName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    applicantName: z.string().min(1),
+    slaDeadline: z.string().optional(),
+    dashboardLink: z.url(),
+}).openapi('BankReviewRequired');
+
+// ============== Stage Completion Schema ==============
+
+export const StageCompletedSchema = BaseEmailSchema.extend({
+    recipientName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    stageName: z.string().min(1),
+    completedDate: z.string().min(1),
+    nextStageName: z.string().optional(),
+    dashboardLink: z.url(),
+}).openapi('StageCompleted');
+
+// ============== SLA Schemas ==============
+
+export const SlaWarningSchema = BaseEmailSchema.extend({
+    recipientName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    stageName: z.string().min(1),
+    slaDeadline: z.string().min(1),
+    hoursRemaining: z.number().positive(),
+    dashboardLink: z.url(),
+}).openapi('SlaWarning');
+
+export const SlaBreachedSchema = BaseEmailSchema.extend({
+    recipientName: z.string().min(1),
+    applicationNumber: z.string().min(1),
+    propertyName: z.string().min(1),
+    stageName: z.string().min(1),
+    slaDeadline: z.string().min(1),
+    breachedAt: z.string().min(1),
+    hoursOverdue: z.number().nonnegative(),
+    dashboardLink: z.url(),
+}).openapi('SlaBreached');
+
+// ============== Organization Invitation Expired Schema ==============
+
+export const OrganizationInvitationExpiredSchema = BaseEmailSchema.extend({
+    recipientName: z.string().min(1),
+    organizationName: z.string().min(1),
+    role: z.string().min(1),
+    expiryDate: z.string().min(1),
+    contactEmail: z.string().optional(),
+}).openapi('OrganizationInvitationExpired');
+
 // ============== Types ==============
 
 export type BaseEmailInput = z.infer<typeof BaseEmailSchema>;
@@ -281,3 +453,17 @@ export type PaymentReceivedInput = z.infer<typeof PaymentReceivedSchema>;
 export type PaymentFailedInput = z.infer<typeof PaymentFailedSchema>;
 export type PaymentReminderInput = z.infer<typeof PaymentReminderSchema>;
 export type TestTempInput = z.infer<typeof TestTempSchema>;
+export type ApplicationSupersededInput = z.infer<typeof ApplicationSupersededSchema>;
+export type UnitLockedInput = z.infer<typeof UnitLockedSchema>;
+export type UnitReleasedInput = z.infer<typeof UnitReleasedSchema>;
+export type PhaseCompletedInput = z.infer<typeof PhaseCompletedSchema>;
+export type PaymentPhaseCompletedInput = z.infer<typeof PaymentPhaseCompletedSchema>;
+export type OfferLetterExpiredInput = z.infer<typeof OfferLetterExpiredSchema>;
+export type UnderwritingApprovedInput = z.infer<typeof UnderwritingApprovedSchema>;
+export type UnderwritingRejectedInput = z.infer<typeof UnderwritingRejectedSchema>;
+export type UnderwritingConditionalInput = z.infer<typeof UnderwritingConditionalSchema>;
+export type BankReviewRequiredInput = z.infer<typeof BankReviewRequiredSchema>;
+export type StageCompletedInput = z.infer<typeof StageCompletedSchema>;
+export type SlaWarningInput = z.infer<typeof SlaWarningSchema>;
+export type SlaBreachedInput = z.infer<typeof SlaBreachedSchema>;
+export type OrganizationInvitationExpiredInput = z.infer<typeof OrganizationInvitationExpiredSchema>;

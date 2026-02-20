@@ -92,6 +92,136 @@ class PropertyService {
         return { items: properties, total: properties.length };
     }
 
+    /**
+     * Search/filter properties with pagination and sorting.
+     */
+    async searchProperties(params: {
+        tenantId?: string;
+        keyword?: string;
+        category?: string;       // SALE, RENT, LEASE
+        propertyType?: string;   // APARTMENT, HOUSE, LAND, COMMERCIAL, ESTATE, TOWNHOUSE
+        city?: string;
+        country?: string;
+        status?: string;         // DRAFT, PUBLISHED, SOLD, UNAVAILABLE
+        minPrice?: number;
+        maxPrice?: number;
+        minBedrooms?: number;
+        maxBedrooms?: number;
+        availableUnitsOnly?: boolean;
+        organizationId?: string;
+        sortBy?: 'price_asc' | 'price_desc' | 'newest' | 'oldest';
+        page?: number;
+        limit?: number;
+    }) {
+        const {
+            tenantId,
+            keyword,
+            category,
+            propertyType,
+            city,
+            country,
+            status,
+            minPrice,
+            maxPrice,
+            minBedrooms,
+            maxBedrooms,
+            availableUnitsOnly,
+            organizationId,
+            sortBy = 'newest',
+            page = 1,
+            limit = 20,
+        } = params;
+
+        const skip = (page - 1) * limit;
+
+        // Build the where clause
+        const where: Record<string, unknown> = {};
+        if (tenantId) where['tenantId'] = tenantId;
+        if (category) where['category'] = category;
+        if (propertyType) where['propertyType'] = propertyType;
+        if (city) where['city'] = { contains: city };
+        if (country) where['country'] = country;
+        if (status) where['status'] = status;
+        else where['status'] = 'PUBLISHED'; // Default: only show published
+        if (organizationId) where['organizationId'] = organizationId;
+
+        // Keyword search across title, description, city, district
+        if (keyword) {
+            where['OR'] = [
+                { title: { contains: keyword } },
+                { description: { contains: keyword } },
+                { city: { contains: keyword } },
+                { district: { contains: keyword } },
+                { streetAddress: { contains: keyword } },
+            ];
+        }
+
+        // Price / bedroom filter via variants
+        const variantFilter: Record<string, unknown> = {};
+
+        const variantPriceFilter: Record<string, unknown> = {};
+        if (minPrice !== undefined) variantPriceFilter['gte'] = minPrice;
+        if (maxPrice !== undefined) variantPriceFilter['lte'] = maxPrice;
+        if (Object.keys(variantPriceFilter).length > 0) {
+            variantFilter['price'] = variantPriceFilter;
+        }
+
+        const variantBedroomsFilter: Record<string, unknown> = {};
+        if (minBedrooms !== undefined) variantBedroomsFilter['gte'] = minBedrooms;
+        if (maxBedrooms !== undefined) variantBedroomsFilter['lte'] = maxBedrooms;
+        if (Object.keys(variantBedroomsFilter).length > 0) {
+            variantFilter['nBedrooms'] = variantBedroomsFilter;
+        }
+
+        if (availableUnitsOnly) {
+            variantFilter['availableUnits'] = { gt: 0 };
+        }
+
+        if (Object.keys(variantFilter).length > 0) {
+            where['variants'] = { some: variantFilter };
+        }
+
+        // Sorting
+        let orderBy: Record<string, unknown> = { createdAt: 'desc' };
+        if (sortBy === 'oldest') orderBy = { createdAt: 'asc' };
+
+        const [items, total] = await Promise.all([
+            prisma.property.findMany({
+                where: where as Parameters<typeof prisma.property.findMany>[0]['where'],
+                orderBy: orderBy as Parameters<typeof prisma.property.findMany>[0]['orderBy'],
+                skip,
+                take: limit,
+                include: {
+                    displayImage: { select: { id: true, url: true } },
+                    variants: {
+                        select: {
+                            id: true,
+                            name: true,
+                            price: true,
+                            nBedrooms: true,
+                            nBathrooms: true,
+                            availableUnits: true,
+                            totalUnits: true,
+                            status: true,
+                        },
+                    },
+                    organization: { select: { id: true, name: true } },
+                },
+            }),
+            prisma.property.count({
+                where: where as Parameters<typeof prisma.property.count>[0]['where'],
+            }),
+        ]);
+
+        return {
+            items,
+            total,
+            page,
+            limit,
+            pages: Math.ceil(total / limit),
+        };
+    }
+
     async getPropertyById(id: string) {
         const property = await prisma.property.findUnique({
             where: { id },

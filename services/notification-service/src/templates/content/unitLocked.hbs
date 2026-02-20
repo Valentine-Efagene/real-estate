@@ -1,0 +1,46 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    🔒 Unit Reserved for You
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{homeBuyerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Great news! A unit has been reserved and is now exclusively locked for your application. No other buyers can purchase this unit while your application is active.
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:20px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;"><strong>{{propertyName}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Unit:</td>
+        <td style="padding:5px 0;">{{unitName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Application:</td>
+        <td style="padding:5px 0;">{{applicationNumber}}</td>
+    </tr>
+    {{#if lockExpiryDate}}
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Reserved Until:</td>
+        <td style="padding:5px 0;"><strong>{{lockExpiryDate}}</strong></td>
+    </tr>
+    {{/if}}
+</table>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Please continue with your application to secure this unit before the reservation expires.
+</p>
+
+<a href="{{dashboardLink}}"
+   style="display:inline-block; background-color:#19C2AB; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:12px 25px; border-radius:5px; margin:20px 0;">
+    Continue Application
+</a>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Best regards,<br/>
+    The QShelter Team
+</p>

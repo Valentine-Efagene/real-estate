@@ -1,0 +1,51 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    ⚠️ Underwriting — Conditional Approval
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{homeBuyerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Your mortgage application has received a <strong>conditional approval</strong>. This means it has been approved subject to the conditions listed below.
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:20px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Application:</td>
+        <td style="padding:5px 0;"><strong>{{applicationNumber}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;">{{propertyName}}</td>
+    </tr>
+    {{#if reviewedDate}}
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Reviewed On:</td>
+        <td style="padding:5px 0;">{{reviewedDate}}</td>
+    </tr>
+    {{/if}}
+</table>
+
+{{#if conditions}}
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    <strong>Conditions to satisfy:</strong>
+</p>
+<p style="font-size:14px; line-height:22px; margin:10px 0; padding:10px 15px; background:#fff8e6; border-left:3px solid #f5a623; border-radius:3px;">
+    {{conditions}}
+</p>
+{{/if}}
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Please log in to your dashboard to review the full details and provide any additional information required.
+</p>
+
+<a href="{{dashboardLink}}"
+   style="display:inline-block; background-color:#19C2AB; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:12px 25px; border-radius:5px; margin:20px 0;">
+    View Conditions
+</a>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Best regards,<br/>
+    The QShelter Team
+</p>

@@ -2,25 +2,26 @@
 
 > **Purpose**: Complete API-driven flow from tenant bootstrap through mortgage completion.
 > **Use Case**: Guide Postman Flows design, E2E testing, and demo frontend.
-> **Last Updated**: 2025-01-15
-> **Test Location**: [`tests/aws/full-mortgage-flow/`](../tests/aws/full-mortgage-flow/)
-> **Service Test**: [`services/mortgage-service/tests/e2e/chidi-lekki-mortgage/`](../services/mortgage-service/tests/e2e/chidi-lekki-mortgage/)
+> **Last Updated**: 2025-07-19
+> **Canonical Test**: [`demo-frontend/e2e/full-mortgage-flow.spec.ts`](../../demo-frontend/e2e/full-mortgage-flow.spec.ts) — **this is the single source of truth**
+> **API Test**: [`tests/aws/full-mortgage-flow/`](../tests/aws/full-mortgage-flow/)
+
+> ⚠️ **Scenario Updated**: The canonical scenario is now Emeka/Sunrise Heights (₦75M, MREIF 10/90).
+> The Playwright test at `demo-frontend/e2e/full-mortgage-flow.spec.ts` is the authoritative reference.
+> This document describes the same scenario at the API level.
 
 ## Summary
 
-This scenario walks through the complete lifecycle of a 10/90 mortgage application, from tenant bootstrap through all 5 phases to application completion. All operations are performed via REST APIs — nothing is seeded manually or via direct database access.
+This scenario walks through the complete lifecycle of a MREIF 10/90 mortgage application (10% down, 5 phases) from tenant bootstrap through completion. All operations are performed via REST APIs.
 
 **Key Characteristics**:
 
-- 4 actors across 3 organizations
+- 5 actors across 3 organizations
 - 5-phase customer journey: Prequalification → Sales Offer → KYC → Downpayment → Mortgage Offer
-- 10% downpayment (₦8.5M) as ONE_TIME single payment via wallet
+- 10% downpayment (₦7.5M) as ONE_TIME single payment
 - Event-driven payment flow: wallet credit → auto-allocation → phase completion → SNS/SQS → next phase activation
-- Conditional documents (spouse ID only for joint mortgages)
 - Multi-stage document review (PLATFORM stage + BANK stage)
-- Auto-approval when uploader matches stage organization type
 - JWT-based authorization via Lambda authorizer
-- Cross-tenant isolation and ownership verification
 
 ---
 
@@ -29,9 +30,10 @@ This scenario walks through the complete lifecycle of a 10/90 mortgage applicati
 | Actor      | Role                 | Email                | Organization                    | Description                                                |
 | ---------- | -------------------- | -------------------- | ------------------------------- | ---------------------------------------------------------- |
 | **Adaeze** | Admin / Mortgage Ops | `adaeze@mailsac.com` | QShelter Real Estate (PLATFORM) | Operations manager, configures system, reviews documents   |
-| **Chidi**  | Customer             | `chidi@mailsac.com`  | —                               | First-time homebuyer, age 40                               |
-| **Emeka**  | Developer / Agent    | `emeka@mailsac.com`  | Lekki Gardens (DEVELOPER)       | Sales manager, creates properties, uploads sales offers    |
-| **Nkechi** | Lender / lender_ops  | `nkechi@mailsac.com` | Access Bank PLC (BANK)          | Loan officer, uploads preapproval & mortgage offer letters |
+| **Yinka**  | mortgage_ops         | `yinka@mailsac.com`  | QShelter Real Estate (PLATFORM) | Mortgage operations, manages applications                  |
+| **Emeka**  | Customer             | `emeka@mailsac.com`  | —                               | First-time homebuyer                                       |
+| **Nneka**  | agent                | `nneka@mailsac.com`  | Lekki Gardens (DEVELOPER)       | Sales manager, creates properties, uploads sales offers    |
+| **Eniola** | lender_ops           | `eniola@mailsac.com` | Access Bank PLC (BANK)          | Loan officer, uploads preapproval & mortgage offer letters |
 
 **All email addresses use `@mailsac.com`** for testable email verification.
 
@@ -49,21 +51,19 @@ This scenario walks through the complete lifecycle of a 10/90 mortgage applicati
 
 ## Property Details
 
-| Field     | Value                   |
-| --------- | ----------------------- |
-| Property  | Lekki Gardens Estate    |
-| Unit      | 14B (Block B, Floor 14) |
-| Variant   | 3-Bedroom Flat, 150 sqm |
-| Bedrooms  | 3                       |
-| Bathrooms | 3                       |
-| Parking   | 1                       |
-| Price     | ₦85,000,000 (NGN)       |
-| Category  | SALE                    |
-| Type      | APARTMENT               |
+| Field    | Value                      |
+| -------- | -------------------------- |
+| Property | Sunrise Heights Estate     |
+| Unit     | A-201                      |
+| Variant  | 3-Bedroom Luxury Apartment |
+| Bedrooms | 3                          |
+| Price    | ₦75,000,000 (NGN)          |
+| Category | SALE                       |
+| Type     | APARTMENT                  |
 
 ---
 
-## Payment Structure (5-Phase Journey)
+## Payment Structure (5-Phase Journey — MREIF 10/90)
 
 | Order | Phase Name                | Category      | Type         | Details                                        |
 | ----- | ------------------------- | ------------- | ------------ | ---------------------------------------------- |

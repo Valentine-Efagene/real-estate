@@ -22,22 +22,34 @@ This script handles fetching credentials from AWS Secrets Manager and running mi
 
 - Errors like this `The test was interrupted (exit code 130 — SIGINT) at Step 8 because my ps aux | grep command ran in the same terminal as the Playwright test, killing it. Step 8 wasn't a real failure — the test was waiting for getByLabel(/Category/i) when it got killed.` are a problem, and must be avoided. Don't inject commands in a way that they could break running tasks.
 
-## Demo Frontend (Separate Repo)
+## Demo Frontend (`demo-frontend/`)
 
-The demo frontend lives in a **separate repository**: `Valentine-Efagene/real-estate-demo-frontend`. It is a Next.js app hosted on **AWS Amplify** (App ID: `dkiw3bsawk8ek`, branch: `main`, auto-build disabled).
+The demo-frontend is a **Next.js application** inside this monorepo (`demo-frontend/`) for interactively testing the QShelter API. It is hosted on **AWS Amplify** (see Post-Deployment Checklist for sync instructions).
 
 - It imports `@valentine-efagene/qshelter-common` from the **npm registry** (not a workspace link).
-- After backend deployments that change service URLs, you must sync env vars to Amplify and trigger a rebuild (see Post-Deployment Checklist).
-- **CRITICAL — Auto-sync Amplify after any `.env` change**: Whenever Copilot edits the demo frontend's `.env` file (e.g., updating service URLs after a deployment), you **must** immediately sync the changed `NEXT_PUBLIC_*` values to Amplify and trigger a rebuild. Do not wait to be asked.
+- After backend deployments that change service URLs, you must sync env vars to Amplify and trigger a rebuild.
 
-**Key Demo Scenario (Lekki-Chidi Mortgage):**
+### Playwright Full Mortgage Flow Test (`demo-frontend/e2e/full-mortgage-flow.spec.ts`)
 
-| Actor      | Role     | Email                | Description                 |
-| ---------- | -------- | -------------------- | --------------------------- |
-| **Adaeze** | Admin    | `adaeze@mailsac.com` | QShelter operations manager |
-| **Chidi**  | Customer | `chidi@mailsac.com`  | First-time homebuyer        |
+**This test is the canonical reference for the demo scenario.** It must be kept in sync with the app. Whenever you change the demo-frontend UI, update the Playwright test to match.
 
-**Property:** Lekki Gardens Estate, Unit 14B, ₦85M, 10% down + 90% mortgage @ 9.5% p.a.
+- The test does ALL setup through the UI (reset DB, bootstrap, create orgs, properties, plans, etc.) — it does **not** call the demo-bootstrap API.
+- **Never replace the UI-driven setup with API calls.** The purpose is to exercise the admin UI end-to-end.
+- Run with: `cd demo-frontend && BOOTSTRAP_SECRET=<secret> npx playwright test full-mortgage-flow --reporter=line`
+
+**Key Demo Scenario (Emeka/Sunrise Heights Mortgage — canonical Playwright scenario):**
+
+| Actor      | Role         | Email                | Description                   |
+| ---------- | ------------ | -------------------- | ----------------------------- |
+| **Adaeze** | Admin        | `adaeze@mailsac.com` | QShelter operations manager   |
+| **Yinka**  | mortgage_ops | `yinka@mailsac.com`  | QShelter mortgage ops         |
+| **Nneka**  | agent        | `nneka@mailsac.com`  | Lekki Gardens developer agent |
+| **Eniola** | lender_ops   | `eniola@mailsac.com` | Access Bank loan officer      |
+| **Emeka**  | Customer     | `emeka@mailsac.com`  | First-time homebuyer          |
+
+**Property:** Sunrise Heights Estate, Unit A-201, ₦75M, MREIF 10/90 Mortgage (10% down, 5 phases)
+
+> ⚠️ The Playwright test is the **single source of truth** for scenario details. All Postman examples and documentation must align with it.
 
 ## Development Philosophy
 
@@ -59,7 +71,7 @@ We are in active development - **delete unused code, don't deprecate it**:
 - Frontend also imports this package—ensure all necessary types/enums are exported.
 - **Never import directly from local paths or other services**. Always use the published package.
 - After schema changes: `npm run generate:prisma` then `npm run patch` to publish.
-- IMPORTANT (publish): When publishing is needed, run `npm run patch` to publish the common package. The npm registry may trigger an OTP verification — this is not interactive; the user just clicks a link in their email to approve it. Do NOT skip publishing because of OTP concerns.
+- IMPORTANT (publish): When publishing is needed, run `npm run patch` in the **interactive terminal** (not via a tool). npm OTP prompts require an interactive session — running it through a tool will hang waiting for OTP input. Paste the command into the terminal directly and let the user approve the OTP email link. Do NOT skip publishing because of OTP concerns.
 - Services must update to the latest version after publishing: `npm i @valentine-efagene/qshelter-common@latest`.
 - **CRITICAL — Always publish before deploying**: When you change code in `shared/common/`, you **must** publish a new version (`npm run patch`) and update the consuming services (`npm i @valentine-efagene/qshelter-common@latest`) **before** deploying those services. Services resolve `@valentine-efagene/qshelter-common` from the npm registry at build time, not from the local workspace. If you skip publishing, the deployed Lambda will run with the **old** version of the common package. Never use workspace links, `file:` references, or local path imports as a shortcut — the published npm package is the only source of truth.
 - Husky errors seem to be wasting tokens. Remove all husky settings and scripts to avoid this issue. The token cost of husky errors is not worth the benefit of pre-commit hooks in this case.
@@ -316,7 +328,7 @@ Direct Lambda invocation tests for the authorizer service:
 
 - **True end-to-end tests** against deployed AWS staging services
 - **API-only**: Only calls REST endpoints via HTTP, no direct database access
-- Tests the complete Lekki Gardens + Chidi mortgage flow scenario
+- Tests the complete Emeka/Sunrise Heights mortgage flow scenario (mirrors the Playwright test)
 - Run with: `cd tests/aws && ./scripts/run-full-e2e-staging.sh`
 
 **API Documentation:**
@@ -333,12 +345,12 @@ cd tests/aws/full-mortgage-flow
 npx md-to-pdf MORTGAGE_FLOW_API_DOCUMENTATION.md
 ```
 
-**IMPORTANT**: This test is the **production-equivalent version** of the Lekki-Chidi scenario test (`services/mortgage-service/tests/e2e/lekki-chidi-mortgage.e2e-spec.ts`). When making changes to either test, ensure they remain synchronized:
+**IMPORTANT**: This test mirrors the Playwright test (`demo-frontend/e2e/full-mortgage-flow.spec.ts`). When making changes to either test, ensure they remain synchronized:
 
 - Same business flow and phases
-- Same actor names (Adaeze as admin, Chidi as customer)
-- Same property details (Lekki Gardens, ₦85M, 10% down, 90% mortgage)
-- AWS test uses HTTP APIs only; service test can use direct Prisma access
+- Same actor names (Adaeze as admin, Emeka as customer, Yinka/Nneka/Eniola as staff)
+- Same property details (Sunrise Heights Estate, ₦75M, MREIF 10/90 mortgage)
+- AWS test uses HTTP APIs only; Playwright test exercises the full UI
 
 ### Incremental Debug Tests (`tests/aws/incremental-debug/`)
 
@@ -414,41 +426,45 @@ tests/aws/full-mortgage-flow/
   - `postman/QShelter-AWS-Staging.postman_environment.json` - AWS staging URLs
 - New endpoints need both Zod validation and Postman examples.
 
-### Postman Examples - Chidi-Lekki Mortgage Scenario
+### Postman Examples — Emeka/Sunrise Heights Mortgage Scenario
 
-**All Postman request examples must align with the Chidi-Lekki mortgage E2E test scenario** defined in:
+**All Postman request examples must align with the Playwright canonical scenario** defined in:
 
-- `docs/FULL_E2E_MORTGAGE_FLOW.md` - Complete scenario documentation
-- `services/mortgage-service/tests/e2e/chidi-lekki-mortgage/` - Implementation
+- `demo-frontend/e2e/full-mortgage-flow.spec.ts` - Canonical Playwright test (source of truth)
+- `docs/FULL_E2E_MORTGAGE_FLOW.md` - API-level documentation of the same scenario
 
 **Actors (use these in all examples):**
 
-| Actor      | Role      | Email                | Description                  |
-| ---------- | --------- | -------------------- | ---------------------------- |
-| **Adaeze** | Admin     | `adaeze@mailsac.com` | QShelter operations manager  |
-| **Chidi**  | Customer  | `chidi@mailsac.com`  | First-time homebuyer, age 40 |
-| **Nkechi** | Lender    | `nkechi@mailsac.com` | Access Bank loan officer     |
-| **Emeka**  | Developer | `emeka@mailsac.com`  | Lekki Gardens developer rep  |
+| Actor      | Role         | Email                | Description                   |
+| ---------- | ------------ | -------------------- | ----------------------------- |
+| **Adaeze** | Admin        | `adaeze@mailsac.com` | QShelter operations manager   |
+| **Yinka**  | mortgage_ops | `yinka@mailsac.com`  | QShelter mortgage operations  |
+| **Nneka**  | agent        | `nneka@mailsac.com`  | Lekki Gardens developer agent |
+| **Eniola** | lender_ops   | `eniola@mailsac.com` | Access Bank loan officer      |
+| **Emeka**  | Customer     | `emeka@mailsac.com`  | First-time homebuyer          |
 
 **Property Details:**
 
-- **Property**: Lekki Gardens Estate
-- **Unit**: 14B (Block B, Floor 14)
-- **Price**: ₦85,000,000 (NGN)
-- **Variant**: 3-Bedroom Flat, 150 sqm, 3 bath, 1 parking
+- **Property**: Sunrise Heights Estate
+- **Unit**: A-201
+- **Price**: ₦75,000,000 (NGN)
+- **Variant**: 3-Bedroom Luxury Apartment
 
-**Payment Structure:**
+**Payment Structure (MREIF 10/90 Mortgage):**
 
-- 10% downpayment (₦8,500,000) - ONE_TIME payment
-- 90% mortgage (₦76,500,000) - 9.5% p.a. over 20 years
+- Phase 1: Prequalification (QUESTIONNAIRE)
+- Phase 2: Sales Offer (DOCUMENTATION)
+- Phase 3: KYC Documentation (DOCUMENTATION)
+- Phase 4: 10% Downpayment (₦7,500,000) (PAYMENT)
+- Phase 5: Mortgage Offer (DOCUMENTATION)
 
 **Organizations:**
 
-| Name          | Type      | Email                      |
-| ------------- | --------- | -------------------------- |
-| QShelter      | PLATFORM  | `support@mailsac.com`      |
-| Access Bank   | BANK      | `mortgages@mailsac.com`    |
-| Lekki Gardens | DEVELOPER | `lekkigardens@mailsac.com` |
+| Name            | Type      | Email                      |
+| --------------- | --------- | -------------------------- |
+| QShelter        | PLATFORM  | `support@mailsac.com`      |
+| Access Bank PLC | BANK      | `mortgages@mailsac.com`    |
+| Lekki Gardens   | DEVELOPER | `lekkigardens@mailsac.com` |
 
 **All email addresses must use `@mailsac.com` domain** for testable email verification.
 
@@ -679,9 +695,9 @@ After every AWS deployment, you MUST:
    # ... all services
    ```
 
-4. **Sync Amplify environment variables for the demo frontend** (separate repo: `Valentine-Efagene/real-estate-demo-frontend`):
-   - Update all `NEXT_PUBLIC_*` env vars on AWS Amplify to match the new service URLs
-   - Trigger an Amplify rebuild (auto-build is disabled):
+4. **Update `demo-frontend/.env`** with new service URLs and **sync to Amplify**:
+   - Update all `NEXT_PUBLIC_*_SERVICE_URL` variables in `demo-frontend/.env`
+   - Sync to Amplify and trigger a rebuild (see [Demo Frontend → AWS Amplify Hosting](#aws-amplify-hosting)):
 
    ```bash
    # Get all new service URLs
@@ -689,10 +705,10 @@ After every AWS deployment, you MUST:
      echo "NEXT_PUBLIC_${service^^}_SERVICE_URL=$(cd services/${service}-service && npx serverless info --stage staging 2>/dev/null | grep -o 'https://[^ ]*')"
    done
 
-   # Update Amplify env vars
+   # Update Amplify env vars (replace <APP_ID> and <BRANCH> with actual values)
    aws amplify update-branch \
-     --app-id d3rsdsiydtdawo \
-     --branch-name main \
+     --app-id <APP_ID> \
+     --branch-name <BRANCH> \
      --environment-variables \
        NEXT_PUBLIC_USER_SERVICE_URL=https://<url>,\
        NEXT_PUBLIC_PROPERTY_SERVICE_URL=https://<url>,\
@@ -704,7 +720,7 @@ After every AWS deployment, you MUST:
        NEXT_PUBLIC_GOOGLE_CLIENT_ID=<client-id>
 
    # Trigger rebuild (NEXT_PUBLIC_* vars are inlined at build time)
-   aws amplify start-job --app-id d3rsdsiydtdawo --branch-name main --job-type RELEASE
+   aws amplify start-job --app-id <APP_ID> --branch-name <BRANCH> --job-type RELEASE
    ```
 
 ### Postman Environments

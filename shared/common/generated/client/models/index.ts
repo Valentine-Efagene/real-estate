@@ -12,6 +12,7 @@ export * from './ApprovalRequest';
 export * from './ApprovalStage';
 export * from './ApprovalStageProgress';
 export * from './BankDocumentRequirement';
+export * from './CoApplicant';
 export * from './DeviceEndpoint';
 export * from './DocumentApproval';
 export * from './DocumentDefinition';

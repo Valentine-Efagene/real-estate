@@ -45,6 +45,54 @@ propertyRouter.get('/properties', async (req, res, next) => {
     }
 });
 
+// Property search — must be defined before /properties/:id to avoid route shadowing
+propertyRouter.get('/properties/search', async (req, res, next) => {
+    try {
+        const tenantId = req.tenantContext?.tenantId;
+
+        const {
+            keyword,
+            category,
+            propertyType,
+            city,
+            country,
+            status,
+            minPrice,
+            maxPrice,
+            minBedrooms,
+            maxBedrooms,
+            availableUnitsOnly,
+            organizationId,
+            sortBy,
+            page,
+            limit,
+        } = req.query as Record<string, string | undefined>;
+
+        const results = await propertyService.searchProperties({
+            tenantId,
+            keyword,
+            category,
+            propertyType,
+            city,
+            country,
+            status,
+            minPrice: minPrice !== undefined ? Number(minPrice) : undefined,
+            maxPrice: maxPrice !== undefined ? Number(maxPrice) : undefined,
+            minBedrooms: minBedrooms !== undefined ? Number(minBedrooms) : undefined,
+            maxBedrooms: maxBedrooms !== undefined ? Number(maxBedrooms) : undefined,
+            availableUnitsOnly: availableUnitsOnly === 'true',
+            organizationId,
+            sortBy: sortBy as 'price_asc' | 'price_desc' | 'newest' | 'oldest' | undefined,
+            page: page !== undefined ? Number(page) : undefined,
+            limit: limit !== undefined ? Number(limit) : undefined,
+        });
+
+        res.json(successResponse(results));
+    } catch (error) {
+        next(error);
+    }
+});
+
 propertyRouter.get('/properties/:id', async (req, res, next) => {
     try {
         const { id } = req.params;

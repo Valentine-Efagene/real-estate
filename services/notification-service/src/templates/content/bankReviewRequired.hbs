@@ -1,0 +1,46 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    🏦 Bank Review Required
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{reviewerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    A mortgage application is ready for bank review. All required documents have been submitted and are awaiting your assessment.
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:20px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Application:</td>
+        <td style="padding:5px 0;"><strong>{{applicationNumber}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;">{{propertyName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Applicant:</td>
+        <td style="padding:5px 0;">{{applicantName}}</td>
+    </tr>
+    {{#if slaDeadline}}
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Review Deadline:</td>
+        <td style="padding:5px 0;"><strong>{{slaDeadline}}</strong></td>
+    </tr>
+    {{/if}}
+</table>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Please log in to your portal to review the submitted documents and provide your decision.
+</p>
+
+<a href="{{dashboardLink}}"
+   style="display:inline-block; background-color:#19C2AB; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:12px 25px; border-radius:5px; margin:20px 0;">
+    Review Application
+</a>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Best regards,<br/>
+    The QShelter Team
+</p>

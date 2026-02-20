@@ -1,0 +1,41 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    ⏰ Organization Invitation Expired
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{recipientName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Your invitation to join <strong>{{organizationName}}</strong> has expired without being accepted.
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:20px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Organization:</td>
+        <td style="padding:5px 0;"><strong>{{organizationName}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Invited As:</td>
+        <td style="padding:5px 0;">{{role}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Expired On:</td>
+        <td style="padding:5px 0;">{{expiryDate}}</td>
+    </tr>
+</table>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    If you'd still like to join this organization, please contact the administrator to request a new invitation.
+</p>
+
+{{#if contactEmail}}
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Administrator contact: <a href="mailto:{{contactEmail}}">{{contactEmail}}</a>
+</p>
+{{/if}}
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Best regards,<br/>
+    The QShelter Team
+</p>

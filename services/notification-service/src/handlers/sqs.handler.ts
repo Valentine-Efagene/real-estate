@@ -131,6 +131,29 @@ function getTemplateType(notificationType: NotificationType): TemplateTypeValue 
         // Organization
         [NotificationType.ORGANIZATION_INVITATION]: 'organizationInvitation',
         [NotificationType.ORGANIZATION_INVITATION_ACCEPTED]: 'organizationInvitationAccepted',
+        [NotificationType.ORGANIZATION_INVITATION_EXPIRED]: 'organizationInvitationExpired',
+        // Application lifecycle
+        [NotificationType.APPLICATION_SUPERSEDED]: 'applicationSuperseded',
+        // Unit locking
+        [NotificationType.UNIT_LOCKED]: 'unitLocked',
+        [NotificationType.UNIT_RELEASED]: 'unitReleased',
+        // Phase completions
+        [NotificationType.QUESTIONNAIRE_PHASE_COMPLETED]: 'questionnairePhaseCompleted',
+        [NotificationType.DOCUMENTATION_PHASE_COMPLETED]: 'documentationPhaseCompleted',
+        [NotificationType.PAYMENT_PHASE_COMPLETED]: 'paymentPhaseCompleted',
+        // Offer letter expiry
+        [NotificationType.OFFER_LETTER_EXPIRED]: 'offerLetterExpired',
+        // Underwriting
+        [NotificationType.UNDERWRITING_APPROVED]: 'underwritingApproved',
+        [NotificationType.UNDERWRITING_REJECTED]: 'underwritingRejected',
+        [NotificationType.UNDERWRITING_CONDITIONAL]: 'underwritingConditional',
+        // Bank review
+        [NotificationType.BANK_REVIEW_REQUIRED]: 'bankReviewRequired',
+        // Stage completion
+        [NotificationType.STAGE_COMPLETED]: 'stageCompleted',
+        // SLA
+        [NotificationType.SLA_WARNING]: 'slaWarning',
+        [NotificationType.SLA_BREACHED]: 'slaBreached',
     };
 
     return typeMap[notificationType] || null;

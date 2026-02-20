@@ -779,6 +779,23 @@ export type EnumApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumApplicationStatusFilter<$PrismaModel>
 }
 
+export type EnumCoApplicantStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CoApplicantStatus | Prisma.EnumCoApplicantStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CoApplicantStatus[]
+  notIn?: $Enums.CoApplicantStatus[]
+  not?: Prisma.NestedEnumCoApplicantStatusFilter<$PrismaModel> | $Enums.CoApplicantStatus
+}
+
+export type EnumCoApplicantStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CoApplicantStatus | Prisma.EnumCoApplicantStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CoApplicantStatus[]
+  notIn?: $Enums.CoApplicantStatus[]
+  not?: Prisma.NestedEnumCoApplicantStatusWithAggregatesFilter<$PrismaModel> | $Enums.CoApplicantStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCoApplicantStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCoApplicantStatusFilter<$PrismaModel>
+}
+
 export type EnumApplicationOrganizationStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.ApplicationOrganizationStatus | Prisma.EnumApplicationOrganizationStatusFieldRefInput<$PrismaModel>
   in?: $Enums.ApplicationOrganizationStatus[]
@@ -1993,6 +2010,23 @@ export type NestedEnumApplicationStatusWithAggregatesFilter<$PrismaModel = never
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumApplicationStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumApplicationStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumCoApplicantStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CoApplicantStatus | Prisma.EnumCoApplicantStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CoApplicantStatus[]
+  notIn?: $Enums.CoApplicantStatus[]
+  not?: Prisma.NestedEnumCoApplicantStatusFilter<$PrismaModel> | $Enums.CoApplicantStatus
+}
+
+export type NestedEnumCoApplicantStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CoApplicantStatus | Prisma.EnumCoApplicantStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CoApplicantStatus[]
+  notIn?: $Enums.CoApplicantStatus[]
+  not?: Prisma.NestedEnumCoApplicantStatusWithAggregatesFilter<$PrismaModel> | $Enums.CoApplicantStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCoApplicantStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCoApplicantStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumApplicationOrganizationStatusFilter<$PrismaModel = never> = {

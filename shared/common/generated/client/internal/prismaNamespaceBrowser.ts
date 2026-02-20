@@ -103,6 +103,7 @@ export const ModelName = {
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   PaymentMethodPhaseField: 'PaymentMethodPhaseField',
   Application: 'Application',
+  CoApplicant: 'CoApplicant',
   ApplicationOrganization: 'ApplicationOrganization',
   ApplicationRefund: 'ApplicationRefund',
   ApplicationPhase: 'ApplicationPhase',
@@ -1055,6 +1056,30 @@ export const ApplicationScalarFieldEnum = {
 } as const
 
 export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[keyof typeof ApplicationScalarFieldEnum]
+
+
+export const CoApplicantScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  userId: 'userId',
+  email: 'email',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  relationship: 'relationship',
+  monthlyIncome: 'monthlyIncome',
+  employmentType: 'employmentType',
+  status: 'status',
+  invitedAt: 'invitedAt',
+  acceptedAt: 'acceptedAt',
+  removedAt: 'removedAt',
+  removedById: 'removedById',
+  removalReason: 'removalReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CoApplicantScalarFieldEnum = (typeof CoApplicantScalarFieldEnum)[keyof typeof CoApplicantScalarFieldEnum]
 
 
 export const ApplicationOrganizationScalarFieldEnum = {
@@ -2584,6 +2609,23 @@ export const ApplicationOrderByRelevanceFieldEnum = {
 } as const
 
 export type ApplicationOrderByRelevanceFieldEnum = (typeof ApplicationOrderByRelevanceFieldEnum)[keyof typeof ApplicationOrderByRelevanceFieldEnum]
+
+
+export const CoApplicantOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  userId: 'userId',
+  email: 'email',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  relationship: 'relationship',
+  employmentType: 'employmentType',
+  removedById: 'removedById',
+  removalReason: 'removalReason'
+} as const
+
+export type CoApplicantOrderByRelevanceFieldEnum = (typeof CoApplicantOrderByRelevanceFieldEnum)[keyof typeof CoApplicantOrderByRelevanceFieldEnum]
 
 
 export const ApplicationOrganizationOrderByRelevanceFieldEnum = {

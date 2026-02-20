@@ -760,3 +760,112 @@ export async function sendStageCompletedNotification(
         { correlationId },
     );
 }
+
+// ============== SLA Notifications ==============
+
+export interface SlaWarningPayload {
+    email: string;
+    recipientName: string;
+    applicationNumber: string;
+    propertyName: string;
+    stageName: string;
+    slaDeadline: string;
+    hoursRemaining: number;
+    dashboardUrl: string;
+}
+
+/**
+ * Send SLA warning when approaching the breach deadline.
+ */
+export async function sendSlaWarningNotification(
+    payload: SlaWarningPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.SLA_WARNING,
+        {
+            to_email: payload.email,
+            recipientName: payload.recipientName,
+            applicationNumber: payload.applicationNumber,
+            propertyName: payload.propertyName,
+            stageName: payload.stageName,
+            slaDeadline: payload.slaDeadline,
+            hoursRemaining: payload.hoursRemaining,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}
+
+export interface SlaBreachedPayload {
+    email: string;
+    recipientName: string;
+    applicationNumber: string;
+    propertyName: string;
+    stageName: string;
+    slaDeadline: string;
+    breachedAt: string;
+    hoursOverdue: number;
+    dashboardUrl: string;
+}
+
+/**
+ * Send SLA breach notification when the deadline has passed.
+ */
+export async function sendSlaBreachedNotification(
+    payload: SlaBreachedPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.SLA_BREACHED,
+        {
+            to_email: payload.email,
+            recipientName: payload.recipientName,
+            applicationNumber: payload.applicationNumber,
+            propertyName: payload.propertyName,
+            stageName: payload.stageName,
+            slaDeadline: payload.slaDeadline,
+            breachedAt: payload.breachedAt,
+            hoursOverdue: payload.hoursOverdue,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}
+
+// ============== Offer Letter Expiry Notifications ==============
+
+export interface OfferLetterExpiredPayload {
+    email: string;
+    userName: string;
+    applicationNumber: string;
+    propertyName: string;
+    offerLetterType: string;
+    expiryDate: string;
+    dashboardUrl: string;
+}
+
+/**
+ * Send notification when an offer letter has expired without being signed.
+ */
+export async function sendOfferLetterExpiredNotification(
+    payload: OfferLetterExpiredPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.OFFER_LETTER_EXPIRED,
+        {
+            to_email: payload.email,
+            homeBuyerName: payload.userName,
+            applicationNumber: payload.applicationNumber,
+            propertyName: payload.propertyName,
+            offerLetterType: payload.offerLetterType,
+            expiryDate: payload.expiryDate,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}

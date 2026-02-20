@@ -1,0 +1,48 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    ⚠️ SLA Warning — Action Required
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{recipientName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    This is a reminder that a mortgage application is approaching its SLA deadline. Immediate action is required to avoid a breach.
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:20px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Application:</td>
+        <td style="padding:5px 0;"><strong>{{applicationNumber}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;">{{propertyName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Current Stage:</td>
+        <td style="padding:5px 0;">{{stageName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">SLA Deadline:</td>
+        <td style="padding:5px 0;"><strong style="color:#e67e22;">{{slaDeadline}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Hours Remaining:</td>
+        <td style="padding:5px 0;"><strong>{{hoursRemaining}}</strong></td>
+    </tr>
+</table>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0; padding:10px 15px; background:#fff8e6; border-left:3px solid #f5a623; border-radius:3px;">
+    ⏰ This SLA must be met within <strong>{{hoursRemaining}} hours</strong>. Failure to act will result in an SLA breach and escalation.
+</p>
+
+<a href="{{dashboardLink}}"
+   style="display:inline-block; background-color:#e67e22; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:12px 25px; border-radius:5px; margin:20px 0;">
+    Take Action Now
+</a>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Best regards,<br/>
+    The QShelter Team
+</p>

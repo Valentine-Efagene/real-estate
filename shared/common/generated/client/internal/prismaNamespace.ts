@@ -436,6 +436,7 @@ export const ModelName = {
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   PaymentMethodPhaseField: 'PaymentMethodPhaseField',
   Application: 'Application',
+  CoApplicant: 'CoApplicant',
   ApplicationOrganization: 'ApplicationOrganization',
   ApplicationRefund: 'ApplicationRefund',
   ApplicationPhase: 'ApplicationPhase',
@@ -489,7 +490,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver"
+    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3922,6 +3923,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ApplicationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ApplicationCountAggregateOutputType> | number
+        }
+      }
+    }
+    CoApplicant: {
+      payload: Prisma.$CoApplicantPayload<ExtArgs>
+      fields: Prisma.CoApplicantFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CoApplicantFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoApplicantPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CoApplicantFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoApplicantPayload>
+        }
+        findFirst: {
+          args: Prisma.CoApplicantFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoApplicantPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CoApplicantFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoApplicantPayload>
+        }
+        findMany: {
+          args: Prisma.CoApplicantFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoApplicantPayload>[]
+        }
+        create: {
+          args: Prisma.CoApplicantCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoApplicantPayload>
+        }
+        createMany: {
+          args: Prisma.CoApplicantCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.CoApplicantDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoApplicantPayload>
+        }
+        update: {
+          args: Prisma.CoApplicantUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoApplicantPayload>
+        }
+        deleteMany: {
+          args: Prisma.CoApplicantDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CoApplicantUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.CoApplicantUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoApplicantPayload>
+        }
+        aggregate: {
+          args: Prisma.CoApplicantAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCoApplicant>
+        }
+        groupBy: {
+          args: Prisma.CoApplicantGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoApplicantGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CoApplicantCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoApplicantCountAggregateOutputType> | number
         }
       }
     }
@@ -7370,6 +7437,30 @@ export const ApplicationScalarFieldEnum = {
 export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[keyof typeof ApplicationScalarFieldEnum]
 
 
+export const CoApplicantScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  userId: 'userId',
+  email: 'email',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  relationship: 'relationship',
+  monthlyIncome: 'monthlyIncome',
+  employmentType: 'employmentType',
+  status: 'status',
+  invitedAt: 'invitedAt',
+  acceptedAt: 'acceptedAt',
+  removedAt: 'removedAt',
+  removedById: 'removedById',
+  removalReason: 'removalReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CoApplicantScalarFieldEnum = (typeof CoApplicantScalarFieldEnum)[keyof typeof CoApplicantScalarFieldEnum]
+
+
 export const ApplicationOrganizationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -8899,6 +8990,23 @@ export const ApplicationOrderByRelevanceFieldEnum = {
 export type ApplicationOrderByRelevanceFieldEnum = (typeof ApplicationOrderByRelevanceFieldEnum)[keyof typeof ApplicationOrderByRelevanceFieldEnum]
 
 
+export const CoApplicantOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  userId: 'userId',
+  email: 'email',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  relationship: 'relationship',
+  employmentType: 'employmentType',
+  removedById: 'removedById',
+  removalReason: 'removalReason'
+} as const
+
+export type CoApplicantOrderByRelevanceFieldEnum = (typeof CoApplicantOrderByRelevanceFieldEnum)[keyof typeof CoApplicantOrderByRelevanceFieldEnum]
+
+
 export const ApplicationOrganizationOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -9647,6 +9755,13 @@ export type EnumApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'CoApplicantStatus'
+ */
+export type EnumCoApplicantStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CoApplicantStatus'>
+    
+
+
+/**
  * Reference to a field of type 'ApplicationOrganizationStatus'
  */
 export type EnumApplicationOrganizationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationOrganizationStatus'>
@@ -9995,6 +10110,7 @@ export type GlobalOmitConfig = {
   paymentMethodPhaseDocument?: Prisma.PaymentMethodPhaseDocumentOmit
   paymentMethodPhaseField?: Prisma.PaymentMethodPhaseFieldOmit
   application?: Prisma.ApplicationOmit
+  coApplicant?: Prisma.CoApplicantOmit
   applicationOrganization?: Prisma.ApplicationOrganizationOmit
   applicationRefund?: Prisma.ApplicationRefundOmit
   applicationPhase?: Prisma.ApplicationPhaseOmit

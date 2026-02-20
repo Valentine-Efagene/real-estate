@@ -1,0 +1,52 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    🚨 SLA Breached — Escalation Required
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{recipientName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    <strong>An SLA has been breached</strong> on the following mortgage application. This requires immediate escalation and resolution.
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:20px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Application:</td>
+        <td style="padding:5px 0;"><strong>{{applicationNumber}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;">{{propertyName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Stage:</td>
+        <td style="padding:5px 0;">{{stageName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">SLA Deadline:</td>
+        <td style="padding:5px 0;"><strong>{{slaDeadline}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Breached At:</td>
+        <td style="padding:5px 0;"><strong style="color:#e74c3c;">{{breachedAt}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Hours Overdue:</td>
+        <td style="padding:5px 0;"><strong>{{hoursOverdue}}</strong></td>
+    </tr>
+</table>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0; padding:10px 15px; background:#fdecea; border-left:3px solid #e74c3c; border-radius:3px;">
+    🚨 This SLA breach has been logged. Immediate action is required to resolve this application and prevent further delays.
+</p>
+
+<a href="{{dashboardLink}}"
+   style="display:inline-block; background-color:#e74c3c; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:12px 25px; border-radius:5px; margin:20px 0;">
+    Resolve Now
+</a>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Best regards,<br/>
+    The QShelter Team
+</p>

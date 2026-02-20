@@ -409,6 +409,7 @@ export type ApplicationWhereInput = {
   events?: Prisma.ApplicationEventListRelationFilter
   refunds?: Prisma.ApplicationRefundListRelationFilter
   organizations?: Prisma.ApplicationOrganizationListRelationFilter
+  coApplicants?: Prisma.CoApplicantListRelationFilter
 }
 
 export type ApplicationOrderByWithRelationInput = {
@@ -460,6 +461,7 @@ export type ApplicationOrderByWithRelationInput = {
   events?: Prisma.ApplicationEventOrderByRelationAggregateInput
   refunds?: Prisma.ApplicationRefundOrderByRelationAggregateInput
   organizations?: Prisma.ApplicationOrganizationOrderByRelationAggregateInput
+  coApplicants?: Prisma.CoApplicantOrderByRelationAggregateInput
   _relevance?: Prisma.ApplicationOrderByRelevanceInput
 }
 
@@ -515,6 +517,7 @@ export type ApplicationWhereUniqueInput = Prisma.AtLeast<{
   events?: Prisma.ApplicationEventListRelationFilter
   refunds?: Prisma.ApplicationRefundListRelationFilter
   organizations?: Prisma.ApplicationOrganizationListRelationFilter
+  coApplicants?: Prisma.CoApplicantListRelationFilter
 }, "id" | "applicationNumber" | "transferredFromId">
 
 export type ApplicationOrderByWithAggregationInput = {
@@ -626,6 +629,7 @@ export type ApplicationCreateInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateInput = {
@@ -669,6 +673,7 @@ export type ApplicationUncheckedCreateInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUpdateInput = {
@@ -712,6 +717,7 @@ export type ApplicationUpdateInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateInput = {
@@ -755,6 +761,7 @@ export type ApplicationUncheckedUpdateInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateManyInput = {
@@ -1281,6 +1288,20 @@ export type ApplicationUncheckedUpdateManyWithoutSupersededByNestedInput = {
   deleteMany?: Prisma.ApplicationScalarWhereInput | Prisma.ApplicationScalarWhereInput[]
 }
 
+export type ApplicationCreateNestedOneWithoutCoApplicantsInput = {
+  create?: Prisma.XOR<Prisma.ApplicationCreateWithoutCoApplicantsInput, Prisma.ApplicationUncheckedCreateWithoutCoApplicantsInput>
+  connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutCoApplicantsInput
+  connect?: Prisma.ApplicationWhereUniqueInput
+}
+
+export type ApplicationUpdateOneRequiredWithoutCoApplicantsNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationCreateWithoutCoApplicantsInput, Prisma.ApplicationUncheckedCreateWithoutCoApplicantsInput>
+  connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutCoApplicantsInput
+  upsert?: Prisma.ApplicationUpsertWithoutCoApplicantsInput
+  connect?: Prisma.ApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationUpdateToOneWithWhereWithoutCoApplicantsInput, Prisma.ApplicationUpdateWithoutCoApplicantsInput>, Prisma.ApplicationUncheckedUpdateWithoutCoApplicantsInput>
+}
+
 export type ApplicationCreateNestedOneWithoutOrganizationsInput = {
   create?: Prisma.XOR<Prisma.ApplicationCreateWithoutOrganizationsInput, Prisma.ApplicationUncheckedCreateWithoutOrganizationsInput>
   connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutOrganizationsInput
@@ -1519,6 +1540,7 @@ export type ApplicationCreateWithoutBuyerInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutBuyerInput = {
@@ -1561,6 +1583,7 @@ export type ApplicationUncheckedCreateWithoutBuyerInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutBuyerInput = {
@@ -1613,6 +1636,7 @@ export type ApplicationCreateWithoutSellerInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutSellerInput = {
@@ -1655,6 +1679,7 @@ export type ApplicationUncheckedCreateWithoutSellerInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutSellerInput = {
@@ -1772,6 +1797,7 @@ export type ApplicationCreateWithoutTenantInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutTenantInput = {
@@ -1814,6 +1840,7 @@ export type ApplicationUncheckedCreateWithoutTenantInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutTenantInput = {
@@ -1882,6 +1909,7 @@ export type ApplicationCreateWithoutPropertyUnitInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutPropertyUnitInput = {
@@ -1924,6 +1952,7 @@ export type ApplicationUncheckedCreateWithoutPropertyUnitInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutPropertyUnitInput = {
@@ -1992,6 +2021,7 @@ export type ApplicationCreateWithoutPaymentMethodInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutPaymentMethodInput = {
@@ -2034,6 +2064,7 @@ export type ApplicationUncheckedCreateWithoutPaymentMethodInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutPaymentMethodInput = {
@@ -2102,6 +2133,7 @@ export type ApplicationCreateWithoutTransferredToInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutTransferredToInput = {
@@ -2144,6 +2176,7 @@ export type ApplicationUncheckedCreateWithoutTransferredToInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutTransferredToInput = {
@@ -2191,6 +2224,7 @@ export type ApplicationCreateWithoutTransferredFromInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutTransferredFromInput = {
@@ -2233,6 +2267,7 @@ export type ApplicationUncheckedCreateWithoutTransferredFromInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutTransferredFromInput = {
@@ -2280,6 +2315,7 @@ export type ApplicationCreateWithoutSupersededApplicationsInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutSupersededApplicationsInput = {
@@ -2322,6 +2358,7 @@ export type ApplicationUncheckedCreateWithoutSupersededApplicationsInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutSupersededApplicationsInput = {
@@ -2369,6 +2406,7 @@ export type ApplicationCreateWithoutSupersededByInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutSupersededByInput = {
@@ -2411,6 +2449,7 @@ export type ApplicationUncheckedCreateWithoutSupersededByInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutSupersededByInput = {
@@ -2474,6 +2513,7 @@ export type ApplicationUpdateWithoutTransferredToInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutTransferredToInput = {
@@ -2516,6 +2556,7 @@ export type ApplicationUncheckedUpdateWithoutTransferredToInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUpsertWithoutTransferredFromInput = {
@@ -2569,6 +2610,7 @@ export type ApplicationUpdateWithoutTransferredFromInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutTransferredFromInput = {
@@ -2611,6 +2653,7 @@ export type ApplicationUncheckedUpdateWithoutTransferredFromInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUpsertWithoutSupersededApplicationsInput = {
@@ -2664,6 +2707,7 @@ export type ApplicationUpdateWithoutSupersededApplicationsInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutSupersededApplicationsInput = {
@@ -2706,6 +2750,7 @@ export type ApplicationUncheckedUpdateWithoutSupersededApplicationsInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUpsertWithWhereUniqueWithoutSupersededByInput = {
@@ -2722,6 +2767,194 @@ export type ApplicationUpdateWithWhereUniqueWithoutSupersededByInput = {
 export type ApplicationUpdateManyWithWhereWithoutSupersededByInput = {
   where: Prisma.ApplicationScalarWhereInput
   data: Prisma.XOR<Prisma.ApplicationUpdateManyMutationInput, Prisma.ApplicationUncheckedUpdateManyWithoutSupersededByInput>
+}
+
+export type ApplicationCreateWithoutCoApplicantsInput = {
+  id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
+  applicationNumber: string
+  title: string
+  description?: string | null
+  applicationType: string
+  totalAmount: number
+  status?: $Enums.ApplicationStatus
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  supersededAt?: Date | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationsInput
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutApplicationsInput
+  buyer: Prisma.UserCreateNestedOneWithoutApplicationsInput
+  seller?: Prisma.UserCreateNestedOneWithoutSoldApplicationsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutApplicationsInput
+  currentPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutCurrentForApplicationsInput
+  phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
+  documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
+  payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
+  transferredFrom?: Prisma.ApplicationCreateNestedOneWithoutTransferredToInput
+  transferredTo?: Prisma.ApplicationCreateNestedOneWithoutTransferredFromInput
+  supersededBy?: Prisma.ApplicationCreateNestedOneWithoutSupersededApplicationsInput
+  supersededApplications?: Prisma.ApplicationCreateNestedManyWithoutSupersededByInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutSourceApplicationInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
+  events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
+  refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+}
+
+export type ApplicationUncheckedCreateWithoutCoApplicantsInput = {
+  id?: string
+  tenantId: string
+  propertyUnitId: string
+  buyerId: string
+  sellerId?: string | null
+  paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
+  applicationNumber: string
+  title: string
+  description?: string | null
+  applicationType: string
+  totalAmount: number
+  status?: $Enums.ApplicationStatus
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  transferredFromId?: string | null
+  supersededById?: string | null
+  supersededAt?: Date | string | null
+  phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
+  documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
+  payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
+  transferredTo?: Prisma.ApplicationUncheckedCreateNestedOneWithoutTransferredFromInput
+  supersededApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSupersededByInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutSourceApplicationInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
+  events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
+  refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+}
+
+export type ApplicationCreateOrConnectWithoutCoApplicantsInput = {
+  where: Prisma.ApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationCreateWithoutCoApplicantsInput, Prisma.ApplicationUncheckedCreateWithoutCoApplicantsInput>
+}
+
+export type ApplicationUpsertWithoutCoApplicantsInput = {
+  update: Prisma.XOR<Prisma.ApplicationUpdateWithoutCoApplicantsInput, Prisma.ApplicationUncheckedUpdateWithoutCoApplicantsInput>
+  create: Prisma.XOR<Prisma.ApplicationCreateWithoutCoApplicantsInput, Prisma.ApplicationUncheckedCreateWithoutCoApplicantsInput>
+  where?: Prisma.ApplicationWhereInput
+}
+
+export type ApplicationUpdateToOneWithWhereWithoutCoApplicantsInput = {
+  where?: Prisma.ApplicationWhereInput
+  data: Prisma.XOR<Prisma.ApplicationUpdateWithoutCoApplicantsInput, Prisma.ApplicationUncheckedUpdateWithoutCoApplicantsInput>
+}
+
+export type ApplicationUpdateWithoutCoApplicantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationsNestedInput
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutApplicationsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
+  seller?: Prisma.UserUpdateOneWithoutSoldApplicationsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutApplicationsNestedInput
+  currentPhase?: Prisma.ApplicationPhaseUpdateOneWithoutCurrentForApplicationsNestedInput
+  phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
+  documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
+  payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
+  transferredFrom?: Prisma.ApplicationUpdateOneWithoutTransferredToNestedInput
+  transferredTo?: Prisma.ApplicationUpdateOneWithoutTransferredFromNestedInput
+  supersededBy?: Prisma.ApplicationUpdateOneWithoutSupersededApplicationsNestedInput
+  supersededApplications?: Prisma.ApplicationUpdateManyWithoutSupersededByNestedInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutSourceApplicationNestedInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
+  events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
+  refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+}
+
+export type ApplicationUncheckedUpdateWithoutCoApplicantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  transferredFromId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
+  documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
+  payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
+  transferredTo?: Prisma.ApplicationUncheckedUpdateOneWithoutTransferredFromNestedInput
+  supersededApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSupersededByNestedInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutSourceApplicationNestedInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
+  events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
+  refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutOrganizationsInput = {
@@ -2764,6 +2997,7 @@ export type ApplicationCreateWithoutOrganizationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutOrganizationsInput = {
@@ -2806,6 +3040,7 @@ export type ApplicationUncheckedCreateWithoutOrganizationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutOrganizationsInput = {
@@ -2864,6 +3099,7 @@ export type ApplicationUpdateWithoutOrganizationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutOrganizationsInput = {
@@ -2906,6 +3142,7 @@ export type ApplicationUncheckedUpdateWithoutOrganizationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutRefundsInput = {
@@ -2948,6 +3185,7 @@ export type ApplicationCreateWithoutRefundsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutRefundsInput = {
@@ -2990,6 +3228,7 @@ export type ApplicationUncheckedCreateWithoutRefundsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutRefundsInput = {
@@ -3048,6 +3287,7 @@ export type ApplicationUpdateWithoutRefundsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutRefundsInput = {
@@ -3090,6 +3330,7 @@ export type ApplicationUncheckedUpdateWithoutRefundsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutPhasesInput = {
@@ -3132,6 +3373,7 @@ export type ApplicationCreateWithoutPhasesInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutPhasesInput = {
@@ -3174,6 +3416,7 @@ export type ApplicationUncheckedCreateWithoutPhasesInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutPhasesInput = {
@@ -3221,6 +3464,7 @@ export type ApplicationCreateWithoutCurrentPhaseInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutCurrentPhaseInput = {
@@ -3263,6 +3507,7 @@ export type ApplicationUncheckedCreateWithoutCurrentPhaseInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutCurrentPhaseInput = {
@@ -3326,6 +3571,7 @@ export type ApplicationUpdateWithoutPhasesInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutPhasesInput = {
@@ -3368,6 +3614,7 @@ export type ApplicationUncheckedUpdateWithoutPhasesInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUpsertWithWhereUniqueWithoutCurrentPhaseInput = {
@@ -3426,6 +3673,7 @@ export type ApplicationCreateWithoutEventsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutEventsInput = {
@@ -3468,6 +3716,7 @@ export type ApplicationUncheckedCreateWithoutEventsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutEventsInput = {
@@ -3526,6 +3775,7 @@ export type ApplicationUpdateWithoutEventsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutEventsInput = {
@@ -3568,6 +3818,7 @@ export type ApplicationUncheckedUpdateWithoutEventsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutPaymentsInput = {
@@ -3610,6 +3861,7 @@ export type ApplicationCreateWithoutPaymentsInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutPaymentsInput = {
@@ -3652,6 +3904,7 @@ export type ApplicationUncheckedCreateWithoutPaymentsInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutPaymentsInput = {
@@ -3710,6 +3963,7 @@ export type ApplicationUpdateWithoutPaymentsInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutPaymentsInput = {
@@ -3752,6 +4006,7 @@ export type ApplicationUncheckedUpdateWithoutPaymentsInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutDocumentsInput = {
@@ -3794,6 +4049,7 @@ export type ApplicationCreateWithoutDocumentsInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutDocumentsInput = {
@@ -3836,6 +4092,7 @@ export type ApplicationUncheckedCreateWithoutDocumentsInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutDocumentsInput = {
@@ -3894,6 +4151,7 @@ export type ApplicationUpdateWithoutDocumentsInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutDocumentsInput = {
@@ -3936,6 +4194,7 @@ export type ApplicationUncheckedUpdateWithoutDocumentsInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutOfferLettersInput = {
@@ -3978,6 +4237,7 @@ export type ApplicationCreateWithoutOfferLettersInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutOfferLettersInput = {
@@ -4020,6 +4280,7 @@ export type ApplicationUncheckedCreateWithoutOfferLettersInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutOfferLettersInput = {
@@ -4078,6 +4339,7 @@ export type ApplicationUpdateWithoutOfferLettersInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutOfferLettersInput = {
@@ -4120,6 +4382,7 @@ export type ApplicationUncheckedUpdateWithoutOfferLettersInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutTerminationsInput = {
@@ -4162,6 +4425,7 @@ export type ApplicationCreateWithoutTerminationsInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutTerminationsInput = {
@@ -4204,6 +4468,7 @@ export type ApplicationUncheckedCreateWithoutTerminationsInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutTerminationsInput = {
@@ -4262,6 +4527,7 @@ export type ApplicationUpdateWithoutTerminationsInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutTerminationsInput = {
@@ -4304,6 +4570,7 @@ export type ApplicationUncheckedUpdateWithoutTerminationsInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -4346,6 +4613,7 @@ export type ApplicationCreateWithoutPaymentMethodChangeRequestsInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -4388,6 +4656,7 @@ export type ApplicationUncheckedCreateWithoutPaymentMethodChangeRequestsInput = 
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
@@ -4446,6 +4715,7 @@ export type ApplicationUpdateWithoutPaymentMethodChangeRequestsInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
@@ -4488,6 +4758,7 @@ export type ApplicationUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = 
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutOutgoingTransferRequestsInput = {
@@ -4530,6 +4801,7 @@ export type ApplicationCreateWithoutOutgoingTransferRequestsInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutOutgoingTransferRequestsInput = {
@@ -4572,6 +4844,7 @@ export type ApplicationUncheckedCreateWithoutOutgoingTransferRequestsInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutOutgoingTransferRequestsInput = {
@@ -4619,6 +4892,7 @@ export type ApplicationCreateWithoutIncomingTransferRequestsInput = {
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutIncomingTransferRequestsInput = {
@@ -4661,6 +4935,7 @@ export type ApplicationUncheckedCreateWithoutIncomingTransferRequestsInput = {
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
   organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutIncomingTransferRequestsInput = {
@@ -4719,6 +4994,7 @@ export type ApplicationUpdateWithoutOutgoingTransferRequestsInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutOutgoingTransferRequestsInput = {
@@ -4761,6 +5037,7 @@ export type ApplicationUncheckedUpdateWithoutOutgoingTransferRequestsInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUpsertWithoutIncomingTransferRequestsInput = {
@@ -4814,6 +5091,7 @@ export type ApplicationUpdateWithoutIncomingTransferRequestsInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutIncomingTransferRequestsInput = {
@@ -4856,6 +5134,7 @@ export type ApplicationUncheckedUpdateWithoutIncomingTransferRequestsInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateManyBuyerInput = {
@@ -4956,6 +5235,7 @@ export type ApplicationUpdateWithoutBuyerInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutBuyerInput = {
@@ -4998,6 +5278,7 @@ export type ApplicationUncheckedUpdateWithoutBuyerInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutBuyerInput = {
@@ -5069,6 +5350,7 @@ export type ApplicationUpdateWithoutSellerInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutSellerInput = {
@@ -5111,6 +5393,7 @@ export type ApplicationUncheckedUpdateWithoutSellerInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutSellerInput = {
@@ -5211,6 +5494,7 @@ export type ApplicationUpdateWithoutTenantInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutTenantInput = {
@@ -5253,6 +5537,7 @@ export type ApplicationUncheckedUpdateWithoutTenantInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutTenantInput = {
@@ -5353,6 +5638,7 @@ export type ApplicationUpdateWithoutPropertyUnitInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutPropertyUnitInput = {
@@ -5395,6 +5681,7 @@ export type ApplicationUncheckedUpdateWithoutPropertyUnitInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutPropertyUnitInput = {
@@ -5495,6 +5782,7 @@ export type ApplicationUpdateWithoutPaymentMethodInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutPaymentMethodInput = {
@@ -5537,6 +5825,7 @@ export type ApplicationUncheckedUpdateWithoutPaymentMethodInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutPaymentMethodInput = {
@@ -5637,6 +5926,7 @@ export type ApplicationUpdateWithoutSupersededByInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutSupersededByInput = {
@@ -5679,6 +5969,7 @@ export type ApplicationUncheckedUpdateWithoutSupersededByInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutSupersededByInput = {
@@ -5779,6 +6070,7 @@ export type ApplicationUpdateWithoutCurrentPhaseInput = {
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutCurrentPhaseInput = {
@@ -5821,6 +6113,7 @@ export type ApplicationUncheckedUpdateWithoutCurrentPhaseInput = {
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
   organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutCurrentPhaseInput = {
@@ -5870,6 +6163,7 @@ export type ApplicationCountOutputType = {
   events: number
   refunds: number
   organizations: number
+  coApplicants: number
 }
 
 export type ApplicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5885,6 +6179,7 @@ export type ApplicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exten
   events?: boolean | ApplicationCountOutputTypeCountEventsArgs
   refunds?: boolean | ApplicationCountOutputTypeCountRefundsArgs
   organizations?: boolean | ApplicationCountOutputTypeCountOrganizationsArgs
+  coApplicants?: boolean | ApplicationCountOutputTypeCountCoApplicantsArgs
 }
 
 /**
@@ -5981,6 +6276,13 @@ export type ApplicationCountOutputTypeCountOrganizationsArgs<ExtArgs extends run
   where?: Prisma.ApplicationOrganizationWhereInput
 }
 
+/**
+ * ApplicationCountOutputType without action
+ */
+export type ApplicationCountOutputTypeCountCoApplicantsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CoApplicantWhereInput
+}
+
 
 export type ApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -6031,6 +6333,7 @@ export type ApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   events?: boolean | Prisma.Application$eventsArgs<ExtArgs>
   refunds?: boolean | Prisma.Application$refundsArgs<ExtArgs>
   organizations?: boolean | Prisma.Application$organizationsArgs<ExtArgs>
+  coApplicants?: boolean | Prisma.Application$coApplicantsArgs<ExtArgs>
   _count?: boolean | Prisma.ApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["application"]>
 
@@ -6089,6 +6392,7 @@ export type ApplicationInclude<ExtArgs extends runtime.Types.Extensions.Internal
   events?: boolean | Prisma.Application$eventsArgs<ExtArgs>
   refunds?: boolean | Prisma.Application$refundsArgs<ExtArgs>
   organizations?: boolean | Prisma.Application$organizationsArgs<ExtArgs>
+  coApplicants?: boolean | Prisma.Application$coApplicantsArgs<ExtArgs>
   _count?: boolean | Prisma.ApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -6116,6 +6420,7 @@ export type $ApplicationPayload<ExtArgs extends runtime.Types.Extensions.Interna
     events: Prisma.$ApplicationEventPayload<ExtArgs>[]
     refunds: Prisma.$ApplicationRefundPayload<ExtArgs>[]
     organizations: Prisma.$ApplicationOrganizationPayload<ExtArgs>[]
+    coApplicants: Prisma.$CoApplicantPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -6506,6 +6811,7 @@ export interface Prisma__ApplicationClient<T, Null = never, ExtArgs extends runt
   events<T extends Prisma.Application$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refunds<T extends Prisma.Application$refundsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$refundsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationRefundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizations<T extends Prisma.Application$organizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$organizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationOrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  coApplicants<T extends Prisma.Application$coApplicantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$coApplicantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoApplicantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7304,6 +7610,30 @@ export type Application$organizationsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.ApplicationOrganizationScalarFieldEnum | Prisma.ApplicationOrganizationScalarFieldEnum[]
+}
+
+/**
+ * Application.coApplicants
+ */
+export type Application$coApplicantsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CoApplicant
+   */
+  select?: Prisma.CoApplicantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CoApplicant
+   */
+  omit?: Prisma.CoApplicantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CoApplicantInclude<ExtArgs> | null
+  where?: Prisma.CoApplicantWhereInput
+  orderBy?: Prisma.CoApplicantOrderByWithRelationInput | Prisma.CoApplicantOrderByWithRelationInput[]
+  cursor?: Prisma.CoApplicantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CoApplicantScalarFieldEnum | Prisma.CoApplicantScalarFieldEnum[]
 }
 
 /**

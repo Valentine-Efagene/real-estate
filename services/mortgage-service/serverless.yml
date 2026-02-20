@@ -136,6 +136,38 @@ functions:
           batchSize: 10
           functionResponseType: ReportBatchItemFailures
 
+  # Scheduled: SLA breach checker — runs hourly
+  # Finds ApplicationOrganization records past their SLA deadline and notifies ops
+  slaBreachChecker:
+    handler: dist/scheduled/sla-breach-checker.handler
+    timeout: 300
+    environment:
+      OPS_EMAIL: ${ssm:/qshelter/${self:provider.stage}/ops-email, 'ops@qshelter.com'}
+      DASHBOARD_URL: ${ssm:/qshelter/${self:provider.stage}/dashboard-url, ''}
+    events:
+      - schedule: rate(1 hour)
+
+  # Scheduled: Document expiry checker — runs daily at 2 AM UTC
+  # Marks expired documents and records expiry warning timestamps
+  documentExpiryChecker:
+    handler: dist/scheduled/document-expiry-checker.handler
+    timeout: 300
+    environment:
+      DASHBOARD_URL: ${ssm:/qshelter/${self:provider.stage}/dashboard-url, ''}
+    events:
+      - schedule: cron(0 2 * * ? *)
+
+  # Scheduled: Payment reminder sender — runs daily at 8 AM UTC
+  # Sends payment due reminders to active application buyers
+  paymentReminderSender:
+    handler: dist/scheduled/payment-reminder-sender.handler
+    timeout: 300
+    environment:
+      DASHBOARD_URL: ${ssm:/qshelter/${self:provider.stage}/dashboard-url, ''}
+      PAYMENT_URL: ${ssm:/qshelter/${self:provider.stage}/dashboard-url, ''}
+    events:
+      - schedule: cron(0 8 * * ? *)
+
 plugins:
   - serverless-localstack
 

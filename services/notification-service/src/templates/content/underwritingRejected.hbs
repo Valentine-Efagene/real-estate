@@ -1,0 +1,48 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    ❌ Underwriting Decision — Not Approved
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{homeBuyerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    After careful review, we regret to inform you that your mortgage application was not approved at this time.
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:20px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Application:</td>
+        <td style="padding:5px 0;"><strong>{{applicationNumber}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;">{{propertyName}}</td>
+    </tr>
+    {{#if reviewedDate}}
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Reviewed On:</td>
+        <td style="padding:5px 0;">{{reviewedDate}}</td>
+    </tr>
+    {{/if}}
+    {{#if reason}}
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Reason:</td>
+        <td style="padding:5px 0;">{{reason}}</td>
+    </tr>
+    {{/if}}
+</table>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    You may be eligible to reapply or explore other property options. Our team is here to help you understand your next steps.
+</p>
+
+<a href="{{dashboardLink}}"
+   style="display:inline-block; background-color:#19C2AB; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:12px 25px; border-radius:5px; margin:20px 0;">
+    Explore Options
+</a>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Best regards,<br/>
+    The QShelter Team
+</p>
