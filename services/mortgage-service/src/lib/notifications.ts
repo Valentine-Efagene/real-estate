@@ -869,3 +869,35 @@ export async function sendOfferLetterExpiredNotification(
         { correlationId },
     );
 }
+
+// ============== Co-Applicant Notifications ==============
+
+export interface CoApplicantInvitedPayload {
+    email: string;
+    inviteeName: string;
+    inviterName: string;
+    applicationTitle: string;
+    propertyName: string;
+    acceptLink: string;
+    expiresAt: string;
+}
+
+export async function sendCoApplicantInvitedNotification(
+    payload: CoApplicantInvitedPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.CO_APPLICANT_INVITED,
+        {
+            to_email: payload.email,
+            inviteeName: payload.inviteeName,
+            inviterName: payload.inviterName,
+            applicationTitle: payload.applicationTitle,
+            propertyName: payload.propertyName,
+            acceptLink: payload.acceptLink,
+            expiresAt: payload.expiresAt,
+        },
+        { correlationId },
+    );
+}

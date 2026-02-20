@@ -2585,6 +2585,10 @@ model CoApplicant {
   monthlyIncome   Float?
   employmentType  String? // EMPLOYED, SELF_EMPLOYED, CONTRACTOR, RETIRED, UNEMPLOYED
 
+  // Invitation token for token-based acceptance (new users who don't have accounts yet)
+  inviteToken          String?   @unique
+  inviteTokenExpiresAt DateTime?
+
   // Lifecycle state
   status          CoApplicantStatus @default(INVITED)
   invitedAt       DateTime @default(now())

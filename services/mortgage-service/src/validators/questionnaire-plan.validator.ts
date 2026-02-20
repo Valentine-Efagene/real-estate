@@ -3,9 +3,47 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 
 extendZodWithOpenApi(z);
 
-// Condition operator enum for scoring rules (must match Prisma ConditionOperator)
-const ConditionOperatorEnum = z.enum([
-    'EQUALS',
+// Condition schemas for showIf (matches condition-evaluator.service.ts Condition type)
+// Simple condition: { questionKey, operator, value } or { questionKey, operator, values }
+const SimpleConditionSchema = z.object({
+    questionKey: z.string(),
+    operator: ConditionOperatorEnum,
+    value: z.union([z.string(), z.number(), z.boolean()]).optional(),
+    values: z.array(z.union([z.string(), z.number(), z.boolean()])).optional(),
+}).openapi({
+    example: { questionKey: 'employment_status', operator: 'EQUALS', value: 'EMPLOYED' },
+    description: 'Simple condition: compare a question answer using an operator',
+});
+
+// Compound condition: { all?: Condition[], any?: Condition[] }
+// Use z.lazy for self-referential recursion
+type ShowIfCondition =
+    | { questionKey: string; operator: string; value?: unknown; values?: unknown[] }
+    | { all?: ShowIfCondition[]; any?: ShowIfCondition[] };
+
+const ShowIfSchema: z.ZodType<ShowIfCondition> = z.lazy(() =>
+    z.union([
+        SimpleConditionSchema,
+        z.object({
+            all: z.array(ShowIfSchema).optional(),
+            any: z.array(ShowIfSchema).optional(),
+        }),
+    ])
+).openapi({
+    example: {
+        any: [
+            { questionKey: 'joint_mortgage', operator: 'EQUALS', value: 'YES' },
+            {
+                all: [
+                    { questionKey: 'employment_status', operator: 'EQUALS', value: 'EMPLOYED' },
+                    { questionKey: 'annual_income', operator: 'GREATER_THAN_OR_EQUAL', value: 1000000 },
+                ]
+            },
+        ],
+    },
+    description: 'Conditional display logic. Supports simple conditions (questionKey + operator + value) and compound AND/OR logic ({ all: [...] } / { any: [...] })',
+});
+'EQUALS',
     'NOT_EQUALS',
     'IN',
     'NOT_IN',
@@ -137,16 +175,9 @@ export const QuestionnairePlanQuestionSchema = z.object({
         description: 'Weight multiplier for scoring',
     }),
     scoringRules: ScoringRulesSchema.optional(),
-    showIf: z.object({
-        questionKey: z.string(),
-        equals: z.union([z.string(), z.number(), z.boolean()]).optional(),
-        notEquals: z.union([z.string(), z.number(), z.boolean()]).optional(),
-        contains: z.string().optional(),
-        greaterThan: z.number().optional(),
-        lessThan: z.number().optional(),
-    }).optional().openapi({
-        example: { questionKey: 'employment_status', equals: 'employed' },
-        description: 'Conditional logic for showing this question',
+    showIf: ShowIfSchema.optional().openapi({
+        example: { questionKey: 'joint_mortgage', operator: 'EQUALS', value: 'YES' },
+        description: 'Conditional display logic. Supports simple conditions ({ questionKey, operator, value }) and compound AND/OR ({ all: [...] } / { any: [...] })',
     }),
     category: QuestionCategoryEnum.optional().openapi({
         example: 'INCOME',

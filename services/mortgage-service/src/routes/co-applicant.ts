@@ -3,6 +3,7 @@ import {
     successResponse,
     getAuthContext,
     isAdmin,
+    requireTenant,
 } from '@valentine-efagene/qshelter-common';
 import { getTenantPrisma } from '../lib/tenant-services';
 import { createCoApplicantService } from '../services/co-applicant.service';
@@ -12,6 +13,7 @@ import {
     RemoveCoApplicantSchema,
 } from '../validators/co-applicant.validator';
 import { createApplicationService } from '../services/application.service';
+import { z } from 'zod';
 
 const router: Router = Router({ mergeParams: true });
 
@@ -154,6 +156,27 @@ router.delete('/:coApplicantId', async (req: Request, res: Response, next: NextF
         const service = getService(req);
         const updated = await service.remove(applicationId, coApplicantId, userId, data);
         res.json(successResponse(updated));
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * POST /co-applicant-invites/accept-by-token
+ * Accept a co-applicant invitation by token (for new users or existing users following an email link).
+ * This route is mounted separately on /co-applicant-invites, not under /applications/:id.
+ */
+export const AcceptByTokenSchema = z.object({ token: z.string().min(1) });
+
+export const acceptByTokenRouter: Router = Router();
+
+acceptByTokenRouter.post('/accept-by-token', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { userId } = getAuthContext(req);
+        const { token } = AcceptByTokenSchema.parse(req.body);
+        const service = createCoApplicantService(getTenantPrisma(req));
+        const result = await service.acceptByToken(token, userId);
+        res.json(successResponse(result));
     } catch (error) {
         next(error);
     }

@@ -70,6 +70,9 @@ export enum NotificationType {
     ORGANIZATION_INVITATION_ACCEPTED = 'organizationInvitationAccepted',
     ORGANIZATION_INVITATION_EXPIRED = 'organizationInvitationExpired',
 
+    // Co-Applicant
+    CO_APPLICANT_INVITED = 'coApplicantInvited',
+
     // Admin
     ADMIN_CONTRIBUTION_RECEIVED = 'adminContributionReceived',
     ADMIN_PROPERTY_ALLOCATION = 'adminPropertyAllocation',

@@ -45,6 +45,8 @@ export type CoApplicantMinAggregateOutputType = {
   relationship: string | null
   monthlyIncome: number | null
   employmentType: string | null
+  inviteToken: string | null
+  inviteTokenExpiresAt: Date | null
   status: $Enums.CoApplicantStatus | null
   invitedAt: Date | null
   acceptedAt: Date | null
@@ -66,6 +68,8 @@ export type CoApplicantMaxAggregateOutputType = {
   relationship: string | null
   monthlyIncome: number | null
   employmentType: string | null
+  inviteToken: string | null
+  inviteTokenExpiresAt: Date | null
   status: $Enums.CoApplicantStatus | null
   invitedAt: Date | null
   acceptedAt: Date | null
@@ -87,6 +91,8 @@ export type CoApplicantCountAggregateOutputType = {
   relationship: number
   monthlyIncome: number
   employmentType: number
+  inviteToken: number
+  inviteTokenExpiresAt: number
   status: number
   invitedAt: number
   acceptedAt: number
@@ -118,6 +124,8 @@ export type CoApplicantMinAggregateInputType = {
   relationship?: true
   monthlyIncome?: true
   employmentType?: true
+  inviteToken?: true
+  inviteTokenExpiresAt?: true
   status?: true
   invitedAt?: true
   acceptedAt?: true
@@ -139,6 +147,8 @@ export type CoApplicantMaxAggregateInputType = {
   relationship?: true
   monthlyIncome?: true
   employmentType?: true
+  inviteToken?: true
+  inviteTokenExpiresAt?: true
   status?: true
   invitedAt?: true
   acceptedAt?: true
@@ -160,6 +170,8 @@ export type CoApplicantCountAggregateInputType = {
   relationship?: true
   monthlyIncome?: true
   employmentType?: true
+  inviteToken?: true
+  inviteTokenExpiresAt?: true
   status?: true
   invitedAt?: true
   acceptedAt?: true
@@ -268,6 +280,8 @@ export type CoApplicantGroupByOutputType = {
   relationship: string
   monthlyIncome: number | null
   employmentType: string | null
+  inviteToken: string | null
+  inviteTokenExpiresAt: Date | null
   status: $Enums.CoApplicantStatus
   invitedAt: Date
   acceptedAt: Date | null
@@ -312,6 +326,8 @@ export type CoApplicantWhereInput = {
   relationship?: Prisma.StringFilter<"CoApplicant"> | string
   monthlyIncome?: Prisma.FloatNullableFilter<"CoApplicant"> | number | null
   employmentType?: Prisma.StringNullableFilter<"CoApplicant"> | string | null
+  inviteToken?: Prisma.StringNullableFilter<"CoApplicant"> | string | null
+  inviteTokenExpiresAt?: Prisma.DateTimeNullableFilter<"CoApplicant"> | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFilter<"CoApplicant"> | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFilter<"CoApplicant"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableFilter<"CoApplicant"> | Date | string | null
@@ -337,6 +353,8 @@ export type CoApplicantOrderByWithRelationInput = {
   relationship?: Prisma.SortOrder
   monthlyIncome?: Prisma.SortOrderInput | Prisma.SortOrder
   employmentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  inviteToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  inviteTokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   invitedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -354,6 +372,7 @@ export type CoApplicantOrderByWithRelationInput = {
 
 export type CoApplicantWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  inviteToken?: string
   applicationId_email?: Prisma.CoApplicantApplicationIdEmailCompoundUniqueInput
   AND?: Prisma.CoApplicantWhereInput | Prisma.CoApplicantWhereInput[]
   OR?: Prisma.CoApplicantWhereInput[]
@@ -367,6 +386,7 @@ export type CoApplicantWhereUniqueInput = Prisma.AtLeast<{
   relationship?: Prisma.StringFilter<"CoApplicant"> | string
   monthlyIncome?: Prisma.FloatNullableFilter<"CoApplicant"> | number | null
   employmentType?: Prisma.StringNullableFilter<"CoApplicant"> | string | null
+  inviteTokenExpiresAt?: Prisma.DateTimeNullableFilter<"CoApplicant"> | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFilter<"CoApplicant"> | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFilter<"CoApplicant"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableFilter<"CoApplicant"> | Date | string | null
@@ -379,7 +399,7 @@ export type CoApplicantWhereUniqueInput = Prisma.AtLeast<{
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   removedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-}, "id" | "applicationId_email">
+}, "id" | "inviteToken" | "applicationId_email">
 
 export type CoApplicantOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -392,6 +412,8 @@ export type CoApplicantOrderByWithAggregationInput = {
   relationship?: Prisma.SortOrder
   monthlyIncome?: Prisma.SortOrderInput | Prisma.SortOrder
   employmentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  inviteToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  inviteTokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   invitedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -421,6 +443,8 @@ export type CoApplicantScalarWhereWithAggregatesInput = {
   relationship?: Prisma.StringWithAggregatesFilter<"CoApplicant"> | string
   monthlyIncome?: Prisma.FloatNullableWithAggregatesFilter<"CoApplicant"> | number | null
   employmentType?: Prisma.StringNullableWithAggregatesFilter<"CoApplicant"> | string | null
+  inviteToken?: Prisma.StringNullableWithAggregatesFilter<"CoApplicant"> | string | null
+  inviteTokenExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CoApplicant"> | Date | string | null
   status?: Prisma.EnumCoApplicantStatusWithAggregatesFilter<"CoApplicant"> | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeWithAggregatesFilter<"CoApplicant"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CoApplicant"> | Date | string | null
@@ -439,6 +463,8 @@ export type CoApplicantCreateInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -463,6 +489,8 @@ export type CoApplicantUncheckedCreateInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -481,6 +509,8 @@ export type CoApplicantUpdateInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -505,6 +535,8 @@ export type CoApplicantUncheckedUpdateInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -526,6 +558,8 @@ export type CoApplicantCreateManyInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -544,6 +578,8 @@ export type CoApplicantUpdateManyMutationInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -564,6 +600,8 @@ export type CoApplicantUncheckedUpdateManyInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -606,6 +644,8 @@ export type CoApplicantCountOrderByAggregateInput = {
   relationship?: Prisma.SortOrder
   monthlyIncome?: Prisma.SortOrder
   employmentType?: Prisma.SortOrder
+  inviteToken?: Prisma.SortOrder
+  inviteTokenExpiresAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   invitedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
@@ -631,6 +671,8 @@ export type CoApplicantMaxOrderByAggregateInput = {
   relationship?: Prisma.SortOrder
   monthlyIncome?: Prisma.SortOrder
   employmentType?: Prisma.SortOrder
+  inviteToken?: Prisma.SortOrder
+  inviteTokenExpiresAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   invitedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
@@ -652,6 +694,8 @@ export type CoApplicantMinOrderByAggregateInput = {
   relationship?: Prisma.SortOrder
   monthlyIncome?: Prisma.SortOrder
   employmentType?: Prisma.SortOrder
+  inviteToken?: Prisma.SortOrder
+  inviteTokenExpiresAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   invitedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
@@ -846,6 +890,8 @@ export type CoApplicantCreateWithoutUserInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -868,6 +914,8 @@ export type CoApplicantUncheckedCreateWithoutUserInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -896,6 +944,8 @@ export type CoApplicantCreateWithoutRemovedByInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -919,6 +969,8 @@ export type CoApplicantUncheckedCreateWithoutRemovedByInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -968,6 +1020,8 @@ export type CoApplicantScalarWhereInput = {
   relationship?: Prisma.StringFilter<"CoApplicant"> | string
   monthlyIncome?: Prisma.FloatNullableFilter<"CoApplicant"> | number | null
   employmentType?: Prisma.StringNullableFilter<"CoApplicant"> | string | null
+  inviteToken?: Prisma.StringNullableFilter<"CoApplicant"> | string | null
+  inviteTokenExpiresAt?: Prisma.DateTimeNullableFilter<"CoApplicant"> | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFilter<"CoApplicant"> | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFilter<"CoApplicant"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableFilter<"CoApplicant"> | Date | string | null
@@ -1002,6 +1056,8 @@ export type CoApplicantCreateWithoutTenantInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -1024,6 +1080,8 @@ export type CoApplicantUncheckedCreateWithoutTenantInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -1068,6 +1126,8 @@ export type CoApplicantCreateWithoutApplicationInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -1090,6 +1150,8 @@ export type CoApplicantUncheckedCreateWithoutApplicationInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -1136,6 +1198,8 @@ export type CoApplicantCreateManyUserInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -1157,6 +1221,8 @@ export type CoApplicantCreateManyRemovedByInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -1174,6 +1240,8 @@ export type CoApplicantUpdateWithoutUserInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1196,6 +1264,8 @@ export type CoApplicantUncheckedUpdateWithoutUserInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1216,6 +1286,8 @@ export type CoApplicantUncheckedUpdateManyWithoutUserInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1234,6 +1306,8 @@ export type CoApplicantUpdateWithoutRemovedByInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1257,6 +1331,8 @@ export type CoApplicantUncheckedUpdateWithoutRemovedByInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1277,6 +1353,8 @@ export type CoApplicantUncheckedUpdateManyWithoutRemovedByInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1296,6 +1374,8 @@ export type CoApplicantCreateManyTenantInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -1314,6 +1394,8 @@ export type CoApplicantUpdateWithoutTenantInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1336,6 +1418,8 @@ export type CoApplicantUncheckedUpdateWithoutTenantInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1356,6 +1440,8 @@ export type CoApplicantUncheckedUpdateManyWithoutTenantInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1376,6 +1462,8 @@ export type CoApplicantCreateManyApplicationInput = {
   relationship: string
   monthlyIncome?: number | null
   employmentType?: string | null
+  inviteToken?: string | null
+  inviteTokenExpiresAt?: Date | string | null
   status?: $Enums.CoApplicantStatus
   invitedAt?: Date | string
   acceptedAt?: Date | string | null
@@ -1394,6 +1482,8 @@ export type CoApplicantUpdateWithoutApplicationInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1416,6 +1506,8 @@ export type CoApplicantUncheckedUpdateWithoutApplicationInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1436,6 +1528,8 @@ export type CoApplicantUncheckedUpdateManyWithoutApplicationInput = {
   relationship?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   employmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumCoApplicantStatusFieldUpdateOperationsInput | $Enums.CoApplicantStatus
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1459,6 +1553,8 @@ export type CoApplicantSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   relationship?: boolean
   monthlyIncome?: boolean
   employmentType?: boolean
+  inviteToken?: boolean
+  inviteTokenExpiresAt?: boolean
   status?: boolean
   invitedAt?: boolean
   acceptedAt?: boolean
@@ -1486,6 +1582,8 @@ export type CoApplicantSelectScalar = {
   relationship?: boolean
   monthlyIncome?: boolean
   employmentType?: boolean
+  inviteToken?: boolean
+  inviteTokenExpiresAt?: boolean
   status?: boolean
   invitedAt?: boolean
   acceptedAt?: boolean
@@ -1496,7 +1594,7 @@ export type CoApplicantSelectScalar = {
   updatedAt?: boolean
 }
 
-export type CoApplicantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "userId" | "email" | "firstName" | "lastName" | "relationship" | "monthlyIncome" | "employmentType" | "status" | "invitedAt" | "acceptedAt" | "removedAt" | "removedById" | "removalReason" | "createdAt" | "updatedAt", ExtArgs["result"]["coApplicant"]>
+export type CoApplicantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "userId" | "email" | "firstName" | "lastName" | "relationship" | "monthlyIncome" | "employmentType" | "inviteToken" | "inviteTokenExpiresAt" | "status" | "invitedAt" | "acceptedAt" | "removedAt" | "removedById" | "removalReason" | "createdAt" | "updatedAt", ExtArgs["result"]["coApplicant"]>
 export type CoApplicantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
@@ -1523,6 +1621,8 @@ export type $CoApplicantPayload<ExtArgs extends runtime.Types.Extensions.Interna
     relationship: string
     monthlyIncome: number | null
     employmentType: string | null
+    inviteToken: string | null
+    inviteTokenExpiresAt: Date | null
     status: $Enums.CoApplicantStatus
     invitedAt: Date
     acceptedAt: Date | null
@@ -1914,6 +2014,8 @@ export interface CoApplicantFieldRefs {
   readonly relationship: Prisma.FieldRef<"CoApplicant", 'String'>
   readonly monthlyIncome: Prisma.FieldRef<"CoApplicant", 'Float'>
   readonly employmentType: Prisma.FieldRef<"CoApplicant", 'String'>
+  readonly inviteToken: Prisma.FieldRef<"CoApplicant", 'String'>
+  readonly inviteTokenExpiresAt: Prisma.FieldRef<"CoApplicant", 'DateTime'>
   readonly status: Prisma.FieldRef<"CoApplicant", 'CoApplicantStatus'>
   readonly invitedAt: Prisma.FieldRef<"CoApplicant", 'DateTime'>
   readonly acceptedAt: Prisma.FieldRef<"CoApplicant", 'DateTime'>

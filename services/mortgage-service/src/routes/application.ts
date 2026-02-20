@@ -100,6 +100,15 @@ async function canAccessApplication(req: Request, res: Response, next: NextFunct
             throw new AppError(403, 'Your organization is not authorized to access this application');
         }
 
+        // Active co-applicants can access the application
+        const coApplicant = await prisma.coApplicant.findFirst({
+            where: { applicationId, userId, status: 'ACTIVE' },
+        });
+        if (coApplicant) {
+            (req as any).coApplicant = coApplicant;
+            return next();
+        }
+
         throw new AppError(403, 'You do not have permission to access this application');
     } catch (error) {
         next(error);
@@ -197,6 +206,36 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
 
         const result = await applicationService.findAll(filters);
         res.json(successResponse(result));
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Get applications where current user is a co-applicant
+router.get('/as-co-applicant', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { userId } = getAuthContext(req);
+        const coApplications = await prisma.coApplicant.findMany({
+            where: { userId, status: 'ACTIVE' },
+            orderBy: { acceptedAt: 'desc' },
+            include: {
+                application: {
+                    include: {
+                        buyer: {
+                            select: { id: true, email: true, firstName: true, lastName: true },
+                        },
+                        propertyUnit: {
+                            include: {
+                                variant: {
+                                    include: { property: true },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        });
+        res.json(successResponse(coApplications));
     } catch (error) {
         next(error);
     }

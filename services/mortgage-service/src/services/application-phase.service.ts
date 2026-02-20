@@ -21,7 +21,7 @@ import type {
     GenerateInstallmentsInput,
     SubmitQuestionnaireInput,
 } from '../validators/application-phase.validator';
-import { createConditionEvaluatorService } from './condition-evaluator.service';
+import { createConditionEvaluatorService, evaluateCondition, type Condition } from './condition-evaluator.service';
 import { paymentPlanService } from './payment-plan.service';
 import {
     sendDocumentApprovedNotification,
@@ -1603,10 +1603,45 @@ class ApplicationPhaseService {
         // Map answers by field name for easy lookup
         const answerMap = new Map(data.answers.map((a) => [a.fieldName, a.value]));
 
-        // Validate that all required fields have answers
+        // Build a string-keyed record for evaluateCondition (also includes pre-existing answers)
+        const answerRecord: Record<string, any> = {};
+        for (const field of fields) {
+            // Include existing stored answers first (for fields not in this submission)
+            if (field.answer !== undefined && field.answer !== null) {
+                const raw = field.answer;
+                try {
+                    answerRecord[field.name] = typeof raw === 'string' && raw.startsWith('"') ? JSON.parse(raw) : raw;
+                } catch {
+                    answerRecord[field.name] = raw;
+                }
+            }
+        }
+        // Overlay submitted answers (these take priority)
+        for (const [k, v] of answerMap) {
+            answerRecord[k] = v;
+        }
+
+        // Parse fieldsSnapshot to get showIf per question key
+        const snapshotQuestions = (questionnairePhase.fieldsSnapshot as any)?.questions || [];
+        const showIfMap = new Map<string, any>(
+            snapshotQuestions.map((q: any) => [q.questionKey, q.showIf ?? null])
+        );
+
+        // Helper: check if a field is visible given current answers
+        const isFieldVisible = (fieldName: string): boolean => {
+            const showIf = showIfMap.get(fieldName);
+            if (!showIf) return true;
+            try {
+                return evaluateCondition(showIf as Condition, answerRecord);
+            } catch {
+                return true; // Fail open: show field if condition evaluation errors
+            }
+        };
+
+        // Validate that all required visible fields have answers
         const missingFields: string[] = [];
         for (const field of fields) {
-            if (field.isRequired && !answerMap.has(field.name)) {
+            if (field.isRequired && !answerMap.has(field.name) && isFieldVisible(field.name)) {
                 missingFields.push(field.name);
             }
         }
@@ -1632,6 +1667,9 @@ class ApplicationPhaseService {
         for (const field of fields) {
             const answer = answerMap.get(field.name);
             if (answer === undefined) continue;
+
+            // Skip scoring for fields that are conditionally hidden
+            if (!isFieldVisible(field.name)) continue;
 
             // Find the corresponding question from the plan for scoring rules
             const question = questionnairePlan?.questions?.find((q: any) => q.questionKey === field.name);

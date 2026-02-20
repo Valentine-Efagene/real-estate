@@ -1069,6 +1069,8 @@ export const CoApplicantScalarFieldEnum = {
   relationship: 'relationship',
   monthlyIncome: 'monthlyIncome',
   employmentType: 'employmentType',
+  inviteToken: 'inviteToken',
+  inviteTokenExpiresAt: 'inviteTokenExpiresAt',
   status: 'status',
   invitedAt: 'invitedAt',
   acceptedAt: 'acceptedAt',
@@ -2621,6 +2623,7 @@ export const CoApplicantOrderByRelevanceFieldEnum = {
   lastName: 'lastName',
   relationship: 'relationship',
   employmentType: 'employmentType',
+  inviteToken: 'inviteToken',
   removedById: 'removedById',
   removalReason: 'removalReason'
 } as const

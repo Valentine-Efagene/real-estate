@@ -154,6 +154,8 @@ function getTemplateType(notificationType: NotificationType): TemplateTypeValue 
         // SLA
         [NotificationType.SLA_WARNING]: 'slaWarning',
         [NotificationType.SLA_BREACHED]: 'slaBreached',
+        // Co-Applicant
+        [NotificationType.CO_APPLICANT_INVITED]: 'coApplicantInvited',
     };
 
     return typeMap[notificationType] || null;

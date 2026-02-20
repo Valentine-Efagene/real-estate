@@ -1,9 +1,17 @@
 import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
+import { randomUUID } from 'crypto';
 import {
     InviteCoApplicantInput,
     UpdateCoApplicantInput,
     RemoveCoApplicantInput,
 } from '../validators/co-applicant.validator';
+import {
+    sendCoApplicantInvitedNotification,
+    formatDate,
+} from '../lib/notifications';
+
+const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.qshelter.com';
+const TOKEN_EXPIRY_DAYS = 7;
 
 export function createCoApplicantService(prisma: PrismaClient) {
     return {
@@ -24,7 +32,7 @@ export function createCoApplicantService(prisma: PrismaClient) {
 
         /**
          * Invite a co-applicant to an application.
-         * The primary buyer or an admin can invite.
+         * If the email already has an INVITED record, regenerates their token instead of throwing 409.
          */
         async invite(
             applicationId: string,
@@ -34,29 +42,59 @@ export function createCoApplicantService(prisma: PrismaClient) {
             // Check application exists and is active-ish
             const application = await prisma.application.findUnique({
                 where: { id: applicationId },
+                include: {
+                    buyer: { select: { id: true, email: true, firstName: true, lastName: true } },
+                    propertyUnit: {
+                        include: { variant: { include: { property: true } } },
+                    },
+                },
             });
             if (!application) {
                 throw new AppError('Application not found', 404);
             }
 
-            // Check for duplicate invite
+            // Check buyer doesn't invite themselves
+            if (application.buyer?.email === data.email) {
+                throw new AppError('The primary applicant cannot be added as a co-applicant', 400);
+            }
+
+            // Check for existing invite — if re-inviting, regenerate token rather than 409
             const existing = await prisma.coApplicant.findUnique({
                 where: { applicationId_email: { applicationId, email: data.email } },
             });
-            if (existing) {
-                throw new AppError(
-                    'A co-applicant with this email already exists on this application',
-                    409,
-                );
-            }
 
-            // Check buyer doesn't invite themselves
-            const buyer = await prisma.user.findUnique({
-                where: { id: application.buyerId },
-                select: { email: true },
-            });
-            if (buyer?.email === data.email) {
-                throw new AppError('The primary applicant cannot be added as a co-applicant', 400);
+            const inviteToken = randomUUID();
+            const inviteTokenExpiresAt = new Date(Date.now() + TOKEN_EXPIRY_DAYS * 24 * 60 * 60 * 1000);
+
+            if (existing) {
+                if (existing.status === 'ACTIVE') {
+                    throw new AppError('This person has already accepted the invitation', 409);
+                }
+                if (existing.status === 'REMOVED') {
+                    throw new AppError('This co-applicant was removed from the application', 409);
+                }
+                // Re-invite: update record with fresh token and provided data
+                const updated = await prisma.coApplicant.update({
+                    where: { id: existing.id },
+                    data: {
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        relationship: data.relationship,
+                        monthlyIncome: data.monthlyIncome,
+                        employmentType: data.employmentType,
+                        status: 'INVITED',
+                        inviteToken,
+                        inviteTokenExpiresAt,
+                        invitedAt: new Date(),
+                    },
+                    include: {
+                        user: {
+                            select: { id: true, email: true, firstName: true, lastName: true },
+                        },
+                    },
+                });
+                await this._sendInviteNotification(updated, application, inviteToken, inviteTokenExpiresAt);
+                return updated;
             }
 
             // Find user account if they already exist
@@ -65,7 +103,7 @@ export function createCoApplicantService(prisma: PrismaClient) {
                 select: { id: true },
             });
 
-            return prisma.coApplicant.create({
+            const created = await prisma.coApplicant.create({
                 data: {
                     tenantId,
                     applicationId,
@@ -77,8 +115,86 @@ export function createCoApplicantService(prisma: PrismaClient) {
                     employmentType: data.employmentType,
                     userId: invitedUser?.id ?? null,
                     status: 'INVITED',
+                    inviteToken,
+                    inviteTokenExpiresAt,
                 },
                 include: {
+                    user: {
+                        select: { id: true, email: true, firstName: true, lastName: true },
+                    },
+                },
+            });
+
+            await this._sendInviteNotification(created, application, inviteToken, inviteTokenExpiresAt);
+            return created;
+        },
+
+        /**
+         * Internal: send invite notification email
+         */
+        async _sendInviteNotification(
+            coApplicant: any,
+            application: any,
+            inviteToken: string,
+            expiresAt: Date,
+        ) {
+            try {
+                const inviterName = application.buyer
+                    ? `${application.buyer.firstName} ${application.buyer.lastName}`
+                    : 'Your co-applicant';
+                const propertyName = application.propertyUnit?.variant?.property?.name || application.title;
+                const acceptLink = `${DASHBOARD_URL}/co-applicant-invite?token=${inviteToken}`;
+
+                await sendCoApplicantInvitedNotification({
+                    email: coApplicant.email,
+                    inviteeName: `${coApplicant.firstName} ${coApplicant.lastName}`,
+                    inviterName,
+                    applicationTitle: application.title,
+                    propertyName,
+                    acceptLink,
+                    expiresAt: formatDate(expiresAt),
+                });
+            } catch (err) {
+                // Notification failure should not block invite creation
+                console.error('Failed to send co-applicant invite notification:', err);
+            }
+        },
+
+        /**
+         * Accept a co-applicant invitation via invite token (for new or returning users).
+         */
+        async acceptByToken(token: string, userId: string) {
+            const coApplicant = await prisma.coApplicant.findUnique({
+                where: { inviteToken: token },
+            });
+
+            if (!coApplicant) {
+                throw new AppError('Invalid or expired invitation token', 404);
+            }
+
+            if (coApplicant.status !== 'INVITED') {
+                throw new AppError(
+                    `Cannot accept an invitation with status: ${coApplicant.status}`,
+                    400,
+                );
+            }
+
+            if (coApplicant.inviteTokenExpiresAt && coApplicant.inviteTokenExpiresAt < new Date()) {
+                throw new AppError('This invitation has expired. Please ask the primary applicant to resend it.', 400);
+            }
+
+            return prisma.coApplicant.update({
+                where: { id: coApplicant.id },
+                data: {
+                    status: 'ACTIVE',
+                    userId,
+                    acceptedAt: new Date(),
+                    // Clear token after use
+                    inviteToken: null,
+                    inviteTokenExpiresAt: null,
+                },
+                include: {
+                    application: { select: { id: true, title: true } },
                     user: {
                         select: { id: true, email: true, firstName: true, lastName: true },
                     },
@@ -113,7 +229,7 @@ export function createCoApplicantService(prisma: PrismaClient) {
         },
 
         /**
-         * Co-applicant accepts their invitation (self-service).
+         * Co-applicant accepts their invitation (self-service by ID — for existing users).
          * Called when the invited user logs in and accepts.
          */
         async accept(applicationId: string, coApplicantId: string, userId: string) {
@@ -136,6 +252,8 @@ export function createCoApplicantService(prisma: PrismaClient) {
                     status: 'ACTIVE',
                     userId,
                     acceptedAt: new Date(),
+                    inviteToken: null,
+                    inviteTokenExpiresAt: null,
                 },
                 include: {
                     user: {
@@ -164,7 +282,7 @@ export function createCoApplicantService(prisma: PrismaClient) {
 
             return prisma.coApplicant.update({
                 where: { id: coApplicantId },
-                data: { status: 'DECLINED' },
+                data: { status: 'DECLINED', inviteToken: null, inviteTokenExpiresAt: null },
             });
         },
 
@@ -194,6 +312,8 @@ export function createCoApplicantService(prisma: PrismaClient) {
                     removedAt: new Date(),
                     removedById,
                     removalReason: data.reason,
+                    inviteToken: null,
+                    inviteTokenExpiresAt: null,
                 },
             });
         },

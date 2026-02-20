@@ -66,6 +66,8 @@ export const TemplateType = z.enum([
     // SLA
     'slaWarning',
     'slaBreached',
+    // Co-Applicant
+    'coApplicantInvited',
 ]);
 
 export type TemplateTypeValue = z.infer<typeof TemplateType>;
@@ -424,6 +426,17 @@ export const OrganizationInvitationExpiredSchema = BaseEmailSchema.extend({
     contactEmail: z.string().optional(),
 }).openapi('OrganizationInvitationExpired');
 
+// ============== Co-Applicant Invitation Schema ==============
+
+export const CoApplicantInvitedSchema = BaseEmailSchema.extend({
+    inviteeName: z.string().min(1),
+    inviterName: z.string().min(1),
+    applicationTitle: z.string().min(1),
+    propertyName: z.string().min(1),
+    acceptLink: z.string().url(),
+    expiresAt: z.string().min(1),
+}).openapi('CoApplicantInvited');
+
 // ============== Types ==============
 
 export type BaseEmailInput = z.infer<typeof BaseEmailSchema>;
@@ -467,3 +480,4 @@ export type StageCompletedInput = z.infer<typeof StageCompletedSchema>;
 export type SlaWarningInput = z.infer<typeof SlaWarningSchema>;
 export type SlaBreachedInput = z.infer<typeof SlaBreachedSchema>;
 export type OrganizationInvitationExpiredInput = z.infer<typeof OrganizationInvitationExpiredSchema>;
+export type CoApplicantInvitedInput = z.infer<typeof CoApplicantInvitedSchema>;

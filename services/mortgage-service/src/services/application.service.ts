@@ -479,6 +479,8 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                                 order: question.order,
                                 isRequired: question.isRequired ?? true,
                                 validation: question.validationRules,
+                                // Copy showIf → displayCondition so the API response includes it
+                                displayCondition: question.showIf ?? null,
                                 // options stored in validation or defaultValue if needed
                                 defaultValue: question.options ? { options: question.options } : undefined,
                             },
