@@ -27,13 +27,13 @@ function getService(req: Request) {
  */
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id: applicationId } = req.params;
+        const applicationId = req.params.id as string;
         const { userId, roles } = getAuthContext(req);
 
         // Admins or the buyer can list co-applicants
         if (!isAdmin(roles)) {
             const appService = createApplicationService(getTenantPrisma(req));
-            const application = await appService.getById(applicationId);
+            const application = await appService.findById(applicationId);
             if (application.buyerId !== userId) {
                 return res.status(403).json({ success: false, error: 'Forbidden' });
             }
@@ -54,12 +54,12 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
  */
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id: applicationId } = req.params;
+        const applicationId = req.params.id as string;
         const { userId, roles, tenantId } = getAuthContext(req);
 
         if (!isAdmin(roles)) {
             const appService = createApplicationService(getTenantPrisma(req));
-            const application = await appService.getById(applicationId);
+            const application = await appService.findById(applicationId);
             if (application.buyerId !== userId) {
                 return res.status(403).json({
                     success: false,
@@ -83,12 +83,13 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
  */
 router.patch('/:coApplicantId', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id: applicationId, coApplicantId } = req.params;
+        const applicationId = req.params.id as string;
+        const coApplicantId = req.params.coApplicantId as string;
         const { userId, roles } = getAuthContext(req);
 
         if (!isAdmin(roles)) {
             const appService = createApplicationService(getTenantPrisma(req));
-            const application = await appService.getById(applicationId);
+            const application = await appService.findById(applicationId);
             if (application.buyerId !== userId) {
                 return res.status(403).json({ success: false, error: 'Forbidden' });
             }
@@ -109,7 +110,8 @@ router.patch('/:coApplicantId', async (req: Request, res: Response, next: NextFu
  */
 router.post('/:coApplicantId/accept', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id: applicationId, coApplicantId } = req.params;
+        const applicationId = req.params.id as string;
+        const coApplicantId = req.params.coApplicantId as string;
         const { userId } = getAuthContext(req);
 
         const service = getService(req);
@@ -126,7 +128,8 @@ router.post('/:coApplicantId/accept', async (req: Request, res: Response, next: 
  */
 router.post('/:coApplicantId/decline', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id: applicationId, coApplicantId } = req.params;
+        const applicationId = req.params.id as string;
+        const coApplicantId = req.params.coApplicantId as string;
         const service = getService(req);
         const updated = await service.decline(applicationId, coApplicantId);
         res.json(successResponse(updated));
@@ -141,12 +144,13 @@ router.post('/:coApplicantId/decline', async (req: Request, res: Response, next:
  */
 router.delete('/:coApplicantId', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id: applicationId, coApplicantId } = req.params;
+        const applicationId = req.params.id as string;
+        const coApplicantId = req.params.coApplicantId as string;
         const { userId, roles } = getAuthContext(req);
 
         if (!isAdmin(roles)) {
             const appService = createApplicationService(getTenantPrisma(req));
-            const application = await appService.getById(applicationId);
+            const application = await appService.findById(applicationId);
             if (application.buyerId !== userId) {
                 return res.status(403).json({ success: false, error: 'Forbidden' });
             }
