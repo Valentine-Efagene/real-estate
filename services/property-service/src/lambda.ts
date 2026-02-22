@@ -1,20 +1,22 @@
 import serverlessExpress from '@codegenie/serverless-express';
-import { APIGatewayProxyEvent, Context, Callback } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
+import { setupAuth } from '@valentine-efagene/qshelter-common';
 import { app } from './app';
 
-// Create handler once - pass Express app directly, not app.listen()
-const serverlessExpressInstance = serverlessExpress({ app });
+let serverlessExpressInstance: any;
 
-export const handler = (
+async function initialize() {
+    await setupAuth();
+    serverlessExpressInstance = serverlessExpress({ app });
+    return serverlessExpressInstance;
+}
+
+export const handler = async (
     event: APIGatewayProxyEvent,
     context: Context,
-    callback: Callback,
-) => {
-    // DEBUG: Log the authorizer context from the event
-    if (event.requestContext?.authorizer) {
-        console.log('DEBUG: Authorizer context:', JSON.stringify(event.requestContext.authorizer, null, 2));
-    } else {
-        console.log('DEBUG: No authorizer context in event.requestContext');
+): Promise<APIGatewayProxyResult> => {
+    if (!serverlessExpressInstance) {
+        await initialize();
     }
-    return serverlessExpressInstance(event, context, callback);
+    return serverlessExpressInstance(event, context);
 };

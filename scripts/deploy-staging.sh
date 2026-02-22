@@ -1,7 +1,7 @@
 #!/bin/bash
 # Deploy QShelter to AWS Staging Environment
 # Usage: ./deploy-staging.sh [step]
-# Steps: clean, bootstrap, infra, migrations, authorizer, services, seed, test, all
+# Steps: clean, bootstrap, infra, migrations, services, test, all
 #
 # CRITICAL LEARNINGS (from deployment debugging):
 # 1. CDK bootstrap can fail if orphaned resources exist from previous failed deployments
@@ -11,17 +11,13 @@
 # 2. CloudFormation does NOT support SSM SecureString parameters - use Secrets Manager instead
 # 3. The http-api-id SSM parameter is created by user-service (not CDK infra)
 # 4. RDS security group needs ingress rule for local IP to run migrations
-# 5. Authorizer ARN must be stored in SSM after deploying authorizer-service
+# 5. Auth is handled by JWT verification in shared Express middleware (no Lambda authorizer)
 # 6. SSM pagination: ConfigService MUST paginate (MaxResults default=10, we have 20+ params)
 # 7. AWS_PROFILE conflicts: Serverless Framework may use different credentials than AWS CLI
 #    - Always export AWS_PROFILE to ensure consistent credentials
 # 8. npm husky errors: Use --ignore-scripts if postinstall fails
 # 9. Health endpoints: Add explicit /health route in serverless.yml (not prefixed with service path)
 # 10. esbuild: Output must match serverless.yml handler exactly (outfile: 'dist/lambda.mjs')
-# 11. Policy sync: SNS topic/queue/subscription created by CDK (not policy-sync-service)
-#     - SSM params: policy-sync-topic-arn, policy-sync-queue-arn, policy-sync-queue-url
-#     - Services reference via SSM, policy-sync-service just subscribes to existing queue
-# 12. Async policy sync: After bootstrap, wait ~3s for SNS->SQS->Lambda->DynamoDB sync
 
 set -e
 
@@ -279,14 +275,13 @@ update_common_package() {
     log_step "Step 3.5: Updating @valentine-efagene/qshelter-common in all services"
     
     SERVICES=(
-        "authorizer-service"
         "user-service"
         "property-service"
         "mortgage-service"
         "documents-service"
         "notification-service"
         "payment-service"
-        "policy-sync-service"
+        "uploader-service"
     )
     
     for service in "${SERVICES[@]}"; do
@@ -302,28 +297,7 @@ update_common_package() {
 }
 
 # ============================================================================
-# STEP 4: Deploy authorizer service (must be first, before other services)
-# ============================================================================
-deploy_authorizer() {
-    log_step "Step 4: Deploying Authorizer Service"
-    cd "$ROOT_DIR/services/authorizer-service"
-    
-    install_deps "$ROOT_DIR/services/authorizer-service"
-    
-    log_info "Deploying authorizer-service to AWS..."
-    npx serverless deploy --stage $STAGE
-    
-    # CRITICAL: Store authorizer Lambda ARN in SSM for other services to reference
-    log_info "Storing authorizer Lambda ARN in SSM..."
-    AUTHORIZER_ARN=$(aws lambda get-function --function-name "qshelter-authorizer-$STAGE" --query "Configuration.FunctionArn" --output text)
-    aws ssm put-parameter --name "/qshelter/$STAGE/authorizer-lambda-arn" --value "$AUTHORIZER_ARN" --type String --overwrite
-    
-    log_info "Authorizer ARN: $AUTHORIZER_ARN"
-    log_info "✅ Authorizer deployed!"
-}
-
-# ============================================================================
-# STEP 5: Deploy all other services
+# STEP 4: Deploy all application services
 # ============================================================================
 deploy_services() {
     log_step "Step 5: Deploying Application Services"
@@ -338,7 +312,6 @@ deploy_services() {
         "notification-service"
         "payment-service"
         "uploader-service"
-        "policy-sync-service"
     )
     
     FAILED_SERVICES=()
@@ -377,33 +350,7 @@ deploy_services() {
 }
 
 # ============================================================================
-# STEP 6: Seed initial data (roles, policies)
-# ============================================================================
-seed_data() {
-    log_step "Step 6: Seeding Initial Data"
-    cd "$ROOT_DIR/infrastructure"
-    
-    if [ -f "scripts/seed-role-policies.mjs" ]; then
-        log_info "Seeding role policies to DynamoDB..."
-        
-        # Get the DynamoDB table name from SSM
-        TABLE_NAME=$(aws ssm get-parameter --name "/qshelter/$STAGE/role-policies-table" --query "Parameter.Value" --output text 2>/dev/null || echo "")
-        if [[ -z "$TABLE_NAME" || "$TABLE_NAME" == "None" ]]; then
-            log_warn "Role policies table name not found in SSM, using default..."
-            TABLE_NAME="qshelter-${STAGE}-role-policies"
-        fi
-        
-        log_info "Using DynamoDB table: $TABLE_NAME"
-        ROLE_POLICIES_TABLE_NAME="$TABLE_NAME" node scripts/seed-role-policies.mjs --stage $STAGE
-    else
-        log_warn "Seed script not found, skipping..."
-    fi
-    
-    log_info "✅ Data seeded!"
-}
-
-# ============================================================================
-# STEP 6.5: Wait for services to be ready
+# STEP 5: Wait for services to be ready
 # ============================================================================
 wait_for_services() {
     log_step "Waiting for Services to be Ready"
@@ -453,7 +400,6 @@ print_endpoints() {
     log_info "Fetching service endpoints..."
     
     SERVICES=(
-        "authorizer-service"
         "user-service"
         "property-service"
         "mortgage-service"
@@ -482,13 +428,11 @@ show_usage() {
     echo "Steps:"
     echo "  clean         - Clean up orphaned CDK resources from failed deployments"
     echo "  bootstrap     - Bootstrap CDK in AWS account"
-    echo "  infra         - Deploy CDK infrastructure (VPC, RDS, DynamoDB, etc.)"
+    echo "  infra         - Deploy CDK infrastructure (VPC, RDS, S3, etc.)"
     echo "  migrations    - Run Prisma database migrations"
     echo "  update-common - Update @valentine-efagene/qshelter-common in all services"
-    echo "  authorizer    - Deploy authorizer service"
     echo "  services      - Deploy all application services"
-    echo "  seed          - Seed initial data (roles, policies)"
-    echo "  all           - Run ALL deployment steps (clean → bootstrap → infra → migrations → authorizer → services → seed → health check)"
+    echo "  all           - Run ALL deployment steps (clean → bootstrap → infra → migrations → services → health check)"
     echo ""
     echo "Examples:"
     echo "  $0 all             # Full deployment (recommended for first time)"
@@ -525,17 +469,9 @@ case $STEP in
         check_aws
         update_common_package
         ;;
-    authorizer)
-        check_aws
-        deploy_authorizer
-        ;;
     services)
         check_aws
         deploy_services
-        ;;
-    seed)
-        check_aws
-        seed_data
         ;;
     all)
         check_aws
@@ -544,9 +480,7 @@ case $STEP in
         deploy_infra
         run_migrations
         update_common_package
-        deploy_authorizer
         deploy_services
-        seed_data
         wait_for_services
         print_endpoints
         

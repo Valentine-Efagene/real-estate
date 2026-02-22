@@ -13,14 +13,6 @@ provider:
   # Create own HTTP API Gateway for this service
   httpApi:
     cors: true
-    authorizers:
-      DocumentsServiceAuthorizer:
-        type: request
-        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
-        enableSimpleResponses: true
-        payloadVersion: '2.0'
-        identitySource:
-          - $request.header.Authorization
   
   environment:
     NODE_ENV: ${self:provider.stage}
@@ -103,12 +95,10 @@ functions:
       - httpApi:
           path: /openapi.json
           method: GET
-      # All other routes require authorization
+      # All other routes
       - httpApi:
           path: /{proxy+}
           method: ANY
-          authorizer:
-            name: DocumentsServiceAuthorizer
 
 plugins:
   - serverless-localstack
@@ -128,10 +118,10 @@ custom:
         - ${ssm:/qshelter/prod/private-subnet-1-id, 'subnet-placeholder-1'}
         - ${ssm:/qshelter/prod/private-subnet-2-id, 'subnet-placeholder-2'}
   localstackEndpoint:
-    test: http://host.docker.internal:4566
+    localstack: http://host.docker.internal:4566
   localstack:
     stages:
-      - test
+      - localstack
     host: http://localhost
     edgePort: 4566
     autostart: false

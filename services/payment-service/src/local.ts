@@ -1,7 +1,17 @@
+import { config } from 'dotenv';
+config({ path: '.env.localstack' });
+
+import { setupAuth } from '@valentine-efagene/qshelter-common';
 import { app } from './app';
 
-const port = process.env.PORT || 3002;
+async function start() {
+    await setupAuth();
+    const port = Number(process.env.PORT ?? 3005);
 
-app.listen(port, () => {
-    console.log(`Payment service running on port ${port}`);
-});
+    app.listen(port, () => {
+        console.log(`🚀 Payment Service running on http://localhost:${port}`);
+        console.log(`📊 Health check: http://localhost:${port}/health`);
+    });
+}
+
+start().catch(console.error);

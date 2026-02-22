@@ -13,14 +13,6 @@ provider:
   # Create own HTTP API Gateway for this service
   httpApi:
     cors: true
-    authorizers:
-      UploaderServiceAuthorizer:
-        type: request
-        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
-        enableSimpleResponses: true
-        payloadVersion: '2.0'
-        identitySource:
-          - $request.header.Authorization
 
   environment:
     NODE_ENV: ${self:provider.stage}
@@ -71,23 +63,19 @@ functions:
       - httpApi:
           path: /openapi.json
           method: GET
-      # All other routes require authorization
+      # All other routes
       - httpApi:
           path: /{proxy+}
           method: ANY
-          authorizer:
-            name: UploaderServiceAuthorizer
 
 plugins:
   - serverless-localstack
 
 custom:
   localstackEndpoint:
-    test: http://host.docker.internal:4566
     localstack: http://host.docker.internal:4566
   localstack:
     stages:
-      - test
       - localstack
     host: http://localhost
     edgePort: 4566

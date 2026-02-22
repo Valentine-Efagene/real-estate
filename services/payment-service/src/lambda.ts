@@ -1,17 +1,25 @@
 import serverlessExpress from '@codegenie/serverless-express';
-import { APIGatewayProxyEvent, Context, Callback } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
+import { setupAuth } from '@valentine-efagene/qshelter-common';
 import { app } from './app';
 
 // Re-export SQS handler for event-driven processing
 export { handler as sqsHandler } from './handlers/sqs.handler';
 
-// Create handler once - pass Express app directly, not app.listen()
-const serverlessExpressInstance = serverlessExpress({ app });
+let serverlessExpressInstance: any;
 
-export const handler = (
+async function initialize() {
+    await setupAuth();
+    serverlessExpressInstance = serverlessExpress({ app });
+    return serverlessExpressInstance;
+}
+
+export const handler = async (
     event: APIGatewayProxyEvent,
     context: Context,
-    callback: Callback,
-) => {
-    return serverlessExpressInstance(event, context, callback);
+): Promise<APIGatewayProxyResult> => {
+    if (!serverlessExpressInstance) {
+        await initialize();
+    }
+    return serverlessExpressInstance(event, context);
 };

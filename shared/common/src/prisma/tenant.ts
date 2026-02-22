@@ -52,6 +52,8 @@ const OPTIONAL_TENANT_MODELS = [
     "permission",
     // ScheduledJob can be system-wide or tenant-specific
     "scheduledjob",
+    // AsyncJob can be system-wide or tenant-specific
+    "asyncjob",
 ] as const;
 
 type OptionalTenantModel = (typeof OPTIONAL_TENANT_MODELS)[number];

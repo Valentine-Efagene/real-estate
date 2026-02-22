@@ -2,15 +2,7 @@ import { prisma } from '../lib/prisma';
 import {
     NotFoundError,
     ConflictError,
-    PolicyEventPublisher,
 } from '@valentine-efagene/qshelter-common';
-
-// Initialize policy event publisher for role changes
-const policyPublisher = new PolicyEventPublisher('user-service', {
-    region: process.env.AWS_REGION_NAME || process.env.AWS_REGION || 'us-east-1',
-    endpoint: process.env.LOCALSTACK_ENDPOINT,
-    topicArn: process.env.POLICY_SYNC_TOPIC_ARN,
-});
 
 export interface CreateRoleInput {
     name: string;
@@ -51,21 +43,6 @@ class RoleService {
                 isActive: true,
             },
         });
-
-        // Publish role created event for DynamoDB sync
-        try {
-            await policyPublisher.publishRoleCreated({
-                id: role.id,
-                name: role.name,
-                description: role.description,
-                tenantId: role.tenantId,
-                isSystem: role.isSystem,
-                isActive: role.isActive,
-            });
-            console.log(`[RoleService] Published ROLE_CREATED event for ${role.name} (tenant: ${role.tenantId || 'global'})`);
-        } catch (error) {
-            console.error(`[RoleService] Failed to publish ROLE_CREATED event:`, error);
-        }
 
         return role;
     }
@@ -172,21 +149,6 @@ class RoleService {
             data,
         });
 
-        // Publish role updated event for DynamoDB sync
-        try {
-            await policyPublisher.publishRoleUpdated({
-                id: updatedRole.id,
-                name: updatedRole.name,
-                description: updatedRole.description,
-                tenantId: updatedRole.tenantId,
-                isSystem: updatedRole.isSystem,
-                isActive: updatedRole.isActive,
-            });
-            console.log(`[RoleService] Published ROLE_UPDATED event for ${updatedRole.name}`);
-        } catch (error) {
-            console.error(`[RoleService] Failed to publish ROLE_UPDATED event:`, error);
-        }
-
         return updatedRole;
     }
 
@@ -204,16 +166,7 @@ class RoleService {
         }
 
         const roleName = role.name;
-        const tenantId = role.tenantId;
         await prisma.role.delete({ where: { id } });
-
-        // Publish role deleted event for DynamoDB sync
-        try {
-            await policyPublisher.publishRoleDeleted(id, roleName, { tenantId: tenantId ?? undefined });
-            console.log(`[RoleService] Published ROLE_DELETED event for ${roleName}`);
-        } catch (error) {
-            console.error(`[RoleService] Failed to publish ROLE_DELETED event:`, error);
-        }
 
         return { id, name: roleName };
     }
@@ -283,26 +236,6 @@ class RoleService {
                 },
             },
         });
-
-        // Publish role permission assigned event for DynamoDB sync
-        try {
-            const permissions = updatedRole!.permissions.map(rp => ({
-                id: rp.permission.id,
-                path: rp.permission.path,
-                methods: rp.permission.methods as string[],
-                effect: rp.permission.effect as 'ALLOW' | 'DENY',
-            }));
-
-            await policyPublisher.publishRolePermissionAssigned({
-                roleId,
-                roleName: role.name,
-                tenantId: role.tenantId ?? undefined,
-                permissions,
-            });
-            console.log(`[RoleService] Published ROLE_PERMISSION_ASSIGNED event for ${role.name}`);
-        } catch (error) {
-            console.error(`[RoleService] Failed to publish ROLE_PERMISSION_ASSIGNED event:`, error);
-        }
 
         return updatedRole;
     }

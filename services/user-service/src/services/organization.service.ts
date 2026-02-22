@@ -3,17 +3,9 @@ import {
     NotFoundError,
     ConflictError,
     ValidationError,
-    PolicyEventPublisher,
     OrganizationStatus,
 } from '@valentine-efagene/qshelter-common';
 import { onboardingService } from './onboarding.service';
-
-// Initialize policy event publisher for DynamoDB sync (when org members get roles)
-const policyPublisher = new PolicyEventPublisher('user-service', {
-    region: process.env.AWS_REGION_NAME || process.env.AWS_REGION || 'us-east-1',
-    endpoint: process.env.LOCALSTACK_ENDPOINT,
-    topicArn: process.env.POLICY_SYNC_TOPIC_ARN,
-});
 
 // =============================================================================
 // TYPES
@@ -558,9 +550,6 @@ class OrganizationService {
             return { member, role };
         });
 
-        // Publish policy sync event
-        await this.publishPolicySyncEvent(tenantId);
-
         return result.member;
     }
 
@@ -651,21 +640,6 @@ class OrganizationService {
         return primaryAssignment?.orgType.code ?? null;
     }
 
-    /**
-     * Publish policy sync event to trigger DynamoDB update.
-     */
-    private async publishPolicySyncEvent(tenantId: string) {
-        try {
-            await policyPublisher.publishRoleUpdated({
-                id: 'ALL', // Signal full resync
-                name: 'ALL',
-                tenantId,
-            });
-        } catch (error) {
-            console.error('[OrganizationService] Failed to publish policy sync event:', error);
-            // Don't fail the operation if SNS publish fails
-        }
-    }
 }
 
 export const organizationService = new OrganizationService();

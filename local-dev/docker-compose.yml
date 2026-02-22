@@ -8,7 +8,7 @@ services:
       - "4566:4566" # LocalStack edge port (all services)
       - "4510-4559:4510-4559" # External services port range
     environment:
-      - SERVICES=ssm,secretsmanager,s3,lambda,apigateway,events,sqs,sns,dynamodb,logs,iam,cloudformation,rds
+      - SERVICES=ssm,secretsmanager,s3,lambda,apigateway,events,sqs,sns,logs,iam,cloudformation
       - DEBUG=1
       - DATA_DIR=/var/lib/localstack/data
       - LAMBDA_EXECUTOR=docker

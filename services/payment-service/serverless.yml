@@ -12,18 +12,11 @@ provider:
 
   httpApi:
     cors: true
-    authorizers:
-      PaymentServiceAuthorizer:
-        type: request
-        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
-        enableSimpleResponses: true
-        payloadVersion: '2.0'
-        identitySource:
-          - $request.header.Authorization
 
   environment:
     NODE_ENV: ${self:provider.stage}
     STAGE: ${self:provider.stage}
+    LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
     # Database and secrets are fetched at runtime via ConfigService from Secrets Manager
     # Paystack credentials stored in qshelter/{stage}/paystack secret
     PAYMENTS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/payments-topic-arn, ''}
@@ -108,12 +101,10 @@ functions:
       - httpApi:
           path: /webhooks/budpay/mock
           method: POST
-      # All other routes require authorization
+      # All other routes
       - httpApi:
           path: /{proxy+}
           method: ANY
-          authorizer:
-            name: PaymentServiceAuthorizer
 
   # SQS consumer for payment events
   sqsConsumer:
@@ -129,6 +120,9 @@ functions:
 # SNS Topic: qshelter-{stage}-payments (ARN in SSM: /qshelter/{stage}/payments-topic-arn)
 # SQS Queue: qshelter-{stage}-payments (ARN in SSM: /qshelter/{stage}/payments-queue-arn)
 
+plugins:
+  - serverless-localstack
+
 custom:
   vpcConfig:
     staging:
@@ -143,3 +137,11 @@ custom:
       subnetIds:
         - ${ssm:/qshelter/prod/private-subnet-1-id, 'subnet-placeholder-1'}
         - ${ssm:/qshelter/prod/private-subnet-2-id, 'subnet-placeholder-2'}
+  localstackEndpoint:
+    localstack: http://host.docker.internal:4566
+  localstack:
+    stages:
+      - localstack
+    host: http://localhost
+    edgePort: 4566
+    autostart: false

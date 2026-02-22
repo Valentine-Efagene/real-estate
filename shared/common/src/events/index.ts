@@ -7,9 +7,8 @@ export * from './notifications/event-publisher';
 export * from './payments/payment-event';
 export * from './payments/payment-publisher';
 
-// Policy sync events and publisher (SNS-based)
-export * from './policies/policy-event';
-export * from './policies/policy-publisher';
+// Policy sync events removed — authorizer and policy-sync-service eliminated.
+// Auth is now handled by JWT verification in the shared middleware.
 
 // Event bus (multi-transport delivery)
 export * from './bus/event-bus.types';

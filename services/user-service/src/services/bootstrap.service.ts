@@ -1,8 +1,6 @@
 import { prisma } from '../lib/prisma';
-import { randomUUID } from 'crypto';
 import bcrypt from 'bcryptjs';
 import {
-    PolicyEventPublisher,
     ConflictError,
 } from '@valentine-efagene/qshelter-common';
 import {
@@ -16,15 +14,7 @@ import {
 // BOOTSTRAP SERVICE
 // =============================================================================
 // Provides idempotent tenant bootstrapping with roles, permissions, and admin user.
-// Uses transactional outbox pattern for reliable DynamoDB policy sync.
 // =============================================================================
-
-// Initialize policy event publisher for DynamoDB sync
-const policyPublisher = new PolicyEventPublisher('user-service', {
-    region: process.env.AWS_REGION_NAME || process.env.AWS_REGION || 'us-east-1',
-    endpoint: process.env.LOCALSTACK_ENDPOINT,
-    topicArn: process.env.POLICY_SYNC_TOPIC_ARN,
-});
 
 // =============================================================================
 // SYSTEM ORGANIZATION TYPES
@@ -154,7 +144,6 @@ class BootstrapService {
     /**
      * Bootstrap a tenant with roles, permissions, and admin user.
      * Idempotent: safe to call multiple times with same subdomain.
-     * Uses transactional writes and publishes domain events for DynamoDB sync.
      */
     async bootstrapTenant(input: BootstrapTenantInput): Promise<BootstrapTenantResponse> {
         const { tenant: tenantInput, admin: adminInput, roles: rolesInput } = input;
@@ -357,101 +346,9 @@ class BootstrapService {
                 isNew: isNewAdmin,
                 temporaryPassword: isNewAdmin ? temporaryPassword : undefined,
             };
-
-            // 6. Write domain events to outbox for policy sync
-            for (const role of roleResults) {
-                if (role.isNew) {
-                    await tx.domainEvent.create({
-                        data: {
-                            id: randomUUID(),
-                            eventType: 'ROLE.CREATED',
-                            aggregateType: 'Role',
-                            aggregateId: role.id,
-                            queueName: 'policy-sync',
-                            tenantId: tenant!.id,
-                            payload: JSON.stringify({
-                                roleId: role.id,
-                                roleName: role.name,
-                                tenantId: tenant!.id,
-                            }),
-                            actorId: adminUser.id,
-                        },
-                    });
-                }
-            }
-
-            // Write tenant created event if new
-            if (isNewTenant) {
-                await tx.domainEvent.create({
-                    data: {
-                        id: randomUUID(),
-                        eventType: 'TENANT.CREATED',
-                        aggregateType: 'Tenant',
-                        aggregateId: tenant!.id,
-                        queueName: 'policy-sync',
-                        tenantId: tenant!.id,
-                        payload: JSON.stringify({
-                            tenantId: tenant!.id,
-                            tenantName: tenant!.name,
-                            subdomain: tenant!.subdomain,
-                        }),
-                        actorId: adminUser.id,
-                    },
-                });
-            }
         }, { timeout: 30000 });
 
-        // 7. Trigger immediate sync for new roles (outside transaction)
-        let syncTriggered = false;
-        for (const role of roleResults) {
-            if (role.isNew) {
-                try {
-                    const fullRole = await prisma.role.findUnique({
-                        where: { id: role.id },
-                        include: {
-                            permissions: {
-                                include: {
-                                    permission: true,
-                                },
-                            },
-                        },
-                    });
-
-                    if (fullRole) {
-                        // First publish role created event
-                        await policyPublisher.publishRoleCreated({
-                            id: fullRole.id,
-                            name: fullRole.name,
-                            description: fullRole.description,
-                            tenantId: fullRole.tenantId,
-                            isSystem: fullRole.isSystem,
-                            isActive: fullRole.isActive,
-                        });
-
-                        // Then publish role permissions for policy sync
-                        if (fullRole.permissions.length > 0) {
-                            await policyPublisher.publishRolePermissionAssigned({
-                                roleId: fullRole.id,
-                                roleName: fullRole.name,
-                                tenantId: fullRole.tenantId,
-                                permissions: fullRole.permissions.map((rp) => ({
-                                    id: rp.permission.id,
-                                    path: rp.permission.path,
-                                    methods: rp.permission.methods as string[],
-                                    effect: rp.permission.effect as 'ALLOW' | 'DENY',
-                                })),
-                            });
-                        }
-
-                        syncTriggered = true;
-                    }
-                } catch (error) {
-                    console.error(`[Bootstrap] Failed to publish role sync event:`, error);
-                }
-            }
-        }
-
-        // 8. Onboarding templates are NO LONGER seeded at bootstrap.
+        // Onboarding templates are NO LONGER seeded at bootstrap.
         // Admins create onboarding flows through the UI at /admin/onboarding-flows.
         // This keeps the bootstrap minimal (tenant + admin + platform org + roles/permissions)
         // and ensures the video shows the admin configuring everything.
@@ -465,7 +362,6 @@ class BootstrapService {
             },
             admin: adminResult!,
             roles: roleResults,
-            syncTriggered,
         };
     }
 

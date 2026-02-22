@@ -2,15 +2,7 @@ import { prisma } from '../lib/prisma';
 import {
     NotFoundError,
     ConflictError,
-    PolicyEventPublisher,
 } from '@valentine-efagene/qshelter-common';
-
-// Initialize policy event publisher for membership changes
-const policyPublisher = new PolicyEventPublisher('user-service', {
-    region: process.env.AWS_REGION_NAME || process.env.AWS_REGION || 'us-east-1',
-    endpoint: process.env.LOCALSTACK_ENDPOINT,
-    topicArn: process.env.POLICY_SYNC_TOPIC_ARN,
-});
 
 export interface CreateTenantMembershipInput {
     userId: string;
@@ -83,22 +75,6 @@ class TenantMembershipService {
                 role: { select: { id: true, name: true, description: true } },
             },
         });
-
-        // Publish membership created event
-        try {
-            await policyPublisher.publishTenantMembershipCreated({
-                id: membership.id,
-                userId: membership.userId,
-                tenantId: membership.tenantId,
-                roleId: membership.roleId,
-                roleName: role.name,
-                isActive: membership.isActive,
-                isDefault: membership.isDefault,
-            });
-            console.log(`[TenantMembershipService] Published TENANT_MEMBERSHIP_CREATED for user ${data.userId} in tenant ${data.tenantId}`);
-        } catch (error) {
-            console.error(`[TenantMembershipService] Failed to publish event:`, error);
-        }
 
         return membership;
     }
@@ -220,22 +196,6 @@ class TenantMembershipService {
             },
         });
 
-        // Publish membership updated event
-        try {
-            await policyPublisher.publishTenantMembershipUpdated({
-                id: updatedMembership.id,
-                userId: updatedMembership.userId,
-                tenantId: updatedMembership.tenantId,
-                roleId: updatedMembership.roleId,
-                roleName: updatedMembership.role.name,
-                isActive: updatedMembership.isActive,
-                isDefault: updatedMembership.isDefault,
-            });
-            console.log(`[TenantMembershipService] Published TENANT_MEMBERSHIP_UPDATED for membership ${id}`);
-        } catch (error) {
-            console.error(`[TenantMembershipService] Failed to publish event:`, error);
-        }
-
         return updatedMembership;
     }
 
@@ -253,18 +213,6 @@ class TenantMembershipService {
         }
 
         await prisma.tenantMembership.delete({ where: { id } });
-
-        // Publish membership deleted event
-        try {
-            await policyPublisher.publishTenantMembershipDeleted(
-                membership.id,
-                membership.userId,
-                membership.tenantId
-            );
-            console.log(`[TenantMembershipService] Published TENANT_MEMBERSHIP_DELETED for membership ${id}`);
-        } catch (error) {
-            console.error(`[TenantMembershipService] Failed to publish event:`, error);
-        }
 
         return { id };
     }

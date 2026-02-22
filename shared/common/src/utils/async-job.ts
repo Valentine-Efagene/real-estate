@@ -1,19 +1,19 @@
 /**
- * Async Job — DynamoDB-backed long-running job tracker
+ * Async Job — Prisma-backed long-running job tracker
  *
  * Solves the API Gateway 30s timeout by splitting work into:
  *   1. API Lambda  → creates a PENDING job, invokes worker, returns 202 + jobId
  *   2. Worker Lambda → runs the real work, updates status to COMPLETED / FAILED
- *   3. Poll endpoint → reads current status from DynamoDB
+ *   3. Poll endpoint → reads current status from the database
  *
  * Usage (dispatcher — API Lambda):
- *   const store = new AsyncJobStore(dynamoClient, tableName, 'MY_JOB');
+ *   const store = new AsyncJobStore(prisma, 'BOOTSTRAP');
  *   const jobId = await store.create();
  *   // invoke worker with { jobId, ...payload }
  *   res.status(202).json({ jobId, status: 'PENDING' });
  *
  * Usage (worker Lambda):
- *   const store = new AsyncJobStore(dynamoClient, tableName, 'MY_JOB');
+ *   const store = new AsyncJobStore(prisma, 'BOOTSTRAP');
  *   await store.markRunning(jobId);
  *   try {
  *       const result = await doWork();
@@ -23,147 +23,153 @@
  *   }
  *
  * Usage (poll endpoint):
- *   const store = new AsyncJobStore(dynamoClient, tableName, 'MY_JOB');
+ *   const store = new AsyncJobStore(prisma, 'BOOTSTRAP');
  *   const job = await store.get(jobId);
  *   res.json(job);
  */
 
-import {
-    DynamoDBClient,
-    PutItemCommand,
-    GetItemCommand,
-    UpdateItemCommand,
-} from '@aws-sdk/client-dynamodb';
+import { PrismaClient, AsyncJobStatus } from '../../generated/client/client';
 import { randomUUID } from 'crypto';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
-export type AsyncJobStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED';
+export { AsyncJobStatus };
 
 export interface AsyncJob<TResult = unknown> {
     jobId: string;
+    jobType: string;
     status: AsyncJobStatus;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
+    startedAt?: Date | null;
+    completedAt?: Date | null;
     result?: TResult;
-    error?: string;
+    error?: string | null;
 }
 
 // ─── Store ──────────────────────────────────────────────────────────────────
 
 export class AsyncJobStore {
     /**
-     * @param dynamo   - DynamoDB client instance
-     * @param table    - DynamoDB table name (single-table design with PK/SK)
-     * @param prefix   - Key prefix to namespace jobs, e.g. 'BOOTSTRAP_JOB'
+     * @param prisma   - Prisma client instance
+     * @param jobType  - Job type namespace, e.g. 'BOOTSTRAP', 'BULK_IMPORT'
+     * @param tenantId - Optional tenant ID for tenant-scoped jobs
      */
     constructor(
-        private readonly dynamo: DynamoDBClient,
-        private readonly table: string,
-        private readonly prefix: string,
+        private readonly prisma: PrismaClient,
+        private readonly jobType: string,
+        private readonly tenantId?: string | null,
     ) { }
 
     /** Create a PENDING job and return its ID. */
     async create(jobId?: string): Promise<string> {
         const id = jobId ?? randomUUID();
-        const now = new Date().toISOString();
 
-        await this.dynamo.send(new PutItemCommand({
-            TableName: this.table,
-            Item: {
-                PK: { S: `${this.prefix}#${id}` },
-                SK: { S: 'STATUS' },
-                status: { S: 'PENDING' as AsyncJobStatus },
-                createdAt: { S: now },
-                updatedAt: { S: now },
+        await this.prisma.asyncJob.create({
+            data: {
+                id,
+                jobType: this.jobType,
+                status: 'PENDING',
+                tenantId: this.tenantId ?? null,
             },
-        }));
+        });
 
         return id;
     }
 
     /** Transition job to RUNNING. */
     async markRunning(jobId: string): Promise<void> {
-        await this.updateStatus(jobId, 'RUNNING');
+        await this.prisma.asyncJob.update({
+            where: { id: jobId },
+            data: {
+                status: 'RUNNING',
+                startedAt: new Date(),
+            },
+        });
     }
 
     /** Transition job to COMPLETED with a JSON-serialisable result. */
     async markCompleted(jobId: string, result: unknown): Promise<void> {
-        await this.dynamo.send(new UpdateItemCommand({
-            TableName: this.table,
-            Key: this.key(jobId),
-            UpdateExpression: 'SET #status = :status, #result = :result, updatedAt = :now',
-            ExpressionAttributeNames: { '#status': 'status', '#result': 'result' },
-            ExpressionAttributeValues: {
-                ':status': { S: 'COMPLETED' as AsyncJobStatus },
-                ':result': { S: JSON.stringify(result) },
-                ':now': { S: new Date().toISOString() },
+        await this.prisma.asyncJob.update({
+            where: { id: jobId },
+            data: {
+                status: 'COMPLETED',
+                completedAt: new Date(),
+                result: result as any,
             },
-        }));
+        });
     }
 
     /** Transition job to FAILED with an error message. */
     async markFailed(jobId: string, error: unknown): Promise<void> {
         const message = error instanceof Error ? error.message : String(error);
-        await this.dynamo.send(new UpdateItemCommand({
-            TableName: this.table,
-            Key: this.key(jobId),
-            UpdateExpression: 'SET #status = :status, #error = :error, updatedAt = :now',
-            ExpressionAttributeNames: { '#status': 'status', '#error': 'error' },
-            ExpressionAttributeValues: {
-                ':status': { S: 'FAILED' as AsyncJobStatus },
-                ':error': { S: message },
-                ':now': { S: new Date().toISOString() },
+        await this.prisma.asyncJob.update({
+            where: { id: jobId },
+            data: {
+                status: 'FAILED',
+                completedAt: new Date(),
+                error: message,
             },
-        }));
+        });
     }
 
     /** Read current job state. Returns null if not found. */
     async get<TResult = unknown>(jobId: string): Promise<AsyncJob<TResult> | null> {
-        const res = await this.dynamo.send(new GetItemCommand({
-            TableName: this.table,
-            Key: this.key(jobId),
-        }));
+        const row = await this.prisma.asyncJob.findUnique({
+            where: { id: jobId },
+        });
 
-        if (!res.Item) return null;
+        if (!row) return null;
 
-        const status = (res.Item.status?.S ?? 'UNKNOWN') as AsyncJobStatus;
-        const job: AsyncJob<TResult> = {
-            jobId,
-            status,
-            createdAt: res.Item.createdAt?.S ?? '',
-            updatedAt: res.Item.updatedAt?.S ?? '',
-        };
-
-        if (status === 'COMPLETED' && res.Item.result?.S) {
-            job.result = JSON.parse(res.Item.result.S) as TResult;
-        }
-        if (status === 'FAILED' && res.Item.error?.S) {
-            job.error = res.Item.error.S;
-        }
-
-        return job;
-    }
-
-    // ── Internals ───────────────────────────────────────────────────────
-
-    private key(jobId: string) {
         return {
-            PK: { S: `${this.prefix}#${jobId}` },
-            SK: { S: 'STATUS' },
+            jobId: row.id,
+            jobType: row.jobType,
+            status: row.status,
+            createdAt: row.createdAt,
+            updatedAt: row.updatedAt,
+            startedAt: row.startedAt,
+            completedAt: row.completedAt,
+            result: row.result as TResult | undefined,
+            error: row.error,
         };
     }
 
-    private async updateStatus(jobId: string, status: AsyncJobStatus): Promise<void> {
-        await this.dynamo.send(new UpdateItemCommand({
-            TableName: this.table,
-            Key: this.key(jobId),
-            UpdateExpression: 'SET #status = :status, updatedAt = :now',
-            ExpressionAttributeNames: { '#status': 'status' },
-            ExpressionAttributeValues: {
-                ':status': { S: status },
-                ':now': { S: new Date().toISOString() },
+    /** List recent jobs of this type, newest first. */
+    async list(limit: number = 10): Promise<AsyncJob[]> {
+        const rows = await this.prisma.asyncJob.findMany({
+            where: {
+                jobType: this.jobType,
+                ...(this.tenantId ? { tenantId: this.tenantId } : {}),
             },
+            orderBy: { createdAt: 'desc' },
+            take: limit,
+        });
+
+        return rows.map((row) => ({
+            jobId: row.id,
+            jobType: row.jobType,
+            status: row.status,
+            createdAt: row.createdAt,
+            updatedAt: row.updatedAt,
+            startedAt: row.startedAt,
+            completedAt: row.completedAt,
+            result: row.result as unknown,
+            error: row.error,
         }));
+    }
+
+    /** Delete completed/failed jobs older than the given age. */
+    async cleanup(olderThanMs: number = 24 * 60 * 60 * 1000): Promise<number> {
+        const cutoff = new Date(Date.now() - olderThanMs);
+
+        const result = await this.prisma.asyncJob.deleteMany({
+            where: {
+                jobType: this.jobType,
+                status: { in: ['COMPLETED', 'FAILED'] },
+                updatedAt: { lt: cutoff },
+            },
+        });
+
+        return result.count;
     }
 }

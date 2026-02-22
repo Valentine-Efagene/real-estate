@@ -1,5 +1,11 @@
 import { config } from 'dotenv';
-config(); // Load .env file
+
+const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
+if (stage === 'localstack') {
+    config({ path: '.env.localstack' });
+} else {
+    config(); // Load default .env
+}
 
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common';

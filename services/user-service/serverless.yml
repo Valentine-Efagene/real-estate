@@ -10,21 +10,12 @@ provider:
   
   httpApi:
     cors: true
-    authorizers:
-      UserServiceAuthorizer:
-        type: request
-        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
-        identitySource: $request.header.Authorization
-        enableSimpleResponses: true
-        resultTtlInSeconds: 300
-        payloadVersion: '2.0'
   
   environment:
     NODE_ENV: ${self:provider.stage}
     STAGE: ${self:provider.stage}
     LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
     NOTIFICATIONS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/notifications-topic-arn, ''}
-    POLICY_SYNC_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/policy-sync-topic-arn, ''}
     FRONTEND_BASE_URL: ${ssm:/qshelter/${self:provider.stage}/frontend-base-url, 'http://localhost:3000'}
     BOOTSTRAP_SECRET: ${ssm:/qshelter/${self:provider.stage}/bootstrap-secret, 'local-bootstrap-secret'}
     GOOGLE_CLIENT_ID: ${ssm:/qshelter/${self:provider.stage}/google-client-id, ''}
@@ -34,10 +25,6 @@ provider:
     PROPERTY_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/property-service-url, ''}
     MORTGAGE_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/mortgage-service-url, ''}
     PAYMENT_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/payment-service-url, ''}
-    # DynamoDB table for policy polling and bootstrap job tracking
-    ROLE_POLICIES_TABLE_NAME: ${ssm:/qshelter/${self:provider.stage}/role-policies-table-name, ''}
-    # Bootstrap worker function name (constructed from service/stage naming convention)
-    BOOTSTRAP_WORKER_FUNCTION_NAME: ${self:service}-${self:provider.stage}-bootstrapWorker
   
   iam:
     role:
@@ -49,18 +36,6 @@ provider:
             - ssm:GetParametersByPath
           Resource: arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
         - Effect: Allow
-          Action:
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:Scan
-            - dynamodb:DeleteItem
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/qshelter-${self:provider.stage}-role-policies
-        - Effect: Allow
-          Action:
-            - lambda:InvokeFunction
-          Resource: arn:aws:lambda:${self:provider.region}:*:function:${self:service}-${self:provider.stage}-bootstrapWorker
-        - Effect: Allow
           Action: secretsmanager:GetSecretValue
           Resource: 
             - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
@@ -70,7 +45,6 @@ provider:
             - sns:Publish
           Resource:
             - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
-            - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-policy-sync
         # VPC permissions for Lambda to create ENIs
         - Effect: Allow
           Action:
@@ -117,20 +91,10 @@ functions:
           path: /invitations/accept
           method: POST
       
-      # Protected catch-all route - requires authorization
+      # All routes (auth handled at app level)
       - httpApi:
           path: /{proxy+}
           method: ANY
-          authorizer:
-            name: UserServiceAuthorizer
-
-  bootstrapWorker:
-    handler: dist/bootstrap-worker.handler
-    timeout: 300
-    memorySize: 512
-    runtime: nodejs20.x
-    # No httpApi events — this is invoked directly by the API Lambda, not via API Gateway
-    # Inherits provider VPC config — needs DB access AND internet (via NAT gateway in private subnets)
 
 plugins:
   - serverless-localstack
@@ -150,10 +114,10 @@ custom:
         - ${ssm:/qshelter/prod/private-subnet-1-id, 'subnet-placeholder-1'}
         - ${ssm:/qshelter/prod/private-subnet-2-id, 'subnet-placeholder-2'}
   localstackEndpoint:
-    test: http://host.docker.internal:4566
+    localstack: http://host.docker.internal:4566
   localstack:
     stages:
-      - test
+      - localstack
     host: http://localhost
     edgePort: 4566
     autostart: false

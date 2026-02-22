@@ -64,7 +64,7 @@ export class ConfigService {
 
     private constructor(region: string = 'us-east-1') {
         const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
-        const isLocalStack = stage === 'test' || process.env.LOCALSTACK_ENDPOINT;
+        const isLocalStack = stage === 'localstack' || !!process.env.LOCALSTACK_ENDPOINT;
 
         // Configure AWS clients for LocalStack or AWS
         const clientConfig: any = { region };

@@ -4,7 +4,7 @@
 # =============================================================================
 # This script sets up the complete local development environment:
 # 1. Starts Docker containers (LocalStack, MySQL, Redis)
-# 2. Deploys CDK infrastructure (SNS, SQS, S3, DynamoDB, etc.)
+# 2. Deploys CDK infrastructure (SNS, SQS, S3, Secrets Manager, SSM)
 # 3. Runs database migrations
 # 4. Builds all shared libraries
 # 5. Deploys all service Lambdas to LocalStack
@@ -55,7 +55,7 @@ log_success "MySQL is ready"
 
 # Wait for LocalStack
 echo "  - Waiting for LocalStack..."
-until curl -s http://localhost:4566/_localstack/health | grep -qE '"dynamodb": "(available|running)"' 2>/dev/null; do
+until curl -s http://localhost:4566/_localstack/health | grep -qE '"s3": "(available|running)"' 2>/dev/null; do
   sleep 2
 done
 log_success "LocalStack is ready"
@@ -80,11 +80,6 @@ log_info "Deploying CDK stack..."
 pnpm localstack:deploy
 
 log_success "CDK infrastructure deployed"
-
-# Seed role policies
-log_info "Seeding role policies..."
-ROLE_POLICIES_TABLE_NAME=qshelter-test-role-policies AWS_ENDPOINT_URL=http://localhost:4566 node scripts/seed-role-policies.mjs || true
-log_success "Role policies seeded"
 
 # =============================================================================
 # STEP 3: Run Database Migrations
@@ -127,27 +122,22 @@ deploy_service() {
     
     pnpm run build 2>/dev/null || npm run build
     
-    # Check if serverless.localstack.yml exists, otherwise use serverless.yml with --stage localstack
-    if [ -f "serverless.localstack.yml" ]; then
-      npx sls deploy --stage localstack --config serverless.localstack.yml 2>&1 || log_warning "$service_name deployment had warnings"
-    else
-      npx sls deploy --stage localstack 2>&1 || log_warning "$service_name deployment had warnings"
-    fi
+    # Deploy with stage=localstack to activate the serverless-localstack plugin
+    npx sls deploy --stage localstack 2>&1 || log_warning "$service_name deployment had warnings"
     log_success "$service_name deployed"
   else
     log_warning "$service_name directory not found, skipping"
   fi
 }
 
-# Deploy authorizer first (other services may depend on it)
-deploy_service "Authorizer Service" "authorizer-service"
-
-# Deploy other services
+# Deploy services (user-service first — creates the HTTP API Gateway)
 deploy_service "User Service" "user-service"
 deploy_service "Property Service" "property-service"
 deploy_service "Mortgage Service" "mortgage-service"
-deploy_service "Notification Service" "notification-service"
 deploy_service "Documents Service" "documents-service"
+deploy_service "Payment Service" "payment-service"
+deploy_service "Notification Service" "notification-service"
+deploy_service "Uploader Service" "uploader-service"
 
 log_success "All services deployed"
 

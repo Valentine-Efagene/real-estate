@@ -29,6 +29,18 @@ The demo-frontend is a **Next.js application** inside this monorepo (`demo-front
 - It imports `@valentine-efagene/qshelter-common` from the **npm registry** (not a workspace link).
 - After backend deployments that change service URLs, you must sync env vars to Amplify and trigger a rebuild.
 
+### Environment Targeting
+
+| Context                                  | Backend Target                     | Config Source                 |
+| ---------------------------------------- | ---------------------------------- | ----------------------------- |
+| **Local development & Playwright tests** | LocalStack (`localhost:3001–3007`) | `demo-frontend/.env`          |
+| **AWS Amplify hosted deployment**        | AWS staging (API Gateway URLs)     | Amplify environment variables |
+
+- **`demo-frontend/.env`** contains `NEXT_PUBLIC_*_SERVICE_URL=http://localhost:300x` values pointing at the LocalStack environment. This is what `pnpm dev` and Playwright tests use.
+- **AWS Amplify** has its own set of `NEXT_PUBLIC_*` env vars pointing at the real AWS API Gateway URLs. These are set via `aws amplify update-branch` and baked in at build time.
+- When running Playwright E2E tests locally, the LocalStack services must be running (`cd local-dev && ./scripts/start.sh`).
+- When deploying to Amplify, ensure the Amplify env vars are updated to match the current AWS staging URLs.
+
 ### Playwright Full Mortgage Flow Test (`demo-frontend/e2e/full-mortgage-flow.spec.ts`)
 
 **This test is the canonical reference for the demo scenario.** It must be kept in sync with the app. Whenever you change the demo-frontend UI, update the Playwright test to match.
@@ -82,24 +94,23 @@ We are in active development - **delete unused code, don't deprecate it**:
 
 ```
 services/
-├── authorizer-service/     # Lambda authorizer for API Gateway
 ├── documents-service/      # Document storage and presigned URLs
 ├── mortgage-service/       # Applications, phases, payments, documents
 ├── notification-service/   # Email/SMS notifications via SNS
 ├── payment-service/        # Payment processing
-├── policy-sync-service/    # RBAC policy sync (SQS consumer only, no HTTP API)
 ├── property-service/       # Property listings and units
+├── uploader-service/       # File upload via presigned S3 URLs
 └── user-service/           # User management and authentication
 ```
 
-### Policy Sync Service Architecture
+### Authentication Architecture
 
-The `policy-sync-service` is a pure SQS consumer with **no HTTP API**:
+Auth is handled by **JWT verification in shared Express middleware** — there is no Lambda authorizer or DynamoDB policy store:
 
-- Listens to the `qshelter-{stage}-policy-sync` SQS queue
-- Triggered by SNS events when roles/permissions change in RDS (via user-service)
-- Syncs role policies from RDS to DynamoDB for the Lambda authorizer
-- Flow: `user-service → SNS → SQS → policy-sync-service → DynamoDB`
+- Each service calls `setupAuth()` at Lambda cold start to fetch the JWT secret from Secrets Manager
+- The `extractAuthContext()` middleware verifies the JWT signature and extracts `userId`, `tenantId`, `email`, `roles`
+- Role-based access control uses `requireRole()`, `requireAdmin()`, `isAdmin()` from the shared middleware
+- Flow: `Client → Bearer token → Express middleware (JWT verify) → Route handler`
 
 ## Multi-Tenancy
 
@@ -290,7 +301,7 @@ There are two types of tests:
 - **API-only**: Only call REST endpoints, never import service code
 - Has its own `package.json` - treated as a separate project
 - Requires all services deployed to LocalStack first
-- Tests real auth flow with JWT tokens from the authorizer
+- Tests real auth flow with JWT tokens via shared middleware
 
 ```bash
 # Deploy all services to LocalStack
@@ -299,30 +310,6 @@ cd tests/localstack && ./scripts/deploy-all.sh
 # Run integration tests
 cd tests/localstack && npm run run:full-e2e
 ```
-
-### Authorizer Tests (Benchmarking & Sanity Checks)
-
-Direct Lambda invocation tests for the authorizer service:
-
-**AWS Staging** (`tests/aws/authorizer/`):
-
-- Sanity checks against deployed authorizer Lambda
-- Validates invalid/missing tokens return Deny
-- Performance benchmarking (cold start, warm invocation, P95)
-- Run with: `cd tests/aws && npm run test:authorizer`
-
-**LocalStack** (`local-dev/tests/authorizer.test.ts`):
-
-- Local development benchmarking
-- Tests policy resolution from DynamoDB
-- Run with: `cd local-dev && pnpm run test:authorizer`
-
-**Benchmark Results (AWS Staging):**
-| Metric | Value |
-|--------|-------|
-| Cold start | ~2300ms |
-| Warm invocation | ~220ms |
-| P95 (10 calls) | ~230ms |
 
 ### AWS Staging Full E2E Tests (`tests/aws/full-mortgage-flow/`)
 
@@ -559,7 +546,7 @@ This approach:
    app.get("/api-docs/", (req, res) => res.send(getSwaggerHtml()));
    ```
 
-5. **serverless.yml**: List `/api-docs` as a public route WITHOUT an authorizer:
+5. **serverless.yml**: List `/api-docs` as a public route:
    ```yaml
    - httpApi:
        path: /api-docs
@@ -581,10 +568,7 @@ Use the deployment script for seamless AWS deployment:
 ./scripts/deploy-staging.sh bootstrap  # Bootstrap CDK
 ./scripts/deploy-staging.sh infra      # Deploy infrastructure
 ./scripts/deploy-staging.sh migrations # Run Prisma migrations
-./scripts/deploy-staging.sh authorizer # Deploy authorizer-service
 ./scripts/deploy-staging.sh services   # Deploy all services
-./scripts/deploy-staging.sh seed       # Seed initial data
-./scripts/deploy-staging.sh test       # Run E2E tests
 ```
 
 ### Teardown
@@ -611,9 +595,8 @@ Use the deployment script for seamless AWS deployment:
 
 **Service Deployment Order:**
 
-1. `authorizer-service` - Must be first, stores ARN in `/qshelter/{stage}/authorizer-arn`
-2. `user-service` - Creates the HTTP API Gateway, stores ID in `/qshelter/{stage}/http-api-id`
-3. All other services attach to the existing HTTP API
+1. `user-service` - Must be first, creates the HTTP API Gateway, stores ID in `/qshelter/{stage}/http-api-id`
+2. All other services attach to the existing HTTP API
 
 **Database Access:**
 
@@ -663,16 +646,14 @@ Use the deployment script for seamless AWS deployment:
 
 ### SSM Parameters Reference
 
-| Parameter                                | Created By    | Description                            |
-| ---------------------------------------- | ------------- | -------------------------------------- |
-| `/qshelter/{stage}/database-secret-arn`  | CDK           | Secrets Manager ARN for DB credentials |
-| `/qshelter/{stage}/db-host`              | CDK           | Aurora MySQL endpoint                  |
-| `/qshelter/{stage}/db-port`              | CDK           | Database port (3306)                   |
-| `/qshelter/{stage}/db-security-group-id` | CDK           | RDS security group ID                  |
-| `/qshelter/{stage}/authorizer-arn`       | deploy script | Lambda authorizer ARN                  |
-| `/qshelter/{stage}/http-api-id`          | user-service  | HTTP API Gateway ID                    |
-| `/qshelter/{stage}/role-policies-table`  | CDK           | DynamoDB table name                    |
-| `/qshelter/{stage}/s3-bucket-name`       | CDK           | Uploads S3 bucket                      |
+| Parameter                                | Created By   | Description                            |
+| ---------------------------------------- | ------------ | -------------------------------------- |
+| `/qshelter/{stage}/database-secret-arn`  | CDK          | Secrets Manager ARN for DB credentials |
+| `/qshelter/{stage}/db-host`              | CDK          | Aurora MySQL endpoint                  |
+| `/qshelter/{stage}/db-port`              | CDK          | Database port (3306)                   |
+| `/qshelter/{stage}/db-security-group-id` | CDK          | RDS security group ID                  |
+| `/qshelter/{stage}/http-api-id`          | user-service | HTTP API Gateway ID                    |
+| `/qshelter/{stage}/s3-bucket-name`       | CDK          | Uploads S3 bucket                      |
 
 ### Post-Deployment Checklist
 

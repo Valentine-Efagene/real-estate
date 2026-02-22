@@ -1,16 +1,11 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { bootstrapTenantSchema } from '../validators/bootstrap.validator';
-import { AppError, ConfigService, AsyncJobStore } from '@valentine-efagene/qshelter-common';
+import { AppError, ConfigService } from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
 import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
-import { DynamoDBClient, ScanCommand, DeleteItemCommand } from '@aws-sdk/client-dynamodb';
 
 const lambdaClient = new LambdaClient({ region: process.env.AWS_REGION || 'us-east-1' });
-const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION || 'us-east-1' });
-const ROLE_POLICIES_TABLE = process.env.ROLE_POLICIES_TABLE_NAME || 'qshelter-staging-role-policies';
 const BOOTSTRAP_WORKER_FUNCTION = process.env.BOOTSTRAP_WORKER_FUNCTION_NAME || '';
-
-const bootstrapJobStore = new AsyncJobStore(dynamoClient, ROLE_POLICIES_TABLE, 'BOOTSTRAP_JOB');
 
 const router = Router();
 
@@ -138,52 +133,20 @@ router.post(
                 throw new AppError(500, 'BOOTSTRAP_WORKER_FUNCTION_NAME not configured');
             }
 
-            const jobId = await bootstrapJobStore.create();
-
-            console.log(`[Bootstrap] Dispatching tenant bootstrap job ${jobId} to ${BOOTSTRAP_WORKER_FUNCTION}`);
+            console.log(`[Bootstrap] Dispatching tenant bootstrap to ${BOOTSTRAP_WORKER_FUNCTION}`);
             await lambdaClient.send(new InvokeCommand({
                 FunctionName: BOOTSTRAP_WORKER_FUNCTION,
                 InvocationType: 'Event',
                 Payload: Buffer.from(JSON.stringify({
-                    jobId,
                     mode: 'tenant',
                     input: parsed.data,
                 })),
             }));
 
             res.status(202).json({
-                jobId,
-                status: 'PENDING',
-                message: 'Bootstrap job dispatched. Poll GET /admin/bootstrap-tenant/:jobId for status.',
-                pollUrl: `/admin/bootstrap-tenant/${jobId}`,
+                status: 'DISPATCHED',
+                message: 'Bootstrap job dispatched to worker Lambda.',
             });
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
-/**
- * GET /admin/bootstrap-tenant/:jobId
- * 
- * Poll for the status of an async bootstrap-tenant job.
- * Returns { status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED', result?, error? }
- * 
- * Security: Requires x-bootstrap-secret header
- */
-router.get(
-    '/bootstrap-tenant/:jobId',
-    verifyBootstrapSecret,
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const jobId = req.params.jobId as string;
-            const job = await bootstrapJobStore.get(jobId);
-
-            if (!job) {
-                throw new AppError(404, `Bootstrap job ${jobId} not found`);
-            }
-
-            res.json(job);
         } catch (error) {
             next(error);
         }
@@ -344,39 +307,10 @@ router.post(
 
             console.log(`[Admin Reset] Starting database reset for stage: ${stage}`);
 
-            // ── DynamoDB cleanup ──────────────────────────────────────────
-            // Scan and delete ALL items from the role-policies table so the
-            // authorizer doesn't cache stale policies from a previous tenant.
-            let dynamoDeleted = 0;
-            try {
-                console.log(`[Admin Reset] Clearing DynamoDB table: ${ROLE_POLICIES_TABLE}`);
-                let lastEvaluatedKey: Record<string, any> | undefined;
-                do {
-                    const scanResult = await dynamoClient.send(new ScanCommand({
-                        TableName: ROLE_POLICIES_TABLE,
-                        ProjectionExpression: 'PK, SK',
-                        ExclusiveStartKey: lastEvaluatedKey as any,
-                    }));
-                    const items = scanResult.Items || [];
-                    for (const item of items) {
-                        await dynamoClient.send(new DeleteItemCommand({
-                            TableName: ROLE_POLICIES_TABLE,
-                            Key: { PK: item.PK, SK: item.SK },
-                        }));
-                        dynamoDeleted++;
-                    }
-                    lastEvaluatedKey = scanResult.LastEvaluatedKey as Record<string, any> | undefined;
-                } while (lastEvaluatedKey);
-                console.log(`[Admin Reset] Deleted ${dynamoDeleted} items from DynamoDB`);
-            } catch (e) {
-                console.log(`[Admin Reset] DynamoDB cleanup error (non-fatal): ${(e as Error).message}`);
-            }
-
             // ── Relational DB cleanup ────────────────────────────────────
             // Delete in order respecting foreign key constraints
             // Child tables first, then parent tables
             const deleted: Record<string, number> = {};
-            deleted['dynamodb'] = dynamoDeleted;
 
             // Level 0: Qualification & onboarding instance tables
             const level0Tables = [
@@ -659,53 +593,22 @@ router.post(
                 throw new AppError(500, 'BOOTSTRAP_WORKER_FUNCTION_NAME not configured');
             }
 
-            const jobId = await bootstrapJobStore.create();
-
-            // Invoke worker Lambda asynchronously (fire-and-forget)
-            console.log(`[Demo Bootstrap] Dispatching job ${jobId} to ${BOOTSTRAP_WORKER_FUNCTION}`);
+            console.log(`[Demo Bootstrap] Dispatching to ${BOOTSTRAP_WORKER_FUNCTION}`);
             await lambdaClient.send(new InvokeCommand({
                 FunctionName: BOOTSTRAP_WORKER_FUNCTION,
-                InvocationType: 'Event', // async — returns 202 immediately
+                InvocationType: 'Event',
                 Payload: Buffer.from(JSON.stringify({
-                    jobId,
+                    mode: 'demo',
                     input: { propertyServiceUrl, mortgageServiceUrl, paymentServiceUrl },
                 })),
             }));
 
             res.status(202).json({
-                jobId,
-                status: 'PENDING',
-                message: 'Bootstrap job dispatched. Poll GET /admin/demo-bootstrap/:jobId for status.',
-                pollUrl: `/admin/demo-bootstrap/${jobId}`,
+                status: 'DISPATCHED',
+                message: 'Demo bootstrap dispatched to worker Lambda.',
             });
         } catch (error) {
             console.error('[Demo Bootstrap] Failed to dispatch:', error);
-            next(error);
-        }
-    }
-);
-
-/**
- * GET /admin/demo-bootstrap/:jobId
- *
- * Poll for the status of an async demo-bootstrap job.
- * Returns { status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED', result?, error? }
- */
-router.get(
-    '/demo-bootstrap/:jobId',
-    verifyBootstrapSecret,
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const jobId = req.params.jobId as string;
-
-            const job = await bootstrapJobStore.get(jobId);
-
-            if (!job) {
-                throw new AppError(404, `Bootstrap job ${jobId} not found`);
-            }
-
-            res.json(job);
-        } catch (error) {
             next(error);
         }
     }

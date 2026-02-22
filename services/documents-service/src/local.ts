@@ -1,11 +1,17 @@
 import { config } from 'dotenv';
-config();
+config({ path: '.env.localstack' });
 
+import { setupAuth } from '@valentine-efagene/qshelter-common';
 import { app } from './app';
 
-const PORT = process.env.PORT || 3006;
+async function start() {
+    await setupAuth();
+    const PORT = process.env.PORT || 3004;
 
-app.listen(PORT, () => {
-    console.log(`Documents service running on http://localhost:${PORT}`);
-    console.log(`API docs: http://localhost:${PORT}/api-docs`);
-});
+    app.listen(PORT, () => {
+        console.log(`🚀 Documents Service running on http://localhost:${PORT}`);
+        console.log(`📊 Health check: http://localhost:${PORT}/health`);
+    });
+}
+
+start().catch(console.error);

@@ -25,7 +25,7 @@ echo "  ✓ MySQL is ready"
 
 # Wait for LocalStack
 echo "  - Waiting for LocalStack..."
-until curl -s http://localhost:4566/_localstack/health | grep -q '"dynamodb": "available"' 2>/dev/null; do
+until curl -s http://localhost:4566/_localstack/health | grep -q '"s3": "available"' 2>/dev/null; do
   sleep 2
 done
 echo "  ✓ LocalStack is ready"
@@ -42,10 +42,6 @@ echo "🔧 Deploying AWS resources via CDK..."
 cd "$REPO_ROOT/infrastructure"
 pnpm localstack:bootstrap 2>/dev/null || true
 pnpm localstack:deploy
-
-# Seed role policies
-echo "🌱 Seeding role policies..."
-ROLE_POLICIES_TABLE_NAME=qshelter-test-role-policies AWS_ENDPOINT_URL=http://localhost:4566 node scripts/seed-role-policies.mjs || true
 
 echo ""
 echo "✅ Local environment is ready!"

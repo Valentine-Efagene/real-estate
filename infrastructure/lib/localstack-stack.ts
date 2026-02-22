@@ -3,7 +3,6 @@ import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as logs from 'aws-cdk-lib/aws-logs';
-import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as snsSubscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
@@ -33,7 +32,7 @@ export class LocalStackStack extends cdk.Stack {
         // Load environment variables from local-dev/.env
         dotenv.config({ path: path.resolve(__dirname, '../../local-dev/.env') });
 
-        // Stage is 'localstack' for LocalStack
+        // Stage is 'localstack' to match serverless-localstack plugin activation
         const stage = this.node.tryGetContext('stage') || 'localstack';
         const prefix = `qshelter-${stage}`;
 
@@ -56,22 +55,6 @@ export class LocalStackStack extends cdk.Stack {
             bucketName: `${prefix}-documents`,
             removalPolicy: cdk.RemovalPolicy.DESTROY,
             autoDeleteObjects: true,
-        });
-
-        // === DynamoDB for Role Policies ===
-        const rolePoliciesTable = new dynamodb.Table(this, 'RolePoliciesTable', {
-            tableName: `${prefix}-role-policies`,
-            partitionKey: { name: 'PK', type: dynamodb.AttributeType.STRING },
-            sortKey: { name: 'SK', type: dynamodb.AttributeType.STRING },
-            billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-            removalPolicy: cdk.RemovalPolicy.DESTROY,
-        });
-
-        // Global Secondary Index for tenant queries
-        rolePoliciesTable.addGlobalSecondaryIndex({
-            indexName: 'GSI1',
-            partitionKey: { name: 'GSI1PK', type: dynamodb.AttributeType.STRING },
-            sortKey: { name: 'GSI1SK', type: dynamodb.AttributeType.STRING },
         });
 
         // === EventBridge Event Bus ===
@@ -153,7 +136,7 @@ export class LocalStackStack extends cdk.Stack {
         );
 
         // === CloudWatch Log Groups ===
-        const serviceLogGroups = ['user-service', 'property-service', 'mortgage-service', 'notifications-service', 'authorizer-service'];
+        const serviceLogGroups = ['user-service', 'property-service', 'mortgage-service', 'notifications-service'];
         for (const service of serviceLogGroups) {
             new logs.LogGroup(this, `${service.replace('-', '')}LogGroup`, {
                 logGroupName: `/aws/lambda/${prefix}-${service}`,
@@ -258,22 +241,10 @@ export class LocalStackStack extends cdk.Stack {
             description: 'Redis Endpoint',
         });
 
-        new ssm.StringParameter(this, 'AuthorizerLambdaArnParameter', {
-            parameterName: `/qshelter/${stage}/authorizer-lambda-arn`,
-            stringValue: `arn:aws:lambda:us-east-1:000000000000:function:${prefix}-authorizer`,
-            description: 'Authorizer Lambda ARN',
-        });
-
         new ssm.StringParameter(this, 'FrontendBaseUrlParameter', {
             parameterName: `/qshelter/${stage}/frontend-base-url`,
             stringValue: 'http://localhost:3000',
             description: 'Frontend Base URL for email links',
-        });
-
-        new ssm.StringParameter(this, 'RolePoliciesTableParameter', {
-            parameterName: `/qshelter/${stage}/dynamodb-table-role-policies`,
-            stringValue: rolePoliciesTable.tableName,
-            description: 'DynamoDB Role Policies Table Name',
         });
 
         // === SSM Parameters - Infrastructure (Required by ConfigService) ===
@@ -451,11 +422,6 @@ export class LocalStackStack extends cdk.Stack {
         new cdk.CfnOutput(this, 'DocumentsBucketName', {
             value: documentsBucket.bucketName,
             description: 'S3 Documents Bucket',
-        });
-
-        new cdk.CfnOutput(this, 'RolePoliciesTableName', {
-            value: rolePoliciesTable.tableName,
-            description: 'DynamoDB Role Policies Table',
         });
 
         new cdk.CfnOutput(this, 'EventBusName', {

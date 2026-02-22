@@ -1,7 +1,7 @@
 #!/bin/bash
 # Teardown QShelter AWS Staging Environment
 # Usage: ./teardown-staging.sh [step]
-# Steps: services, authorizer, infra, all
+# Steps: services, infra, all
 #
 # WARNING: This will delete all resources including the database!
 # Data will be PERMANENTLY LOST.
@@ -57,7 +57,6 @@ confirm_teardown() {
     echo "This will DELETE all QShelter $STAGE resources including:"
     echo "  - All Lambda functions and API Gateways"
     echo "  - Aurora MySQL database (ALL DATA WILL BE LOST)"
-    echo "  - DynamoDB tables"
     echo "  - S3 buckets (objects must be deleted first)"
     echo "  - VPC and networking resources"
     echo "  - All SSM parameters and secrets"
@@ -83,7 +82,6 @@ remove_services() {
     # Remove in reverse order of dependencies
     SERVICES=(
         "payment-service"
-        "policy-sync-service"
         "notification-service"
         "documents-service"
         "mortgage-service"
@@ -102,18 +100,6 @@ remove_services() {
     done
     
     log_info "✅ All application services removed!"
-}
-
-# Remove authorizer service
-remove_authorizer() {
-    log_step "Step 2/3: Removing Authorizer Service"
-    
-    if [ -d "$ROOT_DIR/services/authorizer-service" ]; then
-        log_info "Removing authorizer-service..."
-        cd "$ROOT_DIR/services/authorizer-service"
-        npx sls remove --stage $STAGE 2>/dev/null || log_warn "Authorizer removal failed (may not exist)"
-        log_info "✅ Authorizer removed"
-    fi
 }
 
 # Empty S3 buckets before CDK destroy
@@ -209,7 +195,6 @@ show_usage() {
     echo ""
     echo "Steps:"
     echo "  services   - Remove all Serverless application services"
-    echo "  authorizer - Remove authorizer service"
     echo "  infra      - Remove CDK infrastructure (VPC, RDS, etc.)"
     echo "  logs       - Clean up CloudWatch logs"
     echo "  all        - Remove everything (DANGEROUS!)"
@@ -257,11 +242,6 @@ case $STEP in
         confirm_teardown
         remove_services
         ;;
-    authorizer)
-        check_aws
-        confirm_teardown
-        remove_authorizer
-        ;;
     infra)
         check_aws
         confirm_teardown
@@ -275,7 +255,6 @@ case $STEP in
         check_aws
         confirm_teardown
         remove_services
-        remove_authorizer
         remove_infra
         cleanup_logs
         ;;

@@ -17,6 +17,7 @@ provider:
   environment:
     NODE_ENV: ${self:provider.stage}
     STAGE: ${self:provider.stage}
+    LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
     PORT: 3001
     # Office365, SMTP, AWS credentials are fetched at runtime from Secrets Manager
     # Secret: qshelter/{stage}/notification-config
@@ -152,6 +153,9 @@ functions:
           batchSize: 10
           functionResponseType: ReportBatchItemFailures
 
+plugins:
+  - serverless-localstack
+
 custom:
   vpcConfig:
     staging:
@@ -166,3 +170,11 @@ custom:
       subnetIds:
         - ${ssm:/qshelter/prod/private-subnet-1-id, 'subnet-placeholder-1'}
         - ${ssm:/qshelter/prod/private-subnet-2-id, 'subnet-placeholder-2'}
+  localstackEndpoint:
+    localstack: http://host.docker.internal:4566
+  localstack:
+    stages:
+      - localstack
+    host: http://localhost
+    edgePort: 4566
+    autostart: false

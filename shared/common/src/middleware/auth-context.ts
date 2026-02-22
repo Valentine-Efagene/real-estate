@@ -1,29 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-
-// Try to import getCurrentInvoke from @codegenie/serverless-express
-// This is optional - will fallback to other methods if not available
-let getCurrentInvoke: (() => { event?: any; context?: any }) | null = null;
-try {
-    // Dynamic import to avoid hard dependency
-    const serverlessExpress = require('@codegenie/serverless-express');
-    getCurrentInvoke = serverlessExpress.getCurrentInvoke;
-} catch {
-    // Package not available - will use fallback methods
-}
+import jwt from 'jsonwebtoken';
+import { ConfigService } from '../config/config.service';
 
 /**
- * Authentication context injected by API Gateway Lambda Authorizer.
- * Services should NEVER trust client-supplied user IDs directly.
- * 
- * In production:
- * - API Gateway calls Lambda Authorizer with JWT
- * - Authorizer validates token and returns context
- * - Gateway injects context into event.requestContext.authorizer
- * - @codegenie/serverless-express exposes this via getCurrentInvoke()
- * 
- * In tests:
- * - We simulate the authorizer by setting x-authorizer-* headers
- * - These headers are ONLY set by test harness, never by real clients
+ * Authentication context extracted from JWT tokens.
+ * Services verify JWTs directly using the shared middleware —
+ * no external Lambda authorizer or DynamoDB policy lookup needed.
+ *
+ * Priority:
+ * 1. Verify JWT from Authorization header (all environments)
+ * 2. Mock headers for unit tests (x-authorizer-* headers)
  */
 export interface AuthContext {
     userId: string;
@@ -32,39 +18,62 @@ export interface AuthContext {
     roles?: string[];
 }
 
-/**
- * Extended Request type that includes Lambda requestContext.
- * 
- * HTTP API v2 with enableSimpleResponses=true places authorizer context under:
- * - requestContext.authorizer.lambda (for simple responses)
- * 
- * REST API and HTTP API with enableSimpleResponses=false places it under:
- * - requestContext.authorizer (direct)
- */
-interface LambdaRequest extends Request {
-    requestContext?: {
-        authorizer?: {
-            // Direct context (REST API or enableSimpleResponses=false)
-            userId?: string;
-            tenantId?: string;
-            email?: string;
-            roles?: string;
-            // HTTP API v2 with enableSimpleResponses=true nests under 'lambda'
-            lambda?: {
-                userId?: string;
-                tenantId?: string;
-                email?: string;
-                roles?: string;
-            };
-        };
-    };
+interface AuthenticatedRequest extends Request {
     auth?: AuthContext;
+}
+
+// ── JWT verification configuration ──────────────────────────────────────────
+
+let _jwtSecret: string | null = null;
+let _authInitialized = false;
+
+/**
+ * Configure JWT verification for the auth middleware.
+ * Must be called at service startup before handling requests.
+ *
+ * @example
+ * ```typescript
+ * import { configureAuth } from '@valentine-efagene/qshelter-common';
+ *
+ * configureAuth({ jwtSecret: 'my-secret' });
+ * ```
+ */
+export function configureAuth(options: {
+    /** The JWT access token secret for verification */
+    jwtSecret: string;
+}): void {
+    _jwtSecret = options.jwtSecret;
+    _authInitialized = true;
+}
+
+/**
+ * Initialize auth from ConfigService (fetches JWT secret from AWS Secrets Manager).
+ * Call once during Lambda cold start or server startup.
+ *
+ * @example
+ * ```typescript
+ * import { setupAuth } from '@valentine-efagene/qshelter-common';
+ *
+ * // In lambda.ts or server startup:
+ * await setupAuth();
+ * ```
+ */
+export async function setupAuth(stage?: string): Promise<void> {
+    if (_authInitialized) return; // Already configured
+
+    try {
+        const configService = ConfigService.getInstance();
+        const jwtSecrets = await configService.getJwtAccessSecret(stage);
+        configureAuth({ jwtSecret: jwtSecrets.secret });
+        console.log('[auth] JWT verification configured from ConfigService');
+    } catch (error: any) {
+        console.warn(`[auth] Failed to fetch JWT secret from ConfigService: ${error.message}. JWT verification will use decode-only fallback.`);
+    }
 }
 
 /**
  * Safely decode JWT payload without verification.
- * Used to extract claims like roles when authorizer context isn't available.
- * Note: This is NOT validation - we trust the token was already validated upstream.
+ * Used as fallback when jwtVerify is not configured (dev/tests).
  */
 function decodeJwtPayload(token: string): Record<string, any> | null {
     try {
@@ -78,96 +87,53 @@ function decodeJwtPayload(token: string): Record<string, any> | null {
 }
 
 /**
- * Extracts auth context from API Gateway authorizer or JWT token.
- * 
+ * Extracts and verifies auth context from the JWT in the Authorization header.
+ *
  * Priority:
- * 1. getCurrentInvoke() from @codegenie/serverless-express (preferred for Lambda)
- * 2. HTTP API v2 simple response: requestContext.authorizer.lambda (enableSimpleResponses=true)
- * 3. REST API / HTTP API: requestContext.authorizer (enableSimpleResponses=false)
- * 4. Fallback: Decode JWT from Authorization header (LocalStack/dev/tests)
- * 
- * In production, the Lambda Authorizer validates the JWT and injects context.
- * In LocalStack (no authorizer), we decode the JWT directly since it contains
- * all the same information: sub (userId), tenantId, email, roles.
- * 
+ * 1. Verify JWT signature using configured secret (production & local)
+ * 2. Decode JWT without verification (fallback when secret not configured)
+ * 3. Mock headers for unit tests (x-authorizer-* headers)
+ *
  * @param req Express request object
  * @returns AuthContext or null if not authenticated
  */
 export function extractAuthContext(req: Request): AuthContext | null {
-    // Method 1: Use getCurrentInvoke() from @codegenie/serverless-express
-    // This is the most reliable method when running in Lambda with this package
-    if (getCurrentInvoke) {
-        const { event } = getCurrentInvoke();
-        if (event?.requestContext?.authorizer) {
-            const authorizer = event.requestContext.authorizer;
-
-            // HTTP API v2 with enableSimpleResponses=true: context is under authorizer.lambda
-            const lambdaContext = authorizer.lambda;
-            if (lambdaContext?.userId && lambdaContext?.tenantId) {
-                return {
-                    userId: lambdaContext.userId,
-                    tenantId: lambdaContext.tenantId,
-                    email: lambdaContext.email,
-                    roles: lambdaContext.roles ? JSON.parse(lambdaContext.roles) : [],
-                };
-            }
-
-            // REST API / HTTP API with enableSimpleResponses=false: context is directly on authorizer
-            if (authorizer.userId && authorizer.tenantId) {
-                return {
-                    userId: authorizer.userId,
-                    tenantId: authorizer.tenantId,
-                    email: authorizer.email,
-                    roles: authorizer.roles ? JSON.parse(authorizer.roles) : [],
-                };
-            }
-        }
-    }
-
-    // Method 2: Try req.requestContext (for packages that populate this)
-    const lambdaReq = req as LambdaRequest;
-    const authorizer = lambdaReq.requestContext?.authorizer;
-
-    // HTTP API v2 with enableSimpleResponses=true: context is under authorizer.lambda
-    const lambdaContext = authorizer?.lambda;
-    if (lambdaContext?.userId && lambdaContext?.tenantId) {
-        return {
-            userId: lambdaContext.userId,
-            tenantId: lambdaContext.tenantId,
-            email: lambdaContext.email,
-            roles: lambdaContext.roles ? JSON.parse(lambdaContext.roles) : [],
-        };
-    }
-
-    // REST API / HTTP API with enableSimpleResponses=false: context is directly on authorizer
-    if (authorizer?.userId && authorizer?.tenantId) {
-        return {
-            userId: authorizer.userId,
-            tenantId: authorizer.tenantId,
-            email: authorizer.email,
-            roles: authorizer.roles ? JSON.parse(authorizer.roles) : [],
-        };
-    }
-
-    // Fallback: Decode JWT directly (LocalStack, local dev, tests)
-    // The JWT already contains: sub (userId), tenantId, email, roles
+    // Method 1: JWT from Authorization header
     const authHeader = req.headers['authorization'] as string;
     if (authHeader?.startsWith('Bearer ')) {
         const token = authHeader.substring(7);
-        const payload = decodeJwtPayload(token);
 
-        if (payload?.sub && payload?.tenantId) {
-            return {
-                userId: payload.sub,
-                tenantId: payload.tenantId,
-                email: payload.email,
-                roles: Array.isArray(payload.roles) ? payload.roles : [],
-            };
+        // If secret is configured, verify the token signature
+        if (_jwtSecret) {
+            try {
+                const payload = jwt.verify(token, _jwtSecret) as any;
+                if (payload?.sub && payload?.tenantId) {
+                    return {
+                        userId: payload.sub,
+                        tenantId: payload.tenantId,
+                        email: payload.email,
+                        roles: Array.isArray(payload.roles) ? payload.roles : [],
+                    };
+                }
+            } catch {
+                // JWT verification failed — invalid/expired token
+                return null;
+            }
+        } else {
+            // Fallback: decode without verification (dev mode, no secret configured)
+            const payload = decodeJwtPayload(token);
+            if (payload?.sub && payload?.tenantId) {
+                return {
+                    userId: payload.sub,
+                    tenantId: payload.tenantId,
+                    email: payload.email,
+                    roles: Array.isArray(payload.roles) ? payload.roles : [],
+                };
+            }
         }
     }
 
-    // Legacy fallback: Mock headers for unit tests without real JWTs
-    // These should only be used in unit tests, not E2E or production
+    // Method 2: Mock headers for unit tests without real JWTs
     const mockUserId = req.headers['x-authorizer-user-id'] as string;
     const mockTenantId = req.headers['x-authorizer-tenant-id'] as string;
     if (mockUserId && mockTenantId) {
@@ -185,8 +151,8 @@ export function extractAuthContext(req: Request): AuthContext | null {
 
 /**
  * Middleware that requires authenticated context.
- * Rejects requests without valid authorizer context.
- * 
+ * Rejects requests without valid auth context (invalid/missing JWT).
+ *
  * @example
  * ```typescript
  * app.use('/api', requireAuth, apiRouter);
@@ -195,18 +161,18 @@ export function extractAuthContext(req: Request): AuthContext | null {
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
     const auth = extractAuthContext(req);
     if (!auth) {
-        return res.status(401).json({ error: 'Unauthorized - missing auth context' });
+        return res.status(401).json({ error: 'Unauthorized - missing or invalid auth context' });
     }
 
     // Attach to request for downstream use
-    (req as LambdaRequest).auth = auth;
+    (req as AuthenticatedRequest).auth = auth;
     next();
 }
 
 /**
  * Helper to get auth context from request (after requireAuth middleware).
  * Throws if auth context is missing.
- * 
+ *
  * @example
  * ```typescript
  * router.get('/profile', (req, res) => {
@@ -216,11 +182,11 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
  * ```
  */
 export function getAuthContext(req: Request): AuthContext {
-    const lambdaReq = req as LambdaRequest;
+    const authReq = req as AuthenticatedRequest;
 
     // First check if middleware attached it
-    if (lambdaReq.auth) {
-        return lambdaReq.auth;
+    if (authReq.auth) {
+        return authReq.auth;
     }
 
     // Otherwise try to extract it
@@ -233,33 +199,18 @@ export function getAuthContext(req: Request): AuthContext {
 
 /**
  * Test helper to generate authorization header with JWT.
- * 
- * Since auth context is now extracted directly from the JWT,
- * tests only need to pass the Authorization header with a valid token.
- * 
- * @example
- * ```typescript
- * const response = await request(app)
- *     .post('/users')
- *     .set('Authorization', `Bearer ${token}`)
- *     .send({ name: 'John' });
- * ```
- * 
+ *
  * @deprecated Use `mockAuthHeaders` for E2E tests or pass Authorization header directly with JWT token.
- * This helper is kept for backward compatibility.
  */
 export function authHeaders(
     userId: string,
     tenantId: string,
     extras?: { email?: string; roles?: string[]; token?: string }
 ): Record<string, string> {
-    // If a token is provided, just use that (preferred)
     if (extras?.token) {
         return { 'Authorization': `Bearer ${extras.token}` };
     }
 
-    // Legacy: Build mock headers for tests without real JWT
-    // This is only for unit tests that don't have access to real tokens
     return {
         'x-authorizer-user-id': userId,
         'x-authorizer-tenant-id': tenantId,
@@ -269,23 +220,7 @@ export function authHeaders(
 }
 
 /**
- * Generate mock authorization headers for E2E tests.
- * 
- * This is the preferred helper for E2E tests that bypass JWT authentication
- * and instead use mock headers that simulate what the Lambda authorizer would set.
- * 
- * @param userId - The user ID to set in the mock headers
- * @param tenantId - The tenant ID to set in the mock headers  
- * @param options - Optional additional header values
- * @returns Headers object to pass to supertest .set()
- * 
- * @example
- * ```typescript
- * const response = await api
- *     .post('/applications')
- *     .set(mockAuthHeaders(userId, tenantId, { roles: [ROLES.CUSTOMER] }))
- *     .send({ ... });
- * ```
+ * Generate mock authorization headers for unit tests.
  */
 export function mockAuthHeaders(
     userId: string,

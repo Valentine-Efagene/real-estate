@@ -1,18 +1,25 @@
 import serverlessExpress from '@codegenie/serverless-express';
-import { APIGatewayProxyEvent, Context, Callback, SQSEvent, SQSBatchResponse, SQSBatchItemFailure } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context, SQSEvent, SQSBatchResponse, SQSBatchItemFailure } from 'aws-lambda';
+import { setupAuth, PaymentEventType, PaymentPhaseCompletedPayload } from '@valentine-efagene/qshelter-common';
 import { app } from './app';
 import { phaseOrchestratorService } from './services/phase-orchestrator.service';
-import { PaymentEventType, PaymentPhaseCompletedPayload } from '@valentine-efagene/qshelter-common';
 
-// Create handler once - pass Express app directly, not app.listen()
-const serverlessExpressInstance = serverlessExpress({ app });
+let serverlessExpressInstance: any;
 
-export const handler = (
+async function initialize() {
+    await setupAuth();
+    serverlessExpressInstance = serverlessExpress({ app });
+    return serverlessExpressInstance;
+}
+
+export const handler = async (
     event: APIGatewayProxyEvent,
     context: Context,
-    callback: Callback,
-) => {
-    return serverlessExpressInstance(event, context, callback);
+): Promise<APIGatewayProxyResult> => {
+    if (!serverlessExpressInstance) {
+        await initialize();
+    }
+    return serverlessExpressInstance(event, context);
 };
 
 /**

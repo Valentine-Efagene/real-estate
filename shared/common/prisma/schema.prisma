@@ -4698,3 +4698,46 @@ model OrganizationDocumentWaiver {
   @@index([documentDefinitionId])
   @@map("organization_document_waivers")
 }
+
+// =============================================================================
+// ASYNC JOB - Track long-running operations (e.g. bootstrap, bulk imports)
+// =============================================================================
+// Solves the API Gateway 30s timeout by splitting work into:
+//   1. API Lambda → creates a PENDING job, invokes worker, returns 202 + jobId
+//   2. Worker Lambda → runs the real work, updates status to COMPLETED / FAILED
+//   3. Poll endpoint → reads current status from the database
+// =============================================================================
+
+/// Status of an asynchronous job
+enum AsyncJobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+/// Async Job — Tracks long-running operations
+model AsyncJob {
+  id       String  @id @default(cuid())
+  tenantId String? // NULL = system-wide job, set = tenant-specific
+
+  jobType String         // Namespace key, e.g. 'BOOTSTRAP', 'BULK_IMPORT'
+  status  AsyncJobStatus @default(PENDING)
+
+  // Timing
+  startedAt   DateTime? // When job started executing
+  completedAt DateTime? // When job finished
+
+  // Results
+  result Json?   // Job-specific result payload (JSON)
+  error  String? @db.Text // Error message if FAILED
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([jobType])
+  @@index([status])
+  @@index([jobType, status])
+  @@map("async_jobs")
+}

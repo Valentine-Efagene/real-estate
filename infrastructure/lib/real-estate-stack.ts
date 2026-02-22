@@ -7,7 +7,6 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
-import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
@@ -91,23 +90,6 @@ export class RealEstateStack extends cdk.Stack {
     // });
     // valkeyCluster.addDependency(subnetGroup);
 
-    // === DynamoDB for Role Policies ===
-    const rolePoliciesTable = new dynamodb.Table(this, 'RolePoliciesTable', {
-      tableName: `${prefix}-role-policies`,
-      partitionKey: { name: 'PK', type: dynamodb.AttributeType.STRING },
-      sortKey: { name: 'SK', type: dynamodb.AttributeType.STRING },
-      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      pointInTimeRecovery: true,
-    });
-
-    // Global Secondary Index for tenant queries
-    rolePoliciesTable.addGlobalSecondaryIndex({
-      indexName: 'GSI1',
-      partitionKey: { name: 'GSI1PK', type: dynamodb.AttributeType.STRING },
-      sortKey: { name: 'GSI1SK', type: dynamodb.AttributeType.STRING },
-    });
-
     // === S3 Buckets ===
     const uploadsBucket = new s3.Bucket(this, 'UploadsBucket', {
       bucketName: `${prefix}-uploads-${cdk.Stack.of(this).account}`,
@@ -189,15 +171,6 @@ export class RealEstateStack extends cdk.Stack {
       },
     });
 
-    const policySyncQueue = new sqs.Queue(this, 'PolicySyncQueue', {
-      queueName: `${prefix}-policy-sync`,
-      visibilityTimeout: cdk.Duration.seconds(60),
-      deadLetterQueue: {
-        queue: dlq,
-        maxReceiveCount: 3,
-      },
-    });
-
     // === SNS Topics ===
     const notificationsTopic = new sns.Topic(this, 'NotificationsTopic', {
       topicName: `${prefix}-notifications`,
@@ -209,10 +182,6 @@ export class RealEstateStack extends cdk.Stack {
 
     const paymentsTopic = new sns.Topic(this, 'PaymentsTopic', {
       topicName: `${prefix}-payments`,
-    });
-
-    const policySyncTopic = new sns.Topic(this, 'PolicySyncTopic', {
-      topicName: `${prefix}-policy-sync`,
     });
 
     // === SNS Subscriptions ===
@@ -246,12 +215,6 @@ export class RealEstateStack extends cdk.Stack {
       })
     );
 
-    policySyncTopic.addSubscription(
-      new snsSubscriptions.SqsSubscription(policySyncQueue, {
-        rawMessageDelivery: false,
-      })
-    );
-
     // === CloudWatch Log Groups for Services ===
     new logs.LogGroup(this, 'UserServiceLogGroup', {
       logGroupName: `/aws/lambda/${prefix}-user-service`,
@@ -273,12 +236,6 @@ export class RealEstateStack extends cdk.Stack {
 
     new logs.LogGroup(this, 'NotificationsServiceLogGroup', {
       logGroupName: `/aws/lambda/${prefix}-notifications-service`,
-      retention: logs.RetentionDays.ONE_WEEK,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
-
-    new logs.LogGroup(this, 'AuthorizerServiceLogGroup', {
-      logGroupName: `/aws/lambda/${prefix}-authorizer-service`,
       retention: logs.RetentionDays.ONE_WEEK,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
@@ -357,12 +314,6 @@ export class RealEstateStack extends cdk.Stack {
       parameterName: `/qshelter/${stage}/redis-port`,
       stringValue: '6379',
       description: 'Redis/Valkey Port',
-    });
-
-    new ssm.StringParameter(this, 'RolePoliciesTableNameParameter', {
-      parameterName: `/qshelter/${stage}/role-policies-table-name`,
-      stringValue: rolePoliciesTable.tableName,
-      description: 'DynamoDB Role Policies Table Name',
     });
 
     new ssm.StringParameter(this, 'S3BucketNameParameter', {
@@ -468,24 +419,6 @@ export class RealEstateStack extends cdk.Stack {
       parameterName: `/qshelter/${stage}/contract-events-queue-url`,
       stringValue: contractEventsQueue.queueUrl,
       description: 'Contract Events SQS Queue URL',
-    });
-
-    new ssm.StringParameter(this, 'PolicySyncTopicArnParameter', {
-      parameterName: `/qshelter/${stage}/policy-sync-topic-arn`,
-      stringValue: policySyncTopic.topicArn,
-      description: 'Policy Sync SNS Topic ARN',
-    });
-
-    new ssm.StringParameter(this, 'PolicySyncQueueArnParameter', {
-      parameterName: `/qshelter/${stage}/policy-sync-queue-arn`,
-      stringValue: policySyncQueue.queueArn,
-      description: 'Policy Sync SQS Queue ARN',
-    });
-
-    new ssm.StringParameter(this, 'PolicySyncQueueUrlParameter', {
-      parameterName: `/qshelter/${stage}/policy-sync-queue-url`,
-      stringValue: policySyncQueue.queueUrl,
-      description: 'Policy Sync SQS Queue URL',
     });
 
     // === Google OAuth SSM Parameters ===
@@ -653,7 +586,6 @@ export class RealEstateStack extends cdk.Stack {
 
     // Grant permissions to Lambda role
     dbCredentials.grantRead(lambdaServiceRole);
-    rolePoliciesTable.grantReadWriteData(lambdaServiceRole);
     uploadsBucket.grantReadWrite(lambdaServiceRole);
 
     // Grant EventBridge permissions

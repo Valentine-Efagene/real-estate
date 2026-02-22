@@ -3,7 +3,9 @@ import { config } from 'dotenv';
 const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
 
 // Load the appropriate env file based on stage
-if (stage === 'test' || stage === 'localstack') {
+if (stage === 'localstack') {
+    config({ path: '.env.localstack' });
+} else if (stage === 'test') {
     config({ path: '.env.test' });
 } else {
     config({ path: '.env' });

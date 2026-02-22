@@ -50,12 +50,12 @@ export function createCoApplicantService(prisma: PrismaClient) {
                 },
             });
             if (!application) {
-                throw new AppError('Application not found', 404);
+                throw new AppError(404, 'Application not found');
             }
 
             // Check buyer doesn't invite themselves
             if (application.buyer?.email === data.email) {
-                throw new AppError('The primary applicant cannot be added as a co-applicant', 400);
+                throw new AppError(400, 'The primary applicant cannot be added as a co-applicant');
             }
 
             // Check for existing invite — if re-inviting, regenerate token rather than 409
@@ -68,10 +68,10 @@ export function createCoApplicantService(prisma: PrismaClient) {
 
             if (existing) {
                 if (existing.status === 'ACTIVE') {
-                    throw new AppError('This person has already accepted the invitation', 409);
+                    throw new AppError(409, 'This person has already accepted the invitation');
                 }
                 if (existing.status === 'REMOVED') {
-                    throw new AppError('This co-applicant was removed from the application', 409);
+                    throw new AppError(409, 'This co-applicant was removed from the application');
                 }
                 // Re-invite: update record with fresh token and provided data
                 const updated = await prisma.coApplicant.update({
@@ -169,18 +169,18 @@ export function createCoApplicantService(prisma: PrismaClient) {
             });
 
             if (!coApplicant) {
-                throw new AppError('Invalid or expired invitation token', 404);
+                throw new AppError(404, 'Invalid or expired invitation token');
             }
 
             if (coApplicant.status !== 'INVITED') {
                 throw new AppError(
-                    `Cannot accept an invitation with status: ${coApplicant.status}`,
                     400,
+                    `Cannot accept an invitation with status: ${coApplicant.status}`,
                 );
             }
 
             if (coApplicant.inviteTokenExpiresAt && coApplicant.inviteTokenExpiresAt < new Date()) {
-                throw new AppError('This invitation has expired. Please ask the primary applicant to resend it.', 400);
+                throw new AppError(400, 'This invitation has expired. Please ask the primary applicant to resend it.');
             }
 
             return prisma.coApplicant.update({
@@ -214,7 +214,7 @@ export function createCoApplicantService(prisma: PrismaClient) {
                 where: { id: coApplicantId, applicationId },
             });
             if (!coApplicant) {
-                throw new AppError('Co-applicant not found', 404);
+                throw new AppError(404, 'Co-applicant not found');
             }
 
             return prisma.coApplicant.update({
@@ -237,12 +237,12 @@ export function createCoApplicantService(prisma: PrismaClient) {
                 where: { id: coApplicantId, applicationId },
             });
             if (!coApplicant) {
-                throw new AppError('Co-applicant not found', 404);
+                throw new AppError(404, 'Co-applicant not found');
             }
             if (coApplicant.status !== 'INVITED') {
                 throw new AppError(
-                    `Cannot accept an invitation with status: ${coApplicant.status}`,
                     400,
+                    `Cannot accept an invitation with status: ${coApplicant.status}`,
                 );
             }
 
@@ -271,12 +271,12 @@ export function createCoApplicantService(prisma: PrismaClient) {
                 where: { id: coApplicantId, applicationId },
             });
             if (!coApplicant) {
-                throw new AppError('Co-applicant not found', 404);
+                throw new AppError(404, 'Co-applicant not found');
             }
             if (coApplicant.status !== 'INVITED') {
                 throw new AppError(
-                    `Cannot decline an invitation with status: ${coApplicant.status}`,
                     400,
+                    `Cannot decline an invitation with status: ${coApplicant.status}`,
                 );
             }
 
@@ -299,10 +299,10 @@ export function createCoApplicantService(prisma: PrismaClient) {
                 where: { id: coApplicantId, applicationId },
             });
             if (!coApplicant) {
-                throw new AppError('Co-applicant not found', 404);
+                throw new AppError(404, 'Co-applicant not found');
             }
             if (coApplicant.status === 'REMOVED') {
-                throw new AppError('Co-applicant has already been removed', 400);
+                throw new AppError(400, 'Co-applicant has already been removed');
             }
 
             return prisma.coApplicant.update({

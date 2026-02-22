@@ -2,15 +2,7 @@ import { prisma } from '../lib/prisma';
 import {
     NotFoundError,
     ConflictError,
-    PolicyEventPublisher,
 } from '@valentine-efagene/qshelter-common';
-
-// Initialize policy event publisher for permission changes
-const policyPublisher = new PolicyEventPublisher('user-service', {
-    region: process.env.AWS_REGION_NAME || process.env.AWS_REGION || 'us-east-1',
-    endpoint: process.env.LOCALSTACK_ENDPOINT,
-    topicArn: process.env.POLICY_SYNC_TOPIC_ARN,
-});
 
 export interface CreatePermissionInput {
     name: string;
@@ -55,22 +47,6 @@ class PermissionService {
                 tenantId: data.tenantId ?? null,
             },
         });
-
-        // Publish permission created event
-        try {
-            await policyPublisher.publishPermissionCreated({
-                id: permission.id,
-                name: permission.name,
-                description: permission.description,
-                path: permission.path,
-                methods: permission.methods as string[],
-                effect: permission.effect as 'ALLOW' | 'DENY',
-                tenantId: permission.tenantId,
-            });
-            console.log(`[PermissionService] Published PERMISSION_CREATED event for ${permission.name}`);
-        } catch (error) {
-            console.error(`[PermissionService] Failed to publish PERMISSION_CREATED event:`, error);
-        }
 
         return permission;
     }
@@ -161,22 +137,6 @@ class PermissionService {
             data,
         });
 
-        // Publish permission updated event
-        try {
-            await policyPublisher.publishPermissionUpdated({
-                id: updatedPermission.id,
-                name: updatedPermission.name,
-                description: updatedPermission.description,
-                path: updatedPermission.path,
-                methods: updatedPermission.methods as string[],
-                effect: updatedPermission.effect as 'ALLOW' | 'DENY',
-                tenantId: updatedPermission.tenantId,
-            });
-            console.log(`[PermissionService] Published PERMISSION_UPDATED event for ${updatedPermission.name}`);
-        } catch (error) {
-            console.error(`[PermissionService] Failed to publish PERMISSION_UPDATED event:`, error);
-        }
-
         return updatedPermission;
     }
 
@@ -194,14 +154,6 @@ class PermissionService {
         }
 
         await prisma.permission.delete({ where: { id } });
-
-        // Publish permission deleted event
-        try {
-            await policyPublisher.publishPermissionDeleted(id);
-            console.log(`[PermissionService] Published PERMISSION_DELETED event for ${permission.name}`);
-        } catch (error) {
-            console.error(`[PermissionService] Failed to publish PERMISSION_DELETED event:`, error);
-        }
 
         return { id, name: permission.name };
     }

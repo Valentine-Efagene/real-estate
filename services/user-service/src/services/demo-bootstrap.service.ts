@@ -15,7 +15,6 @@
  */
 
 import { randomUUID } from 'crypto';
-import { DynamoDBClient, GetItemCommand } from '@aws-sdk/client-dynamodb';
 import { prisma } from '../lib/prisma';
 import { bootstrapService } from './bootstrap.service';
 import { authService } from './auth.service';
@@ -122,59 +121,6 @@ async function fetchJson(
 
 function authHeaders(token: string): Record<string, string> {
     return { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
-}
-
-// =============================================================================
-// DynamoDB policy polling — replaces fixed sleeps
-// =============================================================================
-
-const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION || 'us-east-1' });
-const ROLE_POLICIES_TABLE = process.env.ROLE_POLICIES_TABLE_NAME || 'qshelter-staging-role-policies';
-
-/**
- * Poll DynamoDB until all specified role policies exist for this tenant.
- * Policies are written per-role (not per-user), so once they land,
- * any user assigned that role can authenticate through the authorizer.
- *
- * @param tenantId  The tenant whose role policies to check
- * @param roleNames The role names to wait for (e.g. ['admin', 'user', 'mortgage_ops', 'agent'])
- * @param maxWaitMs Maximum time to wait before giving up (default 30s)
- * @param intervalMs Polling interval (default 500ms)
- */
-export async function waitForPolicies(
-    tenantId: string,
-    roleNames: string[],
-    maxWaitMs = 30_000,
-    intervalMs = 500,
-): Promise<{ foundAll: boolean; elapsed: number; missing: string[] }> {
-    const start = Date.now();
-    let missing = [...roleNames];
-
-    while (Date.now() - start < maxWaitMs && missing.length > 0) {
-        const stillMissing: string[] = [];
-
-        for (const role of missing) {
-            const result = await dynamoClient.send(new GetItemCommand({
-                TableName: ROLE_POLICIES_TABLE,
-                Key: {
-                    PK: { S: `TENANT#${tenantId}#ROLE#${role}` },
-                    SK: { S: 'POLICY' },
-                },
-                ProjectionExpression: 'PK',
-            }));
-
-            if (!result.Item) {
-                stillMissing.push(role);
-            }
-        }
-
-        missing = stillMissing;
-        if (missing.length > 0) {
-            await new Promise((r) => setTimeout(r, intervalMs));
-        }
-    }
-
-    return { foundAll: missing.length === 0, elapsed: Date.now() - start, missing };
 }
 
 // =============================================================================
@@ -332,18 +278,6 @@ export async function runDemoBootstrap(
     const mortgageOpsRoleId = roles.find((r) => r.name === 'mortgage_ops')!.id;
     const agentRoleId = roles.find((r) => r.name === 'agent')!.id;
     log('Bootstrap tenant', `Tenant: ${tenantId}, Admin: ${adminId}`);
-
-    // Poll DynamoDB until all critical role policies are synced.
-    // Policies are per-role, so once they land here, ALL users assigned
-    // these roles work immediately — no further waits needed.
-    const CRITICAL_ROLES = ['admin', 'user', 'mortgage_ops', 'agent'];
-    const pollResult = await waitForPolicies(tenantId, CRITICAL_ROLES);
-    if (!pollResult.foundAll) {
-        throw new Error(
-            `Policy sync timed out after ${pollResult.elapsed}ms. Missing: ${pollResult.missing.join(', ')}`,
-        );
-    }
-    log('Policies synced to DynamoDB', `${CRITICAL_ROLES.length} roles in ${pollResult.elapsed}ms`);
 
     // =========================================================================
     // Step 3: Login admin (get token for external service calls)

@@ -1,10 +1,17 @@
 import { config } from 'dotenv';
-config({ path: '.env.test' });
+config({ path: '.env.localstack' });
 
+import { setupAuth } from '@valentine-efagene/qshelter-common';
 import { app } from './app';
 
-const port = Number(process.env.PORT ?? 3003);
+async function start() {
+    await setupAuth();
+    const port = Number(process.env.PORT ?? 3003);
 
-app.listen(port, () => {
-    console.log(`mortgage-service listening on http://localhost:${port}`);
-});
+    app.listen(port, () => {
+        console.log(`🚀 Mortgage Service running on http://localhost:${port}`);
+        console.log(`📊 Health check: http://localhost:${port}/health`);
+    });
+}
+
+start().catch(console.error);
