@@ -1306,6 +1306,23 @@ export type EnumQualificationStatusWithAggregatesFilter<$PrismaModel = never> = 
   _max?: Prisma.NestedEnumQualificationStatusFilter<$PrismaModel>
 }
 
+export type EnumAsyncJobStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AsyncJobStatus | Prisma.EnumAsyncJobStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AsyncJobStatus[]
+  notIn?: $Enums.AsyncJobStatus[]
+  not?: Prisma.NestedEnumAsyncJobStatusFilter<$PrismaModel> | $Enums.AsyncJobStatus
+}
+
+export type EnumAsyncJobStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AsyncJobStatus | Prisma.EnumAsyncJobStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AsyncJobStatus[]
+  notIn?: $Enums.AsyncJobStatus[]
+  not?: Prisma.NestedEnumAsyncJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.AsyncJobStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAsyncJobStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAsyncJobStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[]
@@ -2537,6 +2554,23 @@ export type NestedEnumQualificationStatusWithAggregatesFilter<$PrismaModel = nev
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumQualificationStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumQualificationStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumAsyncJobStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AsyncJobStatus | Prisma.EnumAsyncJobStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AsyncJobStatus[]
+  notIn?: $Enums.AsyncJobStatus[]
+  not?: Prisma.NestedEnumAsyncJobStatusFilter<$PrismaModel> | $Enums.AsyncJobStatus
+}
+
+export type NestedEnumAsyncJobStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AsyncJobStatus | Prisma.EnumAsyncJobStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AsyncJobStatus[]
+  notIn?: $Enums.AsyncJobStatus[]
+  not?: Prisma.NestedEnumAsyncJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.AsyncJobStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAsyncJobStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAsyncJobStatusFilter<$PrismaModel>
 }
 
 

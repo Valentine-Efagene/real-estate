@@ -141,7 +141,8 @@ export const ModelName = {
   PaymentMethodQualification: 'PaymentMethodQualification',
   QualificationPhase: 'QualificationPhase',
   PaymentMethodQualificationConfig: 'PaymentMethodQualificationConfig',
-  OrganizationDocumentWaiver: 'OrganizationDocumentWaiver'
+  OrganizationDocumentWaiver: 'OrganizationDocumentWaiver',
+  AsyncJob: 'AsyncJob'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -150,12 +151,12 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  * Enums
  */
 
-export const TransactionIsolationLevel = {
+export const TransactionIsolationLevel = runtime.makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
   RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
-} as const
+} as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
@@ -1951,6 +1952,22 @@ export const OrganizationDocumentWaiverScalarFieldEnum = {
 export type OrganizationDocumentWaiverScalarFieldEnum = (typeof OrganizationDocumentWaiverScalarFieldEnum)[keyof typeof OrganizationDocumentWaiverScalarFieldEnum]
 
 
+export const AsyncJobScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  jobType: 'jobType',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  result: 'result',
+  error: 'error',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AsyncJobScalarFieldEnum = (typeof AsyncJobScalarFieldEnum)[keyof typeof AsyncJobScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1960,15 +1977,15 @@ export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
 export const JsonNullValueInput = {
-  JsonNull: 'JsonNull'
+  JsonNull: JsonNull
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull'
+  DbNull: DbNull,
+  JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
@@ -2031,9 +2048,9 @@ export type RoleOrderByRelevanceFieldEnum = (typeof RoleOrderByRelevanceFieldEnu
 
 
 export const JsonNullValueFilter = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull',
-  AnyNull: 'AnyNull'
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
@@ -3153,4 +3170,14 @@ export const OrganizationDocumentWaiverOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrganizationDocumentWaiverOrderByRelevanceFieldEnum = (typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum)[keyof typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum]
+
+
+export const AsyncJobOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  jobType: 'jobType',
+  error: 'error'
+} as const
+
+export type AsyncJobOrderByRelevanceFieldEnum = (typeof AsyncJobOrderByRelevanceFieldEnum)[keyof typeof AsyncJobOrderByRelevanceFieldEnum]
 

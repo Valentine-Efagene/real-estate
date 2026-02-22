@@ -1,3 +1,7 @@
+# LocalStack-specific serverless config for Uploader Service
+# Uses REST API (v1) for better LocalStack compatibility
+# Usage: npx sls deploy --config serverless.localstack.yml --stage localstack
+
 service: qshelter-uploader-service
 
 frameworkVersion: '4'
@@ -6,44 +10,67 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stage: localstack
+  stage: ${opt:stage, 'localstack'}
   memorySize: 512
   timeout: 60
 
-  httpApi:
-    cors: true
+  # REST API (v1) for LocalStack compatibility
+  apiGateway:
+    shouldStartNameWithService: true
 
   environment:
-    NODE_ENV: localstack
+    NODE_ENV: ${self:provider.stage}
     LOCALSTACK_ENDPOINT: http://host.docker.internal:4566
-    S3_BUCKET_NAME: qshelter-uploads-localstack
+    S3_BUCKET_NAME: ${ssm:/qshelter/${self:provider.stage}/s3-bucket-name}
     PRESIGNED_URL_TTL: '3600'
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+            - s3:ListBucket
+          Resource:
+            - arn:aws:s3:::*
+            - arn:aws:s3:::*/*
 
 package:
   individually: true
   patterns:
     - '!**'
     - 'dist/**/*.mjs'
+    - 'dist/**/*.map'
 
 functions:
   main:
     handler: dist/lambda.handler
     events:
-      - httpApi:
-          path: /health
-          method: GET
-      - httpApi:
-          path: /api-docs
-          method: GET
-      - httpApi:
-          path: /api-docs/
-          method: GET
-      - httpApi:
-          path: /openapi.json
-          method: GET
-      - httpApi:
+      - http:
           path: /{proxy+}
           method: ANY
+          cors: true
+      - http:
+          path: /health
+          method: GET
+          cors: true
+      - http:
+          path: /api-docs
+          method: GET
+          cors: true
+      - http:
+          path: /openapi.json
+          method: GET
+          cors: true
 
 plugins:
   - serverless-localstack

@@ -739,3 +739,13 @@ export const ScheduledJobType = {
 } as const
 
 export type ScheduledJobType = (typeof ScheduledJobType)[keyof typeof ScheduledJobType]
+
+
+export const AsyncJobStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type AsyncJobStatus = (typeof AsyncJobStatus)[keyof typeof AsyncJobStatus]

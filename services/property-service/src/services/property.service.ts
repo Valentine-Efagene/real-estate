@@ -187,8 +187,8 @@ class PropertyService {
 
         const [items, total] = await Promise.all([
             prisma.property.findMany({
-                where: where as Parameters<typeof prisma.property.findMany>[0]['where'],
-                orderBy: orderBy as Parameters<typeof prisma.property.findMany>[0]['orderBy'],
+                where: where as any,
+                orderBy: orderBy as any,
                 skip,
                 take: limit,
                 include: {
@@ -209,7 +209,7 @@ class PropertyService {
                 },
             }),
             prisma.property.count({
-                where: where as Parameters<typeof prisma.property.count>[0]['where'],
+                where: where as any,
             }),
         ]);
 

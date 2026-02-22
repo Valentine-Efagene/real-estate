@@ -122,8 +122,9 @@ deploy_service() {
     
     pnpm run build 2>/dev/null || npm run build
     
-    # Deploy with stage=localstack to activate the serverless-localstack plugin
-    npx sls deploy --stage localstack 2>&1 || log_warning "$service_name deployment had warnings"
+    # Deploy with LocalStack-specific config (REST API v1 instead of HTTP API v2)
+    # LocalStack Community doesn't support apigatewayv2, so we use serverless.localstack.yml
+    npx sls deploy --config serverless.localstack.yml --stage localstack 2>&1 || log_warning "$service_name deployment had warnings"
     log_success "$service_name deployed"
   else
     log_warning "$service_name directory not found, skipping"

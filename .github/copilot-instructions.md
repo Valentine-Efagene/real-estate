@@ -553,6 +553,53 @@ This approach:
        method: GET
    ```
 
+## CDK Infrastructure Stacks
+
+There are **two separate CDK stacks** that must be kept in sync:
+
+| Stack             | File                                      | Entry Point                | Purpose                                               |
+| ----------------- | ----------------------------------------- | -------------------------- | ----------------------------------------------------- |
+| `RealEstateStack` | `infrastructure/lib/real-estate-stack.ts` | `bin/real-estate-stack.ts` | AWS staging/prod (VPC, RDS Aurora, NAT, IAM, etc.)    |
+| `LocalStackStack` | `infrastructure/lib/localstack-stack.ts`  | `bin/localstack-app.ts`    | LocalStack local dev (no VPC/RDS — uses Docker MySQL) |
+
+**Key differences:**
+
+- **AWS stack** provisions VPC, RDS Aurora Serverless, NAT gateway, IAM roles, security groups
+- **LocalStack stack** skips those (LocalStack community doesn't support RDS) and uses hardcoded Docker MySQL connection details instead
+- Both create the same S3 buckets, SNS topics, SQS queues, Secrets Manager secrets, and SSM parameters
+
+**CRITICAL — Keep both stacks in parity:** When adding new SSM parameters, Secrets Manager secrets, SNS topics, SQS queues, or S3 buckets to one stack, **always add the equivalent to the other stack**. The services read config from SSM/Secrets Manager by path (`/qshelter/${stage}/...`), so both stacks must provide the same parameter names. If a resource is missing from one stack, that service will fail in that environment.
+
+**Stage names:**
+
+- AWS staging: `--context stage=staging`
+- LocalStack: `--context stage=localstack` (matches `serverless-localstack` plugin activation)
+
+## Dual Serverless Configs (AWS vs LocalStack)
+
+Each service has **two separate Serverless Framework configs**:
+
+| Config File                 | Target Environment | API Gateway Type | Deploy Command                                                         |
+| --------------------------- | ------------------ | ---------------- | ---------------------------------------------------------------------- |
+| `serverless.yml`            | AWS staging/prod   | HTTP API (v2)    | `npx sls deploy --stage staging`                                       |
+| `serverless.localstack.yml` | LocalStack local   | REST API (v1)    | `npx sls deploy --config serverless.localstack.yml --stage localstack` |
+
+**Why two configs?** LocalStack Community Edition does **not** support API Gateway v2 (`httpApi` / `apigatewayv2`). Only REST API v1 (`http` events) is available. Rather than polluting the production config with conditional logic, we maintain a separate LocalStack-specific config.
+
+**Key differences in `serverless.localstack.yml`:**
+
+- Uses `http` events (REST API v1) instead of `httpApi` (HTTP API v2)
+- No VPC configuration (LocalStack doesn't support VPC-attached Lambdas)
+- No scheduled events (`schedule: rate(...)` / `cron(...)`) — limited LocalStack support
+- Simplified IAM (LocalStack doesn't enforce IAM by default)
+- Includes `serverless-localstack` plugin config
+- Stage hardcoded to `localstack`
+- REST API URLs follow the pattern: `http://localhost:4566/restapis/{api-id}/{stage}/_user_request_/{path}`
+
+**CRITICAL — Keep both configs in sync:** When adding new HTTP routes, environment variables, or Lambda functions to `serverless.yml`, **always update `serverless.localstack.yml`** with the equivalent (using `http` events instead of `httpApi`). If a route exists in production but not in the LocalStack config, that endpoint won't work locally.
+
+**Setup script:** `local-dev/scripts/setup.sh` deploys all services using `--config serverless.localstack.yml`.
+
 ## Deployment
 
 ### AWS Staging Deployment

@@ -76,7 +76,6 @@ export const bootstrapTenantResponseSchema = z.object({
         isNew: z.boolean(),
         permissionsCount: z.number(),
     })),
-    syncTriggered: z.boolean(),
 }).openapi('BootstrapTenantResponse');
 
 export type BootstrapTenantInput = z.infer<typeof bootstrapTenantSchema>;

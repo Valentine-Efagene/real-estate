@@ -74,7 +74,7 @@ provider:
             - secretsmanager:GetSecretValue
           Resource:
             - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
-            - ${ssm:/qshelter/${self:provider.stage}/database-secret-arn}
+            - ${ssm:/qshelter/${self:provider.stage}/database-secret-arn, 'arn:aws:secretsmanager:us-east-1:000000000000:secret:placeholder'}
         # SNS for push notifications
         - Effect: Allow
           Action:
@@ -160,10 +160,10 @@ custom:
   vpcConfig:
     staging:
       securityGroupIds:
-        - ${ssm:/qshelter/staging/lambda-security-group-id}
+        - ${ssm:/qshelter/staging/lambda-security-group-id, 'sg-placeholder'}
       subnetIds:
-        - ${ssm:/qshelter/staging/private-subnet-1-id}
-        - ${ssm:/qshelter/staging/private-subnet-2-id}
+        - ${ssm:/qshelter/staging/private-subnet-1-id, 'subnet-placeholder-1'}
+        - ${ssm:/qshelter/staging/private-subnet-2-id, 'subnet-placeholder-2'}
     prod:
       securityGroupIds:
         - ${ssm:/qshelter/prod/lambda-security-group-id, 'sg-placeholder'}

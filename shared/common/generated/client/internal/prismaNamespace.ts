@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.2.0
- * Query Engine version: 0c8ef2ce45c83248ab3df073180d5eda9e8be7a3
+ * Prisma Client JS version: 7.4.1
+ * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.2.0",
-  engine: "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3"
+  client: "7.4.1",
+  engine: "55ae170b1ced7fc6ed07a15f110549408c501bb3"
 }
 
 /**
@@ -474,7 +474,8 @@ export const ModelName = {
   PaymentMethodQualification: 'PaymentMethodQualification',
   QualificationPhase: 'QualificationPhase',
   PaymentMethodQualificationConfig: 'PaymentMethodQualificationConfig',
-  OrganizationDocumentWaiver: 'OrganizationDocumentWaiver'
+  OrganizationDocumentWaiver: 'OrganizationDocumentWaiver',
+  AsyncJob: 'AsyncJob'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -490,7 +491,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver"
+    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver" | "asyncJob"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -6500,6 +6501,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AsyncJob: {
+      payload: Prisma.$AsyncJobPayload<ExtArgs>
+      fields: Prisma.AsyncJobFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AsyncJobFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AsyncJobPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AsyncJobFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AsyncJobPayload>
+        }
+        findFirst: {
+          args: Prisma.AsyncJobFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AsyncJobPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AsyncJobFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AsyncJobPayload>
+        }
+        findMany: {
+          args: Prisma.AsyncJobFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AsyncJobPayload>[]
+        }
+        create: {
+          args: Prisma.AsyncJobCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AsyncJobPayload>
+        }
+        createMany: {
+          args: Prisma.AsyncJobCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.AsyncJobDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AsyncJobPayload>
+        }
+        update: {
+          args: Prisma.AsyncJobUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AsyncJobPayload>
+        }
+        deleteMany: {
+          args: Prisma.AsyncJobDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AsyncJobUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.AsyncJobUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AsyncJobPayload>
+        }
+        aggregate: {
+          args: Prisma.AsyncJobAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAsyncJob>
+        }
+        groupBy: {
+          args: Prisma.AsyncJobGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AsyncJobGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AsyncJobCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AsyncJobCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -8330,6 +8397,22 @@ export const OrganizationDocumentWaiverScalarFieldEnum = {
 export type OrganizationDocumentWaiverScalarFieldEnum = (typeof OrganizationDocumentWaiverScalarFieldEnum)[keyof typeof OrganizationDocumentWaiverScalarFieldEnum]
 
 
+export const AsyncJobScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  jobType: 'jobType',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  result: 'result',
+  error: 'error',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AsyncJobScalarFieldEnum = (typeof AsyncJobScalarFieldEnum)[keyof typeof AsyncJobScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -9534,6 +9617,16 @@ export const OrganizationDocumentWaiverOrderByRelevanceFieldEnum = {
 export type OrganizationDocumentWaiverOrderByRelevanceFieldEnum = (typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum)[keyof typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum]
 
 
+export const AsyncJobOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  jobType: 'jobType',
+  error: 'error'
+} as const
+
+export type AsyncJobOrderByRelevanceFieldEnum = (typeof AsyncJobOrderByRelevanceFieldEnum)[keyof typeof AsyncJobOrderByRelevanceFieldEnum]
+
+
 
 /**
  * Field references
@@ -9966,6 +10059,13 @@ export type EnumScheduledJobStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 export type EnumQualificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QualificationStatus'>
     
 
+
+/**
+ * Reference to a field of type 'AsyncJobStatus'
+ */
+export type EnumAsyncJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AsyncJobStatus'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -10152,6 +10252,7 @@ export type GlobalOmitConfig = {
   qualificationPhase?: Prisma.QualificationPhaseOmit
   paymentMethodQualificationConfig?: Prisma.PaymentMethodQualificationConfigOmit
   organizationDocumentWaiver?: Prisma.OrganizationDocumentWaiverOmit
+  asyncJob?: Prisma.AsyncJobOmit
 }
 
 /* Types for Logging */

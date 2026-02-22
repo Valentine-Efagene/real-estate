@@ -508,3 +508,8 @@ export type PaymentMethodQualificationConfig = Prisma.PaymentMethodQualification
  * 
  */
 export type OrganizationDocumentWaiver = Prisma.OrganizationDocumentWaiverModel
+/**
+ * Model AsyncJob
+ * Async Job — Tracks long-running operations
+ */
+export type AsyncJob = Prisma.AsyncJobModel

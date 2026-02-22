@@ -3,6 +3,19 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 
 extendZodWithOpenApi(z);
 
+const ConditionOperatorEnum = z.enum([
+    'EQUALS',
+    'NOT_EQUALS',
+    'IN',
+    'NOT_IN',
+    'GREATER_THAN',
+    'LESS_THAN',
+    'GREATER_THAN_OR_EQUAL',
+    'LESS_THAN_OR_EQUAL',
+    'EXISTS',
+    'NOT_EXISTS',
+]);
+
 // Condition schemas for showIf (matches condition-evaluator.service.ts Condition type)
 // Simple condition: { questionKey, operator, value } or { questionKey, operator, values }
 const SimpleConditionSchema = z.object({
@@ -43,17 +56,6 @@ const ShowIfSchema: z.ZodType<ShowIfCondition> = z.lazy(() =>
     },
     description: 'Conditional display logic. Supports simple conditions (questionKey + operator + value) and compound AND/OR logic ({ all: [...] } / { any: [...] })',
 });
-'EQUALS',
-    'NOT_EQUALS',
-    'IN',
-    'NOT_IN',
-    'GREATER_THAN',
-    'LESS_THAN',
-    'GREATER_THAN_OR_EQUAL',
-    'LESS_THAN_OR_EQUAL',
-    'EXISTS',
-    'NOT_EXISTS',
-]);
 
 // New array-based scoring rule schema
 const ScoringRuleSchema = z.object({
