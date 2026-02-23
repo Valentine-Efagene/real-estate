@@ -71,7 +71,7 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
 router.get('/:id', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getService(req);
-        const flow = await service.findFlowById(req.params.id);
+        const flow = await service.findFlowById(req.params.id as string);
         res.json(successResponse(flow));
     } catch (error: any) {
         next(error);
@@ -86,7 +86,7 @@ router.put('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request,
     try {
         const data = UpdateQualificationFlowSchema.parse(req.body);
         const service = getService(req);
-        const result = await service.updateFlow(req.params.id, data);
+        const result = await service.updateFlow(req.params.id as string, data);
         res.json(successResponse(result));
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -104,7 +104,7 @@ router.put('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request,
 router.delete('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getService(req);
-        const result = await service.deleteFlow(req.params.id);
+        const result = await service.deleteFlow(req.params.id as string);
         res.json(successResponse(result));
     } catch (error: any) {
         next(error);

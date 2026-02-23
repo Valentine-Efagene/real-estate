@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { bootstrapTenantSchema } from '../validators/bootstrap.validator';
-import { AppError, ConfigService } from '@valentine-efagene/qshelter-common';
+import { AppError, ConfigService, AsyncJobStore } from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
 import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
 
@@ -133,20 +133,59 @@ router.post(
                 throw new AppError(500, 'BOOTSTRAP_WORKER_FUNCTION_NAME not configured');
             }
 
-            console.log(`[Bootstrap] Dispatching tenant bootstrap to ${BOOTSTRAP_WORKER_FUNCTION}`);
+            // Create an async job record so the frontend can poll for status
+            const jobStore = new AsyncJobStore(prisma, 'BOOTSTRAP');
+            const jobId = await jobStore.create();
+
+            console.log(`[Bootstrap] Dispatching tenant bootstrap to ${BOOTSTRAP_WORKER_FUNCTION} (jobId: ${jobId})`);
             await lambdaClient.send(new InvokeCommand({
                 FunctionName: BOOTSTRAP_WORKER_FUNCTION,
                 InvocationType: 'Event',
                 Payload: Buffer.from(JSON.stringify({
                     mode: 'tenant',
+                    jobId,
                     input: parsed.data,
                 })),
             }));
 
             res.status(202).json({
-                status: 'DISPATCHED',
+                jobId,
+                status: 'PENDING',
                 message: 'Bootstrap job dispatched to worker Lambda.',
             });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+/**
+ * GET /admin/bootstrap-tenant/:jobId
+ * 
+ * Poll for bootstrap job status.
+ * Returns { jobId, status, result?, error? }
+ * 
+ * Security: Requires x-bootstrap-secret header
+ */
+router.get(
+    '/bootstrap-tenant/:jobId',
+    verifyBootstrapSecret,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const jobId = req.params.jobId as string;
+            const jobStore = new AsyncJobStore(prisma, 'BOOTSTRAP');
+            const job = await jobStore.get(jobId);
+
+            if (!job) {
+                res.status(404).json({
+                    jobId,
+                    status: 'NOT_FOUND',
+                    error: 'Job not found',
+                });
+                return;
+            }
+
+            res.json(job);
         } catch (error) {
             next(error);
         }
@@ -593,18 +632,24 @@ router.post(
                 throw new AppError(500, 'BOOTSTRAP_WORKER_FUNCTION_NAME not configured');
             }
 
-            console.log(`[Demo Bootstrap] Dispatching to ${BOOTSTRAP_WORKER_FUNCTION}`);
+            // Create an async job record so the frontend can poll for status
+            const jobStore = new AsyncJobStore(prisma, 'DEMO_BOOTSTRAP');
+            const jobId = await jobStore.create();
+
+            console.log(`[Demo Bootstrap] Dispatching to ${BOOTSTRAP_WORKER_FUNCTION} (jobId: ${jobId})`);
             await lambdaClient.send(new InvokeCommand({
                 FunctionName: BOOTSTRAP_WORKER_FUNCTION,
                 InvocationType: 'Event',
                 Payload: Buffer.from(JSON.stringify({
                     mode: 'demo',
+                    jobId,
                     input: { propertyServiceUrl, mortgageServiceUrl, paymentServiceUrl },
                 })),
             }));
 
             res.status(202).json({
-                status: 'DISPATCHED',
+                jobId,
+                status: 'PENDING',
                 message: 'Demo bootstrap dispatched to worker Lambda.',
             });
         } catch (error) {

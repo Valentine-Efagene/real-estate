@@ -756,7 +756,7 @@ router.delete(
 router.get('/organizations/:orgId/payment-methods', requireTenant, async (req: Request, res: Response, next) => {
     try {
         const service = createQualificationFlowService(getTenantPrisma(req));
-        const results = await service.findOrgPaymentMethods(req.params.orgId);
+        const results = await service.findOrgPaymentMethods(req.params.orgId as string);
         res.json(successResponse(results));
     } catch (error: any) {
         next(error);

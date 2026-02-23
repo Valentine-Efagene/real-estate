@@ -599,7 +599,7 @@ router.post('/:id/qualification-flow', requireTenant, requireRole(ADMIN_ROLES), 
     try {
         const data = AssignQualificationFlowSchema.parse(req.body);
         const service = getQualificationService(req);
-        const result = await service.assignToPaymentMethod(req.params.id, data);
+        const result = await service.assignToPaymentMethod(req.params.id as string, data);
         res.json(successResponse(result));
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -619,7 +619,7 @@ router.post('/:id/apply', requireTenant, async (req: Request, res: Response, nex
         const { tenantId } = getAuthContext(req);
         const data = ApplyForPaymentMethodSchema.parse(req.body);
         const service = getQualificationService(req);
-        const result = await service.applyForPaymentMethod(req.params.id, tenantId, data);
+        const result = await service.applyForPaymentMethod(req.params.id as string, tenantId, data);
         res.status(201).json(successResponse(result));
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -639,7 +639,7 @@ router.post('/:id/assignments', requireTenant, requireRole(ADMIN_ROLES), async (
         const { tenantId } = getAuthContext(req);
         const data = ApplyForPaymentMethodSchema.parse(req.body);
         const service = getQualificationService(req);
-        const result = await service.applyForPaymentMethod(req.params.id, tenantId, data);
+        const result = await service.applyForPaymentMethod(req.params.id as string, tenantId, data);
         res.status(201).json(successResponse(result));
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -657,7 +657,7 @@ router.post('/:id/assignments', requireTenant, requireRole(ADMIN_ROLES), async (
 router.post('/:id/assignments/:assignmentId/apply', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getQualificationService(req);
-        const result = await service.updateAssignmentStatus(req.params.assignmentId, { status: 'IN_PROGRESS' as any });
+        const result = await service.updateAssignmentStatus(req.params.assignmentId as string, { status: 'IN_PROGRESS' as any });
         res.json(successResponse(result));
     } catch (error: any) {
         next(error);
@@ -672,7 +672,7 @@ router.patch('/:id/assignments/:assignmentId', requireTenant, requireRole(ADMIN_
     try {
         const data = UpdateQualificationStatusSchema.parse(req.body);
         const service = getQualificationService(req);
-        const result = await service.updateAssignmentStatus(req.params.assignmentId, data);
+        const result = await service.updateAssignmentStatus(req.params.assignmentId as string, data);
         res.json(successResponse(result));
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -691,7 +691,7 @@ router.get('/:id/assignments', requireTenant, async (req: Request, res: Response
     try {
         const service = getQualificationService(req);
         const status = req.query.status as string | undefined;
-        const assignments = await service.findAssignments(req.params.id, { status });
+        const assignments = await service.findAssignments(req.params.id as string, { status });
         res.json(successResponse(assignments));
     } catch (error: any) {
         next(error);
@@ -705,7 +705,7 @@ router.get('/:id/assignments', requireTenant, async (req: Request, res: Response
 router.get('/:id/assignments/:assignmentId', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getQualificationService(req);
-        const result = await service.findQualification(req.params.assignmentId);
+        const result = await service.findQualification(req.params.assignmentId as string);
         res.json(successResponse(result));
     } catch (error: any) {
         next(error);
@@ -719,7 +719,7 @@ router.get('/:id/assignments/:assignmentId', requireTenant, async (req: Request,
 router.get('/:id/assignments/:assignmentId/qualification', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getQualificationService(req);
-        const result = await service.findQualification(req.params.assignmentId);
+        const result = await service.findQualification(req.params.assignmentId as string);
         res.json(successResponse(result));
     } catch (error: any) {
         next(error);
@@ -734,7 +734,7 @@ router.patch('/:id/assignments/:assignmentId/status', requireTenant, requireRole
     try {
         const data = UpdateQualificationStatusSchema.parse(req.body);
         const service = getQualificationService(req);
-        const result = await service.updateAssignmentStatus(req.params.assignmentId, data);
+        const result = await service.updateAssignmentStatus(req.params.assignmentId as string, data);
         res.json(successResponse(result));
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -754,7 +754,7 @@ router.post('/:id/assignments/:assignmentId/phases/:phaseId/review', requireTena
         const { userId } = getAuthContext(req);
         const data = ReviewQualificationSchema.parse(req.body);
         const service = getQualificationService(req);
-        const result = await service.reviewGatePhase(req.params.phaseId, userId, data);
+        const result = await service.reviewGatePhase(req.params.phaseId as string, userId, data);
         res.json(successResponse(result));
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -777,7 +777,7 @@ router.post('/:id/qualification-configs', requireTenant, requireRole(ADMIN_ROLES
     try {
         const data = AssignQualificationFlowSchema.parse(req.body);
         const service = getQualificationService(req);
-        const result = await service.assignToPaymentMethod(req.params.id, data);
+        const result = await service.assignToPaymentMethod(req.params.id as string, data);
         res.status(201).json(successResponse(result));
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -795,7 +795,7 @@ router.post('/:id/qualification-configs', requireTenant, requireRole(ADMIN_ROLES
 router.get('/:id/qualification-configs', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getQualificationService(req);
-        const configs = await service.findQualificationConfigs(req.params.id);
+        const configs = await service.findQualificationConfigs(req.params.id as string);
         res.json(successResponse(configs));
     } catch (error: any) {
         next(error);
@@ -810,7 +810,7 @@ router.delete('/:id/qualification-configs/:orgTypeCode', requireTenant, requireR
     try {
         const { tenantId } = getAuthContext(req);
         const service = getQualificationService(req);
-        const result = await service.removeQualificationConfig(req.params.id, req.params.orgTypeCode, tenantId);
+        const result = await service.removeQualificationConfig(req.params.id as string, req.params.orgTypeCode as string, tenantId);
         res.json(successResponse(result));
     } catch (error: any) {
         next(error);
@@ -829,7 +829,7 @@ router.delete('/:id/qualification-configs/:orgTypeCode', requireTenant, requireR
 router.get(['/:id/assignments/:assignmentId/waivable-documents', '/:id/assignments/:assignmentId/available-documents'], requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getQualificationService(req);
-        const result = await service.findWaivableDocuments(req.params.assignmentId);
+        const result = await service.findWaivableDocuments(req.params.assignmentId as string);
         res.json(successResponse(result));
     } catch (error: any) {
         next(error);
@@ -843,7 +843,7 @@ router.get(['/:id/assignments/:assignmentId/waivable-documents', '/:id/assignmen
 router.get('/:id/assignments/:assignmentId/waivers', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getQualificationService(req);
-        const result = await service.findDocumentWaivers(req.params.assignmentId);
+        const result = await service.findDocumentWaivers(req.params.assignmentId as string);
         res.json(successResponse(result));
     } catch (error: any) {
         next(error);
@@ -859,7 +859,7 @@ router.post('/:id/assignments/:assignmentId/waivers', requireTenant, requireRole
         const { tenantId, userId } = getAuthContext(req);
         const data = CreateDocumentWaiverSchema.parse(req.body);
         const service = getQualificationService(req);
-        const result = await service.createDocumentWaiver(req.params.assignmentId, tenantId, userId, data);
+        const result = await service.createDocumentWaiver(req.params.assignmentId as string, tenantId, userId, data);
         res.status(201).json(successResponse(result));
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -882,7 +882,7 @@ router.post('/:id/assignments/:assignmentId/waivers/bulk', requireTenant, requir
         const results = [];
         for (const waiver of data.waivers) {
             try {
-                const result = await service.createDocumentWaiver(req.params.assignmentId, tenantId, userId, waiver);
+                const result = await service.createDocumentWaiver(req.params.assignmentId as string, tenantId, userId, waiver);
                 results.push(result);
             } catch (error: any) {
                 results.push({ error: error.message, documentDefinitionId: waiver.documentDefinitionId });
@@ -905,7 +905,7 @@ router.post('/:id/assignments/:assignmentId/waivers/bulk', requireTenant, requir
 router.delete('/:id/assignments/:assignmentId/waivers/:waiverId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getQualificationService(req);
-        const result = await service.deleteDocumentWaiver(req.params.waiverId);
+        const result = await service.deleteDocumentWaiver(req.params.waiverId as string);
         res.json(successResponse(result));
     } catch (error: any) {
         next(error);

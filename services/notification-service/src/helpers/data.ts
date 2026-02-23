@@ -46,6 +46,31 @@ export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Obje
     // Organization
     'organizationInvitation': 'content/organizationInvitation.hbs',
     'organizationInvitationAccepted': 'content/organizationInvitationAccepted.hbs',
+    'organizationInvitationExpired': 'content/organizationInvitationExpired.hbs',
+    // Application lifecycle
+    'applicationSuperseded': 'content/applicationSuperseded.hbs',
+    // Unit locking
+    'unitLocked': 'content/unitLocked.hbs',
+    'unitReleased': 'content/unitReleased.hbs',
+    // Phase completions
+    'questionnairePhaseCompleted': 'content/questionnairePhaseCompleted.hbs',
+    'documentationPhaseCompleted': 'content/documentationPhaseCompleted.hbs',
+    'paymentPhaseCompleted': 'content/paymentPhaseCompleted.hbs',
+    // Offer letter expiry
+    'offerLetterExpired': 'content/offerLetterExpired.hbs',
+    // Underwriting
+    'underwritingApproved': 'content/underwritingApproved.hbs',
+    'underwritingRejected': 'content/underwritingRejected.hbs',
+    'underwritingConditional': 'content/underwritingConditional.hbs',
+    // Bank review
+    'bankReviewRequired': 'content/bankReviewRequired.hbs',
+    // Stage completion
+    'stageCompleted': 'content/stageCompleted.hbs',
+    // SLA
+    'slaWarning': 'content/slaWarning.hbs',
+    'slaBreached': 'content/slaBreached.hbs',
+    // Co-Applicant
+    'coApplicantInvited': 'content/coApplicantInvited.hbs',
 });
 
 /**
@@ -89,6 +114,31 @@ export const templateTitle: Readonly<Record<TemplateTypeValue, string>> = Object
     // Organization
     'organizationInvitation': 'You\'ve Been Invited to Join {{organizationName}}',
     'organizationInvitationAccepted': 'Invitation Accepted',
+    'organizationInvitationExpired': 'Organization Invitation Expired',
+    // Application lifecycle
+    'applicationSuperseded': 'Application Superseded',
+    // Unit locking
+    'unitLocked': 'Unit Has Been Locked',
+    'unitReleased': 'Unit Has Been Released',
+    // Phase completions
+    'questionnairePhaseCompleted': 'Questionnaire Phase Completed',
+    'documentationPhaseCompleted': 'Documentation Phase Completed',
+    'paymentPhaseCompleted': 'Payment Phase Completed',
+    // Offer letter expiry
+    'offerLetterExpired': 'Offer Letter Has Expired',
+    // Underwriting
+    'underwritingApproved': 'Underwriting Approved',
+    'underwritingRejected': 'Underwriting Rejected',
+    'underwritingConditional': 'Conditional Underwriting Approval',
+    // Bank review
+    'bankReviewRequired': 'Bank Review Required',
+    // Stage completion
+    'stageCompleted': 'Review Stage Completed',
+    // SLA
+    'slaWarning': 'SLA Warning - Action Required',
+    'slaBreached': 'SLA Breached - Immediate Action Required',
+    // Co-Applicant
+    'coApplicantInvited': 'You\'ve Been Invited as a Co-Applicant',
 });
 
 // Pre-computed set of dynamic templates for O(1) lookup

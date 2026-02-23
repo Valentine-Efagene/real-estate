@@ -50,7 +50,7 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
 router.get('/:id', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getService(req);
-        const plan = await service.findById(req.params.id);
+        const plan = await service.findById(req.params.id as string);
         res.json(successResponse(plan));
     } catch (error) {
         next(error);
@@ -62,7 +62,7 @@ router.put('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request,
     try {
         const data = UpdateGatePlanSchema.parse(req.body);
         const service = getService(req);
-        const plan = await service.update(req.params.id, data);
+        const plan = await service.update(req.params.id as string, data);
         res.json(successResponse(plan));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -77,7 +77,7 @@ router.put('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request,
 router.delete('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const service = getService(req);
-        const result = await service.delete(req.params.id);
+        const result = await service.delete(req.params.id as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);

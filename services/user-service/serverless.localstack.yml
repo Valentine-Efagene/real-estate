@@ -31,6 +31,8 @@ provider:
     LOCALSTACK_ENDPOINT: http://host.docker.internal:4566
     NOTIFICATIONS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/notifications-topic-arn, ''}
     FRONTEND_BASE_URL: ${ssm:/qshelter/${self:provider.stage}/frontend-base-url, 'http://localhost:3000'}
+    BOOTSTRAP_SECRET: ${ssm:/qshelter/${self:provider.stage}/bootstrap-secret, 'local-bootstrap-secret'}
+    BOOTSTRAP_WORKER_FUNCTION_NAME: ${self:service}-${self:provider.stage}-bootstrapWorker
     # Database credentials from SSM
     DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST}
     DB_PORT: ${ssm:/qshelter/${self:provider.stage}/DB_PORT}
@@ -55,6 +57,11 @@ provider:
             - sns:Publish
           Resource: 
             - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
+        - Effect: Allow
+          Action:
+            - lambda:InvokeFunction
+          Resource:
+            - arn:aws:lambda:${self:provider.region}:*:function:${self:service}-${self:provider.stage}-bootstrapWorker
 
 package:
   individually: true
@@ -98,6 +105,11 @@ functions:
           path: /openapi.json
           method: GET
           cors: true
+
+  bootstrapWorker:
+    handler: dist/bootstrap-worker.handler
+    timeout: 300
+    memorySize: 512
 
 plugins:
   - serverless-localstack

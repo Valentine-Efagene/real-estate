@@ -1,5 +1,5 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, PrismaClient, ConditionOperator, ScoringRule } from '@valentine-efagene/qshelter-common';
+import { AppError, Prisma, PrismaClient, ConditionOperator, ScoringRule } from '@valentine-efagene/qshelter-common';
 import type {
     CreateQuestionnairePlanInput,
     UpdateQuestionnairePlanInput,
@@ -67,7 +67,7 @@ export function createQuestionnairePlanService(prisma: AnyPrismaClient = default
                         options: question.options,
                         scoreWeight: question.scoreWeight ?? 1,
                         scoringRules: question.scoringRules,
-                        showIf: question.showIf,
+                        showIf: question.showIf as Prisma.InputJsonValue | undefined,
                         category: question.category,
                     })),
                 },
@@ -278,7 +278,7 @@ export function createQuestionnairePlanService(prisma: AnyPrismaClient = default
                 options: data.options,
                 scoreWeight: data.scoreWeight ?? 1,
                 scoringRules: data.scoringRules,
-                showIf: data.showIf,
+                showIf: data.showIf as Prisma.InputJsonValue | undefined,
                 category: data.category,
             },
         });
@@ -342,7 +342,7 @@ export function createQuestionnairePlanService(prisma: AnyPrismaClient = default
                 options: data.options,
                 scoreWeight: data.scoreWeight,
                 scoringRules: data.scoringRules,
-                showIf: data.showIf,
+                showIf: data.showIf as Prisma.InputJsonValue | undefined,
                 category: data.category,
             },
         });
