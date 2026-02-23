@@ -691,6 +691,16 @@ Use the deployment script for seamless AWS deployment:
 - External dependencies: `@prisma/client`, `@aws-sdk/*`
 - Include banner for CommonJS compatibility in ESM modules
 
+**CRITICAL — Always Use npm Scripts for Deployment, Never Raw `npx sls deploy`:**
+
+- Every service has `deploy:localstack` and `deploy:staging` npm scripts that **build first, then deploy**.
+- **NEVER** run `npx sls deploy` directly — it will deploy whatever stale artifact is in `dist/`, which may not reflect source code changes.
+- For LocalStack: `cd services/<service> && npm run deploy:localstack`
+- For AWS staging: `cd services/<service> && npm run deploy:staging`
+- The `deploy:localstack` script also runs `fix-apigw-stage.sh` to fix LocalStack stage-dropping issues.
+- The `setup.sh` script already builds each service before deploying. When redeploying a single service manually, always use the npm script.
+- **Real-world consequence**: A stale build caused auto-allocation to only trigger for `source === "virtual_account"` even though the source code had been updated to always auto-allocate. The downpayment never completed because the deployed Lambda was stale.
+
 ### SSM Parameters Reference
 
 | Parameter                                | Created By   | Description                            |
