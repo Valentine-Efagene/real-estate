@@ -247,6 +247,12 @@ export class LocalStackStack extends cdk.Stack {
             description: 'Frontend Base URL for email links',
         });
 
+        new ssm.StringParameter(this, 'BootstrapSecretParameter', {
+            parameterName: `/qshelter/${stage}/bootstrap-secret`,
+            stringValue: 'local-bootstrap-secret',
+            description: 'Bootstrap secret for tenant initialization',
+        });
+
         // === SSM Parameters - Infrastructure (Required by ConfigService) ===
         // These are dummy values since LocalStack doesn't use VPC networking
         new ssm.StringParameter(this, 'VpcIdParameter', {
