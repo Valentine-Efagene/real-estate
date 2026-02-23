@@ -11,7 +11,8 @@ services:
       - SERVICES=ssm,secretsmanager,s3,lambda,apigateway,events,sqs,sns,logs,iam,cloudformation
       - DEBUG=1
       - DATA_DIR=/var/lib/localstack/data
-      - LAMBDA_EXECUTOR=docker
+      - LAMBDA_EXECUTOR=docker-reuse
+      - LAMBDA_DOCKER_NETWORK=qshelter-local
       - DOCKER_HOST=unix:///var/run/docker.sock
       - PERSISTENCE=1
     volumes:
@@ -37,7 +38,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
       - ./init-scripts/mysql:/docker-entrypoint-initdb.d
-    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=500
     healthcheck:
       test:
         [
