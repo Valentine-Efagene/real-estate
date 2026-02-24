@@ -99,6 +99,32 @@ functions:
           method: GET
           cors: true
 
+  # SQS consumer for payment phase completion events
+  # Receives PAYMENT_PHASE_COMPLETED from payment-service to orchestrate next phase
+  sqsConsumer:
+    handler: dist/lambda.sqsHandler
+    timeout: 30
+    package:
+      patterns:
+        - '!**'
+        - 'dist/**/*.mjs'
+        - 'node_modules/.prisma/**'
+        - 'node_modules/@prisma/client/**'
+        - 'node_modules/@prisma/adapter-mariadb/**'
+        - 'node_modules/@prisma/client-runtime-utils/**'
+        - 'node_modules/@prisma/driver-adapter-utils/**'
+        - 'node_modules/@prisma/debug/**'
+        - 'node_modules/mariadb/**'
+        - '!node_modules/@prisma/client/runtime/*cockroachdb*'
+        - '!node_modules/@prisma/client/runtime/*sqlserver*'
+        - '!node_modules/@prisma/client/runtime/*postgresql*'
+        - '!node_modules/@prisma/client/runtime/*sqlite*'
+    events:
+      - sqs:
+          arn: ${ssm:/qshelter/${self:provider.stage}/mortgage-events-queue-arn, ''}
+          batchSize: 10
+          functionResponseType: ReportBatchItemFailures
+
   # FSM event listener (triggered by EventBridge)
   fsmEventHandler:
     handler: dist/fsm-event-handler.handler

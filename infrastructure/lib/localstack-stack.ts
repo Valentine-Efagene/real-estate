@@ -100,6 +100,16 @@ export class LocalStackStack extends cdk.Stack {
             },
         });
 
+        // Mortgage-events queue: receives PAYMENT_PHASE_COMPLETED events
+        // so mortgage-service can activate the next application phase.
+        const mortgageEventsQueue = new sqs.Queue(this, 'MortgageEventsQueue', {
+            queueName: `${prefix}-mortgage-events`,
+            deadLetterQueue: {
+                queue: dlq,
+                maxReceiveCount: 3,
+            },
+        });
+
         // === SNS Topics ===
         const notificationsTopic = new sns.Topic(this, 'NotificationsTopic', {
             topicName: `${prefix}-notifications`,
@@ -132,6 +142,19 @@ export class LocalStackStack extends cdk.Stack {
         paymentsTopic.addSubscription(
             new snsSubscriptions.SqsSubscription(paymentsQueue, {
                 rawMessageDelivery: false,
+            })
+        );
+
+        // Subscribe mortgage-events queue to payments topic
+        // (filtered to phase.payment_completed events only)
+        paymentsTopic.addSubscription(
+            new snsSubscriptions.SqsSubscription(mortgageEventsQueue, {
+                rawMessageDelivery: false,
+                filterPolicy: {
+                    eventType: sns.SubscriptionFilter.stringFilter({
+                        allowlist: ['phase.payment_completed'],
+                    }),
+                },
             })
         );
 
@@ -233,6 +256,18 @@ export class LocalStackStack extends cdk.Stack {
             parameterName: `/qshelter/${stage}/contract-events-queue-url`,
             stringValue: contractEventsQueue.queueUrl,
             description: 'SQS Contract Events Queue URL',
+        });
+
+        new ssm.StringParameter(this, 'MortgageEventsQueueArnParameter', {
+            parameterName: `/qshelter/${stage}/mortgage-events-queue-arn`,
+            stringValue: mortgageEventsQueue.queueArn,
+            description: 'SQS Mortgage Events Queue ARN',
+        });
+
+        new ssm.StringParameter(this, 'MortgageEventsQueueUrlParameter', {
+            parameterName: `/qshelter/${stage}/mortgage-events-queue-url`,
+            stringValue: mortgageEventsQueue.queueUrl,
+            description: 'SQS Mortgage Events Queue URL',
         });
 
         new ssm.StringParameter(this, 'RedisEndpointParameter', {

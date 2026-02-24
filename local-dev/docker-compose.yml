@@ -13,6 +13,7 @@ services:
       - DATA_DIR=/var/lib/localstack/data
       - LAMBDA_EXECUTOR=docker-reuse
       - LAMBDA_DOCKER_NETWORK=qshelter-local
+      - LAMBDA_RUNTIME_ENVIRONMENT_TIMEOUT=30
       - DOCKER_HOST=unix:///var/run/docker.sock
       - PERSISTENCE=1
     volumes:
