@@ -29,7 +29,7 @@ async function createAdapter() {
         user: dbCredentials.username,
         password: dbCredentials.password,
         database: dbCredentials.database,
-        connectionLimit: 5,
+        connectionLimit: 1, // Lambda: one request per container
     });
 }
 
