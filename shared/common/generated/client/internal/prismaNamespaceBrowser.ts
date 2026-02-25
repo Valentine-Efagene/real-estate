@@ -98,10 +98,6 @@ export const ModelName = {
   PropertyPaymentMethodLink: 'PropertyPaymentMethodLink',
   PropertyPaymentMethodPhase: 'PropertyPaymentMethodPhase',
   PhaseEventAttachment: 'PhaseEventAttachment',
-  PaymentMethodPhaseStep: 'PaymentMethodPhaseStep',
-  StepEventAttachment: 'StepEventAttachment',
-  PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
-  PaymentMethodPhaseField: 'PaymentMethodPhaseField',
   Application: 'Application',
   CoApplicant: 'CoApplicant',
   ApplicationOrganization: 'ApplicationOrganization',
@@ -936,8 +932,6 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   minimumCompletionPercentage: 'minimumCompletionPercentage',
   completionCriterion: 'completionCriterion',
   lockUnitOnComplete: 'lockUnitOnComplete',
-  stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
-  requiredDocumentSnapshot: 'requiredDocumentSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -958,73 +952,6 @@ export const PhaseEventAttachmentScalarFieldEnum = {
 } as const
 
 export type PhaseEventAttachmentScalarFieldEnum = (typeof PhaseEventAttachmentScalarFieldEnum)[keyof typeof PhaseEventAttachmentScalarFieldEnum]
-
-
-export const PaymentMethodPhaseStepScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  name: 'name',
-  stepType: 'stepType',
-  order: 'order',
-  metadata: 'metadata',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PaymentMethodPhaseStepScalarFieldEnum = (typeof PaymentMethodPhaseStepScalarFieldEnum)[keyof typeof PaymentMethodPhaseStepScalarFieldEnum]
-
-
-export const StepEventAttachmentScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  trigger: 'trigger',
-  handlerId: 'handlerId',
-  priority: 'priority',
-  enabled: 'enabled',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type StepEventAttachmentScalarFieldEnum = (typeof StepEventAttachmentScalarFieldEnum)[keyof typeof StepEventAttachmentScalarFieldEnum]
-
-
-export const PaymentMethodPhaseDocumentScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  documentType: 'documentType',
-  isRequired: 'isRequired',
-  description: 'description',
-  allowedMimeTypes: 'allowedMimeTypes',
-  maxSizeBytes: 'maxSizeBytes',
-  metadata: 'metadata',
-  createdAt: 'createdAt'
-} as const
-
-export type PaymentMethodPhaseDocumentScalarFieldEnum = (typeof PaymentMethodPhaseDocumentScalarFieldEnum)[keyof typeof PaymentMethodPhaseDocumentScalarFieldEnum]
-
-
-export const PaymentMethodPhaseFieldScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  name: 'name',
-  label: 'label',
-  description: 'description',
-  placeholder: 'placeholder',
-  fieldType: 'fieldType',
-  isRequired: 'isRequired',
-  order: 'order',
-  validation: 'validation',
-  displayCondition: 'displayCondition',
-  defaultValue: 'defaultValue',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PaymentMethodPhaseFieldScalarFieldEnum = (typeof PaymentMethodPhaseFieldScalarFieldEnum)[keyof typeof PaymentMethodPhaseFieldScalarFieldEnum]
 
 
 export const ApplicationScalarFieldEnum = {
@@ -2564,51 +2491,6 @@ export const PhaseEventAttachmentOrderByRelevanceFieldEnum = {
 } as const
 
 export type PhaseEventAttachmentOrderByRelevanceFieldEnum = (typeof PhaseEventAttachmentOrderByRelevanceFieldEnum)[keyof typeof PhaseEventAttachmentOrderByRelevanceFieldEnum]
-
-
-export const PaymentMethodPhaseStepOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  name: 'name'
-} as const
-
-export type PaymentMethodPhaseStepOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseStepOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseStepOrderByRelevanceFieldEnum]
-
-
-export const StepEventAttachmentOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  handlerId: 'handlerId'
-} as const
-
-export type StepEventAttachmentOrderByRelevanceFieldEnum = (typeof StepEventAttachmentOrderByRelevanceFieldEnum)[keyof typeof StepEventAttachmentOrderByRelevanceFieldEnum]
-
-
-export const PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  documentType: 'documentType',
-  description: 'description',
-  allowedMimeTypes: 'allowedMimeTypes'
-} as const
-
-export type PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum]
-
-
-export const PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  name: 'name',
-  label: 'label',
-  description: 'description',
-  placeholder: 'placeholder'
-} as const
-
-export type PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseFieldOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseFieldOrderByRelevanceFieldEnum]
 
 
 export const ApplicationOrderByRelevanceFieldEnum = {

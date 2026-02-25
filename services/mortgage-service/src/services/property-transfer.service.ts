@@ -351,11 +351,15 @@ class PropertyTransferService {
                             include: {
                                 phases: {
                                     include: {
-                                        questionnaireFields: true,
                                         documentationPlan: {
                                             include: {
                                                 documentDefinitions: { orderBy: { order: 'asc' } },
                                                 approvalStages: { orderBy: { order: 'asc' } },
+                                            },
+                                        },
+                                        questionnairePlan: {
+                                            include: {
+                                                questions: true,
                                             },
                                         },
                                     },
@@ -521,7 +525,7 @@ class PropertyTransferService {
                             data: {
                                 tenantId,
                                 phaseId: newPhase.id,
-                                totalFieldsCount: templatePhase.questionnaireFields?.length || 0,
+                                totalFieldsCount: templatePhase.questionnairePlan?.questions?.length || 0,
                                 completedFieldsCount: 0,
                             },
                         });

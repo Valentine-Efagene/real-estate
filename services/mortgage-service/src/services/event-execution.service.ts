@@ -1,7 +1,6 @@
 import { prisma } from '../lib/prisma';
 import {
     PhaseTrigger,
-    StepTrigger,
     EventHandlerType,
     createTenantPrisma,
 } from '@valentine-efagene/qshelter-common';
@@ -40,7 +39,7 @@ export interface ExecutionContext {
     applicationId: string;
     phaseId?: string;
     stepId?: string;
-    trigger: PhaseTrigger | StepTrigger;
+    trigger: PhaseTrigger;
     actorId?: string;
     // Additional data from the triggering event
     eventData?: Record<string, unknown>;
@@ -607,111 +606,6 @@ class EventExecutionService {
 
             // If handler failed and we should stop, break
             // (For now, we continue executing other handlers)
-        }
-
-        return results;
-    }
-
-    /**
-     * Execute all attached handlers for a step trigger
-     * 
-     * Similar to executePhaseHandlers but for step transitions
-     * 
-     * @param stepId - The step template ID
-     * @param trigger - The trigger event (ON_COMPLETE, ON_REJECT, etc.)
-     * @param context - Execution context with application info
-     */
-    async executeStepHandlers(
-        stepId: string,
-        trigger: StepTrigger,
-        applicationId: string,
-        phaseId: string,
-        actorId?: string,
-        eventData?: Record<string, unknown>
-    ): Promise<HandlerExecutionResult[]> {
-        const results: HandlerExecutionResult[] = [];
-
-        // Get the step template with attached handlers
-        const step = await prisma.paymentMethodPhaseStep.findUnique({
-            where: { id: stepId },
-            include: {
-                eventAttachments: {
-                    where: {
-                        trigger,
-                        enabled: true,
-                    },
-                    orderBy: { priority: 'asc' },
-                    include: {
-                        handler: true,
-                    },
-                },
-            },
-        });
-
-        if (!step) {
-            console.warn(`[EventExecution] Step not found: ${stepId}`);
-            return results;
-        }
-
-        const attachments = step.eventAttachments || [];
-
-        if (attachments.length === 0) {
-            return results;
-        }
-
-        // Get application for context
-        const application = await prisma.application.findUnique({
-            where: { id: applicationId },
-            select: { id: true, tenantId: true },
-        });
-
-        if (!application) {
-            console.warn(`[EventExecution] Application not found: ${applicationId}`);
-            return results;
-        }
-
-        const context: ExecutionContext = {
-            tenantId: application.tenantId,
-            applicationId,
-            phaseId,
-            stepId,
-            trigger,
-            actorId,
-            eventData,
-        };
-
-        // Execute handlers
-        for (const attachment of attachments) {
-            const handler = attachment.handler;
-
-            if (handler.filterCondition) {
-                const shouldExecute = evaluateFilterCondition(handler.filterCondition, context);
-                if (!shouldExecute) continue;
-            }
-
-            const startTime = Date.now();
-            let result: { success: boolean; output?: Record<string, unknown>; error?: string };
-
-            try {
-                result = await this.executeHandler(handler, context);
-            } catch (error: any) {
-                result = { success: false, error: error.message };
-            }
-
-            const durationMs = Date.now() - startTime;
-
-            const executionResult: HandlerExecutionResult = {
-                handlerId: handler.id,
-                handlerName: handler.name,
-                handlerType: handler.handlerType as EventHandlerType,
-                success: result.success,
-                durationMs,
-                error: result.error,
-                output: result.output,
-            };
-
-            results.push(executionResult);
-            await this.logExecution(context, handler, executionResult);
         }
 
         return results;

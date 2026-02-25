@@ -33,7 +33,7 @@
     "@aws-sdk/client-ssm": "^3.958.0",
     "@codegenie/serverless-express": "^4.14.1",
     "@prisma/adapter-mariadb": "^7.2.0",
-    "@valentine-efagene/qshelter-common": "^2.0.202",
+    "@valentine-efagene/qshelter-common": "^2.0.204",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",

@@ -6,16 +6,9 @@ import {
     AddPhaseSchema,
     PartialPhaseSchema,
     LinkToPropertySchema,
-    AddStepSchema,
-    UpdateStepSchema,
-    ReorderStepsSchema,
-    AddDocumentRequirementSchema,
-    UpdateDocumentRequirementSchema,
     ClonePaymentMethodSchema,
     AddPhaseEventAttachmentSchema,
     UpdatePhaseEventAttachmentSchema,
-    AddStepEventAttachmentSchema,
-    UpdateStepEventAttachmentSchema,
     BulkDocumentRulesSchema,
 } from '../validators/payment-method.validator';
 import { z } from 'zod';
@@ -195,116 +188,6 @@ router.post('/:id/clone', requireTenant, requireRole(ADMIN_ROLES), async (req: R
     }
 });
 
-// ============================================================
-// Step CRUD within a Phase (admin only)
-// ============================================================
-
-// Add step to phase (admin only)
-router.post('/:id/phases/:phaseId/steps', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = AddStepSchema.parse(req.body);
-        const paymentMethodService = getPaymentMethodService(req);
-        const step = await paymentMethodService.addStep(req.params.phaseId as string, data);
-        res.status(201).json(successResponse(step));
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-// Update step (admin only)
-router.patch('/:id/phases/:phaseId/steps/:stepId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = UpdateStepSchema.parse(req.body);
-        const paymentMethodService = getPaymentMethodService(req);
-        const step = await paymentMethodService.updateStep(req.params.stepId as string, data);
-        res.json(successResponse(step));
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-// Delete step (admin only)
-router.delete('/:id/phases/:phaseId/steps/:stepId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const paymentMethodService = getPaymentMethodService(req);
-        const result = await paymentMethodService.deleteStep(req.params.stepId as string);
-        res.json(successResponse(result));
-    } catch (error) {
-        next(error);
-    }
-});
-
-// Reorder steps within a phase (admin only)
-router.post('/:id/phases/:phaseId/steps/reorder', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = ReorderStepsSchema.parse(req.body);
-        const paymentMethodService = getPaymentMethodService(req);
-        const steps = await paymentMethodService.reorderSteps(req.params.phaseId as string, data.stepOrders);
-        res.json(successResponse(steps));
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-// ============================================================
-// Document Requirement CRUD within a Phase (admin only)
-// ============================================================
-
-// Add document requirement to phase (admin only)
-router.post('/:id/phases/:phaseId/documents', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = AddDocumentRequirementSchema.parse(req.body);
-        const paymentMethodService = getPaymentMethodService(req);
-        const doc = await paymentMethodService.addDocumentRequirement(req.params.phaseId as string, data);
-        res.status(201).json(successResponse(doc));
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-// Update document requirement (admin only)
-router.patch('/:id/phases/:phaseId/documents/:documentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = UpdateDocumentRequirementSchema.parse(req.body);
-        const paymentMethodService = getPaymentMethodService(req);
-        const doc = await paymentMethodService.updateDocumentRequirement(req.params.documentId as string, data);
-        res.json(successResponse(doc));
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-// Delete document requirement (admin only)
-router.delete('/:id/phases/:phaseId/documents/:documentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const paymentMethodService = getPaymentMethodService(req);
-        const result = await paymentMethodService.deleteDocumentRequirement(req.params.documentId as string);
-        res.json(successResponse(result));
-    } catch (error) {
-        next(error);
-    }
-});
-
 // Link to property (admin only)
 router.post('/:id/properties', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -395,64 +278,6 @@ router.delete('/phase-event-attachments/:attachmentId', requireTenant, requireRo
     try {
         const paymentMethodService = getPaymentMethodService(req);
         const result = await paymentMethodService.deletePhaseEventAttachment(req.params.attachmentId as string);
-        res.json(successResponse(result));
-    } catch (error) {
-        next(error);
-    }
-});
-
-// ============================================================
-// Step Event Attachment CRUD (admin only)
-// ============================================================
-
-// Add event attachment to step (admin only)
-router.post('/:id/phases/:phaseId/steps/:stepId/event-attachments', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = AddStepEventAttachmentSchema.parse(req.body);
-        const paymentMethodService = getPaymentMethodService(req);
-        const attachment = await paymentMethodService.addStepEventAttachment(req.params.stepId as string, data);
-        res.status(201).json(successResponse(attachment));
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-// Get event attachments for a step
-router.get('/:id/phases/:phaseId/steps/:stepId/event-attachments', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const paymentMethodService = getPaymentMethodService(req);
-        const attachments = await paymentMethodService.getStepEventAttachments(req.params.stepId as string);
-        res.json(successResponse(attachments));
-    } catch (error) {
-        next(error);
-    }
-});
-
-// Update step event attachment (admin only)
-router.patch('/step-event-attachments/:attachmentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = UpdateStepEventAttachmentSchema.parse(req.body);
-        const paymentMethodService = getPaymentMethodService(req);
-        const attachment = await paymentMethodService.updateStepEventAttachment(req.params.attachmentId as string, data);
-        res.json(successResponse(attachment));
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-// Delete step event attachment (admin only)
-router.delete('/step-event-attachments/:attachmentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const paymentMethodService = getPaymentMethodService(req);
-        const result = await paymentMethodService.deleteStepEventAttachment(req.params.attachmentId as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);

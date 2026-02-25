@@ -92,7 +92,6 @@ export class PaymentMethodChangeService {
                     orderBy: { order: 'asc' },
                     include: {
                         paymentPlan: true,
-                        steps: { orderBy: { order: 'asc' } },
                     },
                 },
             },
@@ -509,7 +508,6 @@ export class PaymentMethodChangeService {
                     orderBy: { order: 'asc' },
                     include: {
                         paymentPlan: true,
-                        steps: { orderBy: { order: 'asc' } },
                     },
                 },
             },

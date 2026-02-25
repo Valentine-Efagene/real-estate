@@ -169,15 +169,6 @@ enum ConditionOperator {
   NOT_EXISTS // Field is null/undefined
 }
 
-/// When a step event attachment should trigger
-enum StepTrigger {
-  ON_COMPLETE // When step is approved/completed
-  ON_REJECT // When step is rejected
-  ON_SUBMIT // When step is submitted for review
-  ON_RESUBMIT // When step is resubmitted after rejection
-  ON_START // When step transitions to IN_PROGRESS
-}
-
 /// When a phase event attachment should trigger
 enum PhaseTrigger {
   ON_ACTIVATE // When phase is activated (becomes current)
@@ -1194,10 +1185,6 @@ model Tenant {
   propertyPaymentMethodLinks  PropertyPaymentMethodLink[]
   propertyPaymentMethodPhases PropertyPaymentMethodPhase[]
   phaseEventAttachments       PhaseEventAttachment[]
-  paymentMethodPhaseSteps     PaymentMethodPhaseStep[]
-  stepEventAttachments        StepEventAttachment[]
-  paymentMethodPhaseDocuments PaymentMethodPhaseDocument[]
-  paymentMethodPhaseFields    PaymentMethodPhaseField[]
   applicationPhases           ApplicationPhase[]
   questionnairePhases         QuestionnairePhase[]
   documentationPhases         DocumentationPhase[]
@@ -2179,19 +2166,9 @@ model PropertyPaymentMethodPhase {
   // Only one phase per payment method should have this enabled
   lockUnitOnComplete Boolean @default(false)
 
-  // Snapshots for audit (original config at creation time)
-  // These are still needed for inline definitions (backward compatibility)
-  stepDefinitionsSnapshot  Json?
-  requiredDocumentSnapshot Json?
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Normalized child tables (for DOCUMENTATION phases - inline definitions)
-  steps                    PaymentMethodPhaseStep[]
-  requiredDocuments        PaymentMethodPhaseDocument[]
-  // Normalized child tables (for QUESTIONNAIRE phases)
-  questionnaireFields      PaymentMethodPhaseField[]
   // Event attachments - handlers that fire on phase transitions
   eventAttachments         PhaseEventAttachment[]
   // Application phases created from this template
@@ -2240,85 +2217,6 @@ model PhaseEventAttachment {
   @@index([phaseId])
   @@index([handlerId])
   @@map("phase_event_attachments")
-}
-
-// Step template within a DOCUMENTATION phase
-model PaymentMethodPhaseStep {
-  id       String                     @id @default(cuid())
-  tenantId String
-  tenant   Tenant                     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  phaseId  String
-  phase    PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
-
-  name     String
-  stepType StepType
-  order    Int
-
-  metadata  Json?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Event attachments - handlers that fire on step transitions
-  eventAttachments StepEventAttachment[]
-
-  @@unique([phaseId, order]) // Enforce unique, sequential ordering within phase
-  @@index([tenantId])
-  @@index([phaseId])
-  @@map("payment_method_phase_steps")
-}
-
-/// Step Event Attachment - Links event handlers to step template triggers
-/// When a step transitions (complete, reject, etc.), attached handlers fire
-model StepEventAttachment {
-  id       String                 @id @default(cuid())
-  tenantId String
-  tenant   Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  stepId   String
-  step     PaymentMethodPhaseStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
-
-  /// When this handler should fire
-  trigger StepTrigger
-
-  /// The event handler to execute
-  handlerId String
-  handler   EventHandler @relation(fields: [handlerId], references: [id], onDelete: Cascade)
-
-  /// Order of execution (lower = first)
-  priority Int @default(100)
-
-  /// Whether this attachment is active
-  enabled Boolean @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([stepId, handlerId, trigger])
-  @@index([tenantId])
-  @@index([stepId])
-  @@index([handlerId])
-  @@map("step_event_attachments")
-}
-
-// Required document within a DOCUMENTATION phase
-model PaymentMethodPhaseDocument {
-  id       String                     @id @default(cuid())
-  tenantId String
-  tenant   Tenant                     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  phaseId  String
-  phase    PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
-
-  documentType     String
-  isRequired       Boolean @default(true)
-  description      String? @db.Text
-  allowedMimeTypes String? // CSV: application/pdf,image/jpeg
-  maxSizeBytes     Int?
-
-  metadata  Json?
-  createdAt DateTime @default(now())
-
-  @@index([tenantId])
-  @@index([phaseId, documentType])
-  @@map("payment_method_phase_documents")
 }
 
 // =============================================================================
@@ -2401,49 +2299,6 @@ enum QuestionCategory {
   ORGANIZATION // Company name, registration, structure
   COMPLIANCE // AML policy, risk appetite, regulatory details
   KYB // Know-Your-Business: years in operation, projects, financials
-}
-
-// Questionnaire field template within a QUESTIONNAIRE phase
-model PaymentMethodPhaseField {
-  id       String                     @id @default(cuid())
-  tenantId String
-  tenant   Tenant                     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  phaseId  String
-  phase    PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
-
-  // Field identification
-  name        String // Internal field name (e.g., "monthly_income")
-  label       String // Display label (e.g., "Monthly Income")
-  description String? @db.Text // Help text for the field
-  placeholder String? // Placeholder text
-
-  // Field configuration
-  fieldType  FieldType
-  isRequired Boolean   @default(true)
-  order      Int
-
-  // Validation rules (JSON schema-like)
-  // Examples:
-  // NUMBER: { "min": 0, "max": 1000000 }
-  // TEXT: { "minLength": 2, "maxLength": 100, "pattern": "^[A-Za-z]+$" }
-  // SELECT: { "options": [{"value": "employed", "label": "Employed"}, ...] }
-  // DATE: { "minDate": "now", "maxDate": "+30d" }
-  validation Json?
-
-  // For conditional display (e.g., show if another field has a certain value)
-  // { "field": "employment_status", "operator": "equals", "value": "employed" }
-  displayCondition Json?
-
-  // Default value (JSON to support any type)
-  defaultValue Json?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([phaseId, name])
-  @@index([tenantId])
-  @@index([phaseId])
-  @@map("payment_method_phase_fields")
 }
 
 // =============================================================================
@@ -3950,9 +3805,6 @@ model EventHandler {
   /// Filter condition (JSONPath expression) to conditionally run
   /// e.g., "$.payload.status == 'approved'"
   filterCondition String? @db.Text
-
-  /// Step attachments - steps that have attached this handler
-  stepAttachments StepEventAttachment[]
 
   /// Phase attachments - phases that have attached this handler
   phaseAttachments PhaseEventAttachment[]

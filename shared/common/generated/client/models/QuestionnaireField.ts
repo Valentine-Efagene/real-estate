@@ -738,6 +738,10 @@ export type QuestionnaireFieldUncheckedUpdateManyWithoutQuestionnairePhaseNested
   deleteMany?: Prisma.QuestionnaireFieldScalarWhereInput | Prisma.QuestionnaireFieldScalarWhereInput[]
 }
 
+export type EnumFieldTypeFieldUpdateOperationsInput = {
+  set?: $Enums.FieldType
+}
+
 export type QuestionnaireFieldCreateWithoutTenantInput = {
   id?: string
   name: string

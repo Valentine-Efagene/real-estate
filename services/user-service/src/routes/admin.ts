@@ -390,7 +390,6 @@ router.post(
                 'applicationPayment',
                 'applicationDocument',
                 'phaseEventAttachment',
-                'stepEventAttachment',
                 'offerLetter',
                 'applicationTermination',
                 'applicationRefund',
@@ -444,9 +443,6 @@ router.post(
 
             // Level 4: Property and payment method config
             const level4Tables = [
-                'paymentMethodPhaseStep',
-                'paymentMethodPhaseDocument',
-                'paymentMethodPhaseField',
                 'propertyPaymentMethodPhase',
                 'propertyPaymentMethodLink',
                 'documentRequirementRule',

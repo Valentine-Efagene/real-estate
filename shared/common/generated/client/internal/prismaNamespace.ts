@@ -431,10 +431,6 @@ export const ModelName = {
   PropertyPaymentMethodLink: 'PropertyPaymentMethodLink',
   PropertyPaymentMethodPhase: 'PropertyPaymentMethodPhase',
   PhaseEventAttachment: 'PhaseEventAttachment',
-  PaymentMethodPhaseStep: 'PaymentMethodPhaseStep',
-  StepEventAttachment: 'StepEventAttachment',
-  PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
-  PaymentMethodPhaseField: 'PaymentMethodPhaseField',
   Application: 'Application',
   CoApplicant: 'CoApplicant',
   ApplicationOrganization: 'ApplicationOrganization',
@@ -491,7 +487,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver" | "asyncJob"
+    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver" | "asyncJob"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3594,270 +3590,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PhaseEventAttachmentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PhaseEventAttachmentCountAggregateOutputType> | number
-        }
-      }
-    }
-    PaymentMethodPhaseStep: {
-      payload: Prisma.$PaymentMethodPhaseStepPayload<ExtArgs>
-      fields: Prisma.PaymentMethodPhaseStepFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PaymentMethodPhaseStepFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PaymentMethodPhaseStepFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
-        }
-        findFirst: {
-          args: Prisma.PaymentMethodPhaseStepFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PaymentMethodPhaseStepFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
-        }
-        findMany: {
-          args: Prisma.PaymentMethodPhaseStepFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>[]
-        }
-        create: {
-          args: Prisma.PaymentMethodPhaseStepCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
-        }
-        createMany: {
-          args: Prisma.PaymentMethodPhaseStepCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.PaymentMethodPhaseStepDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
-        }
-        update: {
-          args: Prisma.PaymentMethodPhaseStepUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
-        }
-        deleteMany: {
-          args: Prisma.PaymentMethodPhaseStepDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PaymentMethodPhaseStepUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.PaymentMethodPhaseStepUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
-        }
-        aggregate: {
-          args: Prisma.PaymentMethodPhaseStepAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentMethodPhaseStep>
-        }
-        groupBy: {
-          args: Prisma.PaymentMethodPhaseStepGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseStepGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PaymentMethodPhaseStepCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseStepCountAggregateOutputType> | number
-        }
-      }
-    }
-    StepEventAttachment: {
-      payload: Prisma.$StepEventAttachmentPayload<ExtArgs>
-      fields: Prisma.StepEventAttachmentFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.StepEventAttachmentFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StepEventAttachmentPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.StepEventAttachmentFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StepEventAttachmentPayload>
-        }
-        findFirst: {
-          args: Prisma.StepEventAttachmentFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StepEventAttachmentPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.StepEventAttachmentFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StepEventAttachmentPayload>
-        }
-        findMany: {
-          args: Prisma.StepEventAttachmentFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StepEventAttachmentPayload>[]
-        }
-        create: {
-          args: Prisma.StepEventAttachmentCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StepEventAttachmentPayload>
-        }
-        createMany: {
-          args: Prisma.StepEventAttachmentCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.StepEventAttachmentDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StepEventAttachmentPayload>
-        }
-        update: {
-          args: Prisma.StepEventAttachmentUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StepEventAttachmentPayload>
-        }
-        deleteMany: {
-          args: Prisma.StepEventAttachmentDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.StepEventAttachmentUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.StepEventAttachmentUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StepEventAttachmentPayload>
-        }
-        aggregate: {
-          args: Prisma.StepEventAttachmentAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateStepEventAttachment>
-        }
-        groupBy: {
-          args: Prisma.StepEventAttachmentGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StepEventAttachmentGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.StepEventAttachmentCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StepEventAttachmentCountAggregateOutputType> | number
-        }
-      }
-    }
-    PaymentMethodPhaseDocument: {
-      payload: Prisma.$PaymentMethodPhaseDocumentPayload<ExtArgs>
-      fields: Prisma.PaymentMethodPhaseDocumentFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PaymentMethodPhaseDocumentFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PaymentMethodPhaseDocumentFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
-        }
-        findFirst: {
-          args: Prisma.PaymentMethodPhaseDocumentFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PaymentMethodPhaseDocumentFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
-        }
-        findMany: {
-          args: Prisma.PaymentMethodPhaseDocumentFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>[]
-        }
-        create: {
-          args: Prisma.PaymentMethodPhaseDocumentCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
-        }
-        createMany: {
-          args: Prisma.PaymentMethodPhaseDocumentCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.PaymentMethodPhaseDocumentDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
-        }
-        update: {
-          args: Prisma.PaymentMethodPhaseDocumentUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
-        }
-        deleteMany: {
-          args: Prisma.PaymentMethodPhaseDocumentDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PaymentMethodPhaseDocumentUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.PaymentMethodPhaseDocumentUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
-        }
-        aggregate: {
-          args: Prisma.PaymentMethodPhaseDocumentAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentMethodPhaseDocument>
-        }
-        groupBy: {
-          args: Prisma.PaymentMethodPhaseDocumentGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseDocumentGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PaymentMethodPhaseDocumentCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseDocumentCountAggregateOutputType> | number
-        }
-      }
-    }
-    PaymentMethodPhaseField: {
-      payload: Prisma.$PaymentMethodPhaseFieldPayload<ExtArgs>
-      fields: Prisma.PaymentMethodPhaseFieldFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PaymentMethodPhaseFieldFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PaymentMethodPhaseFieldFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
-        }
-        findFirst: {
-          args: Prisma.PaymentMethodPhaseFieldFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PaymentMethodPhaseFieldFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
-        }
-        findMany: {
-          args: Prisma.PaymentMethodPhaseFieldFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>[]
-        }
-        create: {
-          args: Prisma.PaymentMethodPhaseFieldCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
-        }
-        createMany: {
-          args: Prisma.PaymentMethodPhaseFieldCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.PaymentMethodPhaseFieldDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
-        }
-        update: {
-          args: Prisma.PaymentMethodPhaseFieldUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
-        }
-        deleteMany: {
-          args: Prisma.PaymentMethodPhaseFieldDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PaymentMethodPhaseFieldUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.PaymentMethodPhaseFieldUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
-        }
-        aggregate: {
-          args: Prisma.PaymentMethodPhaseFieldAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentMethodPhaseField>
-        }
-        groupBy: {
-          args: Prisma.PaymentMethodPhaseFieldGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseFieldGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PaymentMethodPhaseFieldCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseFieldCountAggregateOutputType> | number
         }
       }
     }
@@ -7381,8 +7113,6 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   minimumCompletionPercentage: 'minimumCompletionPercentage',
   completionCriterion: 'completionCriterion',
   lockUnitOnComplete: 'lockUnitOnComplete',
-  stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
-  requiredDocumentSnapshot: 'requiredDocumentSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -7403,73 +7133,6 @@ export const PhaseEventAttachmentScalarFieldEnum = {
 } as const
 
 export type PhaseEventAttachmentScalarFieldEnum = (typeof PhaseEventAttachmentScalarFieldEnum)[keyof typeof PhaseEventAttachmentScalarFieldEnum]
-
-
-export const PaymentMethodPhaseStepScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  name: 'name',
-  stepType: 'stepType',
-  order: 'order',
-  metadata: 'metadata',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PaymentMethodPhaseStepScalarFieldEnum = (typeof PaymentMethodPhaseStepScalarFieldEnum)[keyof typeof PaymentMethodPhaseStepScalarFieldEnum]
-
-
-export const StepEventAttachmentScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  trigger: 'trigger',
-  handlerId: 'handlerId',
-  priority: 'priority',
-  enabled: 'enabled',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type StepEventAttachmentScalarFieldEnum = (typeof StepEventAttachmentScalarFieldEnum)[keyof typeof StepEventAttachmentScalarFieldEnum]
-
-
-export const PaymentMethodPhaseDocumentScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  documentType: 'documentType',
-  isRequired: 'isRequired',
-  description: 'description',
-  allowedMimeTypes: 'allowedMimeTypes',
-  maxSizeBytes: 'maxSizeBytes',
-  metadata: 'metadata',
-  createdAt: 'createdAt'
-} as const
-
-export type PaymentMethodPhaseDocumentScalarFieldEnum = (typeof PaymentMethodPhaseDocumentScalarFieldEnum)[keyof typeof PaymentMethodPhaseDocumentScalarFieldEnum]
-
-
-export const PaymentMethodPhaseFieldScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  name: 'name',
-  label: 'label',
-  description: 'description',
-  placeholder: 'placeholder',
-  fieldType: 'fieldType',
-  isRequired: 'isRequired',
-  order: 'order',
-  validation: 'validation',
-  displayCondition: 'displayCondition',
-  defaultValue: 'defaultValue',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PaymentMethodPhaseFieldScalarFieldEnum = (typeof PaymentMethodPhaseFieldScalarFieldEnum)[keyof typeof PaymentMethodPhaseFieldScalarFieldEnum]
 
 
 export const ApplicationScalarFieldEnum = {
@@ -9011,51 +8674,6 @@ export const PhaseEventAttachmentOrderByRelevanceFieldEnum = {
 export type PhaseEventAttachmentOrderByRelevanceFieldEnum = (typeof PhaseEventAttachmentOrderByRelevanceFieldEnum)[keyof typeof PhaseEventAttachmentOrderByRelevanceFieldEnum]
 
 
-export const PaymentMethodPhaseStepOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  name: 'name'
-} as const
-
-export type PaymentMethodPhaseStepOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseStepOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseStepOrderByRelevanceFieldEnum]
-
-
-export const StepEventAttachmentOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  handlerId: 'handlerId'
-} as const
-
-export type StepEventAttachmentOrderByRelevanceFieldEnum = (typeof StepEventAttachmentOrderByRelevanceFieldEnum)[keyof typeof StepEventAttachmentOrderByRelevanceFieldEnum]
-
-
-export const PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  documentType: 'documentType',
-  description: 'description',
-  allowedMimeTypes: 'allowedMimeTypes'
-} as const
-
-export type PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum]
-
-
-export const PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  phaseId: 'phaseId',
-  name: 'name',
-  label: 'label',
-  description: 'description',
-  placeholder: 'placeholder'
-} as const
-
-export type PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseFieldOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseFieldOrderByRelevanceFieldEnum]
-
-
 export const ApplicationOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -9824,27 +9442,6 @@ export type EnumPhaseTriggerFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 
 
 /**
- * Reference to a field of type 'StepType'
- */
-export type EnumStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepType'>
-    
-
-
-/**
- * Reference to a field of type 'StepTrigger'
- */
-export type EnumStepTriggerFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepTrigger'>
-    
-
-
-/**
- * Reference to a field of type 'FieldType'
- */
-export type EnumFieldTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FieldType'>
-    
-
-
-/**
  * Reference to a field of type 'ApplicationStatus'
  */
 export type EnumApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationStatus'>
@@ -9876,6 +9473,13 @@ export type EnumRefundStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'ReviewDecision'
  */
 export type EnumReviewDecisionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewDecision'>
+    
+
+
+/**
+ * Reference to a field of type 'FieldType'
+ */
+export type EnumFieldTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FieldType'>
     
 
 
@@ -10209,10 +9813,6 @@ export type GlobalOmitConfig = {
   propertyPaymentMethodLink?: Prisma.PropertyPaymentMethodLinkOmit
   propertyPaymentMethodPhase?: Prisma.PropertyPaymentMethodPhaseOmit
   phaseEventAttachment?: Prisma.PhaseEventAttachmentOmit
-  paymentMethodPhaseStep?: Prisma.PaymentMethodPhaseStepOmit
-  stepEventAttachment?: Prisma.StepEventAttachmentOmit
-  paymentMethodPhaseDocument?: Prisma.PaymentMethodPhaseDocumentOmit
-  paymentMethodPhaseField?: Prisma.PaymentMethodPhaseFieldOmit
   application?: Prisma.ApplicationOmit
   coApplicant?: Prisma.CoApplicantOmit
   applicationOrganization?: Prisma.ApplicationOrganizationOmit

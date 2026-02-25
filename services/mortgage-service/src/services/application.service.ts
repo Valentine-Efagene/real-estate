@@ -459,7 +459,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                                 scoringStrategy: questionnairePlan.scoringStrategy,
                                 passingScore: questionnairePlan.passingScore,
                                 autoDecisionEnabled: questionnairePlan.autoDecisionEnabled,
-                            } : phaseTemplate.stepDefinitionsSnapshot,
+                            } : null,
                         },
                     });
 

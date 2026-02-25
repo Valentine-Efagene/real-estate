@@ -221,9 +221,6 @@ export async function cleanupTestData() {
     await prisma.propertyVariant.deleteMany();
     await prisma.propertyPaymentMethodLink.deleteMany();
     await prisma.phaseEventAttachment.deleteMany();
-    await prisma.stepEventAttachment.deleteMany();
-    await prisma.paymentMethodPhaseStep.deleteMany();
-    await prisma.paymentMethodPhaseDocument.deleteMany();
     await prisma.propertyPaymentMethodPhase.deleteMany();
     await prisma.documentRequirementRule.deleteMany();
     await prisma.propertyPaymentMethod.deleteMany();

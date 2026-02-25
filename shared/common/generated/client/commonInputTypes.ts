@@ -711,57 +711,6 @@ export type EnumPhaseTriggerWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumPhaseTriggerFilter<$PrismaModel>
 }
 
-export type EnumStepTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.StepType | Prisma.EnumStepTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.StepType[]
-  notIn?: $Enums.StepType[]
-  not?: Prisma.NestedEnumStepTypeFilter<$PrismaModel> | $Enums.StepType
-}
-
-export type EnumStepTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.StepType | Prisma.EnumStepTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.StepType[]
-  notIn?: $Enums.StepType[]
-  not?: Prisma.NestedEnumStepTypeWithAggregatesFilter<$PrismaModel> | $Enums.StepType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
-}
-
-export type EnumStepTriggerFilter<$PrismaModel = never> = {
-  equals?: $Enums.StepTrigger | Prisma.EnumStepTriggerFieldRefInput<$PrismaModel>
-  in?: $Enums.StepTrigger[]
-  notIn?: $Enums.StepTrigger[]
-  not?: Prisma.NestedEnumStepTriggerFilter<$PrismaModel> | $Enums.StepTrigger
-}
-
-export type EnumStepTriggerWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.StepTrigger | Prisma.EnumStepTriggerFieldRefInput<$PrismaModel>
-  in?: $Enums.StepTrigger[]
-  notIn?: $Enums.StepTrigger[]
-  not?: Prisma.NestedEnumStepTriggerWithAggregatesFilter<$PrismaModel> | $Enums.StepTrigger
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumStepTriggerFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumStepTriggerFilter<$PrismaModel>
-}
-
-export type EnumFieldTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.FieldType[]
-  notIn?: $Enums.FieldType[]
-  not?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel> | $Enums.FieldType
-}
-
-export type EnumFieldTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.FieldType[]
-  notIn?: $Enums.FieldType[]
-  not?: Prisma.NestedEnumFieldTypeWithAggregatesFilter<$PrismaModel> | $Enums.FieldType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
-}
-
 export type EnumApplicationStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.ApplicationStatus | Prisma.EnumApplicationStatusFieldRefInput<$PrismaModel>
   in?: $Enums.ApplicationStatus[]
@@ -845,6 +794,23 @@ export type EnumReviewDecisionWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumReviewDecisionFilter<$PrismaModel>
   _max?: Prisma.NestedEnumReviewDecisionFilter<$PrismaModel>
+}
+
+export type EnumFieldTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FieldType[]
+  notIn?: $Enums.FieldType[]
+  not?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel> | $Enums.FieldType
+}
+
+export type EnumFieldTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FieldType[]
+  notIn?: $Enums.FieldType[]
+  not?: Prisma.NestedEnumFieldTypeWithAggregatesFilter<$PrismaModel> | $Enums.FieldType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
 }
 
 export type EnumApplicationEventTypeFilter<$PrismaModel = never> = {
@@ -1961,57 +1927,6 @@ export type NestedEnumPhaseTriggerWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumPhaseTriggerFilter<$PrismaModel>
 }
 
-export type NestedEnumStepTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.StepType | Prisma.EnumStepTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.StepType[]
-  notIn?: $Enums.StepType[]
-  not?: Prisma.NestedEnumStepTypeFilter<$PrismaModel> | $Enums.StepType
-}
-
-export type NestedEnumStepTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.StepType | Prisma.EnumStepTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.StepType[]
-  notIn?: $Enums.StepType[]
-  not?: Prisma.NestedEnumStepTypeWithAggregatesFilter<$PrismaModel> | $Enums.StepType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
-}
-
-export type NestedEnumStepTriggerFilter<$PrismaModel = never> = {
-  equals?: $Enums.StepTrigger | Prisma.EnumStepTriggerFieldRefInput<$PrismaModel>
-  in?: $Enums.StepTrigger[]
-  notIn?: $Enums.StepTrigger[]
-  not?: Prisma.NestedEnumStepTriggerFilter<$PrismaModel> | $Enums.StepTrigger
-}
-
-export type NestedEnumStepTriggerWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.StepTrigger | Prisma.EnumStepTriggerFieldRefInput<$PrismaModel>
-  in?: $Enums.StepTrigger[]
-  notIn?: $Enums.StepTrigger[]
-  not?: Prisma.NestedEnumStepTriggerWithAggregatesFilter<$PrismaModel> | $Enums.StepTrigger
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumStepTriggerFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumStepTriggerFilter<$PrismaModel>
-}
-
-export type NestedEnumFieldTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.FieldType[]
-  notIn?: $Enums.FieldType[]
-  not?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel> | $Enums.FieldType
-}
-
-export type NestedEnumFieldTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.FieldType[]
-  notIn?: $Enums.FieldType[]
-  not?: Prisma.NestedEnumFieldTypeWithAggregatesFilter<$PrismaModel> | $Enums.FieldType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
-}
-
 export type NestedEnumApplicationStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.ApplicationStatus | Prisma.EnumApplicationStatusFieldRefInput<$PrismaModel>
   in?: $Enums.ApplicationStatus[]
@@ -2095,6 +2010,23 @@ export type NestedEnumReviewDecisionWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumReviewDecisionFilter<$PrismaModel>
   _max?: Prisma.NestedEnumReviewDecisionFilter<$PrismaModel>
+}
+
+export type NestedEnumFieldTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FieldType[]
+  notIn?: $Enums.FieldType[]
+  not?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel> | $Enums.FieldType
+}
+
+export type NestedEnumFieldTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FieldType[]
+  notIn?: $Enums.FieldType[]
+  not?: Prisma.NestedEnumFieldTypeWithAggregatesFilter<$PrismaModel> | $Enums.FieldType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumApplicationEventTypeFilter<$PrismaModel = never> = {

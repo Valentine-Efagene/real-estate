@@ -187,17 +187,6 @@ export const ConditionOperator = {
 export type ConditionOperator = (typeof ConditionOperator)[keyof typeof ConditionOperator]
 
 
-export const StepTrigger = {
-  ON_COMPLETE: 'ON_COMPLETE',
-  ON_REJECT: 'ON_REJECT',
-  ON_SUBMIT: 'ON_SUBMIT',
-  ON_RESUBMIT: 'ON_RESUBMIT',
-  ON_START: 'ON_START'
-} as const
-
-export type StepTrigger = (typeof StepTrigger)[keyof typeof StepTrigger]
-
-
 export const PhaseTrigger = {
   ON_ACTIVATE: 'ON_ACTIVATE',
   ON_COMPLETE: 'ON_COMPLETE',
