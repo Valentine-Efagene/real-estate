@@ -497,7 +497,6 @@ router.get(
                     select: {
                         id: true,
                         name: true,
-                        phaseType: true,
                         paymentMethod: {
                             select: { id: true, name: true },
                         },
@@ -609,7 +608,6 @@ router.post(
                     select: {
                         id: true,
                         name: true,
-                        phaseType: true,
                         paymentMethod: {
                             select: { id: true, name: true },
                         },
@@ -684,7 +682,6 @@ router.put(
                     select: {
                         id: true,
                         name: true,
-                        phaseType: true,
                         paymentMethod: {
                             select: { id: true, name: true },
                         },

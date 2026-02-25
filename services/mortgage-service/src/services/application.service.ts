@@ -70,9 +70,9 @@ function calculatePeriodicPayment(
  * Now reads from PaymentPhase extension table
  */
 function getMortgagePaymentInfo(application: any): { termMonths: number; monthlyPayment: number } {
-    // Find the mortgage phase (phaseType = 'MORTGAGE')
+    // Find the payment phase with a flexible-term plan (the mortgage payment phase)
     const mortgagePhase = application.phases?.find(
-        (phase: any) => phase.phaseType === 'MORTGAGE'
+        (phase: any) => phase.paymentPhase?.paymentPlan?.allowFlexibleTerm
     );
 
     // PaymentPhase extension contains the payment plan reference
@@ -169,7 +169,6 @@ function enrichPhaseWithActionStatus(phase: any): any {
     const actionStatus = computePhaseActionStatus({
         id: phase.id,
         name: phase.name,
-        phaseType: phase.phaseType,
         phaseCategory: phase.phaseCategory,
         status: phase.status,
         dueDate: phase.dueDate,
@@ -419,7 +418,6 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                         name: phaseTemplate.name,
                         description: phaseTemplate.description,
                         phaseCategory: phaseTemplate.phaseCategory,
-                        phaseType: phaseTemplate.phaseType,
                         order: phaseTemplate.order,
                         status: 'PENDING' as PhaseStatus,
                         requiresPreviousPhaseCompletion: phaseTemplate.requiresPreviousPhaseCompletion,
@@ -567,7 +565,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     let selectedTermMonths: number | null = null;
                     let numberOfInstallments: number | null = null;
 
-                    if (paymentPlan?.allowFlexibleTerm && phaseTemplate.phaseType === 'MORTGAGE') {
+                    if (paymentPlan?.allowFlexibleTerm) {
                         const userSelectedTerm = (data as any).selectedMortgageTermMonths;
                         const applicantAge = (data as any).applicantAge;
 
@@ -756,7 +754,6 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                             payload: JSON.stringify({
                                 phaseId: firstPhase.id,
                                 applicationId: created.id,
-                                phaseType: firstPhase.phaseType,
                             }),
                             actorId: data.buyerId,
                         },
@@ -1041,7 +1038,6 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                             payload: JSON.stringify({
                                 phaseId: firstPhase.id,
                                 applicationId: id,
-                                phaseType: firstPhase.phaseType,
                             }),
                             actorId: userId,
                         },
@@ -1261,7 +1257,6 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             id: string;
             name: string;
             phaseCategory: string;
-            phaseType: string;
             status: string;
             order: number;
         } | null;
@@ -1780,7 +1775,6 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 id: currentPhase.id,
                 name: currentPhase.name,
                 phaseCategory: currentPhase.phaseCategory,
-                phaseType: currentPhase.phaseType,
                 status: currentPhase.status,
                 order: currentPhase.order,
             },

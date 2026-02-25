@@ -6,16 +6,6 @@ extendZodWithOpenApi(z);
 // Phase category enum (only QUESTIONNAIRE, DOCUMENTATION, GATE — no PAYMENT)
 const QualificationPhaseCategoryEnum = z.enum(['QUESTIONNAIRE', 'DOCUMENTATION', 'GATE']);
 
-// Phase type enum subset relevant to qualification flows
-const QualificationPhaseTypeEnum = z.enum([
-    'PRE_APPROVAL',
-    'UNDERWRITING',
-    'KYC',
-    'VERIFICATION',
-    'APPROVAL_GATE',
-    'ORG_KYB',
-]);
-
 // Qualification status enum
 const QualificationStatusEnum = z.enum([
     'PENDING',
@@ -37,7 +27,6 @@ const QualificationFlowPhaseSchema = z.object({
     name: z.string().min(1).max(100).openapi({ example: 'Developer Eligibility Questionnaire' }),
     description: z.string().optional(),
     phaseCategory: QualificationPhaseCategoryEnum.openapi({ example: 'QUESTIONNAIRE' }),
-    phaseType: QualificationPhaseTypeEnum.openapi({ example: 'PRE_APPROVAL' }),
     order: z.number().int().min(1).openapi({ example: 1 }),
     requiresPreviousPhaseCompletion: z.boolean().default(true),
 }).openapi('QualificationFlowPhaseInput');

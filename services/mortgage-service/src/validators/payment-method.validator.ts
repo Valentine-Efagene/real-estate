@@ -6,22 +6,6 @@ extendZodWithOpenApi(z);
 // Phase category enum (matches Prisma PhaseCategory)
 export const PhaseCategoryEnum = z.enum(['QUESTIONNAIRE', 'DOCUMENTATION', 'PAYMENT']);
 
-// Phase type enum (matches Prisma PhaseType)
-export const PhaseTypeEnum = z.enum([
-    // QUESTIONNAIRE phases
-    'PRE_APPROVAL',
-    'UNDERWRITING',
-    // DOCUMENTATION phases
-    'KYC',
-    'VERIFICATION',
-    // PAYMENT phases
-    'DOWNPAYMENT',
-    'MORTGAGE',
-    'BALLOON',
-    // Generic
-    'CUSTOM',
-]);
-
 // Phase template base schema (without transform for partial to work)
 const PaymentMethodPhaseBaseSchema = z.object({
     // Plan references (only one should be set based on phaseCategory)
@@ -32,7 +16,6 @@ const PaymentMethodPhaseBaseSchema = z.object({
     name: z.string().min(1).max(100).openapi({ example: 'KYC Verification' }),
     description: z.string().optional(),
     phaseCategory: PhaseCategoryEnum.openapi({ example: 'DOCUMENTATION' }),
-    phaseType: PhaseTypeEnum.openapi({ example: 'KYC' }),
     order: z.number().int().min(0).openapi({ example: 1 }),
     interestRate: z.number().min(0).max(100).optional().openapi({ example: 5.5 }),
     percentOfPrice: z.number().min(0).max(100).optional().openapi({ example: 10 }),
@@ -114,7 +97,6 @@ export const ClonePaymentMethodSchema = z.object({
 
 export const DocumentRequirementRuleSchema = z.object({
     context: z.enum(['PREQUALIFICATION', 'APPLICATION_PHASE', 'PAYMENT_METHOD_CHANGE']).default('APPLICATION_PHASE'),
-    phaseType: z.string().optional().openapi({ example: 'KYC' }),
     documentType: z.string().min(1).openapi({ example: 'ID_CARD' }),
     isRequired: z.boolean().default(true),
     description: z.string().optional().openapi({ example: 'Valid government-issued ID' }),

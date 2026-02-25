@@ -237,7 +237,6 @@ describe('Payment Method Change Flow', () => {
                         {
                             name: 'Documentation',
                             phaseCategory: 'DOCUMENTATION',
-                            phaseType: 'KYC',
                             order: 1,
                             requiredDocumentTypes: ['ID_CARD'],
                             stepDefinitions: [
@@ -248,7 +247,6 @@ describe('Payment Method Change Flow', () => {
                         {
                             name: '10% Downpayment',
                             phaseCategory: 'PAYMENT',
-                            phaseType: 'DOWNPAYMENT',
                             order: 2,
                             percentOfPrice: downpaymentPercent,
                             paymentPlanId: downpaymentPlanId,
@@ -256,7 +254,6 @@ describe('Payment Method Change Flow', () => {
                         {
                             name: '90% Mortgage (20 Years)',
                             phaseCategory: 'PAYMENT',
-                            phaseType: 'MORTGAGE',
                             order: 3,
                             percentOfPrice: 90,
                             paymentPlanId: originalMortgagePlanId,
@@ -282,7 +279,6 @@ describe('Payment Method Change Flow', () => {
                         {
                             name: 'Documentation',
                             phaseCategory: 'DOCUMENTATION',
-                            phaseType: 'KYC',
                             order: 1,
                             requiredDocumentTypes: ['ID_CARD'],
                             stepDefinitions: [
@@ -293,7 +289,6 @@ describe('Payment Method Change Flow', () => {
                         {
                             name: '10% Downpayment',
                             phaseCategory: 'PAYMENT',
-                            phaseType: 'DOWNPAYMENT',
                             order: 2,
                             percentOfPrice: downpaymentPercent,
                             paymentPlanId: downpaymentPlanId,
@@ -301,7 +296,6 @@ describe('Payment Method Change Flow', () => {
                         {
                             name: '90% Mortgage (15 Years)',
                             phaseCategory: 'PAYMENT',
-                            phaseType: 'MORTGAGE',
                             order: 3,
                             percentOfPrice: 90,
                             paymentPlanId: alternativeMortgagePlanId,
@@ -368,7 +362,6 @@ describe('Payment Method Change Flow', () => {
                     applicationId,
                     name: '10% Downpayment',
                     phaseCategory: 'PAYMENT',
-                    phaseType: 'DOWNPAYMENT',
                     order: 1,
                     status: 'COMPLETED',
                     activatedAt: new Date(),
@@ -396,7 +389,6 @@ describe('Payment Method Change Flow', () => {
                     applicationId,
                     name: '90% Mortgage (20 Years)',
                     phaseCategory: 'PAYMENT',
-                    phaseType: 'MORTGAGE',
                     order: 2,
                     status: 'ACTIVE',
                     activatedAt: new Date(),
@@ -589,7 +581,7 @@ describe('Payment Method Change Flow', () => {
 
             // The new mortgage phase should have "(Changed)" in its name as per the service
             const newMortgagePhase = phasesResponse.body.data.find(
-                (p: any) => p.name.includes('(Changed)') && p.phaseType === 'MORTGAGE'
+                (p: any) => p.name.includes('(Changed)')
             );
 
             expect(newMortgagePhase).toBeDefined();
@@ -757,7 +749,7 @@ describe('Payment Method Change - Alternative Flows', () => {
             .send({
                 name: 'Original Method Alt',
                 phases: [
-                    { name: 'Payment', phaseCategory: 'PAYMENT', phaseType: 'DOWNPAYMENT', order: 1, percentOfPrice: 100, paymentPlanId: origPlan.id },
+                    { name: 'Payment', phaseCategory: 'PAYMENT', order: 1, percentOfPrice: 100, paymentPlanId: origPlan.id },
                 ],
             });
         originalPaymentMethodId = origMethodResp.body.data.id;
@@ -768,7 +760,7 @@ describe('Payment Method Change - Alternative Flows', () => {
             .send({
                 name: 'Alternative Method Alt',
                 phases: [
-                    { name: 'Payment', phaseCategory: 'PAYMENT', phaseType: 'DOWNPAYMENT', order: 1, percentOfPrice: 100, paymentPlanId: altPlan.id },
+                    { name: 'Payment', phaseCategory: 'PAYMENT', order: 1, percentOfPrice: 100, paymentPlanId: altPlan.id },
                 ],
             });
         alternativePaymentMethodId = altMethodResp.body.data.id;
@@ -811,7 +803,6 @@ describe('Payment Method Change - Alternative Flows', () => {
                 applicationId,
                 name: 'Payment Phase',
                 phaseCategory: 'PAYMENT',
-                phaseType: 'MORTGAGE',
                 order: 1,
                 status: 'ACTIVE',
                 activatedAt: new Date(),

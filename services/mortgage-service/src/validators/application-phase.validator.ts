@@ -108,7 +108,6 @@ export const StepActionStatusSchema = ActionStatusSchema.extend({
 export const PhaseActionStatusSchema = ActionStatusSchema.extend({
     phaseId: z.string(),
     phaseName: z.string(),
-    phaseType: z.string(),
     phaseCategory: z.string(),
     currentStep: StepActionStatusSchema.optional().nullable(),
     stepsProgress: z.string().optional(),
@@ -124,7 +123,6 @@ export const ApplicationPhaseResponseSchema = z
         name: z.string(),
         description: z.string().nullable(),
         phaseCategory: z.string(),
-        phaseType: z.string(),
         order: z.number(),
         status: z.string(),
         totalAmount: z.number().nullable(),

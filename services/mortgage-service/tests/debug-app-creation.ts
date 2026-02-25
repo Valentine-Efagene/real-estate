@@ -117,7 +117,6 @@ async function debug() {
                     phases: [
                         {
                             name: 'Payment Phase',
-                            phaseType: 'DOWNPAYMENT',
                             order: 1,
                             paymentPlanId: planResponse.body.data.id,
                             percentageOfTotal: 100,

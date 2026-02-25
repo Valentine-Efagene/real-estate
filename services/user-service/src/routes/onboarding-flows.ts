@@ -34,7 +34,6 @@ const AddPhaseSchema = z.object({
     name: z.string().min(2).max(200),
     description: z.string().optional(),
     phaseCategory: z.enum(['QUESTIONNAIRE', 'DOCUMENTATION', 'GATE']),
-    phaseType: z.string().min(1),
     order: z.number().int().positive(),
     requiresPreviousPhaseCompletion: z.boolean().optional(),
     questionnairePlanId: z.string().optional(),
@@ -45,7 +44,6 @@ const AddPhaseSchema = z.object({
 const UpdatePhaseSchema = z.object({
     name: z.string().min(2).max(200).optional(),
     description: z.string().optional(),
-    phaseType: z.string().min(1).optional(),
     order: z.number().int().positive().optional(),
     requiresPreviousPhaseCompletion: z.boolean().optional(),
     questionnairePlanId: z.string().nullable().optional(),

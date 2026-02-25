@@ -51,7 +51,6 @@ export type PropertyPaymentMethodPhaseMinAggregateOutputType = {
   name: string | null
   description: string | null
   phaseCategory: $Enums.PhaseCategory | null
-  phaseType: $Enums.PhaseType | null
   order: number | null
   interestRate: number | null
   percentOfPrice: number | null
@@ -75,7 +74,6 @@ export type PropertyPaymentMethodPhaseMaxAggregateOutputType = {
   name: string | null
   description: string | null
   phaseCategory: $Enums.PhaseCategory | null
-  phaseType: $Enums.PhaseType | null
   order: number | null
   interestRate: number | null
   percentOfPrice: number | null
@@ -99,7 +97,6 @@ export type PropertyPaymentMethodPhaseCountAggregateOutputType = {
   name: number
   description: number
   phaseCategory: number
-  phaseType: number
   order: number
   interestRate: number
   percentOfPrice: number
@@ -139,7 +136,6 @@ export type PropertyPaymentMethodPhaseMinAggregateInputType = {
   name?: true
   description?: true
   phaseCategory?: true
-  phaseType?: true
   order?: true
   interestRate?: true
   percentOfPrice?: true
@@ -163,7 +159,6 @@ export type PropertyPaymentMethodPhaseMaxAggregateInputType = {
   name?: true
   description?: true
   phaseCategory?: true
-  phaseType?: true
   order?: true
   interestRate?: true
   percentOfPrice?: true
@@ -187,7 +182,6 @@ export type PropertyPaymentMethodPhaseCountAggregateInputType = {
   name?: true
   description?: true
   phaseCategory?: true
-  phaseType?: true
   order?: true
   interestRate?: true
   percentOfPrice?: true
@@ -298,7 +292,6 @@ export type PropertyPaymentMethodPhaseGroupByOutputType = {
   name: string
   description: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate: number | null
   percentOfPrice: number | null
@@ -345,7 +338,6 @@ export type PropertyPaymentMethodPhaseWhereInput = {
   name?: Prisma.StringFilter<"PropertyPaymentMethodPhase"> | string
   description?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"PropertyPaymentMethodPhase"> | number
   interestRate?: Prisma.FloatNullableFilter<"PropertyPaymentMethodPhase"> | number | null
   percentOfPrice?: Prisma.FloatNullableFilter<"PropertyPaymentMethodPhase"> | number | null
@@ -378,7 +370,6 @@ export type PropertyPaymentMethodPhaseOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   interestRate?: Prisma.SortOrderInput | Prisma.SortOrder
   percentOfPrice?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -416,7 +407,6 @@ export type PropertyPaymentMethodPhaseWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"PropertyPaymentMethodPhase"> | string
   description?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"PropertyPaymentMethodPhase"> | number
   interestRate?: Prisma.FloatNullableFilter<"PropertyPaymentMethodPhase"> | number | null
   percentOfPrice?: Prisma.FloatNullableFilter<"PropertyPaymentMethodPhase"> | number | null
@@ -449,7 +439,6 @@ export type PropertyPaymentMethodPhaseOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   interestRate?: Prisma.SortOrderInput | Prisma.SortOrder
   percentOfPrice?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -481,7 +470,6 @@ export type PropertyPaymentMethodPhaseScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"PropertyPaymentMethodPhase"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"PropertyPaymentMethodPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryWithAggregatesFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeWithAggregatesFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseType
   order?: Prisma.IntWithAggregatesFilter<"PropertyPaymentMethodPhase"> | number
   interestRate?: Prisma.FloatNullableWithAggregatesFilter<"PropertyPaymentMethodPhase"> | number | null
   percentOfPrice?: Prisma.FloatNullableWithAggregatesFilter<"PropertyPaymentMethodPhase"> | number | null
@@ -499,7 +487,6 @@ export type PropertyPaymentMethodPhaseCreateInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -532,7 +519,6 @@ export type PropertyPaymentMethodPhaseUncheckedCreateInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -553,7 +539,6 @@ export type PropertyPaymentMethodPhaseUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -586,7 +571,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -613,7 +597,6 @@ export type PropertyPaymentMethodPhaseCreateManyInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -631,7 +614,6 @@ export type PropertyPaymentMethodPhaseUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -655,7 +637,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -705,7 +686,6 @@ export type PropertyPaymentMethodPhaseCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
   percentOfPrice?: Prisma.SortOrder
@@ -736,7 +716,6 @@ export type PropertyPaymentMethodPhaseMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
   percentOfPrice?: Prisma.SortOrder
@@ -760,7 +739,6 @@ export type PropertyPaymentMethodPhaseMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
   percentOfPrice?: Prisma.SortOrder
@@ -1094,7 +1072,6 @@ export type PropertyPaymentMethodPhaseCreateWithoutBankDocumentRequirementsInput
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1126,7 +1103,6 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutBankDocumentRequirem
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1162,7 +1138,6 @@ export type PropertyPaymentMethodPhaseUpdateWithoutBankDocumentRequirementsInput
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1194,7 +1169,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutBankDocumentRequirem
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1214,7 +1188,6 @@ export type PropertyPaymentMethodPhaseCreateWithoutTenantInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1245,7 +1218,6 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutTenantInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1301,7 +1273,6 @@ export type PropertyPaymentMethodPhaseScalarWhereInput = {
   name?: Prisma.StringFilter<"PropertyPaymentMethodPhase"> | string
   description?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"PropertyPaymentMethodPhase"> | number
   interestRate?: Prisma.FloatNullableFilter<"PropertyPaymentMethodPhase"> | number | null
   percentOfPrice?: Prisma.FloatNullableFilter<"PropertyPaymentMethodPhase"> | number | null
@@ -1319,7 +1290,6 @@ export type PropertyPaymentMethodPhaseCreateWithoutDocumentationPlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1350,7 +1320,6 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutDocumentationPlanInp
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1397,7 +1366,6 @@ export type PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1428,7 +1396,6 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInp
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1475,7 +1442,6 @@ export type PropertyPaymentMethodPhaseCreateWithoutGatePlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1506,7 +1472,6 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutGatePlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1553,7 +1518,6 @@ export type PropertyPaymentMethodPhaseCreateWithoutPaymentPlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1584,7 +1548,6 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutPaymentPlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1631,7 +1594,6 @@ export type PropertyPaymentMethodPhaseCreateWithoutPaymentMethodInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1662,7 +1624,6 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutPaymentMethodInput =
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1709,7 +1670,6 @@ export type PropertyPaymentMethodPhaseCreateWithoutEventAttachmentsInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1741,7 +1701,6 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutEventAttachmentsInpu
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1777,7 +1736,6 @@ export type PropertyPaymentMethodPhaseUpdateWithoutEventAttachmentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1809,7 +1767,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutEventAttachmentsInpu
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1829,7 +1786,6 @@ export type PropertyPaymentMethodPhaseCreateWithoutApplicationPhasesInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1861,7 +1817,6 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutApplicationPhasesInp
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1897,7 +1852,6 @@ export type PropertyPaymentMethodPhaseUpdateWithoutApplicationPhasesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1929,7 +1883,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutApplicationPhasesInp
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1954,7 +1907,6 @@ export type PropertyPaymentMethodPhaseCreateManyTenantInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -1972,7 +1924,6 @@ export type PropertyPaymentMethodPhaseUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2003,7 +1954,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2029,7 +1979,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2052,7 +2001,6 @@ export type PropertyPaymentMethodPhaseCreateManyDocumentationPlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -2070,7 +2018,6 @@ export type PropertyPaymentMethodPhaseUpdateWithoutDocumentationPlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2101,7 +2048,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutDocumentationPlanInp
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2127,7 +2073,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutDocumentationPla
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2150,7 +2095,6 @@ export type PropertyPaymentMethodPhaseCreateManyQuestionnairePlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -2168,7 +2112,6 @@ export type PropertyPaymentMethodPhaseUpdateWithoutQuestionnairePlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2199,7 +2142,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutQuestionnairePlanInp
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2225,7 +2167,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutQuestionnairePla
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2248,7 +2189,6 @@ export type PropertyPaymentMethodPhaseCreateManyGatePlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -2266,7 +2206,6 @@ export type PropertyPaymentMethodPhaseUpdateWithoutGatePlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2297,7 +2236,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutGatePlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2323,7 +2261,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutGatePlanInput = 
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2346,7 +2283,6 @@ export type PropertyPaymentMethodPhaseCreateManyPaymentPlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -2364,7 +2300,6 @@ export type PropertyPaymentMethodPhaseUpdateWithoutPaymentPlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2395,7 +2330,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutPaymentPlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2421,7 +2355,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentPlanInput
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2444,7 +2377,6 @@ export type PropertyPaymentMethodPhaseCreateManyPaymentMethodInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   interestRate?: number | null
   percentOfPrice?: number | null
@@ -2462,7 +2394,6 @@ export type PropertyPaymentMethodPhaseUpdateWithoutPaymentMethodInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2493,7 +2424,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutPaymentMethodInput =
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2519,7 +2449,6 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodInp
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2592,7 +2521,6 @@ export type PropertyPaymentMethodPhaseSelect<ExtArgs extends runtime.Types.Exten
   name?: boolean
   description?: boolean
   phaseCategory?: boolean
-  phaseType?: boolean
   order?: boolean
   interestRate?: boolean
   percentOfPrice?: boolean
@@ -2628,7 +2556,6 @@ export type PropertyPaymentMethodPhaseSelectScalar = {
   name?: boolean
   description?: boolean
   phaseCategory?: boolean
-  phaseType?: boolean
   order?: boolean
   interestRate?: boolean
   percentOfPrice?: boolean
@@ -2641,7 +2568,7 @@ export type PropertyPaymentMethodPhaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PropertyPaymentMethodPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "paymentMethodId" | "paymentPlanId" | "documentationPlanId" | "questionnairePlanId" | "gatePlanId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "interestRate" | "percentOfPrice" | "collectFunds" | "requiresPreviousPhaseCompletion" | "minimumCompletionPercentage" | "completionCriterion" | "lockUnitOnComplete" | "createdAt" | "updatedAt", ExtArgs["result"]["propertyPaymentMethodPhase"]>
+export type PropertyPaymentMethodPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "paymentMethodId" | "paymentPlanId" | "documentationPlanId" | "questionnairePlanId" | "gatePlanId" | "name" | "description" | "phaseCategory" | "order" | "interestRate" | "percentOfPrice" | "collectFunds" | "requiresPreviousPhaseCompletion" | "minimumCompletionPercentage" | "completionCriterion" | "lockUnitOnComplete" | "createdAt" | "updatedAt", ExtArgs["result"]["propertyPaymentMethodPhase"]>
 export type PropertyPaymentMethodPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   paymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
@@ -2679,7 +2606,6 @@ export type $PropertyPaymentMethodPhasePayload<ExtArgs extends runtime.Types.Ext
     name: string
     description: string | null
     phaseCategory: $Enums.PhaseCategory
-    phaseType: $Enums.PhaseType
     order: number
     interestRate: number | null
     percentOfPrice: number | null
@@ -3078,7 +3004,6 @@ export interface PropertyPaymentMethodPhaseFieldRefs {
   readonly name: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'String'>
   readonly description: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'String'>
   readonly phaseCategory: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'PhaseCategory'>
-  readonly phaseType: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'PhaseType'>
   readonly order: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'Int'>
   readonly interestRate: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'Float'>
   readonly percentOfPrice: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'Float'>

@@ -201,7 +201,6 @@ class ApplicationPhaseService {
         const actionStatus = computePhaseActionStatus({
             id: phase.id,
             name: phase.name,
-            phaseType: phase.phaseType,
             phaseCategory: phase.phaseCategory,
             status: phase.status,
             dueDate: phase.dueDate,
@@ -269,7 +268,6 @@ class ApplicationPhaseService {
             actionRequired: actionStatus.actionRequired,
             metadata: {
                 phaseName: phase.name,
-                phaseType: phase.phaseType,
                 phaseCategory: phase.phaseCategory,
                 stageName: stageId ? this.getStageNameById(phase, stageId) : undefined,
             },
@@ -518,7 +516,6 @@ class ApplicationPhaseService {
                         phaseId,
                         applicationId: phase.applicationId,
                         phaseCategory: phase.phaseCategory,
-                        phaseType: phase.phaseType,
                     }),
                     actorId: userId,
                 },
@@ -890,7 +887,6 @@ class ApplicationPhaseService {
                     payload: JSON.stringify({
                         phaseId,
                         applicationId: phase.applicationId,
-                        phaseType: phase.phaseType,
                     }),
                     actorId: userId,
                 },
@@ -1270,7 +1266,6 @@ class ApplicationPhaseService {
                 payload: JSON.stringify({
                     phaseId,
                     applicationId: phase.applicationId,
-                    phaseType: phase.phaseType,
                 }),
                 actorId: userId,
             },
@@ -1344,7 +1339,6 @@ class ApplicationPhaseService {
                     payload: JSON.stringify({
                         phaseId: nextPhase.id,
                         applicationId: phase.applicationId,
-                        phaseType: nextPhase.phaseType,
                     }),
                     actorId: userId,
                 },
@@ -1548,7 +1542,6 @@ class ApplicationPhaseService {
                     payload: JSON.stringify({
                         phaseId,
                         applicationId: phase.applicationId,
-                        phaseType: phase.phaseType,
                     }),
                     actorId: userId,
                 },
@@ -1895,7 +1888,6 @@ class ApplicationPhaseService {
                             payload: JSON.stringify({
                                 phaseId: nextPhase.id,
                                 applicationId: phase.applicationId,
-                                phaseType: nextPhase.phaseType,
                                 activatedBy: 'AUTO_QUESTIONNAIRE_COMPLETION',
                             }),
                             actorId: userId,
@@ -1915,7 +1907,6 @@ class ApplicationPhaseService {
                         payload: JSON.stringify({
                             phaseId,
                             applicationId: phase.applicationId,
-                            phaseType: phase.phaseType,
                             completedBy: 'AUTO_QUESTIONNAIRE',
                         }),
                         actorId: userId,
@@ -2181,7 +2172,6 @@ class ApplicationPhaseService {
                             payload: JSON.stringify({
                                 phaseId: nextPhase.id,
                                 applicationId: phase.applicationId,
-                                phaseType: nextPhase.phaseType,
                                 activatedBy: 'QUESTIONNAIRE_REVIEW_APPROVED',
                             }),
                             actorId: reviewerId,
@@ -2201,7 +2191,6 @@ class ApplicationPhaseService {
                         payload: JSON.stringify({
                             phaseId,
                             applicationId: phase.applicationId,
-                            phaseType: phase.phaseType,
                             completedBy: 'REVIEWER',
                             reviewerId,
                             notes,
@@ -2231,7 +2220,6 @@ class ApplicationPhaseService {
                         payload: JSON.stringify({
                             phaseId,
                             applicationId: phase.applicationId,
-                            phaseType: phase.phaseType,
                             reason: 'REJECTED_BY_REVIEWER',
                             reviewerId,
                             notes,
@@ -2508,7 +2496,6 @@ class ApplicationPhaseService {
                     payload: JSON.stringify({
                         phaseId,
                         applicationId: phase.applicationId,
-                        phaseType: phase.phaseType,
                         reopenedBy: userId,
                         reason: reason || 'No reason provided',
                         resetDependentPhases,
@@ -2520,7 +2507,6 @@ class ApplicationPhaseService {
 
         console.log('[ApplicationPhaseService] Phase reopened', {
             phaseId,
-            phaseType: phase.phaseType,
             reopenedBy: userId,
             reason,
             resetDependentPhases,

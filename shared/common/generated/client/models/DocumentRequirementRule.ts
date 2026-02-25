@@ -41,7 +41,6 @@ export type DocumentRequirementRuleMinAggregateOutputType = {
   tenantId: string | null
   context: $Enums.DocumentRequirementContext | null
   paymentMethodId: string | null
-  phaseType: string | null
   fromPaymentMethodId: string | null
   toPaymentMethodId: string | null
   documentType: string | null
@@ -61,7 +60,6 @@ export type DocumentRequirementRuleMaxAggregateOutputType = {
   tenantId: string | null
   context: $Enums.DocumentRequirementContext | null
   paymentMethodId: string | null
-  phaseType: string | null
   fromPaymentMethodId: string | null
   toPaymentMethodId: string | null
   documentType: string | null
@@ -81,7 +79,6 @@ export type DocumentRequirementRuleCountAggregateOutputType = {
   tenantId: number
   context: number
   paymentMethodId: number
-  phaseType: number
   fromPaymentMethodId: number
   toPaymentMethodId: number
   documentType: number
@@ -113,7 +110,6 @@ export type DocumentRequirementRuleMinAggregateInputType = {
   tenantId?: true
   context?: true
   paymentMethodId?: true
-  phaseType?: true
   fromPaymentMethodId?: true
   toPaymentMethodId?: true
   documentType?: true
@@ -133,7 +129,6 @@ export type DocumentRequirementRuleMaxAggregateInputType = {
   tenantId?: true
   context?: true
   paymentMethodId?: true
-  phaseType?: true
   fromPaymentMethodId?: true
   toPaymentMethodId?: true
   documentType?: true
@@ -153,7 +148,6 @@ export type DocumentRequirementRuleCountAggregateInputType = {
   tenantId?: true
   context?: true
   paymentMethodId?: true
-  phaseType?: true
   fromPaymentMethodId?: true
   toPaymentMethodId?: true
   documentType?: true
@@ -260,7 +254,6 @@ export type DocumentRequirementRuleGroupByOutputType = {
   tenantId: string
   context: $Enums.DocumentRequirementContext
   paymentMethodId: string | null
-  phaseType: string | null
   fromPaymentMethodId: string | null
   toPaymentMethodId: string | null
   documentType: string
@@ -303,7 +296,6 @@ export type DocumentRequirementRuleWhereInput = {
   tenantId?: Prisma.StringFilter<"DocumentRequirementRule"> | string
   context?: Prisma.EnumDocumentRequirementContextFilter<"DocumentRequirementRule"> | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
-  phaseType?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
   fromPaymentMethodId?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
   toPaymentMethodId?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
   documentType?: Prisma.StringFilter<"DocumentRequirementRule"> | string
@@ -327,7 +319,6 @@ export type DocumentRequirementRuleOrderByWithRelationInput = {
   tenantId?: Prisma.SortOrder
   context?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
-  phaseType?: Prisma.SortOrderInput | Prisma.SortOrder
   fromPaymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
   toPaymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
   documentType?: Prisma.SortOrder
@@ -355,7 +346,6 @@ export type DocumentRequirementRuleWhereUniqueInput = Prisma.AtLeast<{
   tenantId?: Prisma.StringFilter<"DocumentRequirementRule"> | string
   context?: Prisma.EnumDocumentRequirementContextFilter<"DocumentRequirementRule"> | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
-  phaseType?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
   fromPaymentMethodId?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
   toPaymentMethodId?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
   documentType?: Prisma.StringFilter<"DocumentRequirementRule"> | string
@@ -379,7 +369,6 @@ export type DocumentRequirementRuleOrderByWithAggregationInput = {
   tenantId?: Prisma.SortOrder
   context?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
-  phaseType?: Prisma.SortOrderInput | Prisma.SortOrder
   fromPaymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
   toPaymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
   documentType?: Prisma.SortOrder
@@ -407,7 +396,6 @@ export type DocumentRequirementRuleScalarWhereWithAggregatesInput = {
   tenantId?: Prisma.StringWithAggregatesFilter<"DocumentRequirementRule"> | string
   context?: Prisma.EnumDocumentRequirementContextWithAggregatesFilter<"DocumentRequirementRule"> | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.StringNullableWithAggregatesFilter<"DocumentRequirementRule"> | string | null
-  phaseType?: Prisma.StringNullableWithAggregatesFilter<"DocumentRequirementRule"> | string | null
   fromPaymentMethodId?: Prisma.StringNullableWithAggregatesFilter<"DocumentRequirementRule"> | string | null
   toPaymentMethodId?: Prisma.StringNullableWithAggregatesFilter<"DocumentRequirementRule"> | string | null
   documentType?: Prisma.StringWithAggregatesFilter<"DocumentRequirementRule"> | string
@@ -425,7 +413,6 @@ export type DocumentRequirementRuleScalarWhereWithAggregatesInput = {
 export type DocumentRequirementRuleCreateInput = {
   id?: string
   context: $Enums.DocumentRequirementContext
-  phaseType?: string | null
   documentType: string
   isRequired?: boolean
   description?: string | null
@@ -447,7 +434,6 @@ export type DocumentRequirementRuleUncheckedCreateInput = {
   tenantId: string
   context: $Enums.DocumentRequirementContext
   paymentMethodId?: string | null
-  phaseType?: string | null
   fromPaymentMethodId?: string | null
   toPaymentMethodId?: string | null
   documentType: string
@@ -465,7 +451,6 @@ export type DocumentRequirementRuleUncheckedCreateInput = {
 export type DocumentRequirementRuleUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -487,7 +472,6 @@ export type DocumentRequirementRuleUncheckedUpdateInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -507,7 +491,6 @@ export type DocumentRequirementRuleCreateManyInput = {
   tenantId: string
   context: $Enums.DocumentRequirementContext
   paymentMethodId?: string | null
-  phaseType?: string | null
   fromPaymentMethodId?: string | null
   toPaymentMethodId?: string | null
   documentType: string
@@ -525,7 +508,6 @@ export type DocumentRequirementRuleCreateManyInput = {
 export type DocumentRequirementRuleUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -543,7 +525,6 @@ export type DocumentRequirementRuleUncheckedUpdateManyInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -579,7 +560,6 @@ export type DocumentRequirementRuleCountOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   context?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   fromPaymentMethodId?: Prisma.SortOrder
   toPaymentMethodId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
@@ -604,7 +584,6 @@ export type DocumentRequirementRuleMaxOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   context?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   fromPaymentMethodId?: Prisma.SortOrder
   toPaymentMethodId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
@@ -624,7 +603,6 @@ export type DocumentRequirementRuleMinOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   context?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   fromPaymentMethodId?: Prisma.SortOrder
   toPaymentMethodId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
@@ -819,7 +797,6 @@ export type EnumDocumentRequirementContextFieldUpdateOperationsInput = {
 export type DocumentRequirementRuleCreateWithoutTenantInput = {
   id?: string
   context: $Enums.DocumentRequirementContext
-  phaseType?: string | null
   documentType: string
   isRequired?: boolean
   description?: string | null
@@ -839,7 +816,6 @@ export type DocumentRequirementRuleUncheckedCreateWithoutTenantInput = {
   id?: string
   context: $Enums.DocumentRequirementContext
   paymentMethodId?: string | null
-  phaseType?: string | null
   fromPaymentMethodId?: string | null
   toPaymentMethodId?: string | null
   documentType: string
@@ -888,7 +864,6 @@ export type DocumentRequirementRuleScalarWhereInput = {
   tenantId?: Prisma.StringFilter<"DocumentRequirementRule"> | string
   context?: Prisma.EnumDocumentRequirementContextFilter<"DocumentRequirementRule"> | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
-  phaseType?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
   fromPaymentMethodId?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
   toPaymentMethodId?: Prisma.StringNullableFilter<"DocumentRequirementRule"> | string | null
   documentType?: Prisma.StringFilter<"DocumentRequirementRule"> | string
@@ -906,7 +881,6 @@ export type DocumentRequirementRuleScalarWhereInput = {
 export type DocumentRequirementRuleCreateWithoutPaymentMethodInput = {
   id?: string
   context: $Enums.DocumentRequirementContext
-  phaseType?: string | null
   documentType: string
   isRequired?: boolean
   description?: string | null
@@ -926,7 +900,6 @@ export type DocumentRequirementRuleUncheckedCreateWithoutPaymentMethodInput = {
   id?: string
   tenantId: string
   context: $Enums.DocumentRequirementContext
-  phaseType?: string | null
   fromPaymentMethodId?: string | null
   toPaymentMethodId?: string | null
   documentType: string
@@ -954,7 +927,6 @@ export type DocumentRequirementRuleCreateManyPaymentMethodInputEnvelope = {
 export type DocumentRequirementRuleCreateWithoutFromPaymentMethodInput = {
   id?: string
   context: $Enums.DocumentRequirementContext
-  phaseType?: string | null
   documentType: string
   isRequired?: boolean
   description?: string | null
@@ -975,7 +947,6 @@ export type DocumentRequirementRuleUncheckedCreateWithoutFromPaymentMethodInput 
   tenantId: string
   context: $Enums.DocumentRequirementContext
   paymentMethodId?: string | null
-  phaseType?: string | null
   toPaymentMethodId?: string | null
   documentType: string
   isRequired?: boolean
@@ -1002,7 +973,6 @@ export type DocumentRequirementRuleCreateManyFromPaymentMethodInputEnvelope = {
 export type DocumentRequirementRuleCreateWithoutToPaymentMethodInput = {
   id?: string
   context: $Enums.DocumentRequirementContext
-  phaseType?: string | null
   documentType: string
   isRequired?: boolean
   description?: string | null
@@ -1023,7 +993,6 @@ export type DocumentRequirementRuleUncheckedCreateWithoutToPaymentMethodInput = 
   tenantId: string
   context: $Enums.DocumentRequirementContext
   paymentMethodId?: string | null
-  phaseType?: string | null
   fromPaymentMethodId?: string | null
   documentType: string
   isRequired?: boolean
@@ -1099,7 +1068,6 @@ export type DocumentRequirementRuleCreateManyTenantInput = {
   id?: string
   context: $Enums.DocumentRequirementContext
   paymentMethodId?: string | null
-  phaseType?: string | null
   fromPaymentMethodId?: string | null
   toPaymentMethodId?: string | null
   documentType: string
@@ -1117,7 +1085,6 @@ export type DocumentRequirementRuleCreateManyTenantInput = {
 export type DocumentRequirementRuleUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1137,7 +1104,6 @@ export type DocumentRequirementRuleUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1156,7 +1122,6 @@ export type DocumentRequirementRuleUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1175,7 +1140,6 @@ export type DocumentRequirementRuleCreateManyPaymentMethodInput = {
   id?: string
   tenantId: string
   context: $Enums.DocumentRequirementContext
-  phaseType?: string | null
   fromPaymentMethodId?: string | null
   toPaymentMethodId?: string | null
   documentType: string
@@ -1195,7 +1159,6 @@ export type DocumentRequirementRuleCreateManyFromPaymentMethodInput = {
   tenantId: string
   context: $Enums.DocumentRequirementContext
   paymentMethodId?: string | null
-  phaseType?: string | null
   toPaymentMethodId?: string | null
   documentType: string
   isRequired?: boolean
@@ -1214,7 +1177,6 @@ export type DocumentRequirementRuleCreateManyToPaymentMethodInput = {
   tenantId: string
   context: $Enums.DocumentRequirementContext
   paymentMethodId?: string | null
-  phaseType?: string | null
   fromPaymentMethodId?: string | null
   documentType: string
   isRequired?: boolean
@@ -1231,7 +1193,6 @@ export type DocumentRequirementRuleCreateManyToPaymentMethodInput = {
 export type DocumentRequirementRuleUpdateWithoutPaymentMethodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1251,7 +1212,6 @@ export type DocumentRequirementRuleUncheckedUpdateWithoutPaymentMethodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1270,7 +1230,6 @@ export type DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodInput 
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1288,7 +1247,6 @@ export type DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodInput 
 export type DocumentRequirementRuleUpdateWithoutFromPaymentMethodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1309,7 +1267,6 @@ export type DocumentRequirementRuleUncheckedUpdateWithoutFromPaymentMethodInput 
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1328,7 +1285,6 @@ export type DocumentRequirementRuleUncheckedUpdateManyWithoutFromPaymentMethodIn
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1345,7 +1301,6 @@ export type DocumentRequirementRuleUncheckedUpdateManyWithoutFromPaymentMethodIn
 export type DocumentRequirementRuleUpdateWithoutToPaymentMethodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1366,7 +1321,6 @@ export type DocumentRequirementRuleUncheckedUpdateWithoutToPaymentMethodInput = 
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1385,7 +1339,6 @@ export type DocumentRequirementRuleUncheckedUpdateManyWithoutToPaymentMethodInpu
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   context?: Prisma.EnumDocumentRequirementContextFieldUpdateOperationsInput | $Enums.DocumentRequirementContext
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromPaymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1406,7 +1359,6 @@ export type DocumentRequirementRuleSelect<ExtArgs extends runtime.Types.Extensio
   tenantId?: boolean
   context?: boolean
   paymentMethodId?: boolean
-  phaseType?: boolean
   fromPaymentMethodId?: boolean
   toPaymentMethodId?: boolean
   documentType?: boolean
@@ -1432,7 +1384,6 @@ export type DocumentRequirementRuleSelectScalar = {
   tenantId?: boolean
   context?: boolean
   paymentMethodId?: boolean
-  phaseType?: boolean
   fromPaymentMethodId?: boolean
   toPaymentMethodId?: boolean
   documentType?: boolean
@@ -1447,7 +1398,7 @@ export type DocumentRequirementRuleSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentRequirementRuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "context" | "paymentMethodId" | "phaseType" | "fromPaymentMethodId" | "toPaymentMethodId" | "documentType" | "isRequired" | "description" | "maxSizeBytes" | "allowedMimeTypes" | "expiryDays" | "requiresManualReview" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["documentRequirementRule"]>
+export type DocumentRequirementRuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "context" | "paymentMethodId" | "fromPaymentMethodId" | "toPaymentMethodId" | "documentType" | "isRequired" | "description" | "maxSizeBytes" | "allowedMimeTypes" | "expiryDays" | "requiresManualReview" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["documentRequirementRule"]>
 export type DocumentRequirementRuleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   paymentMethod?: boolean | Prisma.DocumentRequirementRule$paymentMethodArgs<ExtArgs>
@@ -1468,7 +1419,6 @@ export type $DocumentRequirementRulePayload<ExtArgs extends runtime.Types.Extens
     tenantId: string
     context: $Enums.DocumentRequirementContext
     paymentMethodId: string | null
-    phaseType: string | null
     fromPaymentMethodId: string | null
     toPaymentMethodId: string | null
     documentType: string
@@ -1858,7 +1808,6 @@ export interface DocumentRequirementRuleFieldRefs {
   readonly tenantId: Prisma.FieldRef<"DocumentRequirementRule", 'String'>
   readonly context: Prisma.FieldRef<"DocumentRequirementRule", 'DocumentRequirementContext'>
   readonly paymentMethodId: Prisma.FieldRef<"DocumentRequirementRule", 'String'>
-  readonly phaseType: Prisma.FieldRef<"DocumentRequirementRule", 'String'>
   readonly fromPaymentMethodId: Prisma.FieldRef<"DocumentRequirementRule", 'String'>
   readonly toPaymentMethodId: Prisma.FieldRef<"DocumentRequirementRule", 'String'>
   readonly documentType: Prisma.FieldRef<"DocumentRequirementRule", 'String'>

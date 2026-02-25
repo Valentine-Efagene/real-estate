@@ -456,7 +456,6 @@ describe("Amara's Victoria Island Installment Purchase Flow", () => {
                         {
                             name: 'Prequalification',
                             phaseCategory: 'QUESTIONNAIRE',
-                            phaseType: 'PRE_APPROVAL',
                             order: 1,
                             questionnairePlanId: prequalificationPlanId,
                         },
@@ -464,7 +463,6 @@ describe("Amara's Victoria Island Installment Purchase Flow", () => {
                         {
                             name: 'KYC Documentation',
                             phaseCategory: 'DOCUMENTATION',
-                            phaseType: 'KYC',
                             order: 2,
                             documentationPlanId: kycDocumentationPlanId,
                         },
@@ -472,7 +470,6 @@ describe("Amara's Victoria Island Installment Purchase Flow", () => {
                         {
                             name: 'Installment Payments',
                             phaseCategory: 'PAYMENT',
-                            phaseType: 'DOWNPAYMENT', // Using DOWNPAYMENT for full payment phases
                             order: 3,
                             percentOfPrice: 100,
                             paymentPlanId: installmentPlanId,
@@ -481,7 +478,6 @@ describe("Amara's Victoria Island Installment Purchase Flow", () => {
                         {
                             name: 'Final Offer Letter',
                             phaseCategory: 'DOCUMENTATION',
-                            phaseType: 'VERIFICATION',
                             order: 4,
                             documentationPlanId: finalOfferDocumentationPlanId,
                         },

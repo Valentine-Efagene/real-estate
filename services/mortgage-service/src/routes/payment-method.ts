@@ -317,7 +317,6 @@ router.post('/:id/document-rules', requireTenant, requireRole(ADMIN_ROLES), asyn
                         tenantId,
                         paymentMethodId,
                         context: rule.context as any,
-                        phaseType: rule.phaseType,
                         documentType: rule.documentType,
                         isRequired: rule.isRequired,
                         description: rule.description,
@@ -346,8 +345,6 @@ router.post('/:id/document-rules', requireTenant, requireRole(ADMIN_ROLES), asyn
 router.get('/:id/document-rules', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodId = req.params.id as string;
-        const phaseType = req.query.phaseType as string | undefined;
-
         const tenantPrisma = getTenantPrisma(req);
 
         // Verify payment method exists (tenant scoping handled by wrapper)
@@ -363,9 +360,8 @@ router.get('/:id/document-rules', requireTenant, async (req: Request, res: Respo
         const rules = await tenantPrisma.documentRequirementRule.findMany({
             where: {
                 paymentMethodId,
-                ...(phaseType ? { phaseType } : {}),
             },
-            orderBy: [{ phaseType: 'asc' }, { documentType: 'asc' }],
+            orderBy: [{ documentType: 'asc' }],
         });
 
         // Transform allowedMimeTypes back to array

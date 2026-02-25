@@ -20,7 +20,6 @@
    - Manual approval required
 
 3. Jinx adds **Phase 1: Underwriting & Documentation** (DOCUMENTATION phase):
-   - phaseType: KYC
    - Order: 1
    - Requires previous phase completion: false (this is the first phase)
 
@@ -44,7 +43,6 @@
    - Links to a one-time payment plan
 
 7. Jinx adds **Phase 3: Final Documentation** (DOCUMENTATION phase):
-   - phaseType: VERIFICATION
    - Order: 3
 
 8. Jinx adds steps to Phase 3:

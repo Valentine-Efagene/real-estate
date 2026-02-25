@@ -284,13 +284,6 @@ export type EnumPhaseCategoryFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumPhaseCategoryFilter<$PrismaModel> | $Enums.PhaseCategory
 }
 
-export type EnumPhaseTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.PhaseType | Prisma.EnumPhaseTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PhaseType[]
-  notIn?: $Enums.PhaseType[]
-  not?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel> | $Enums.PhaseType
-}
-
 export type IntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[]
@@ -310,16 +303,6 @@ export type EnumPhaseCategoryWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPhaseCategoryFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPhaseCategoryFilter<$PrismaModel>
-}
-
-export type EnumPhaseTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PhaseType | Prisma.EnumPhaseTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PhaseType[]
-  notIn?: $Enums.PhaseType[]
-  not?: Prisma.NestedEnumPhaseTypeWithAggregatesFilter<$PrismaModel> | $Enums.PhaseType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel>
 }
 
 export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -1549,13 +1532,6 @@ export type NestedEnumPhaseCategoryFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumPhaseCategoryFilter<$PrismaModel> | $Enums.PhaseCategory
 }
 
-export type NestedEnumPhaseTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.PhaseType | Prisma.EnumPhaseTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PhaseType[]
-  notIn?: $Enums.PhaseType[]
-  not?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel> | $Enums.PhaseType
-}
-
 export type NestedEnumPhaseCategoryWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.PhaseCategory | Prisma.EnumPhaseCategoryFieldRefInput<$PrismaModel>
   in?: $Enums.PhaseCategory[]
@@ -1564,16 +1540,6 @@ export type NestedEnumPhaseCategoryWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPhaseCategoryFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPhaseCategoryFilter<$PrismaModel>
-}
-
-export type NestedEnumPhaseTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PhaseType | Prisma.EnumPhaseTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PhaseType[]
-  notIn?: $Enums.PhaseType[]
-  not?: Prisma.NestedEnumPhaseTypeWithAggregatesFilter<$PrismaModel> | $Enums.PhaseType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel>
 }
 
 export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {

@@ -402,7 +402,6 @@ class ApplicationPaymentService {
                                 payload: JSON.stringify({
                                     phaseId: payment.phaseId,
                                     applicationId: payment.applicationId,
-                                    phaseType: phase.phaseType,
                                 }),
                             },
                         });
@@ -444,7 +443,6 @@ class ApplicationPaymentService {
                                     payload: JSON.stringify({
                                         phaseId: nextPhase.id,
                                         applicationId: payment.applicationId,
-                                        phaseType: nextPhase.phaseType,
                                     }),
                                 },
                             });

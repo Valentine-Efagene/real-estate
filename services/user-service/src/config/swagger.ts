@@ -862,7 +862,6 @@ const OnboardingPhaseSchema = z.object({
     id: z.string(),
     name: z.string(),
     phaseCategory: z.enum(['QUESTIONNAIRE', 'DOCUMENTATION', 'GATE']),
-    phaseType: z.string(),
     order: z.number(),
     status: z.enum(['PENDING', 'IN_PROGRESS', 'AWAITING_APPROVAL', 'COMPLETED', 'SKIPPED', 'FAILED']),
     activatedAt: z.string().datetime().optional(),

@@ -624,9 +624,9 @@ class BootstrapService {
                 phases: {
                     createMany: {
                         data: [
-                            { tenantId, name: 'Bank KYB Questionnaire', phaseCategory: 'QUESTIONNAIRE', phaseType: 'ORG_KYB', order: 1, questionnairePlanId: questionnairePlan.id },
-                            { tenantId, name: 'Bank Document Verification', phaseCategory: 'DOCUMENTATION', phaseType: 'ORG_VERIFICATION', order: 2, documentationPlanId: documentationPlan.id },
-                            { tenantId, name: 'Platform Approval', phaseCategory: 'GATE', phaseType: 'APPROVAL_GATE', order: 3, gatePlanId: gatePlan.id },
+                            { tenantId, name: 'Bank KYB Questionnaire', phaseCategory: 'QUESTIONNAIRE', order: 1, questionnairePlanId: questionnairePlan.id },
+                            { tenantId, name: 'Bank Document Verification', phaseCategory: 'DOCUMENTATION', order: 2, documentationPlanId: documentationPlan.id },
+                            { tenantId, name: 'Platform Approval', phaseCategory: 'GATE', order: 3, gatePlanId: gatePlan.id },
                         ],
                     },
                 },
@@ -735,9 +735,9 @@ class BootstrapService {
                 phases: {
                     createMany: {
                         data: [
-                            { tenantId, name: 'Developer KYB Questionnaire', phaseCategory: 'QUESTIONNAIRE', phaseType: 'ORG_KYB', order: 1, questionnairePlanId: questionnairePlan.id },
-                            { tenantId, name: 'Developer Document Verification', phaseCategory: 'DOCUMENTATION', phaseType: 'ORG_VERIFICATION', order: 2, documentationPlanId: documentationPlan.id },
-                            { tenantId, name: 'Platform Approval', phaseCategory: 'GATE', phaseType: 'APPROVAL_GATE', order: 3, gatePlanId: gatePlan.id },
+                            { tenantId, name: 'Developer KYB Questionnaire', phaseCategory: 'QUESTIONNAIRE', order: 1, questionnairePlanId: questionnairePlan.id },
+                            { tenantId, name: 'Developer Document Verification', phaseCategory: 'DOCUMENTATION', order: 2, documentationPlanId: documentationPlan.id },
+                            { tenantId, name: 'Platform Approval', phaseCategory: 'GATE', order: 3, gatePlanId: gatePlan.id },
                         ],
                     },
                 },

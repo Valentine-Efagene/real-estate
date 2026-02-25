@@ -43,7 +43,6 @@ export type QualificationPhaseMinAggregateOutputType = {
   name: string | null
   description: string | null
   phaseCategory: $Enums.PhaseCategory | null
-  phaseType: $Enums.PhaseType | null
   order: number | null
   status: $Enums.PhaseStatus | null
   activatedAt: Date | null
@@ -61,7 +60,6 @@ export type QualificationPhaseMaxAggregateOutputType = {
   name: string | null
   description: string | null
   phaseCategory: $Enums.PhaseCategory | null
-  phaseType: $Enums.PhaseType | null
   order: number | null
   status: $Enums.PhaseStatus | null
   activatedAt: Date | null
@@ -79,7 +77,6 @@ export type QualificationPhaseCountAggregateOutputType = {
   name: number
   description: number
   phaseCategory: number
-  phaseType: number
   order: number
   status: number
   activatedAt: number
@@ -107,7 +104,6 @@ export type QualificationPhaseMinAggregateInputType = {
   name?: true
   description?: true
   phaseCategory?: true
-  phaseType?: true
   order?: true
   status?: true
   activatedAt?: true
@@ -125,7 +121,6 @@ export type QualificationPhaseMaxAggregateInputType = {
   name?: true
   description?: true
   phaseCategory?: true
-  phaseType?: true
   order?: true
   status?: true
   activatedAt?: true
@@ -143,7 +138,6 @@ export type QualificationPhaseCountAggregateInputType = {
   name?: true
   description?: true
   phaseCategory?: true
-  phaseType?: true
   order?: true
   status?: true
   activatedAt?: true
@@ -248,7 +242,6 @@ export type QualificationPhaseGroupByOutputType = {
   name: string
   description: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status: $Enums.PhaseStatus
   activatedAt: Date | null
@@ -289,7 +282,6 @@ export type QualificationPhaseWhereInput = {
   name?: Prisma.StringFilter<"QualificationPhase"> | string
   description?: Prisma.StringNullableFilter<"QualificationPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"QualificationPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"QualificationPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"QualificationPhase"> | number
   status?: Prisma.EnumPhaseStatusFilter<"QualificationPhase"> | $Enums.PhaseStatus
   activatedAt?: Prisma.DateTimeNullableFilter<"QualificationPhase"> | Date | string | null
@@ -314,7 +306,6 @@ export type QualificationPhaseOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -344,7 +335,6 @@ export type QualificationPhaseWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"QualificationPhase"> | string
   description?: Prisma.StringNullableFilter<"QualificationPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"QualificationPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"QualificationPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"QualificationPhase"> | number
   status?: Prisma.EnumPhaseStatusFilter<"QualificationPhase"> | $Enums.PhaseStatus
   activatedAt?: Prisma.DateTimeNullableFilter<"QualificationPhase"> | Date | string | null
@@ -369,7 +359,6 @@ export type QualificationPhaseOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -395,7 +384,6 @@ export type QualificationPhaseScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"QualificationPhase"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"QualificationPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryWithAggregatesFilter<"QualificationPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeWithAggregatesFilter<"QualificationPhase"> | $Enums.PhaseType
   order?: Prisma.IntWithAggregatesFilter<"QualificationPhase"> | number
   status?: Prisma.EnumPhaseStatusWithAggregatesFilter<"QualificationPhase"> | $Enums.PhaseStatus
   activatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"QualificationPhase"> | Date | string | null
@@ -410,7 +398,6 @@ export type QualificationPhaseCreateInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -435,7 +422,6 @@ export type QualificationPhaseUncheckedCreateInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -454,7 +440,6 @@ export type QualificationPhaseUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -479,7 +464,6 @@ export type QualificationPhaseUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -501,7 +485,6 @@ export type QualificationPhaseCreateManyInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -516,7 +499,6 @@ export type QualificationPhaseUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -534,7 +516,6 @@ export type QualificationPhaseUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -578,7 +559,6 @@ export type QualificationPhaseCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrder
@@ -600,7 +580,6 @@ export type QualificationPhaseMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrder
@@ -618,7 +597,6 @@ export type QualificationPhaseMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrder
@@ -827,7 +805,6 @@ export type QualificationPhaseCreateWithoutTenantInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -850,7 +827,6 @@ export type QualificationPhaseUncheckedCreateWithoutTenantInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -901,7 +877,6 @@ export type QualificationPhaseScalarWhereInput = {
   name?: Prisma.StringFilter<"QualificationPhase"> | string
   description?: Prisma.StringNullableFilter<"QualificationPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"QualificationPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"QualificationPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"QualificationPhase"> | number
   status?: Prisma.EnumPhaseStatusFilter<"QualificationPhase"> | $Enums.PhaseStatus
   activatedAt?: Prisma.DateTimeNullableFilter<"QualificationPhase"> | Date | string | null
@@ -916,7 +891,6 @@ export type QualificationPhaseCreateWithoutQuestionnairePhaseInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -940,7 +914,6 @@ export type QualificationPhaseUncheckedCreateWithoutQuestionnairePhaseInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -974,7 +947,6 @@ export type QualificationPhaseUpdateWithoutQuestionnairePhaseInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -998,7 +970,6 @@ export type QualificationPhaseUncheckedUpdateWithoutQuestionnairePhaseInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1016,7 +987,6 @@ export type QualificationPhaseCreateWithoutGatePhaseInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1040,7 +1010,6 @@ export type QualificationPhaseUncheckedCreateWithoutGatePhaseInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1074,7 +1043,6 @@ export type QualificationPhaseUpdateWithoutGatePhaseInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1098,7 +1066,6 @@ export type QualificationPhaseUncheckedUpdateWithoutGatePhaseInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1116,7 +1083,6 @@ export type QualificationPhaseCreateWithoutDocumentationPhaseInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1140,7 +1106,6 @@ export type QualificationPhaseUncheckedCreateWithoutDocumentationPhaseInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1174,7 +1139,6 @@ export type QualificationPhaseUpdateWithoutDocumentationPhaseInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1198,7 +1162,6 @@ export type QualificationPhaseUncheckedUpdateWithoutDocumentationPhaseInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1216,7 +1179,6 @@ export type QualificationPhaseCreateWithoutPhaseTemplateInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1239,7 +1201,6 @@ export type QualificationPhaseUncheckedCreateWithoutPhaseTemplateInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1284,7 +1245,6 @@ export type QualificationPhaseCreateWithoutCurrentForQualificationsInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1308,7 +1268,6 @@ export type QualificationPhaseUncheckedCreateWithoutCurrentForQualificationsInpu
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1331,7 +1290,6 @@ export type QualificationPhaseCreateWithoutQualificationInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1354,7 +1312,6 @@ export type QualificationPhaseUncheckedCreateWithoutQualificationInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1394,7 +1351,6 @@ export type QualificationPhaseUpdateWithoutCurrentForQualificationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1418,7 +1374,6 @@ export type QualificationPhaseUncheckedUpdateWithoutCurrentForQualificationsInpu
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1454,7 +1409,6 @@ export type QualificationPhaseCreateManyTenantInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1469,7 +1423,6 @@ export type QualificationPhaseUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1492,7 +1445,6 @@ export type QualificationPhaseUncheckedUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1513,7 +1465,6 @@ export type QualificationPhaseUncheckedUpdateManyWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1530,7 +1481,6 @@ export type QualificationPhaseCreateManyPhaseTemplateInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1545,7 +1495,6 @@ export type QualificationPhaseUpdateWithoutPhaseTemplateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1568,7 +1517,6 @@ export type QualificationPhaseUncheckedUpdateWithoutPhaseTemplateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1589,7 +1537,6 @@ export type QualificationPhaseUncheckedUpdateManyWithoutPhaseTemplateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1606,7 +1553,6 @@ export type QualificationPhaseCreateManyQualificationInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
   activatedAt?: Date | string | null
@@ -1621,7 +1567,6 @@ export type QualificationPhaseUpdateWithoutQualificationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1644,7 +1589,6 @@ export type QualificationPhaseUncheckedUpdateWithoutQualificationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1665,7 +1609,6 @@ export type QualificationPhaseUncheckedUpdateManyWithoutQualificationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1714,7 +1657,6 @@ export type QualificationPhaseSelect<ExtArgs extends runtime.Types.Extensions.In
   name?: boolean
   description?: boolean
   phaseCategory?: boolean
-  phaseType?: boolean
   order?: boolean
   status?: boolean
   activatedAt?: boolean
@@ -1742,7 +1684,6 @@ export type QualificationPhaseSelectScalar = {
   name?: boolean
   description?: boolean
   phaseCategory?: boolean
-  phaseType?: boolean
   order?: boolean
   status?: boolean
   activatedAt?: boolean
@@ -1752,7 +1693,7 @@ export type QualificationPhaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type QualificationPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "qualificationId" | "phaseTemplateId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "status" | "activatedAt" | "completedAt" | "requiresPreviousPhaseCompletion" | "createdAt" | "updatedAt", ExtArgs["result"]["qualificationPhase"]>
+export type QualificationPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "qualificationId" | "phaseTemplateId" | "name" | "description" | "phaseCategory" | "order" | "status" | "activatedAt" | "completedAt" | "requiresPreviousPhaseCompletion" | "createdAt" | "updatedAt", ExtArgs["result"]["qualificationPhase"]>
 export type QualificationPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   qualification?: boolean | Prisma.PaymentMethodQualificationDefaultArgs<ExtArgs>
@@ -1783,7 +1724,6 @@ export type $QualificationPhasePayload<ExtArgs extends runtime.Types.Extensions.
     name: string
     description: string | null
     phaseCategory: $Enums.PhaseCategory
-    phaseType: $Enums.PhaseType
     order: number
     status: $Enums.PhaseStatus
     activatedAt: Date | null
@@ -2174,7 +2114,6 @@ export interface QualificationPhaseFieldRefs {
   readonly name: Prisma.FieldRef<"QualificationPhase", 'String'>
   readonly description: Prisma.FieldRef<"QualificationPhase", 'String'>
   readonly phaseCategory: Prisma.FieldRef<"QualificationPhase", 'PhaseCategory'>
-  readonly phaseType: Prisma.FieldRef<"QualificationPhase", 'PhaseType'>
   readonly order: Prisma.FieldRef<"QualificationPhase", 'Int'>
   readonly status: Prisma.FieldRef<"QualificationPhase", 'PhaseStatus'>
   readonly activatedAt: Prisma.FieldRef<"QualificationPhase", 'DateTime'>

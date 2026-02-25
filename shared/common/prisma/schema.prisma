@@ -26,29 +26,6 @@ enum PhaseCategory {
   GATE // Standalone approval checkpoint - reviewer decision only
 }
 
-enum PhaseType {
-  // QUESTIONNAIRE phases
-  PRE_APPROVAL // Eligibility questionnaire (income, employment, etc.)
-  UNDERWRITING // System evaluation of eligibility
-
-  // DOCUMENTATION phases
-  KYC
-  VERIFICATION
-
-  // PAYMENT phases
-  DOWNPAYMENT
-  MORTGAGE
-  BALLOON
-
-  // GATE phases
-  APPROVAL_GATE // Standalone approval checkpoint (e.g., final sign-off)
-  ORG_KYB // Organization Know-Your-Business verification gate
-  ORG_VERIFICATION // Organization verification gate
-
-  // Generic
-  CUSTOM
-}
-
 enum PaymentFrequency {
   MONTHLY
   BIWEEKLY
@@ -927,7 +904,6 @@ model OnboardingFlowPhase {
 
   // Phase classification (only QUESTIONNAIRE, DOCUMENTATION, GATE — not PAYMENT)
   phaseCategory PhaseCategory
-  phaseType     PhaseType
   order         Int
 
   // Activation rules
@@ -1026,7 +1002,6 @@ model OnboardingPhase {
 
   // Phase classification
   phaseCategory PhaseCategory
-  phaseType     PhaseType
   order         Int
 
   // FSM state (reuses PhaseStatus: PENDING → IN_PROGRESS → AWAITING_APPROVAL → COMPLETED)
@@ -2145,9 +2120,8 @@ model PropertyPaymentMethodPhase {
   name        String
   description String? @db.Text
 
-  // Phase classification (DB-enforced enums)
+  // Phase classification
   phaseCategory PhaseCategory
-  phaseType     PhaseType
   order         Int
 
   // Financial configuration (for PAYMENT phases)
@@ -2652,9 +2626,8 @@ model ApplicationPhase {
   name        String
   description String? @db.Text
 
-  // Phase classification (DB-enforced enums)
+  // Phase classification
   phaseCategory PhaseCategory
-  phaseType     PhaseType
   order         Int
 
   // FSM state for this phase (DB-enforced enum)
@@ -3657,11 +3630,9 @@ model DocumentRequirementRule {
 
   // Scoping (which situations this rule applies to)
   // For PREQUALIFICATION: paymentMethodId
-  // For APPLICATION_PHASE: phaseType
   // For PAYMENT_METHOD_CHANGE: fromMethodId + toMethodId
   paymentMethodId     String?
   paymentMethod       PropertyPaymentMethod? @relation("RulePaymentMethod", fields: [paymentMethodId], references: [id])
-  phaseType           String? // KYC, VERIFICATION, DOWNPAYMENT, etc.
   fromPaymentMethodId String?
   fromPaymentMethod   PropertyPaymentMethod? @relation("RuleFromMethod", fields: [fromPaymentMethodId], references: [id])
   toPaymentMethodId   String?
@@ -3685,7 +3656,6 @@ model DocumentRequirementRule {
   @@index([tenantId])
   @@index([context])
   @@index([paymentMethodId])
-  @@index([phaseType])
   @@index([fromPaymentMethodId, toPaymentMethodId])
   @@map("document_requirement_rules")
 }
@@ -4107,7 +4077,7 @@ model WorkflowBlocker {
   nextReminderAt DateTime? // Scheduled next reminder
 
   // Metadata for additional analytics
-  metadata Json? // Flexible data: { documentType, stepType, phaseType, etc. }
+  metadata Json? // Flexible data: { documentType, stepType, phaseCategory, etc. }
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -4291,7 +4261,6 @@ model QualificationFlowPhase {
 
   // Phase classification (only QUESTIONNAIRE, DOCUMENTATION, GATE — not PAYMENT)
   phaseCategory PhaseCategory
-  phaseType     PhaseType
   order         Int
 
   // Activation rules
@@ -4446,7 +4415,6 @@ model QualificationPhase {
 
   // Phase classification
   phaseCategory PhaseCategory
-  phaseType     PhaseType
   order         Int
 
   // FSM state (reuses PhaseStatus: PENDING → IN_PROGRESS → AWAITING_APPROVAL → COMPLETED)

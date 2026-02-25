@@ -30,7 +30,6 @@ export interface AddFlowPhaseInput {
     name: string;
     description?: string;
     phaseCategory: 'QUESTIONNAIRE' | 'DOCUMENTATION' | 'GATE';
-    phaseType: string;
     order: number;
     requiresPreviousPhaseCompletion?: boolean;
     questionnairePlanId?: string;
@@ -41,7 +40,6 @@ export interface AddFlowPhaseInput {
 export interface UpdateFlowPhaseInput {
     name?: string;
     description?: string;
-    phaseType?: string;
     order?: number;
     requiresPreviousPhaseCompletion?: boolean;
     questionnairePlanId?: string | null;
@@ -206,7 +204,6 @@ class OnboardingFlowService {
                 name: data.name,
                 description: data.description,
                 phaseCategory: data.phaseCategory,
-                phaseType: data.phaseType as any,
                 order: data.order,
                 requiresPreviousPhaseCompletion: data.requiresPreviousPhaseCompletion ?? true,
                 questionnairePlanId: data.phaseCategory === 'QUESTIONNAIRE' ? data.questionnairePlanId : null,
@@ -235,7 +232,6 @@ class OnboardingFlowService {
             data: {
                 name: data.name,
                 description: data.description,
-                phaseType: data.phaseType as any,
                 order: data.order,
                 requiresPreviousPhaseCompletion: data.requiresPreviousPhaseCompletion,
                 questionnairePlanId: data.questionnairePlanId,

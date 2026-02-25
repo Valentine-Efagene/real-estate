@@ -80,7 +80,6 @@ export interface StepActionStatus extends ActionStatus {
 export interface PhaseActionStatus extends ActionStatus {
     phaseId: string;
     phaseName: string;
-    phaseType: string;
     phaseCategory: string;
     /** Current step requiring attention (if documentation phase) */
     currentStep?: StepActionStatus | null;
@@ -334,7 +333,6 @@ function computeStepActionByType(
 export function computePhaseActionStatus(phase: {
     id: string;
     name: string;
-    phaseType: string;
     phaseCategory: string;
     status: string;
     dueDate?: Date | string | null;
@@ -359,7 +357,6 @@ export function computePhaseActionStatus(phase: {
     const base = {
         phaseId: phase.id,
         phaseName: phase.name,
-        phaseType: phase.phaseType,
         phaseCategory: phase.phaseCategory,
         dueDate: phase.dueDate ?? null,
     };

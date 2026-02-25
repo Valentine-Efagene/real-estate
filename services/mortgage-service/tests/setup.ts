@@ -163,7 +163,6 @@ export const testData = {
             {
                 name: 'Documentation',
                 phaseCategory: 'DOCUMENTATION' as const,
-                phaseType: 'KYC' as const,
                 order: 1,
                 percentageOfTotal: 0,
                 stepDefinitions: [
@@ -175,7 +174,6 @@ export const testData = {
             {
                 name: 'Downpayment',
                 phaseCategory: 'PAYMENT' as const,
-                phaseType: 'DOWNPAYMENT' as const,
                 order: 2,
                 percentageOfTotal: 20,
                 paymentPlanId,
@@ -183,7 +181,6 @@ export const testData = {
             {
                 name: 'Mortgage',
                 phaseCategory: 'PAYMENT' as const,
-                phaseType: 'MORTGAGE' as const,
                 order: 3,
                 percentageOfTotal: 80,
                 paymentPlanId,

@@ -266,7 +266,6 @@ class AllocationService {
                             phaseId: applicationPhase.id,
                             applicationId: applicationPhase.applicationId,
                             phaseCategory: applicationPhase.phaseCategory,
-                            phaseType: applicationPhase.phaseType,
                             phaseName: applicationPhase.name,
                             phaseOrder: applicationPhase.order,
                             userId,

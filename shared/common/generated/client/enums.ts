@@ -19,23 +19,6 @@ export const PhaseCategory = {
 export type PhaseCategory = (typeof PhaseCategory)[keyof typeof PhaseCategory]
 
 
-export const PhaseType = {
-  PRE_APPROVAL: 'PRE_APPROVAL',
-  UNDERWRITING: 'UNDERWRITING',
-  KYC: 'KYC',
-  VERIFICATION: 'VERIFICATION',
-  DOWNPAYMENT: 'DOWNPAYMENT',
-  MORTGAGE: 'MORTGAGE',
-  BALLOON: 'BALLOON',
-  APPROVAL_GATE: 'APPROVAL_GATE',
-  ORG_KYB: 'ORG_KYB',
-  ORG_VERIFICATION: 'ORG_VERIFICATION',
-  CUSTOM: 'CUSTOM'
-} as const
-
-export type PhaseType = (typeof PhaseType)[keyof typeof PhaseType]
-
-
 export const PaymentFrequency = {
   MONTHLY: 'MONTHLY',
   BIWEEKLY: 'BIWEEKLY',

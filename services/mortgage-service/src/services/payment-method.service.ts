@@ -1,5 +1,5 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, Prisma, PrismaClient, PhaseType, PhaseTrigger } from '@valentine-efagene/qshelter-common';
+import { AppError, Prisma, PrismaClient, PhaseTrigger } from '@valentine-efagene/qshelter-common';
 import type {
     CreatePaymentMethodInput,
     UpdatePaymentMethodInput,
@@ -97,7 +97,6 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                             name: phase.name,
                             description: phase.description,
                             phaseCategory: phase.phaseCategory,
-                            phaseType: phase.phaseType as PhaseType,
                             order: phase.order,
                             interestRate: phase.interestRate,
                             percentOfPrice: phase.percentOfPrice,
@@ -268,7 +267,6 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     name: data.name,
                     description: data.description,
                     phaseCategory: data.phaseCategory,
-                    phaseType: data.phaseType as PhaseType,
                     order: phaseOrder,
                     interestRate: data.interestRate,
                     percentOfPrice: data.percentOfPrice,
@@ -304,18 +302,9 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(404, 'Phase not found');
         }
 
-        // Extract child data
-        const { phaseType, ...rest } = data;
-        const updateData: Record<string, any> = { ...rest };
-
-        // Add phaseType if provided (as enum)
-        if (phaseType !== undefined) {
-            updateData.phaseType = phaseType;
-        }
-
         const updated = await prisma.propertyPaymentMethodPhase.update({
             where: { id: phaseId },
-            data: updateData,
+            data,
         });
 
         return prisma.propertyPaymentMethodPhase.findUnique({
@@ -453,7 +442,6 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                         name: phase.name,
                         description: phase.description,
                         phaseCategory: phase.phaseCategory,
-                        phaseType: phase.phaseType,
                         order: phase.order,
                         interestRate: phase.interestRate,
                         percentOfPrice: phase.percentOfPrice,

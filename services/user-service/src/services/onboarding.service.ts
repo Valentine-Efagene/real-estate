@@ -136,7 +136,6 @@ class OnboardingService {
                         name: phaseTemplate.name,
                         description: phaseTemplate.description,
                         phaseCategory: phaseTemplate.phaseCategory,
-                        phaseType: phaseTemplate.phaseType,
                         order: phaseTemplate.order,
                         status: PhaseStatus.PENDING,
                         requiresPreviousPhaseCompletion: phaseTemplate.requiresPreviousPhaseCompletion,

@@ -6538,7 +6538,6 @@ export const OnboardingFlowPhaseScalarFieldEnum = {
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
-  phaseType: 'phaseType',
   order: 'order',
   requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
   createdAt: 'createdAt',
@@ -6578,7 +6577,6 @@ export const OnboardingPhaseScalarFieldEnum = {
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
-  phaseType: 'phaseType',
   order: 'order',
   status: 'status',
   activatedAt: 'activatedAt',
@@ -7104,7 +7102,6 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
-  phaseType: 'phaseType',
   order: 'order',
   interestRate: 'interestRate',
   percentOfPrice: 'percentOfPrice',
@@ -7267,7 +7264,6 @@ export const ApplicationPhaseScalarFieldEnum = {
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
-  phaseType: 'phaseType',
   order: 'order',
   status: 'status',
   dueDate: 'dueDate',
@@ -7717,7 +7713,6 @@ export const DocumentRequirementRuleScalarFieldEnum = {
   tenantId: 'tenantId',
   context: 'context',
   paymentMethodId: 'paymentMethodId',
-  phaseType: 'phaseType',
   fromPaymentMethodId: 'fromPaymentMethodId',
   toPaymentMethodId: 'toPaymentMethodId',
   documentType: 'documentType',
@@ -7962,7 +7957,6 @@ export const QualificationFlowPhaseScalarFieldEnum = {
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
-  phaseType: 'phaseType',
   order: 'order',
   requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
   createdAt: 'createdAt',
@@ -8021,7 +8015,6 @@ export const QualificationPhaseScalarFieldEnum = {
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
-  phaseType: 'phaseType',
   order: 'order',
   status: 'status',
   activatedAt: 'activatedAt',
@@ -9019,7 +9012,6 @@ export const DocumentRequirementRuleOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   paymentMethodId: 'paymentMethodId',
-  phaseType: 'phaseType',
   fromPaymentMethodId: 'fromPaymentMethodId',
   toPaymentMethodId: 'toPaymentMethodId',
   documentType: 'documentType',
@@ -9319,13 +9311,6 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'PhaseCategory'
  */
 export type EnumPhaseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseCategory'>
-    
-
-
-/**
- * Reference to a field of type 'PhaseType'
- */
-export type EnumPhaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseType'>
     
 
 

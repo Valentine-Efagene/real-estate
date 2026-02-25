@@ -276,7 +276,6 @@ describe('Property Transfer with Progress Preservation', () => {
                 .send({
                     name: 'KYC & Documentation',
                     phaseCategory: 'DOCUMENTATION',
-                    phaseType: 'KYC',
                     order: 1,
                     percentageOfTotal: 0,
                 });
@@ -291,7 +290,6 @@ describe('Property Transfer with Progress Preservation', () => {
                 .send({
                     name: 'Downpayment',
                     phaseCategory: 'PAYMENT',
-                    phaseType: 'DOWNPAYMENT',
                     order: 2,
                     percentageOfTotal: DOWNPAYMENT_PERCENT,
                     paymentPlanId: downpaymentPlanId,
@@ -307,7 +305,6 @@ describe('Property Transfer with Progress Preservation', () => {
                 .send({
                     name: 'Mortgage',
                     phaseCategory: 'PAYMENT',
-                    phaseType: 'MORTGAGE',
                     order: 3,
                     percentageOfTotal: 90,
                     paymentPlanId: mortgagePlanId,

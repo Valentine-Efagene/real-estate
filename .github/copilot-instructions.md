@@ -10,14 +10,6 @@
 
 Note: **NEVER delete the CDKToolkit CloudFormation stack** — not manually, not from scripts, not from the deploy script. CDKToolkit is the CDK bootstrap stack that persists across deploy/teardown cycles. The `cdk bootstrap` command is idempotent and will recreate any missing resources (S3 bucket, IAM roles) without needing to destroy the stack. Only the `clean` step in deploy-staging.sh may touch it, and only when it's stuck in a bad state (REVIEW_IN_PROGRESS, ROLLBACK_COMPLETE).
 
-**IMPORTANT - Database Migrations**: The local MySQL database is often not running. Always run Prisma migrations against the **AWS staging database** using:
-
-```bash
-./scripts/deploy-staging.sh migrations
-```
-
-This script handles fetching credentials from AWS Secrets Manager and running migrations against the staging RDS instance.
-
 ## Terinal
 
 - Errors like this `The test was interrupted (exit code 130 — SIGINT) at Step 8 because my ps aux | grep command ran in the same terminal as the Playwright test, killing it. Step 8 wasn't a real failure — the test was waiting for getByLabel(/Category/i) when it got killed.` are a problem, and must be avoided. Don't inject commands in a way that they could break running tasks.

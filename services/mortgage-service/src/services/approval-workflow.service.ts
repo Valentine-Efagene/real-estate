@@ -870,7 +870,6 @@ export function createApprovalWorkflowService() {
                                 applicationId: docPhase.phase.applicationId,
                                 phaseId: nextApplicationPhase.id,
                                 phaseName: nextApplicationPhase.name,
-                                phaseType: nextApplicationPhase.phaseType,
                             }),
                         },
                     });

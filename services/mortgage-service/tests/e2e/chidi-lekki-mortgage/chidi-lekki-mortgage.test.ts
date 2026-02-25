@@ -829,7 +829,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: 'Prequalification',
                             phaseCategory: 'QUESTIONNAIRE',
-                            phaseType: 'PRE_APPROVAL',
                             order: 1,
                             questionnairePlanId: prequalificationPlanId,
                         },
@@ -837,7 +836,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: 'Sales Offer',
                             phaseCategory: 'DOCUMENTATION',
-                            phaseType: 'VERIFICATION', // Sales offer is a verification/documentation phase
                             order: 2,
                             documentationPlanId: salesOfferDocumentationPlanId,
                         },
@@ -845,7 +843,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: 'Preapproval Documentation',
                             phaseCategory: 'DOCUMENTATION',
-                            phaseType: 'KYC',
                             order: 3,
                             documentationPlanId: kycDocumentationPlanId,
                         },
@@ -853,7 +850,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: '10% Downpayment',
                             phaseCategory: 'PAYMENT',
-                            phaseType: 'DOWNPAYMENT',
                             order: 4,
                             percentOfPrice: downpaymentPercent,
                             paymentPlanId: downpaymentPlanId,
@@ -862,7 +858,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: 'Mortgage Offer',
                             phaseCategory: 'DOCUMENTATION',
-                            phaseType: 'VERIFICATION',
                             order: 5,
                             documentationPlanId: mortgageDocumentationPlanId,
                         },
@@ -901,7 +896,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 where: { id: paymentMethodId },
                 include: { phases: { orderBy: { order: 'asc' } } },
             });
-            const kycPhase = paymentMethod?.phases.find((p: any) => p.phaseType === 'KYC');
+            const kycPhase = paymentMethod?.phases.find((p: any) => p.name === 'Preapproval Documentation');
             expect(kycPhase).toBeDefined();
             const kycPhaseId = kycPhase!.id;
 
@@ -970,7 +965,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             });
 
             const downpaymentPhaseTemplate = paymentMethod?.phases.find(
-                (p: any) => p.phaseType === 'DOWNPAYMENT'
+                (p: any) => p.name === '10% Downpayment'
             );
             expect(downpaymentPhaseTemplate).toBeDefined();
 
@@ -1089,7 +1084,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             applicationId = response.body.data.id;
 
             // Extract phase IDs (5 phases: Prequalification → Sales Offer → KYC → Downpayment → Mortgage Offer)
-            // Use order to disambiguate since Sales Offer and Mortgage Offer both use VERIFICATION phaseType
+            // Use order to disambiguate phases
             const phases = response.body.data.phases;
             prequalificationPhaseId = phases.find((p: any) => p.order === 1).id;       // PRE_APPROVAL
             salesOfferPhaseId = phases.find((p: any) => p.order === 2).id;             // VERIFICATION (Sales Offer)
@@ -1182,7 +1177,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.status).toBe(200);
             expect(response.body.data.length).toBe(5); // 5 phases
 
-            // Use order to disambiguate since Sales Offer and Mortgage Offer both use VERIFICATION phaseType
+            // Use order to disambiguate phases
             const prequalPhase = response.body.data.find((p: any) => p.order === 1);       // PRE_APPROVAL
             const salesOfferPhase = response.body.data.find((p: any) => p.order === 2);    // VERIFICATION (Sales Offer)
             const docPhase = response.body.data.find((p: any) => p.order === 3);           // KYC
@@ -1250,7 +1245,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.data.phaseType).toBe('PRE_APPROVAL');
             expect(response.body.data.questionnairePhase).toBeDefined();
             expect(response.body.data.questionnairePhase.fields.length).toBe(6);
 

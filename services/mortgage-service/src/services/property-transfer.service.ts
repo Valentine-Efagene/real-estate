@@ -506,7 +506,6 @@ class PropertyTransferService {
                         name: templatePhase.name,
                         description: templatePhase.description,
                         phaseCategory: templatePhase.phaseCategory,
-                        phaseType: templatePhase.phaseType,
                         order: templatePhase.order,
                         status: 'PENDING',
                         requiresPreviousPhaseCompletion: templatePhase.requiresPreviousPhaseCompletion,

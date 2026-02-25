@@ -45,7 +45,6 @@ export type QualificationFlowPhaseMinAggregateOutputType = {
   name: string | null
   description: string | null
   phaseCategory: $Enums.PhaseCategory | null
-  phaseType: $Enums.PhaseType | null
   order: number | null
   requiresPreviousPhaseCompletion: boolean | null
   createdAt: Date | null
@@ -62,7 +61,6 @@ export type QualificationFlowPhaseMaxAggregateOutputType = {
   name: string | null
   description: string | null
   phaseCategory: $Enums.PhaseCategory | null
-  phaseType: $Enums.PhaseType | null
   order: number | null
   requiresPreviousPhaseCompletion: boolean | null
   createdAt: Date | null
@@ -79,7 +77,6 @@ export type QualificationFlowPhaseCountAggregateOutputType = {
   name: number
   description: number
   phaseCategory: number
-  phaseType: number
   order: number
   requiresPreviousPhaseCompletion: number
   createdAt: number
@@ -106,7 +103,6 @@ export type QualificationFlowPhaseMinAggregateInputType = {
   name?: true
   description?: true
   phaseCategory?: true
-  phaseType?: true
   order?: true
   requiresPreviousPhaseCompletion?: true
   createdAt?: true
@@ -123,7 +119,6 @@ export type QualificationFlowPhaseMaxAggregateInputType = {
   name?: true
   description?: true
   phaseCategory?: true
-  phaseType?: true
   order?: true
   requiresPreviousPhaseCompletion?: true
   createdAt?: true
@@ -140,7 +135,6 @@ export type QualificationFlowPhaseCountAggregateInputType = {
   name?: true
   description?: true
   phaseCategory?: true
-  phaseType?: true
   order?: true
   requiresPreviousPhaseCompletion?: true
   createdAt?: true
@@ -244,7 +238,6 @@ export type QualificationFlowPhaseGroupByOutputType = {
   name: string
   description: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion: boolean
   createdAt: Date
@@ -284,7 +277,6 @@ export type QualificationFlowPhaseWhereInput = {
   name?: Prisma.StringFilter<"QualificationFlowPhase"> | string
   description?: Prisma.StringNullableFilter<"QualificationFlowPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"QualificationFlowPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"QualificationFlowPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"QualificationFlowPhase"> | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"QualificationFlowPhase"> | boolean
   createdAt?: Prisma.DateTimeFilter<"QualificationFlowPhase"> | Date | string
@@ -307,7 +299,6 @@ export type QualificationFlowPhaseOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -335,7 +326,6 @@ export type QualificationFlowPhaseWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"QualificationFlowPhase"> | string
   description?: Prisma.StringNullableFilter<"QualificationFlowPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"QualificationFlowPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"QualificationFlowPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"QualificationFlowPhase"> | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"QualificationFlowPhase"> | boolean
   createdAt?: Prisma.DateTimeFilter<"QualificationFlowPhase"> | Date | string
@@ -358,7 +348,6 @@ export type QualificationFlowPhaseOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -383,7 +372,6 @@ export type QualificationFlowPhaseScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"QualificationFlowPhase"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"QualificationFlowPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryWithAggregatesFilter<"QualificationFlowPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeWithAggregatesFilter<"QualificationFlowPhase"> | $Enums.PhaseType
   order?: Prisma.IntWithAggregatesFilter<"QualificationFlowPhase"> | number
   requiresPreviousPhaseCompletion?: Prisma.BoolWithAggregatesFilter<"QualificationFlowPhase"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"QualificationFlowPhase"> | Date | string
@@ -395,7 +383,6 @@ export type QualificationFlowPhaseCreateInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -418,7 +405,6 @@ export type QualificationFlowPhaseUncheckedCreateInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -431,7 +417,6 @@ export type QualificationFlowPhaseUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -454,7 +439,6 @@ export type QualificationFlowPhaseUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -472,7 +456,6 @@ export type QualificationFlowPhaseCreateManyInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -484,7 +467,6 @@ export type QualificationFlowPhaseUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -501,7 +483,6 @@ export type QualificationFlowPhaseUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -539,7 +520,6 @@ export type QualificationFlowPhaseCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -560,7 +540,6 @@ export type QualificationFlowPhaseMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -577,7 +556,6 @@ export type QualificationFlowPhaseMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -824,7 +802,6 @@ export type QualificationFlowPhaseCreateWithoutTenantInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -845,7 +822,6 @@ export type QualificationFlowPhaseUncheckedCreateWithoutTenantInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -892,7 +868,6 @@ export type QualificationFlowPhaseScalarWhereInput = {
   name?: Prisma.StringFilter<"QualificationFlowPhase"> | string
   description?: Prisma.StringNullableFilter<"QualificationFlowPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"QualificationFlowPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"QualificationFlowPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"QualificationFlowPhase"> | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"QualificationFlowPhase"> | boolean
   createdAt?: Prisma.DateTimeFilter<"QualificationFlowPhase"> | Date | string
@@ -904,7 +879,6 @@ export type QualificationFlowPhaseCreateWithoutDocumentationPlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -925,7 +899,6 @@ export type QualificationFlowPhaseUncheckedCreateWithoutDocumentationPlanInput =
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -964,7 +937,6 @@ export type QualificationFlowPhaseCreateWithoutQuestionnairePlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -985,7 +957,6 @@ export type QualificationFlowPhaseUncheckedCreateWithoutQuestionnairePlanInput =
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1024,7 +995,6 @@ export type QualificationFlowPhaseCreateWithoutGatePlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1045,7 +1015,6 @@ export type QualificationFlowPhaseUncheckedCreateWithoutGatePlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1084,7 +1053,6 @@ export type QualificationFlowPhaseCreateWithoutQualificationFlowInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1105,7 +1073,6 @@ export type QualificationFlowPhaseUncheckedCreateWithoutQualificationFlowInput =
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1144,7 +1111,6 @@ export type QualificationFlowPhaseCreateWithoutQualificationPhasesInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1166,7 +1132,6 @@ export type QualificationFlowPhaseUncheckedCreateWithoutQualificationPhasesInput
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1194,7 +1159,6 @@ export type QualificationFlowPhaseUpdateWithoutQualificationPhasesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1216,7 +1180,6 @@ export type QualificationFlowPhaseUncheckedUpdateWithoutQualificationPhasesInput
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1232,7 +1195,6 @@ export type QualificationFlowPhaseCreateManyTenantInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1244,7 +1206,6 @@ export type QualificationFlowPhaseUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1265,7 +1226,6 @@ export type QualificationFlowPhaseUncheckedUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1282,7 +1242,6 @@ export type QualificationFlowPhaseUncheckedUpdateManyWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1298,7 +1257,6 @@ export type QualificationFlowPhaseCreateManyDocumentationPlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1310,7 +1268,6 @@ export type QualificationFlowPhaseUpdateWithoutDocumentationPlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1331,7 +1288,6 @@ export type QualificationFlowPhaseUncheckedUpdateWithoutDocumentationPlanInput =
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1348,7 +1304,6 @@ export type QualificationFlowPhaseUncheckedUpdateManyWithoutDocumentationPlanInp
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1364,7 +1319,6 @@ export type QualificationFlowPhaseCreateManyQuestionnairePlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1376,7 +1330,6 @@ export type QualificationFlowPhaseUpdateWithoutQuestionnairePlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1397,7 +1350,6 @@ export type QualificationFlowPhaseUncheckedUpdateWithoutQuestionnairePlanInput =
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1414,7 +1366,6 @@ export type QualificationFlowPhaseUncheckedUpdateManyWithoutQuestionnairePlanInp
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1430,7 +1381,6 @@ export type QualificationFlowPhaseCreateManyGatePlanInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1442,7 +1392,6 @@ export type QualificationFlowPhaseUpdateWithoutGatePlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1463,7 +1412,6 @@ export type QualificationFlowPhaseUncheckedUpdateWithoutGatePlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1480,7 +1428,6 @@ export type QualificationFlowPhaseUncheckedUpdateManyWithoutGatePlanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1496,7 +1443,6 @@ export type QualificationFlowPhaseCreateManyQualificationFlowInput = {
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
   order: number
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
@@ -1508,7 +1454,6 @@ export type QualificationFlowPhaseUpdateWithoutQualificationFlowInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1529,7 +1474,6 @@ export type QualificationFlowPhaseUncheckedUpdateWithoutQualificationFlowInput =
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1546,7 +1490,6 @@ export type QualificationFlowPhaseUncheckedUpdateManyWithoutQualificationFlowInp
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1594,7 +1537,6 @@ export type QualificationFlowPhaseSelect<ExtArgs extends runtime.Types.Extension
   name?: boolean
   description?: boolean
   phaseCategory?: boolean
-  phaseType?: boolean
   order?: boolean
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: boolean
@@ -1620,14 +1562,13 @@ export type QualificationFlowPhaseSelectScalar = {
   name?: boolean
   description?: boolean
   phaseCategory?: boolean
-  phaseType?: boolean
   order?: boolean
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type QualificationFlowPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "qualificationFlowId" | "questionnairePlanId" | "documentationPlanId" | "gatePlanId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "requiresPreviousPhaseCompletion" | "createdAt" | "updatedAt", ExtArgs["result"]["qualificationFlowPhase"]>
+export type QualificationFlowPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "qualificationFlowId" | "questionnairePlanId" | "documentationPlanId" | "gatePlanId" | "name" | "description" | "phaseCategory" | "order" | "requiresPreviousPhaseCompletion" | "createdAt" | "updatedAt", ExtArgs["result"]["qualificationFlowPhase"]>
 export type QualificationFlowPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   qualificationFlow?: boolean | Prisma.QualificationFlowDefaultArgs<ExtArgs>
@@ -1658,7 +1599,6 @@ export type $QualificationFlowPhasePayload<ExtArgs extends runtime.Types.Extensi
     name: string
     description: string | null
     phaseCategory: $Enums.PhaseCategory
-    phaseType: $Enums.PhaseType
     order: number
     requiresPreviousPhaseCompletion: boolean
     createdAt: Date
@@ -2047,7 +1987,6 @@ export interface QualificationFlowPhaseFieldRefs {
   readonly name: Prisma.FieldRef<"QualificationFlowPhase", 'String'>
   readonly description: Prisma.FieldRef<"QualificationFlowPhase", 'String'>
   readonly phaseCategory: Prisma.FieldRef<"QualificationFlowPhase", 'PhaseCategory'>
-  readonly phaseType: Prisma.FieldRef<"QualificationFlowPhase", 'PhaseType'>
   readonly order: Prisma.FieldRef<"QualificationFlowPhase", 'Int'>
   readonly requiresPreviousPhaseCompletion: Prisma.FieldRef<"QualificationFlowPhase", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"QualificationFlowPhase", 'DateTime'>

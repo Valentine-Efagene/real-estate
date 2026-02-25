@@ -693,11 +693,11 @@ export async function runDemoBootstrap(
             description: 'Prequalification → Sales Offer → Preapproval Docs → 10% Downpayment → Mortgage Offer',
             requiresManualApproval: true,
             phases: [
-                { name: 'Prequalification', phaseCategory: 'QUESTIONNAIRE', phaseType: 'PRE_APPROVAL', order: 1, questionnairePlanId },
-                { name: 'Sales Offer', phaseCategory: 'DOCUMENTATION', phaseType: 'VERIFICATION', order: 2, documentationPlanId: salesOfferDocPlanId },
-                { name: 'Preapproval Documentation', phaseCategory: 'DOCUMENTATION', phaseType: 'KYC', order: 3, documentationPlanId: preapprovalDocPlanId },
-                { name: '10% Downpayment', phaseCategory: 'PAYMENT', phaseType: 'DOWNPAYMENT', order: 4, percentOfPrice: DOWNPAYMENT_PERCENT, paymentPlanId },
-                { name: 'Mortgage Offer', phaseCategory: 'DOCUMENTATION', phaseType: 'VERIFICATION', order: 5, documentationPlanId: mortgageOfferDocPlanId },
+                { name: 'Prequalification', phaseCategory: 'QUESTIONNAIRE', order: 1, questionnairePlanId },
+                { name: 'Sales Offer', phaseCategory: 'DOCUMENTATION', order: 2, documentationPlanId: salesOfferDocPlanId },
+                { name: 'Preapproval Documentation', phaseCategory: 'DOCUMENTATION', order: 3, documentationPlanId: preapprovalDocPlanId },
+                { name: '10% Downpayment', phaseCategory: 'PAYMENT', order: 4, percentOfPrice: DOWNPAYMENT_PERCENT, paymentPlanId },
+                { name: 'Mortgage Offer', phaseCategory: 'DOCUMENTATION', order: 5, documentationPlanId: mortgageOfferDocPlanId },
             ],
         }),
     });
@@ -753,7 +753,6 @@ export async function runDemoBootstrap(
                 {
                     name: 'Platform Approval',
                     phaseCategory: 'GATE',
-                    phaseType: 'APPROVAL_GATE',
                     order: 1,
                     gatePlanId: devGatePlanId,
                 },
@@ -776,7 +775,6 @@ export async function runDemoBootstrap(
                 {
                     name: 'Platform Approval',
                     phaseCategory: 'GATE',
-                    phaseType: 'APPROVAL_GATE',
                     order: 1,
                     gatePlanId: bankGatePlanId,
                 },
