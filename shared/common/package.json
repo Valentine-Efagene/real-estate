@@ -1,6 +1,6 @@
 {
   "name": "@valentine-efagene/qshelter-common",
-  "version": "2.0.200",
+  "version": "2.0.202",
   "description": "Shared database schemas and utilities for QShelter services",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -10,7 +10,10 @@
     "dev": "tsc --watch",
     "generate:prisma": "prisma generate && node scripts/generate-models-index.mjs",
     "postgenerate": "node scripts/generate-models-index.mjs",
-    "migrate:dev": "prisma migrate dev",
+    "migrate:local": "prisma migrate dev",
+    "migrate:local:reset": "prisma migrate reset --force",
+    "migrate:local:status": "prisma migrate status",
+    "migrate:staging": "echo 'Use: ./scripts/deploy-staging.sh migrations'",
     "patch": "npm version patch && npm run build && npm publish --access public",
     "prepublishOnly": "npm run build",
     "publish:public": "npm publish --access public"

@@ -14,7 +14,7 @@ This document describes the complete end-to-end mortgage application flow for th
 
 - **Organization Types:** Replaced hardcoded `reviewParty` enum with dynamic `organizationTypeCode` (PLATFORM, BANK, DEVELOPER, etc.)
 - **Stage-Based Reviews:** Each approval stage is responsible for reviewing documents from specific uploaders
-- **Auto-Approval:** Documents uploaded by the party responsible for that stage are automatically approved
+- **Auto-Approval:** Documents with `autoApprove: true` on their DocumentDefinition are automatically approved on upload without manual review
 
 ### Key Actors
 
@@ -637,7 +637,7 @@ x-idempotency-key: create-lekki-gardens
 > **Stage Responsibilities:**
 >
 > - **PLATFORM stage** reviews documents with `uploadedBy: CUSTOMER` or `uploadedBy: PLATFORM`
-> - **BANK stage** reviews documents with `uploadedBy: LENDER` (auto-approved when lender uploads)
+> - **BANK stage** reviews documents with `uploadedBy: LENDER` (preapproval letter has `autoApprove: true`)
 
 ---
 
@@ -921,12 +921,12 @@ x-idempotency-key: create-lekki-gardens
 > **Important:** KYC documents go through a **two-stage approval workflow**:
 >
 > 1. **Stage 1 (PLATFORM):** Adaeze (Mortgage Operations Officer) reviews documents uploaded by CUSTOMER
-> 2. **Stage 2 (BANK):** Lender documents (preapproval letter) are **auto-approved** when uploaded by the lender
+> 2. **Stage 2 (BANK):** Lender documents (preapproval letter) have `autoApprove: true` — approved immediately on upload
 >
 > Each stage is responsible for reviewing documents from specific uploaders:
 >
 > - **PLATFORM stage** → reviews CUSTOMER and PLATFORM uploads
-> - **BANK stage** → reviews LENDER uploads (auto-approved when lender uploads their own documents)
+> - **BANK stage** → preapproval letter has `autoApprove: true`, so it's approved on upload without review
 >
 > The phase completes when both stages have approved all their respective documents.
 
@@ -1005,9 +1005,9 @@ QShelter Mortgage Operations Officer performs platform verification of CUSTOMER-
 
 ---
 
-### Step 8.3: Stage 2 - Nkechi (Bank) Uploads Preapproval Letter (Auto-Approved)
+### Step 8.3: Stage 2 - Nkechi (Bank) Uploads Preapproval Letter (autoApprove: true)
 
-When the lender uploads their preapproval letter during Stage 2 (BANK), the document is **automatically approved** because the uploader matches the stage's organization type. This is by design: uploaders don't need to review their own documents.
+The preapproval letter has `autoApprove: true` on its DocumentDefinition, so it is **automatically approved** on upload without manual review.
 
 **Endpoint:** `POST /applications/{{applicationId}}/phases/{{kycPhaseId}}/documents`  
 **Service:** Mortgage Service  
@@ -1040,10 +1040,9 @@ When the lender uploads their preapproval letter during Stage 2 (BANK), the docu
 
 > **Important:** The document status is immediately `APPROVED` because:
 >
-> 1. Current stage is BANK (Stage 2)
-> 2. PREAPPROVAL_LETTER is defined with `uploadedBy: LENDER`
-> 3. LENDER maps to BANK organization type
-> 4. Uploaders don't review their own documents - they are auto-approved
+> 1. PREAPPROVAL_LETTER has `autoApprove: true` in its DocumentDefinition
+> 2. Documents with autoApprove are approved immediately on upload without manual review
+> 3. Auto-approved documents are excluded from stage review responsibility
 >
 > After the auto-approval, Stage 2 completes and the entire KYC phase becomes COMPLETED.
 

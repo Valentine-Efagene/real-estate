@@ -1,0 +1,1 @@
+-- AlterTable\nALTER TABLE `document_definitions` ADD COLUMN `autoApprove` BOOLEAN NOT NULL DEFAULT false;

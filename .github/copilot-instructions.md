@@ -228,7 +228,7 @@ Documents go through sequential approval stages, where each stage is responsible
         {
             name: 'Bank Review',
             order: 2,
-            organizationTypeCode: 'BANK',  // Reviews LENDER uploads (auto-approved)
+            organizationTypeCode: 'BANK',  // Reviews BANK-stage documents
             autoTransition: true,
             waitForAllDocuments: true,
             slaHours: 48,
@@ -237,22 +237,13 @@ Documents go through sequential approval stages, where each stage is responsible
 }
 ```
 
-### Stage Organization Type to Uploader Mapping
+### Auto-Approval via `autoApprove` Flag
 
-| Stage Organization Type | Reviews Documents Uploaded By |
-| ----------------------- | ----------------------------- |
-| PLATFORM                | CUSTOMER, PLATFORM            |
-| BANK                    | LENDER                        |
-| DEVELOPER               | DEVELOPER                     |
-| LEGAL                   | LEGAL                         |
-| INSURER                 | INSURER                       |
-| GOVERNMENT              | GOVERNMENT                    |
+Documents can be marked for automatic approval using the `autoApprove: true` flag on `DocumentDefinition`. When a document with `autoApprove: true` is uploaded, it is immediately approved without manual review. Auto-approved documents are excluded from stage review responsibility — stages that only contain auto-approved documents complete automatically.
 
-### Auto-Approval Behavior
+This is configured per document definition, **not** derived from uploader-to-stage matching. Nobody should review their own documents — if a document doesn't need review, mark it `autoApprove: true`.
 
-When a document is uploaded by a party that matches the current stage's organization type, the document is **automatically approved**. This is by design: uploaders don't need to review their own documents.
-
-Example: When a lender uploads a preapproval letter during the BANK stage, it's auto-approved.
+Example: A preapproval letter uploaded by a lender has `autoApprove: true`, so it's approved immediately on upload.
 
 ### Review API
 

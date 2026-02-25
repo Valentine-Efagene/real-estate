@@ -768,6 +768,7 @@ export const DocumentDefinitionScalarFieldEnum = {
   documentType: 'documentType',
   documentName: 'documentName',
   uploadedBy: 'uploadedBy',
+  autoApprove: 'autoApprove',
   order: 'order',
   isRequired: 'isRequired',
   description: 'description',

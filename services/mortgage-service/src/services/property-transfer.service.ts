@@ -538,6 +538,8 @@ class PropertyTransferService {
                             id: def.id,
                             name: def.name,
                             documentType: def.documentType,
+                            uploadedBy: def.uploadedBy,
+                            autoApprove: def.autoApprove ?? false,
                             isRequired: def.isRequired,
                             order: def.order,
                             description: def.description,

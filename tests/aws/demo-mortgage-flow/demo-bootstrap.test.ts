@@ -368,7 +368,7 @@ describe('Demo Mortgage Flow', () => {
     // =========================================================================
 
     describe('Phase 3: Sales Offer', () => {
-        it('Nneka (developer) uploads sales offer letter — auto-approved', async () => {
+        it('Nneka (developer) uploads sales offer letter — autoApprove: true', async () => {
             nnekaToken = await login('nneka@mailsac.com');
 
             const res = await fetchJson(
@@ -498,7 +498,7 @@ describe('Demo Mortgage Flow', () => {
             }
         });
 
-        it('Eniola (Stage 2 — BANK) uploads preapproval letter — auto-approved', async () => {
+        it('Eniola (Stage 2 — BANK) uploads preapproval letter — autoApprove: true', async () => {
             const res = await fetchJson(
                 `${MORTGAGE_URL}/applications/${applicationId}/phases/${kycPhaseId}/documents`,
                 {
@@ -642,7 +642,7 @@ describe('Demo Mortgage Flow', () => {
             expect(status).toBe('IN_PROGRESS');
         }, 20_000);
 
-        it('Eniola (bank) uploads mortgage offer letter — auto-approved', async () => {
+        it('Eniola (bank) uploads mortgage offer letter — autoApprove: true', async () => {
             eniolaToken = await login('eniola@mailsac.com');
 
             const res = await fetchJson(

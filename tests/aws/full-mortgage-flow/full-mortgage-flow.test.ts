@@ -24,12 +24,12 @@
  * Application Flow (5 phases within payment method):
  * 6. Customer creates application
  * 7. Prequalification questionnaire by customer → admin approval
- * 8. Sales offer letter by developer (Emeka from Lekki Gardens) — auto-approved
+ * 8. Sales offer letter by developer (Emeka from Lekki Gardens) — autoApprove: true
  * 9. KYC documentation by customer + preapproval by lender
  *    - Two-stage review: QShelter (Adaeze) then Bank (Nkechi)
  *    - Conditional SPOUSE_ID doc (only if mortgage_type=JOINT)
  * 10. 10% downpayment (event-based wallet flow)
- * 11. Mortgage offer letter by lender (Nkechi from Access Bank) — auto-approved
+ * 11. Mortgage offer letter by lender (Nkechi from Access Bank) — autoApprove: true
  *
  * Actors:
  * - Adaeze (Mortgage Operations Officer): QShelter staff who performs QShelter document review (Stage 1)
@@ -1876,7 +1876,7 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
-    // Phase 8: Sales Offer (Developer uploads, auto-approved)
+    // Phase 8: Sales Offer (Developer uploads, autoApprove: true)
     // =========================================================================
     describe('Phase 8: Sales Offer', () => {
         it('Step 8.1: Sales offer phase is auto-activated', async () => {
@@ -2210,11 +2210,9 @@ describe('Full E2E Mortgage Flow', () => {
             console.log(`✅ Lender sees: ${lenderAction.actionRequired} — pending: ${lenderAction.partyActions?.BANK?.pendingDocuments?.join(', ')}`);
         });
 
-        it('Step 9.4: Nkechi (Bank) uploads preapproval letter (auto-approved)', async () => {
-            // Stage 2: Bank (Access Bank) is responsible for LENDER-uploaded documents
-            // When the lender uploads the preapproval letter during the BANK stage,
-            // it is AUTO-APPROVED because the uploader matches the stage's organization type.
-            // This is the design: uploaders don't need to review their own documents.
+        it('Step 9.4: Nkechi (Bank) uploads preapproval letter (autoApprove: true)', async () => {
+            // The preapproval letter has autoApprove: true on its DocumentDefinition,
+            // so it is immediately approved on upload without manual review.
 
             const preapprovalUrl = mockS3Url('mortgage_docs', 'preapproval-letter-chidi.pdf');
 
@@ -2251,7 +2249,7 @@ describe('Full E2E Mortgage Flow', () => {
         it('Step 9.5: Verify KYC phase is now complete', async () => {
             // After both stages complete:
             // - Stage 1 (PLATFORM) approved customer docs
-            // - Stage 2 (BANK) auto-approved lender preapproval upload
+            // - Stage 2 (BANK) - preapproval letter was auto-approved (autoApprove: true)
             // The phase should now be complete
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${kycPhaseId}`)

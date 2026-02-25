@@ -541,8 +541,8 @@ model User {
   applicationPayments ApplicationPayment[] @relation("ApplicationPayer")
 
   // Co-applicant relations
-  coApplications      CoApplicant[]        @relation("CoApplicantUser")
-  removedCoApplicants CoApplicant[]        @relation("CoApplicantRemovedBy")
+  coApplications      CoApplicant[] @relation("CoApplicantUser")
+  removedCoApplicants CoApplicant[] @relation("CoApplicantRemovedBy")
 
   // Documentation (new model)
   uploadedDocs      ApplicationDocument[]   @relation("DocumentUploader")
@@ -1798,6 +1798,10 @@ model DocumentDefinition {
   // Who uploads this document
   uploadedBy UploadedBy @default(CUSTOMER)
 
+  // Auto-approve: skip manual review, approve on upload
+  // Use this instead of creating stages where uploader == reviewer
+  autoApprove Boolean @default(false)
+
   // Display order
   order Int
 
@@ -2558,16 +2562,16 @@ model Application {
 // =============================================================================
 
 enum CoApplicantStatus {
-  INVITED   // Invitation sent, awaiting acceptance
-  ACTIVE    // Co-applicant has accepted and is active
-  REMOVED   // Admin/primary buyer removed the co-applicant
-  DECLINED  // Co-applicant declined the invitation
+  INVITED // Invitation sent, awaiting acceptance
+  ACTIVE // Co-applicant has accepted and is active
+  REMOVED // Admin/primary buyer removed the co-applicant
+  DECLINED // Co-applicant declined the invitation
 }
 
 model CoApplicant {
-  id            String @id @default(cuid())
+  id            String      @id @default(cuid())
   tenantId      String
-  tenant        Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant        Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
@@ -2576,27 +2580,27 @@ model CoApplicant {
   user   User?   @relation("CoApplicantUser", fields: [userId], references: [id], onDelete: SetNull)
 
   // Invitation details
-  email           String // Email address the invite was sent to
-  firstName       String
-  lastName        String
-  relationship    String // e.g., SPOUSE, PARTNER, SIBLING, PARENT, BUSINESS_PARTNER, OTHER
+  email        String // Email address the invite was sent to
+  firstName    String
+  lastName     String
+  relationship String // e.g., SPOUSE, PARTNER, SIBLING, PARENT, BUSINESS_PARTNER, OTHER
 
   // Financial information (used for qualification scoring)
-  monthlyIncome   Float?
-  employmentType  String? // EMPLOYED, SELF_EMPLOYED, CONTRACTOR, RETIRED, UNEMPLOYED
+  monthlyIncome  Float?
+  employmentType String? // EMPLOYED, SELF_EMPLOYED, CONTRACTOR, RETIRED, UNEMPLOYED
 
   // Invitation token for token-based acceptance (new users who don't have accounts yet)
   inviteToken          String?   @unique
   inviteTokenExpiresAt DateTime?
 
   // Lifecycle state
-  status          CoApplicantStatus @default(INVITED)
-  invitedAt       DateTime @default(now())
-  acceptedAt      DateTime?
-  removedAt       DateTime?
-  removedById     String? // User who removed the co-applicant
-  removedBy       User?   @relation("CoApplicantRemovedBy", fields: [removedById], references: [id])
-  removalReason   String?  @db.Text
+  status        CoApplicantStatus @default(INVITED)
+  invitedAt     DateTime          @default(now())
+  acceptedAt    DateTime?
+  removedAt     DateTime?
+  removedById   String? // User who removed the co-applicant
+  removedBy     User?             @relation("CoApplicantRemovedBy", fields: [removedById], references: [id])
+  removalReason String?           @db.Text
 
   // Audit
   createdAt DateTime @default(now())
@@ -4721,7 +4725,7 @@ model AsyncJob {
   id       String  @id @default(cuid())
   tenantId String? // NULL = system-wide job, set = tenant-specific
 
-  jobType String         // Namespace key, e.g. 'BOOTSTRAP', 'BULK_IMPORT'
+  jobType String // Namespace key, e.g. 'BOOTSTRAP', 'BULK_IMPORT'
   status  AsyncJobStatus @default(PENDING)
 
   // Timing
@@ -4729,7 +4733,7 @@ model AsyncJob {
   completedAt DateTime? // When job finished
 
   // Results
-  result Json?   // Job-specific result payload (JSON)
+  result Json? // Job-specific result payload (JSON)
   error  String? @db.Text // Error message if FAILED
 
   createdAt DateTime @default(now())

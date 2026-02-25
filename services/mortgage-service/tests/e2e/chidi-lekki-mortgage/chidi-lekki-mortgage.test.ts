@@ -723,7 +723,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Adaeze creates a sales offer documentation plan', async () => {
             // This plan is for the developer to upload the sales offer letter.
-            // Single stage review by QShelter - auto-approves when developer uploads.
+            // Single stage review by QShelter - document has autoApprove: true.
             const response = await api
                 .post('/documentation-plans')
                 .set(adminHeaders(adaezeId, tenantId))

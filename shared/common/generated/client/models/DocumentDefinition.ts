@@ -48,6 +48,7 @@ export type DocumentDefinitionMinAggregateOutputType = {
   documentType: string | null
   documentName: string | null
   uploadedBy: $Enums.UploadedBy | null
+  autoApprove: boolean | null
   order: number | null
   isRequired: boolean | null
   description: string | null
@@ -66,6 +67,7 @@ export type DocumentDefinitionMaxAggregateOutputType = {
   documentType: string | null
   documentName: string | null
   uploadedBy: $Enums.UploadedBy | null
+  autoApprove: boolean | null
   order: number | null
   isRequired: boolean | null
   description: string | null
@@ -84,6 +86,7 @@ export type DocumentDefinitionCountAggregateOutputType = {
   documentType: number
   documentName: number
   uploadedBy: number
+  autoApprove: number
   order: number
   isRequired: number
   description: number
@@ -121,6 +124,7 @@ export type DocumentDefinitionMinAggregateInputType = {
   documentType?: true
   documentName?: true
   uploadedBy?: true
+  autoApprove?: true
   order?: true
   isRequired?: true
   description?: true
@@ -139,6 +143,7 @@ export type DocumentDefinitionMaxAggregateInputType = {
   documentType?: true
   documentName?: true
   uploadedBy?: true
+  autoApprove?: true
   order?: true
   isRequired?: true
   description?: true
@@ -157,6 +162,7 @@ export type DocumentDefinitionCountAggregateInputType = {
   documentType?: true
   documentName?: true
   uploadedBy?: true
+  autoApprove?: true
   order?: true
   isRequired?: true
   description?: true
@@ -263,6 +269,7 @@ export type DocumentDefinitionGroupByOutputType = {
   documentType: string
   documentName: string
   uploadedBy: $Enums.UploadedBy
+  autoApprove: boolean
   order: number
   isRequired: boolean
   description: string | null
@@ -305,6 +312,7 @@ export type DocumentDefinitionWhereInput = {
   documentType?: Prisma.StringFilter<"DocumentDefinition"> | string
   documentName?: Prisma.StringFilter<"DocumentDefinition"> | string
   uploadedBy?: Prisma.EnumUploadedByFilter<"DocumentDefinition"> | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFilter<"DocumentDefinition"> | boolean
   order?: Prisma.IntFilter<"DocumentDefinition"> | number
   isRequired?: Prisma.BoolFilter<"DocumentDefinition"> | boolean
   description?: Prisma.StringNullableFilter<"DocumentDefinition"> | string | null
@@ -326,6 +334,7 @@ export type DocumentDefinitionOrderByWithRelationInput = {
   documentType?: Prisma.SortOrder
   documentName?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
+  autoApprove?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -351,6 +360,7 @@ export type DocumentDefinitionWhereUniqueInput = Prisma.AtLeast<{
   documentType?: Prisma.StringFilter<"DocumentDefinition"> | string
   documentName?: Prisma.StringFilter<"DocumentDefinition"> | string
   uploadedBy?: Prisma.EnumUploadedByFilter<"DocumentDefinition"> | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFilter<"DocumentDefinition"> | boolean
   order?: Prisma.IntFilter<"DocumentDefinition"> | number
   isRequired?: Prisma.BoolFilter<"DocumentDefinition"> | boolean
   description?: Prisma.StringNullableFilter<"DocumentDefinition"> | string | null
@@ -372,6 +382,7 @@ export type DocumentDefinitionOrderByWithAggregationInput = {
   documentType?: Prisma.SortOrder
   documentName?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
+  autoApprove?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -399,6 +410,7 @@ export type DocumentDefinitionScalarWhereWithAggregatesInput = {
   documentType?: Prisma.StringWithAggregatesFilter<"DocumentDefinition"> | string
   documentName?: Prisma.StringWithAggregatesFilter<"DocumentDefinition"> | string
   uploadedBy?: Prisma.EnumUploadedByWithAggregatesFilter<"DocumentDefinition"> | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolWithAggregatesFilter<"DocumentDefinition"> | boolean
   order?: Prisma.IntWithAggregatesFilter<"DocumentDefinition"> | number
   isRequired?: Prisma.BoolWithAggregatesFilter<"DocumentDefinition"> | boolean
   description?: Prisma.StringNullableWithAggregatesFilter<"DocumentDefinition"> | string | null
@@ -417,6 +429,7 @@ export type DocumentDefinitionCreateInput = {
   documentType: string
   documentName: string
   uploadedBy?: $Enums.UploadedBy
+  autoApprove?: boolean
   order: number
   isRequired?: boolean
   description?: string | null
@@ -438,6 +451,7 @@ export type DocumentDefinitionUncheckedCreateInput = {
   documentType: string
   documentName: string
   uploadedBy?: $Enums.UploadedBy
+  autoApprove?: boolean
   order: number
   isRequired?: boolean
   description?: string | null
@@ -457,6 +471,7 @@ export type DocumentDefinitionUpdateInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.EnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -478,6 +493,7 @@ export type DocumentDefinitionUncheckedUpdateInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.EnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -498,6 +514,7 @@ export type DocumentDefinitionCreateManyInput = {
   documentType: string
   documentName: string
   uploadedBy?: $Enums.UploadedBy
+  autoApprove?: boolean
   order: number
   isRequired?: boolean
   description?: string | null
@@ -516,6 +533,7 @@ export type DocumentDefinitionUpdateManyMutationInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.EnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -535,6 +553,7 @@ export type DocumentDefinitionUncheckedUpdateManyInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.EnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -570,6 +589,7 @@ export type DocumentDefinitionCountOrderByAggregateInput = {
   documentType?: Prisma.SortOrder
   documentName?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
+  autoApprove?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -597,6 +617,7 @@ export type DocumentDefinitionMaxOrderByAggregateInput = {
   documentType?: Prisma.SortOrder
   documentName?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
+  autoApprove?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -615,6 +636,7 @@ export type DocumentDefinitionMinOrderByAggregateInput = {
   documentType?: Prisma.SortOrder
   documentName?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
+  autoApprove?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -705,6 +727,7 @@ export type DocumentDefinitionCreateWithoutPlanInput = {
   documentType: string
   documentName: string
   uploadedBy?: $Enums.UploadedBy
+  autoApprove?: boolean
   order: number
   isRequired?: boolean
   description?: string | null
@@ -724,6 +747,7 @@ export type DocumentDefinitionUncheckedCreateWithoutPlanInput = {
   documentType: string
   documentName: string
   uploadedBy?: $Enums.UploadedBy
+  autoApprove?: boolean
   order: number
   isRequired?: boolean
   description?: string | null
@@ -773,6 +797,7 @@ export type DocumentDefinitionScalarWhereInput = {
   documentType?: Prisma.StringFilter<"DocumentDefinition"> | string
   documentName?: Prisma.StringFilter<"DocumentDefinition"> | string
   uploadedBy?: Prisma.EnumUploadedByFilter<"DocumentDefinition"> | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFilter<"DocumentDefinition"> | boolean
   order?: Prisma.IntFilter<"DocumentDefinition"> | number
   isRequired?: Prisma.BoolFilter<"DocumentDefinition"> | boolean
   description?: Prisma.StringNullableFilter<"DocumentDefinition"> | string | null
@@ -791,6 +816,7 @@ export type DocumentDefinitionCreateWithoutWaiversInput = {
   documentType: string
   documentName: string
   uploadedBy?: $Enums.UploadedBy
+  autoApprove?: boolean
   order: number
   isRequired?: boolean
   description?: string | null
@@ -811,6 +837,7 @@ export type DocumentDefinitionUncheckedCreateWithoutWaiversInput = {
   documentType: string
   documentName: string
   uploadedBy?: $Enums.UploadedBy
+  autoApprove?: boolean
   order: number
   isRequired?: boolean
   description?: string | null
@@ -845,6 +872,7 @@ export type DocumentDefinitionUpdateWithoutWaiversInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.EnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -865,6 +893,7 @@ export type DocumentDefinitionUncheckedUpdateWithoutWaiversInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.EnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -883,6 +912,7 @@ export type DocumentDefinitionCreateManyPlanInput = {
   documentType: string
   documentName: string
   uploadedBy?: $Enums.UploadedBy
+  autoApprove?: boolean
   order: number
   isRequired?: boolean
   description?: string | null
@@ -901,6 +931,7 @@ export type DocumentDefinitionUpdateWithoutPlanInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.EnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -920,6 +951,7 @@ export type DocumentDefinitionUncheckedUpdateWithoutPlanInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.EnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -939,6 +971,7 @@ export type DocumentDefinitionUncheckedUpdateManyWithoutPlanInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.EnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy
+  autoApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -989,6 +1022,7 @@ export type DocumentDefinitionSelect<ExtArgs extends runtime.Types.Extensions.In
   documentType?: boolean
   documentName?: boolean
   uploadedBy?: boolean
+  autoApprove?: boolean
   order?: boolean
   isRequired?: boolean
   description?: boolean
@@ -1013,6 +1047,7 @@ export type DocumentDefinitionSelectScalar = {
   documentType?: boolean
   documentName?: boolean
   uploadedBy?: boolean
+  autoApprove?: boolean
   order?: boolean
   isRequired?: boolean
   description?: boolean
@@ -1026,7 +1061,7 @@ export type DocumentDefinitionSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "documentType" | "documentName" | "uploadedBy" | "order" | "isRequired" | "description" | "maxSizeBytes" | "allowedMimeTypes" | "expiryDays" | "minFiles" | "maxFiles" | "condition" | "createdAt" | "updatedAt", ExtArgs["result"]["documentDefinition"]>
+export type DocumentDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "documentType" | "documentName" | "uploadedBy" | "autoApprove" | "order" | "isRequired" | "description" | "maxSizeBytes" | "allowedMimeTypes" | "expiryDays" | "minFiles" | "maxFiles" | "condition" | "createdAt" | "updatedAt", ExtArgs["result"]["documentDefinition"]>
 export type DocumentDefinitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   plan?: boolean | Prisma.DocumentationPlanDefaultArgs<ExtArgs>
   waivers?: boolean | Prisma.DocumentDefinition$waiversArgs<ExtArgs>
@@ -1045,6 +1080,7 @@ export type $DocumentDefinitionPayload<ExtArgs extends runtime.Types.Extensions.
     documentType: string
     documentName: string
     uploadedBy: $Enums.UploadedBy
+    autoApprove: boolean
     order: number
     isRequired: boolean
     description: string | null
@@ -1432,6 +1468,7 @@ export interface DocumentDefinitionFieldRefs {
   readonly documentType: Prisma.FieldRef<"DocumentDefinition", 'String'>
   readonly documentName: Prisma.FieldRef<"DocumentDefinition", 'String'>
   readonly uploadedBy: Prisma.FieldRef<"DocumentDefinition", 'UploadedBy'>
+  readonly autoApprove: Prisma.FieldRef<"DocumentDefinition", 'Boolean'>
   readonly order: Prisma.FieldRef<"DocumentDefinition", 'Int'>
   readonly isRequired: Prisma.FieldRef<"DocumentDefinition", 'Boolean'>
   readonly description: Prisma.FieldRef<"DocumentDefinition", 'String'>

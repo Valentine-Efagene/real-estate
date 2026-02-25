@@ -48,6 +48,7 @@ export const DocumentDefinitionSchema = z.object({
     documentType: z.string().min(1).openapi({ example: 'ID_CARD', description: 'Document type identifier' }),
     documentName: z.string().min(1).openapi({ example: 'Valid ID Card', description: 'Human-readable name' }),
     uploadedBy: UploadedByEnum.default('CUSTOMER').openapi({ example: 'CUSTOMER', description: 'Who uploads this document' }),
+    autoApprove: z.boolean().default(false).openapi({ description: 'Auto-approve on upload instead of requiring manual review. Use for documents where the uploader is also the responsible party (e.g., bank uploads preapproval letter).' }),
     order: z.number().int().min(1).openapi({ example: 1, description: 'Display order' }),
 
     // Validation rules

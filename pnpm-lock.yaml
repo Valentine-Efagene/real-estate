@@ -78,10 +78,10 @@ importers:
         version: 22.19.3
       jest:
         specifier: ^29.7.0
-        version: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))
+        version: 29.7.0(@types/node@22.19.3)
       ts-jest:
         specifier: ^29.1.2
-        version: 29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.24.2)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3)))(typescript@5.9.3)
+        version: 29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.24.2)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.19.3))(typescript@5.9.3)
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -101,8 +101,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       '@valentine-efagene/qshelter-common':
-        specifier: ^2.0.200
-        version: 2.0.200(express@4.21.2)(typescript@5.6.3)(zod@4.2.1)
+        specifier: ^2.0.202
+        version: 2.0.202(express@4.21.2)(typescript@5.6.3)(zod@4.2.1)
       dotenv:
         specifier: ^16.4.5
         version: 16.6.1
@@ -292,8 +292,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       '@valentine-efagene/qshelter-common':
-        specifier: ^2.0.200
-        version: 2.0.200(express@4.21.2)(typescript@5.6.3)(zod@4.2.1)
+        specifier: ^2.0.202
+        version: 2.0.202(express@4.21.2)(typescript@5.6.3)(zod@4.2.1)
       dotenv:
         specifier: ^16.4.5
         version: 16.6.1
@@ -394,12 +394,9 @@ importers:
       '@prisma/adapter-mariadb':
         specifier: ^7.2.0
         version: 7.2.0
-      '@prisma/client':
-        specifier: ^7.0.0
-        version: 7.2.0(prisma@7.2.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)
       '@valentine-efagene/qshelter-common':
-        specifier: ^2.0.200
-        version: 2.0.200(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(zod@4.3.4)
+        specifier: ^2.0.202
+        version: 2.0.202(express@4.21.2)(typescript@5.9.3)(zod@4.3.4)
       bcryptjs:
         specifier: ^3.0.3
         version: 3.0.3
@@ -460,10 +457,7 @@ importers:
         version: 0.24.2
       jest:
         specifier: ^29.7.0
-        version: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))
-      prisma:
-        specifier: ^7.2.0
-        version: 7.2.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
+        version: 29.7.0(@types/node@22.19.3)
       serverless:
         specifier: ^4.9.0
         version: 4.29.3
@@ -475,7 +469,7 @@ importers:
         version: 7.1.4
       ts-jest:
         specifier: ^29.2.5
-        version: 29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.24.2)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3)))(typescript@5.9.3)
+        version: 29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.24.2)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.19.3))(typescript@5.9.3)
       tsx:
         specifier: ^4.19.2
         version: 4.21.0
@@ -1292,27 +1286,13 @@ packages:
     peerDependencies:
       '@electric-sql/pglite': 0.3.15
 
-  '@electric-sql/pglite-socket@0.0.6':
-    resolution: {integrity: sha512-6RjmgzphIHIBA4NrMGJsjNWK4pu+bCWJlEWlwcxFTVY3WT86dFpKwbZaGWZV6C5Rd7sCk1Z0CI76QEfukLAUXw==}
-    hasBin: true
-    peerDependencies:
-      '@electric-sql/pglite': 0.3.2
-
   '@electric-sql/pglite-tools@0.2.20':
     resolution: {integrity: sha512-BK50ZnYa3IG7ztXhtgYf0Q7zijV32Iw1cYS8C+ThdQlwx12V5VZ9KRJ42y82Hyb4PkTxZQklVQA9JHyUlex33A==}
     peerDependencies:
       '@electric-sql/pglite': 0.3.15
 
-  '@electric-sql/pglite-tools@0.2.7':
-    resolution: {integrity: sha512-9dAccClqxx4cZB+Ar9B+FZ5WgxDc/Xvl9DPrTWv+dYTf0YNubLzi4wHHRGRGhrJv15XwnyKcGOZAP1VXSneSUg==}
-    peerDependencies:
-      '@electric-sql/pglite': 0.3.2
-
   '@electric-sql/pglite@0.3.15':
     resolution: {integrity: sha512-Cj++n1Mekf9ETfdc16TlDi+cDDQF0W7EcbyRHYOAeZdsAe8M/FJg18itDTSwyHfar2WIezawM9o0EKaRGVKygQ==}
-
-  '@electric-sql/pglite@0.3.2':
-    resolution: {integrity: sha512-zfWWa+V2ViDCY/cmUfRqeWY1yLto+EpxjXnZzenB1TyxsTiXaTWeZFIZw6mac52BsuQm0RjCnisjBtdBaXOI6w==}
 
   '@esbuild/aix-ppc64@0.24.2':
     resolution: {integrity: sha512-thpVCb/rhxE/BnMLQ7GReQLLN8q9qbHmI55F4489/ByVg2aQaQ6kbcLb6FHkocZzQhxc4gx0sCk0tJkKBFzDhA==}
@@ -1648,12 +1628,6 @@ packages:
     resolution: {integrity: sha512-C3mrr3b5dRVlKPJdfrAXS8+dq+rq8Qm5SNRazca0JKgw1HQERFmrVb0towvMmw5uu8hHKNiQasMaR/tydf3Zsg==}
     engines: {node: ^20.19.0 || ^22.13.0 || ^23.5.0 || >=24.0.0, npm: '>=10'}
 
-  '@hono/node-server@1.19.6':
-    resolution: {integrity: sha512-Shz/KjlIeAhfiuE93NDKVdZ7HdBVLQAfdbaXEaoAVO3ic9ibRSLGIQGkcBbFyuLr+7/1D5ZCINM8B+6IvXeMtw==}
-    engines: {node: '>=18.14.1'}
-    peerDependencies:
-      hono: ^4
-
   '@hono/node-server@1.19.9':
     resolution: {integrity: sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw==}
     engines: {node: '>=18.14.1'}
@@ -1770,10 +1744,6 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@mrleebo/prisma-ast@0.12.1':
-    resolution: {integrity: sha512-JwqeCQ1U3fvccttHZq7Tk0m/TMC6WcFAQZdukypW3AzlJYKYTGNVd1ANU2GuhKnv4UQuOFj3oAl0LLG/gxFN1w==}
-    engines: {node: '>=16'}
-
   '@mrleebo/prisma-ast@0.13.1':
     resolution: {integrity: sha512-XyroGQXcHrZdvmrGJvsA9KNeOOgGMg1Vg9OlheUsBOSKznLMDl+YChxbkboRHvtFYJEMRYmlV3uoo/njCw05iw==}
     engines: {node: '>=16'}
@@ -1808,23 +1778,8 @@ packages:
   '@prisma/adapter-mariadb@7.2.0':
     resolution: {integrity: sha512-bOCnDgT79dWUW3RMf532ATeaRcDPLtbYoLvuvzg4Cb/KDnzc+yeSJDZTyVFg+C5peR0BN6jYzUnmQSiMyGd1UQ==}
 
-  '@prisma/client-runtime-utils@7.2.0':
-    resolution: {integrity: sha512-dn7oB53v0tqkB0wBdMuTNFNPdEbfICEUe82Tn9FoKAhJCUkDH+fmyEp0ClciGh+9Hp2Tuu2K52kth2MTLstvmA==}
-
   '@prisma/client-runtime-utils@7.4.1':
     resolution: {integrity: sha512-8fy74OMYC7mt9cJ2MncIDk1awPRgmtXVvwTN2FlW4JVhbck8Dgt0wTkhPG85myfj4ZeP2stjF9Sdg12n5HrpQg==}
-
-  '@prisma/client@7.2.0':
-    resolution: {integrity: sha512-JdLF8lWZ+LjKGKpBqyAlenxd/kXjd1Abf/xK+6vUA7R7L2Suo6AFTHFRpPSdAKCan9wzdFApsUpSa/F6+t1AtA==}
-    engines: {node: ^20.19 || ^22.12 || >=24.0}
-    peerDependencies:
-      prisma: '*'
-      typescript: '>=5.4.0'
-    peerDependenciesMeta:
-      prisma:
-        optional: true
-      typescript:
-        optional: true
 
   '@prisma/client@7.4.1':
     resolution: {integrity: sha512-pgIll2W1NVdof37xLeyySW+yfQ4rI+ERGCRwnO3BjVOx42GpYq6jhTyuALK8VKirvJJIvImgfGDA2qwhYVvMuA==}
@@ -1838,14 +1793,8 @@ packages:
       typescript:
         optional: true
 
-  '@prisma/config@7.2.0':
-    resolution: {integrity: sha512-qmvSnfQ6l/srBW1S7RZGfjTQhc44Yl3ldvU6y3pgmuLM+83SBDs6UQVgMtQuMRe9J3gGqB0RF8wER6RlXEr6jQ==}
-
   '@prisma/config@7.4.1':
     resolution: {integrity: sha512-vteSXm8N46bo3FW9MhPGVHAj+KRgrR6TWtlSk6GqToCKjTnOexXdPZyiDyEsfVW38YhqEmVl6w/6iHN8uYVJcw==}
-
-  '@prisma/debug@6.8.2':
-    resolution: {integrity: sha512-4muBSSUwJJ9BYth5N8tqts8JtiLT8QI/RSAzEogwEfpbYGFo9mYsInsVo8dqXdPO2+Rm5OG5q0qWDDE3nyUbVg==}
 
   '@prisma/debug@7.2.0':
     resolution: {integrity: sha512-YSGTiSlBAVJPzX4ONZmMotL+ozJwQjRmZweQNIq/ER0tQJKJynNkRB3kyvt37eOfsbMCXk3gnLF6J9OJ4QWftw==}
@@ -1853,35 +1802,20 @@ packages:
   '@prisma/debug@7.4.1':
     resolution: {integrity: sha512-qEtzO8oLouRv18JDQUC3G3Gnv+fGVscHZm/x1DBB/WT+kOvPDQLM2woX6IGgWnSMYYlrxjuALshT7G/blvY0bQ==}
 
-  '@prisma/dev@0.17.0':
-    resolution: {integrity: sha512-6sGebe5jxX+FEsQTpjHLzvOGPn6ypFQprcs3jcuIWv1Xp/5v6P/rjfdvAwTkP2iF6pDx2tCd8vGLNWcsWzImTA==}
-
   '@prisma/dev@0.20.0':
     resolution: {integrity: sha512-ovlBYwWor0OzG+yH4J3Ot+AneD818BttLA+Ii7wjbcLHUrnC4tbUPVGyNd3c/+71KETPKZfjhkTSpdS15dmXNQ==}
 
   '@prisma/driver-adapter-utils@7.2.0':
     resolution: {integrity: sha512-gzrUcbI9VmHS24Uf+0+7DNzdIw7keglJsD5m/MHxQOU68OhGVzlphQRobLiDMn8CHNA2XN8uugwKjudVtnfMVQ==}
 
-  '@prisma/engines-version@7.2.0-4.0c8ef2ce45c83248ab3df073180d5eda9e8be7a3':
-    resolution: {integrity: sha512-KezsjCZDsbjNR7SzIiVlUsn9PnLePI7r5uxABlwL+xoerurZTfgQVbIjvjF2sVr3Uc0ZcsnREw3F84HvbggGdA==}
-
   '@prisma/engines-version@7.5.0-4.55ae170b1ced7fc6ed07a15f110549408c501bb3':
     resolution: {integrity: sha512-fUxVd1TjOW8K4XsZ8dAm88sDW5Ry7AxWDfsYEWwScS6Fjo3caKC6hgNumUfsmsy0Il9LjDn5X0PpVXNt3iwayw==}
-
-  '@prisma/engines@7.2.0':
-    resolution: {integrity: sha512-HUeOI/SvCDsHrR9QZn24cxxZcujOjcS3w1oW/XVhnSATAli5SRMOfp/WkG3TtT5rCxDA4xOnlJkW7xkho4nURA==}
 
   '@prisma/engines@7.4.1':
     resolution: {integrity: sha512-BZEBdHvNJx5PzIG37EI/Zi5UUI5hGWjkYsQmKa7OIK6evAvebOTwutjS/VRI6cA6grmA52eLZR+oekGRMqkKxQ==}
 
-  '@prisma/fetch-engine@7.2.0':
-    resolution: {integrity: sha512-Z5XZztJ8Ap+wovpjPD2lQKnB8nWFGNouCrglaNFjxIWAGWz0oeHXwUJRiclIoSSXN/ptcs9/behptSk8d0Yy6w==}
-
   '@prisma/fetch-engine@7.4.1':
     resolution: {integrity: sha512-Z9kbuxX2bvEsyeS3LZEiEnxG0lVtZbpYgaAnPj69N+A9f2De8Lta0EoFtld9zhfERVPIQWhSWUc8himky3qYdA==}
-
-  '@prisma/get-platform@6.8.2':
-    resolution: {integrity: sha512-vXSxyUgX3vm1Q70QwzwkjeYfRryIvKno1SXbIqwSptKwqKzskINnDUcx85oX+ys6ooN2ATGSD0xN2UTfg6Zcow==}
 
   '@prisma/get-platform@7.2.0':
     resolution: {integrity: sha512-k1V0l0Td1732EHpAfi2eySTezyllok9dXb6UQanajkJQzPUGi3vO2z7jdkz67SypFTdmbnyGYxvEvYZdZsMAVA==}
@@ -1889,21 +1823,11 @@ packages:
   '@prisma/get-platform@7.4.1':
     resolution: {integrity: sha512-kN4tmkQzlgm/KtE+jTNSYjsDxxe/5i6GApPI32BN9T0tlgsgSBtDJbjGBICttkAIjsh73dXf8raPKxO/2n2UUg==}
 
-  '@prisma/query-plan-executor@6.18.0':
-    resolution: {integrity: sha512-jZ8cfzFgL0jReE1R10gT8JLHtQxjWYLiQ//wHmVYZ2rVkFHoh0DT8IXsxcKcFlfKN7ak7k6j0XMNn2xVNyr5cA==}
-
   '@prisma/query-plan-executor@7.2.0':
     resolution: {integrity: sha512-EOZmNzcV8uJ0mae3DhTsiHgoNCuu1J9mULQpGCh62zN3PxPTd+qI9tJvk5jOst8WHKQNwJWR3b39t0XvfBB0WQ==}
 
   '@prisma/studio-core@0.13.1':
     resolution: {integrity: sha512-agdqaPEePRHcQ7CexEfkX1RvSH9uWDb6pXrZnhCRykhDFAV0/0P3d07WtfiY8hZWb7oRU4v+NkT4cGFHkQJIPg==}
-    peerDependencies:
-      '@types/react': ^18.0.0 || ^19.0.0
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
-
-  '@prisma/studio-core@0.9.0':
-    resolution: {integrity: sha512-xA2zoR/ADu/NCSQuriBKTh6Ps4XjU0bErkEcgMfnSGh346K1VI7iWKnoq1l2DoxUqiddPHIEWwtxJ6xCHG6W7g==}
     peerDependencies:
       '@types/react': ^18.0.0 || ^19.0.0
       react: ^18.0.0 || ^19.0.0
@@ -2528,6 +2452,17 @@ packages:
 
   '@valentine-efagene/qshelter-common@2.0.200':
     resolution: {integrity: sha512-KSLL2zub3reekFAVv24uWKBVbXXDQdq8ZXJSGuqHFQZzqLV9jckRzKj1bZ8bpsHd4KLxIBNcle+aRrCGI01enQ==}
+    peerDependencies:
+      express: ^4.0.0 || ^5.0.0
+      zod: ^3.0.0 || ^4.0.0
+    peerDependenciesMeta:
+      express:
+        optional: true
+      zod:
+        optional: true
+
+  '@valentine-efagene/qshelter-common@2.0.202':
+    resolution: {integrity: sha512-72zMmHCBerbXAi4UKoiKxVXkC0ASV3PlYu2hxFW9V2pMu6swafApC6jJM8660rpjJssLfX9mZvANZBJaxPH/NQ==}
     peerDependencies:
       express: ^4.0.0 || ^5.0.0
       zod: ^3.0.0 || ^4.0.0
@@ -3340,9 +3275,6 @@ packages:
     resolution: {integrity: sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==}
     engines: {node: '>=8.0.0'}
 
-  get-port-please@3.1.2:
-    resolution: {integrity: sha512-Gxc29eLs1fbn6LQ4jSU4vXjlwyZhF5HsGuMAa7gqBP4Rw4yxxltyDUuF5MBclFzDTXO+ACchGQoeela4DSfzdQ==}
-
   get-port-please@3.2.0:
     resolution: {integrity: sha512-I9QVvBw5U/hw3RmWpYKRumUeaDgxTPd401x364rLmWBJcOQ753eov1eTgzDqRG9bqFIfDc7gfzcQEWrUri3o1A==}
 
@@ -3436,10 +3368,6 @@ packages:
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
-
-  hono@4.10.6:
-    resolution: {integrity: sha512-BIdolzGpDO9MQ4nu3AUuDwHZZ+KViNm+EZ75Ae55eMXMqLVhDFqEMXxtUe9Qh8hjL+pIna/frs2j6Y2yD5Ua/g==}
-    engines: {node: '>=16.9.0'}
 
   hono@4.11.4:
     resolution: {integrity: sha512-U7tt8JsyrxSRKspfhtLET79pU8K+tInj5QZXs1jSugO1Vq5dFj3kmZsRldo29mTBfcjDRVRXrEZ6LS63Cog9ZA==}
@@ -4159,19 +4087,6 @@ packages:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  prisma@7.2.0:
-    resolution: {integrity: sha512-jSdHWgWOgFF24+nRyyNRVBIgGDQEsMEF8KPHvhBBg3jWyR9fUAK0Nq9ThUmiGlNgq2FA7vSk/ZoCvefod+a8qg==}
-    engines: {node: ^20.19 || ^22.12 || >=24.0}
-    hasBin: true
-    peerDependencies:
-      better-sqlite3: '>=9.0.0'
-      typescript: '>=5.4.0'
-    peerDependenciesMeta:
-      better-sqlite3:
-        optional: true
-      typescript:
-        optional: true
-
   prisma@7.4.1:
     resolution: {integrity: sha512-gDKOXwnPiMdB+uYMhMeN8jj4K7Cu3Q2wB/wUsITOoOk446HtVb8T9BZxFJ1Zop6alc89k6PMNdR2FZCpbXp/jw==}
     engines: {node: ^20.19 || ^22.12 || >=24.0}
@@ -4262,9 +4177,6 @@ packages:
 
   regexp-to-ast@0.5.0:
     resolution: {integrity: sha512-tlbJqcMHnPKI9zSrystikWKwHkBqu2a/Sgw01h3zFjvYrMxEDYHzzoMZnUrbIfpTFEsoRnnviOXNCzFiSc54Qw==}
-
-  remeda@2.21.3:
-    resolution: {integrity: sha512-XXrZdLA10oEOQhLLzEJEiFFSKi21REGAkHdImIb4rt/XXy8ORGXh5HCcpUOsElfPNDb+X6TA/+wkh+p2KffYmg==}
 
   remeda@2.33.4:
     resolution: {integrity: sha512-ygHswjlc/opg2VrtiYvUOPLjxjtdKvjGz1/plDhkG66hjNjFr1xmfrs2ClNFo/E6TyUFiwYNh53bKV26oBoMGQ==}
@@ -4450,9 +4362,6 @@ packages:
 
   std-env@3.10.0:
     resolution: {integrity: sha512-5GS12FdOZNliM5mAOxFRg7Ir0pWz8MdpYm6AY6VPkGpbA7ZzmbzNcBJQ0GPvvyWgcY7QAhCgf9Uy89I03faLkg==}
-
-  std-env@3.9.0:
-    resolution: {integrity: sha512-UGvjygr6F6tpH7o2qyqR6QYpwraIjKSdtzyBdyytFOHmPZY917kwdwLG0RbOjWOnKmnm3PeHjaoLLMie7kPLQw==}
 
   string-length@4.0.2:
     resolution: {integrity: sha512-+l6rNN5fYHNhZZy41RXsYptCjA2Igmq4EG7kZAYFQI1E1VTXarr6ZPXBg6eq7Y6eK4FEhY6AJlyuFIb/v/S0VQ==}
@@ -4787,9 +4696,6 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-
-  zeptomatch@2.0.2:
-    resolution: {integrity: sha512-H33jtSKf8Ijtb5BW6wua3G5DhnFjbFML36eFu+VdOoVY4HD9e7ggjqdM6639B+L87rjnR6Y+XeRzBXZdy52B/g==}
 
   zeptomatch@2.1.0:
     resolution: {integrity: sha512-KiGErG2J0G82LSpniV0CtIzjlJ10E04j02VOudJsPyPwNZgGnRKQy7I1R7GMyg/QswnE4l7ohSGrQbQbjXPPDA==}
@@ -7098,21 +7004,11 @@ snapshots:
     dependencies:
       '@electric-sql/pglite': 0.3.15
 
-  '@electric-sql/pglite-socket@0.0.6(@electric-sql/pglite@0.3.2)':
-    dependencies:
-      '@electric-sql/pglite': 0.3.2
-
   '@electric-sql/pglite-tools@0.2.20(@electric-sql/pglite@0.3.15)':
     dependencies:
       '@electric-sql/pglite': 0.3.15
 
-  '@electric-sql/pglite-tools@0.2.7(@electric-sql/pglite@0.3.2)':
-    dependencies:
-      '@electric-sql/pglite': 0.3.2
-
   '@electric-sql/pglite@0.3.15': {}
-
-  '@electric-sql/pglite@0.3.2': {}
 
   '@esbuild/aix-ppc64@0.24.2':
     optional: true
@@ -7297,10 +7193,6 @@ snapshots:
 
   '@faker-js/faker@10.1.0': {}
 
-  '@hono/node-server@1.19.6(hono@4.10.6)':
-    dependencies:
-      hono: 4.10.6
-
   '@hono/node-server@1.19.9(hono@4.11.4)':
     dependencies:
       hono: 4.11.4
@@ -7344,6 +7236,41 @@ snapshots:
       jest-message-util: 29.7.0
       jest-util: 29.7.0
       slash: 3.0.0
+
+  '@jest/core@29.7.0':
+    dependencies:
+      '@jest/console': 29.7.0
+      '@jest/reporters': 29.7.0
+      '@jest/test-result': 29.7.0
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/node': 20.19.28
+      ansi-escapes: 4.3.2
+      chalk: 4.1.2
+      ci-info: 3.9.0
+      exit: 0.1.2
+      graceful-fs: 4.2.11
+      jest-changed-files: 29.7.0
+      jest-config: 29.7.0(@types/node@20.19.28)(ts-node@10.9.2(@types/node@20.19.27)(typescript@5.9.3))
+      jest-haste-map: 29.7.0
+      jest-message-util: 29.7.0
+      jest-regex-util: 29.6.3
+      jest-resolve: 29.7.0
+      jest-resolve-dependencies: 29.7.0
+      jest-runner: 29.7.0
+      jest-runtime: 29.7.0
+      jest-snapshot: 29.7.0
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      jest-watcher: 29.7.0
+      micromatch: 4.0.8
+      pretty-format: 29.7.0
+      slash: 3.0.0
+      strip-ansi: 6.0.1
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
 
   '@jest/core@29.7.0(ts-node@10.9.2(@types/node@20.19.27)(typescript@5.6.3))':
     dependencies:
@@ -7395,41 +7322,6 @@ snapshots:
       graceful-fs: 4.2.11
       jest-changed-files: 29.7.0
       jest-config: 29.7.0(@types/node@20.19.28)(ts-node@10.9.2(@types/node@20.19.27)(typescript@5.9.3))
-      jest-haste-map: 29.7.0
-      jest-message-util: 29.7.0
-      jest-regex-util: 29.6.3
-      jest-resolve: 29.7.0
-      jest-resolve-dependencies: 29.7.0
-      jest-runner: 29.7.0
-      jest-runtime: 29.7.0
-      jest-snapshot: 29.7.0
-      jest-util: 29.7.0
-      jest-validate: 29.7.0
-      jest-watcher: 29.7.0
-      micromatch: 4.0.8
-      pretty-format: 29.7.0
-      slash: 3.0.0
-      strip-ansi: 6.0.1
-    transitivePeerDependencies:
-      - babel-plugin-macros
-      - supports-color
-      - ts-node
-
-  '@jest/core@29.7.0(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))':
-    dependencies:
-      '@jest/console': 29.7.0
-      '@jest/reporters': 29.7.0
-      '@jest/test-result': 29.7.0
-      '@jest/transform': 29.7.0
-      '@jest/types': 29.6.3
-      '@types/node': 20.19.28
-      ansi-escapes: 4.3.2
-      chalk: 4.1.2
-      ci-info: 3.9.0
-      exit: 0.1.2
-      graceful-fs: 4.2.11
-      jest-changed-files: 29.7.0
-      jest-config: 29.7.0(@types/node@20.19.28)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
@@ -7592,11 +7484,6 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@mrleebo/prisma-ast@0.12.1':
-    dependencies:
-      chevrotain: 10.5.0
-      lilconfig: 2.1.0
-
   '@mrleebo/prisma-ast@0.13.1':
     dependencies:
       chevrotain: 10.5.0
@@ -7630,16 +7517,7 @@ snapshots:
       '@prisma/driver-adapter-utils': 7.2.0
       mariadb: 3.4.5
 
-  '@prisma/client-runtime-utils@7.2.0': {}
-
   '@prisma/client-runtime-utils@7.4.1': {}
-
-  '@prisma/client@7.2.0(prisma@7.2.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)':
-    dependencies:
-      '@prisma/client-runtime-utils': 7.2.0
-    optionalDependencies:
-      prisma: 7.2.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
-      typescript: 5.9.3
 
   '@prisma/client@7.4.1(prisma@7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
@@ -7662,15 +7540,6 @@ snapshots:
       prisma: 7.4.1(typescript@5.9.3)
       typescript: 5.9.3
 
-  '@prisma/config@7.2.0':
-    dependencies:
-      c12: 3.1.0
-      deepmerge-ts: 7.1.5
-      effect: 3.18.4
-      empathic: 2.0.0
-    transitivePeerDependencies:
-      - magicast
-
   '@prisma/config@7.4.1':
     dependencies:
       c12: 3.1.0
@@ -7680,33 +7549,9 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  '@prisma/debug@6.8.2': {}
-
   '@prisma/debug@7.2.0': {}
 
   '@prisma/debug@7.4.1': {}
-
-  '@prisma/dev@0.17.0(typescript@5.9.3)':
-    dependencies:
-      '@electric-sql/pglite': 0.3.2
-      '@electric-sql/pglite-socket': 0.0.6(@electric-sql/pglite@0.3.2)
-      '@electric-sql/pglite-tools': 0.2.7(@electric-sql/pglite@0.3.2)
-      '@hono/node-server': 1.19.6(hono@4.10.6)
-      '@mrleebo/prisma-ast': 0.12.1
-      '@prisma/get-platform': 6.8.2
-      '@prisma/query-plan-executor': 6.18.0
-      foreground-child: 3.3.1
-      get-port-please: 3.1.2
-      hono: 4.10.6
-      http-status-codes: 2.3.0
-      pathe: 2.0.3
-      proper-lockfile: 4.1.2
-      remeda: 2.21.3
-      std-env: 3.9.0
-      valibot: 1.2.0(typescript@5.9.3)
-      zeptomatch: 2.0.2
-    transitivePeerDependencies:
-      - typescript
 
   '@prisma/dev@0.20.0(typescript@5.6.3)':
     dependencies:
@@ -7756,16 +7601,7 @@ snapshots:
     dependencies:
       '@prisma/debug': 7.2.0
 
-  '@prisma/engines-version@7.2.0-4.0c8ef2ce45c83248ab3df073180d5eda9e8be7a3': {}
-
   '@prisma/engines-version@7.5.0-4.55ae170b1ced7fc6ed07a15f110549408c501bb3': {}
-
-  '@prisma/engines@7.2.0':
-    dependencies:
-      '@prisma/debug': 7.2.0
-      '@prisma/engines-version': 7.2.0-4.0c8ef2ce45c83248ab3df073180d5eda9e8be7a3
-      '@prisma/fetch-engine': 7.2.0
-      '@prisma/get-platform': 7.2.0
 
   '@prisma/engines@7.4.1':
     dependencies:
@@ -7774,21 +7610,11 @@ snapshots:
       '@prisma/fetch-engine': 7.4.1
       '@prisma/get-platform': 7.4.1
 
-  '@prisma/fetch-engine@7.2.0':
-    dependencies:
-      '@prisma/debug': 7.2.0
-      '@prisma/engines-version': 7.2.0-4.0c8ef2ce45c83248ab3df073180d5eda9e8be7a3
-      '@prisma/get-platform': 7.2.0
-
   '@prisma/fetch-engine@7.4.1':
     dependencies:
       '@prisma/debug': 7.4.1
       '@prisma/engines-version': 7.5.0-4.55ae170b1ced7fc6ed07a15f110549408c501bb3
       '@prisma/get-platform': 7.4.1
-
-  '@prisma/get-platform@6.8.2':
-    dependencies:
-      '@prisma/debug': 6.8.2
 
   '@prisma/get-platform@7.2.0':
     dependencies:
@@ -7798,17 +7624,9 @@ snapshots:
     dependencies:
       '@prisma/debug': 7.4.1
 
-  '@prisma/query-plan-executor@6.18.0': {}
-
   '@prisma/query-plan-executor@7.2.0': {}
 
   '@prisma/studio-core@0.13.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
-    dependencies:
-      '@types/react': 19.2.7
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
-
-  '@prisma/studio-core@0.9.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@types/react': 19.2.7
       react: 19.2.3
@@ -8858,21 +8676,21 @@ snapshots:
       - react-dom
       - typescript
 
-  '@valentine-efagene/qshelter-common@2.0.200(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(zod@4.3.4)':
+  '@valentine-efagene/qshelter-common@2.0.200(express@4.21.2)(typescript@5.9.3)(zod@4.3.5)':
     dependencies:
       '@aws-sdk/client-eventbridge': 3.958.0
       '@aws-sdk/client-secrets-manager': 3.962.0
       '@aws-sdk/client-sns': 3.969.0
       '@aws-sdk/client-sqs': 3.960.0
       '@aws-sdk/client-ssm': 3.962.0
-      '@prisma/client': 7.4.1(prisma@7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)
+      '@prisma/client': 7.4.1(prisma@7.4.1(typescript@5.9.3))(typescript@5.9.3)
       axios: 1.13.5
       dotenv: 17.3.1
       jsonwebtoken: 9.0.3
-      prisma: 7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
+      prisma: 7.4.1(typescript@5.9.3)
     optionalDependencies:
       express: 4.21.2
-      zod: 4.3.4
+      zod: 4.3.5
     transitivePeerDependencies:
       - '@types/react'
       - aws-crt
@@ -8883,7 +8701,7 @@ snapshots:
       - react-dom
       - typescript
 
-  '@valentine-efagene/qshelter-common@2.0.200(express@4.21.2)(typescript@5.6.3)(zod@4.2.1)':
+  '@valentine-efagene/qshelter-common@2.0.202(express@4.21.2)(typescript@5.6.3)(zod@4.2.1)':
     dependencies:
       '@aws-sdk/client-eventbridge': 3.958.0
       '@aws-sdk/client-secrets-manager': 3.962.0
@@ -8908,7 +8726,7 @@ snapshots:
       - react-dom
       - typescript
 
-  '@valentine-efagene/qshelter-common@2.0.200(express@4.21.2)(typescript@5.9.3)(zod@4.3.5)':
+  '@valentine-efagene/qshelter-common@2.0.202(express@4.21.2)(typescript@5.9.3)(zod@4.3.4)':
     dependencies:
       '@aws-sdk/client-eventbridge': 3.958.0
       '@aws-sdk/client-secrets-manager': 3.962.0
@@ -8922,7 +8740,7 @@ snapshots:
       prisma: 7.4.1(typescript@5.9.3)
     optionalDependencies:
       express: 4.21.2
-      zod: 4.3.5
+      zod: 4.3.4
     transitivePeerDependencies:
       - '@types/react'
       - aws-crt
@@ -9347,13 +9165,13 @@ snapshots:
       - supports-color
       - ts-node
 
-  create-jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3)):
+  create-jest@29.7.0(@types/node@22.19.3):
     dependencies:
       '@jest/types': 29.6.3
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.11
-      jest-config: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))
+      jest-config: 29.7.0(@types/node@22.19.3)
       jest-util: 29.7.0
       prompts: 2.4.2
     transitivePeerDependencies:
@@ -9915,8 +9733,6 @@ snapshots:
 
   get-package-type@0.1.0: {}
 
-  get-port-please@3.1.2: {}
-
   get-port-please@3.2.0: {}
 
   get-proto@1.0.1:
@@ -10034,8 +9850,6 @@ snapshots:
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
-
-  hono@4.10.6: {}
 
   hono@4.11.4: {}
 
@@ -10280,16 +10094,16 @@ snapshots:
       - supports-color
       - ts-node
 
-  jest-cli@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3)):
+  jest-cli@29.7.0(@types/node@22.19.3):
     dependencies:
-      '@jest/core': 29.7.0(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))
+      '@jest/core': 29.7.0
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
       chalk: 4.1.2
-      create-jest: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))
+      create-jest: 29.7.0(@types/node@22.19.3)
       exit: 0.1.2
       import-local: 3.2.0
-      jest-config: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))
+      jest-config: 29.7.0(@types/node@22.19.3)
       jest-util: 29.7.0
       jest-validate: 29.7.0
       yargs: 17.7.2
@@ -10423,38 +10237,7 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  jest-config@29.7.0(@types/node@20.19.28)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3)):
-    dependencies:
-      '@babel/core': 7.28.5
-      '@jest/test-sequencer': 29.7.0
-      '@jest/types': 29.6.3
-      babel-jest: 29.7.0(@babel/core@7.28.5)
-      chalk: 4.1.2
-      ci-info: 3.9.0
-      deepmerge: 4.3.1
-      glob: 7.2.3
-      graceful-fs: 4.2.11
-      jest-circus: 29.7.0
-      jest-environment-node: 29.7.0
-      jest-get-type: 29.6.3
-      jest-regex-util: 29.6.3
-      jest-resolve: 29.7.0
-      jest-runner: 29.7.0
-      jest-util: 29.7.0
-      jest-validate: 29.7.0
-      micromatch: 4.0.8
-      parse-json: 5.2.0
-      pretty-format: 29.7.0
-      slash: 3.0.0
-      strip-json-comments: 3.1.1
-    optionalDependencies:
-      '@types/node': 20.19.28
-      ts-node: 10.9.2(@types/node@22.19.3)(typescript@5.9.3)
-    transitivePeerDependencies:
-      - babel-plugin-macros
-      - supports-color
-
-  jest-config@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3)):
+  jest-config@29.7.0(@types/node@22.19.3):
     dependencies:
       '@babel/core': 7.28.5
       '@jest/test-sequencer': 29.7.0
@@ -10480,7 +10263,6 @@ snapshots:
       strip-json-comments: 3.1.1
     optionalDependencies:
       '@types/node': 22.19.3
-      ts-node: 10.9.2(@types/node@22.19.3)(typescript@5.9.3)
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -10724,12 +10506,12 @@ snapshots:
       - supports-color
       - ts-node
 
-  jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3)):
+  jest@29.7.0(@types/node@22.19.3):
     dependencies:
-      '@jest/core': 29.7.0(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))
+      '@jest/core': 29.7.0
       '@jest/types': 29.6.3
       import-local: 3.2.0
-      jest-cli: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))
+      jest-cli: 29.7.0(@types/node@22.19.3)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -11102,22 +10884,6 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
-  prisma@7.2.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3):
-    dependencies:
-      '@prisma/config': 7.2.0
-      '@prisma/dev': 0.17.0(typescript@5.9.3)
-      '@prisma/engines': 7.2.0
-      '@prisma/studio-core': 0.9.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      mysql2: 3.15.3
-      postgres: 3.4.7
-    optionalDependencies:
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - '@types/react'
-      - magicast
-      - react
-      - react-dom
-
   prisma@7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3):
     dependencies:
       '@prisma/config': 7.4.1
@@ -11241,10 +11007,6 @@ snapshots:
   readdirp@4.1.2: {}
 
   regexp-to-ast@0.5.0: {}
-
-  remeda@2.21.3:
-    dependencies:
-      type-fest: 4.41.0
 
   remeda@2.33.4: {}
 
@@ -11461,8 +11223,6 @@ snapshots:
 
   std-env@3.10.0: {}
 
-  std-env@3.9.0: {}
-
   string-length@4.0.2:
     dependencies:
       char-regex: 1.0.2
@@ -11608,12 +11368,12 @@ snapshots:
       esbuild: 0.24.2
       jest-util: 29.7.0
 
-  ts-jest@29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.24.2)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3)))(typescript@5.9.3):
+  ts-jest@29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.24.2)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.19.3))(typescript@5.9.3):
     dependencies:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
       handlebars: 4.7.8
-      jest: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3))
+      jest: 29.7.0(@types/node@22.19.3)
       json5: 2.2.3
       lodash.memoize: 4.1.2
       make-error: 1.3.6
@@ -11664,25 +11424,6 @@ snapshots:
       typescript: 5.9.3
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-
-  ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3):
-    dependencies:
-      '@cspotcode/source-map-support': 0.8.1
-      '@tsconfig/node10': 1.0.12
-      '@tsconfig/node12': 1.0.11
-      '@tsconfig/node14': 1.0.3
-      '@tsconfig/node16': 1.0.4
-      '@types/node': 22.19.3
-      acorn: 8.15.0
-      acorn-walk: 8.3.4
-      arg: 4.1.3
-      create-require: 1.1.1
-      diff: 4.0.2
-      make-error: 1.3.6
-      typescript: 5.9.3
-      v8-compile-cache-lib: 3.0.1
-      yn: 3.1.1
-    optional: true
 
   tslib@2.8.1: {}
 
@@ -11859,10 +11600,6 @@ snapshots:
   yn@3.1.1: {}
 
   yocto-queue@0.1.0: {}
-
-  zeptomatch@2.0.2:
-    dependencies:
-      grammex: 3.1.12
 
   zeptomatch@2.1.0:
     dependencies:

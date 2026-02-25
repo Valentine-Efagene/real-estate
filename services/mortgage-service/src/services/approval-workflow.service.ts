@@ -26,6 +26,7 @@ export interface DocumentDefinitionSnapshot {
     documentType: string;
     documentName: string;
     uploadedBy: 'CUSTOMER' | 'LENDER' | 'DEVELOPER' | 'LEGAL' | 'INSURER' | 'PLATFORM';
+    autoApprove: boolean;
     order: number;
     isRequired: boolean;
     description?: string;
@@ -299,32 +300,13 @@ export function createApprovalWorkflowService() {
                 });
             }
 
-            // Check for auto-approval: if current stage's organization type matches document uploadedBy
-            const currentStage = docPhase.stageProgress.find(
-                (s: any) => s.order === docPhase.currentStageOrder
-            );
+            // Check for auto-approval: if document definition has autoApprove flag
+            if (docDef && docDef.autoApprove) {
+                const currentStage = docPhase.stageProgress.find(
+                    (s: any) => s.order === docPhase.currentStageOrder
+                );
 
-            if (currentStage && docDef && currentStage.organizationTypeId) {
-                // Map uploadedBy to organization type code (LENDER -> BANK, etc.)
-                const uploadedByToOrgTypeCode: Record<string, string> = {
-                    'DEVELOPER': 'DEVELOPER',
-                    'LENDER': 'BANK',
-                    'LEGAL': 'LEGAL',
-                    'INSURER': 'INSURER',
-                    'PLATFORM': 'PLATFORM',
-                    'CUSTOMER': 'CUSTOMER',
-                };
-
-                const expectedOrgTypeCode = uploadedByToOrgTypeCode[docDef.uploadedBy] || docDef.uploadedBy;
-
-                // Fetch the organization type to check code
-                const stageOrgType = await prisma.organizationType.findUnique({
-                    where: { id: currentStage.organizationTypeId },
-                    select: { code: true },
-                });
-
-                // Auto-approve if uploader matches reviewer (they don't need to review their own work)
-                if (stageOrgType && stageOrgType.code === expectedOrgTypeCode) {
+                if (currentStage) {
                     // Auto-approve the document and check for stage completion
                     await prisma.$transaction(async (tx: any) => {
                         // Create auto-approval record
@@ -337,7 +319,7 @@ export function createApprovalWorkflowService() {
                                 reviewerId: uploadedById,
                                 organizationTypeId: currentStage.organizationTypeId,
                                 decision: 'APPROVED',
-                                comment: 'Auto-approved: uploaded by authorized party',
+                                comment: 'Auto-approved: document definition has autoApprove enabled',
                                 reviewedAt: new Date(),
                             },
                         });
@@ -531,7 +513,7 @@ export function createApprovalWorkflowService() {
                 'DEVELOPER': ['DEVELOPER'],
                 'LEGAL': ['LEGAL'],
                 'INSURER': ['INSURER'],
-                'CUSTOMER': ['DEVELOPER', 'LENDER'],    // Customer reviews offers from other parties (nobody reviews their own)
+                'CUSTOMER': ['DEVELOPER', 'LENDER'],    // Customer reviews offers from other parties
                 'GOVERNMENT': ['GOVERNMENT'],
             };
 
@@ -539,9 +521,10 @@ export function createApprovalWorkflowService() {
             const uploadedByValues = orgTypeCodeToUploadedBy[orgTypeCode] || [];
 
             // Get document definitions from snapshot to find which document types this stage reviews
+            // Exclude autoApprove docs — they are approved at upload time and don't need stage review
             const documentDefinitions = (docPhase.documentDefinitionsSnapshot as unknown as DocumentDefinitionSnapshot[]) || [];
             const stageDocDefs = documentDefinitions
-                .filter(def => uploadedByValues.includes(def.uploadedBy));
+                .filter(def => uploadedByValues.includes(def.uploadedBy) && !def.autoApprove);
             const stageDocumentTypes = stageDocDefs.map(def => def.documentType);
 
             // Check if there are REQUIRED document definitions for this stage

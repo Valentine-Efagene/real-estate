@@ -512,6 +512,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                                 documentType: d.documentType,
                                 documentName: d.documentName,
                                 uploadedBy: d.uploadedBy,
+                                autoApprove: d.autoApprove ?? false,
                                 order: d.order,
                                 isRequired: d.isRequired,
                                 description: d.description,

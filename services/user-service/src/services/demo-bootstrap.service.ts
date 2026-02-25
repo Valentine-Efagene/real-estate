@@ -600,7 +600,7 @@ export async function runDemoBootstrap(
             isActive: true,
             documentDefinitions: [{
                 documentType: 'SALES_OFFER_LETTER', documentName: 'Sales Offer Letter',
-                uploadedBy: 'DEVELOPER', order: 1, isRequired: true,
+                uploadedBy: 'DEVELOPER', autoApprove: true, order: 1, isRequired: true,
                 description: 'Sales offer letter prepared by the property developer',
                 maxSizeBytes: 10 * 1024 * 1024, allowedMimeTypes: ['application/pdf'],
             }],
@@ -628,7 +628,7 @@ export async function runDemoBootstrap(
                 { documentType: 'BANK_STATEMENT', documentName: 'Bank Statement (6 months)', uploadedBy: 'CUSTOMER', order: 2, isRequired: true, description: 'Last 6 months bank statement', maxSizeBytes: 10 * 1024 * 1024, allowedMimeTypes: ['application/pdf'] },
                 { documentType: 'EMPLOYMENT_LETTER', documentName: 'Employment Confirmation Letter', uploadedBy: 'CUSTOMER', order: 3, isRequired: true, description: 'Letter from employer confirming employment', maxSizeBytes: 5 * 1024 * 1024, allowedMimeTypes: ['application/pdf'] },
                 { documentType: 'PROOF_OF_ADDRESS', documentName: 'Proof of Address', uploadedBy: 'CUSTOMER', order: 4, isRequired: true, description: 'Utility bill or official letter', maxSizeBytes: 5 * 1024 * 1024, allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf'] },
-                { documentType: 'PREAPPROVAL_LETTER', documentName: 'Bank Preapproval Letter', uploadedBy: 'LENDER', order: 5, isRequired: true, description: 'Preapproval letter from partner bank', maxSizeBytes: 10 * 1024 * 1024, allowedMimeTypes: ['application/pdf'] },
+                { documentType: 'PREAPPROVAL_LETTER', documentName: 'Bank Preapproval Letter', uploadedBy: 'LENDER', autoApprove: true, order: 5, isRequired: true, description: 'Preapproval letter from partner bank', maxSizeBytes: 10 * 1024 * 1024, allowedMimeTypes: ['application/pdf'] },
             ],
             approvalStages: [
                 { name: 'QShelter Staff Review', order: 1, organizationTypeCode: 'PLATFORM', autoTransition: false, waitForAllDocuments: true, onRejection: 'CASCADE_BACK' },
@@ -650,7 +650,7 @@ export async function runDemoBootstrap(
             isActive: true,
             documentDefinitions: [{
                 documentType: 'MORTGAGE_OFFER_LETTER', documentName: 'Mortgage Offer Letter',
-                uploadedBy: 'LENDER', order: 1, isRequired: true,
+                uploadedBy: 'LENDER', autoApprove: true, order: 1, isRequired: true,
                 description: 'Final mortgage offer from the bank',
                 maxSizeBytes: 10 * 1024 * 1024, allowedMimeTypes: ['application/pdf'],
             }],
