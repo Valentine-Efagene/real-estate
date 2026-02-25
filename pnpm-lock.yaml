@@ -101,8 +101,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       '@valentine-efagene/qshelter-common':
-        specifier: ^2.0.204
-        version: 2.0.204(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3)(zod@4.2.1)
+        specifier: ^2.0.205
+        version: 2.0.205(express@4.21.2)(typescript@5.6.3)(zod@4.2.1)
       dotenv:
         specifier: ^16.4.5
         version: 16.6.1
@@ -198,8 +198,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       '@valentine-efagene/qshelter-common':
-        specifier: ^2.0.204
-        version: 2.0.204(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(zod@4.3.5)
+        specifier: ^2.0.205
+        version: 2.0.205(express@4.21.2)(typescript@5.9.3)(zod@4.3.5)
       dotenv:
         specifier: ^16.4.5
         version: 16.6.1
@@ -292,8 +292,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       '@valentine-efagene/qshelter-common':
-        specifier: ^2.0.204
-        version: 2.0.204(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3)(zod@4.2.1)
+        specifier: ^2.0.205
+        version: 2.0.205(express@4.21.2)(typescript@5.6.3)(zod@4.2.1)
       dotenv:
         specifier: ^16.4.5
         version: 16.6.1
@@ -395,8 +395,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       '@valentine-efagene/qshelter-common':
-        specifier: ^2.0.204
-        version: 2.0.204(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(zod@4.3.4)
+        specifier: ^2.0.205
+        version: 2.0.205(express@4.21.2)(typescript@5.9.3)(zod@4.3.4)
       bcryptjs:
         specifier: ^3.0.3
         version: 3.0.3
@@ -2450,8 +2450,8 @@ packages:
       zod:
         optional: true
 
-  '@valentine-efagene/qshelter-common@2.0.204':
-    resolution: {integrity: sha512-kYj/uXk48gTGhpB1UBsvAs67ZSiqhrLEQtA88TU+LlQgg+EKeVZqL62DmnzcANpFsJ3uCQ4EdEdvzyyRjWrQxw==}
+  '@valentine-efagene/qshelter-common@2.0.205':
+    resolution: {integrity: sha512-JYJ79cDjBzUI4pF+TMtbe7KJoMjDafqd1gIZ53FrcqgksScUb+9c3lmhkc9DPCCLck9UmZECVkFRYQlXYo25LQ==}
     peerDependencies:
       express: ^4.0.0 || ^5.0.0
       zod: ^3.0.0 || ^4.0.0
@@ -7508,19 +7508,19 @@ snapshots:
 
   '@prisma/client-runtime-utils@7.4.1': {}
 
-  '@prisma/client@7.4.1(prisma@7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3))(typescript@5.6.3)':
-    dependencies:
-      '@prisma/client-runtime-utils': 7.4.1
-    optionalDependencies:
-      prisma: 7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3)
-      typescript: 5.6.3
-
   '@prisma/client@7.4.1(prisma@7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
       '@prisma/client-runtime-utils': 7.4.1
     optionalDependencies:
       prisma: 7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
       typescript: 5.9.3
+
+  '@prisma/client@7.4.1(prisma@7.4.1(typescript@5.6.3))(typescript@5.6.3)':
+    dependencies:
+      '@prisma/client-runtime-utils': 7.4.1
+    optionalDependencies:
+      prisma: 7.4.1(typescript@5.6.3)
+      typescript: 5.6.3
 
   '@prisma/client@7.4.1(prisma@7.4.1(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
@@ -8665,18 +8665,18 @@ snapshots:
       - react-dom
       - typescript
 
-  '@valentine-efagene/qshelter-common@2.0.204(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3)(zod@4.2.1)':
+  '@valentine-efagene/qshelter-common@2.0.205(express@4.21.2)(typescript@5.6.3)(zod@4.2.1)':
     dependencies:
       '@aws-sdk/client-eventbridge': 3.958.0
       '@aws-sdk/client-secrets-manager': 3.962.0
       '@aws-sdk/client-sns': 3.969.0
       '@aws-sdk/client-sqs': 3.960.0
       '@aws-sdk/client-ssm': 3.962.0
-      '@prisma/client': 7.4.1(prisma@7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3))(typescript@5.6.3)
+      '@prisma/client': 7.4.1(prisma@7.4.1(typescript@5.6.3))(typescript@5.6.3)
       axios: 1.13.5
       dotenv: 17.3.1
       jsonwebtoken: 9.0.3
-      prisma: 7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3)
+      prisma: 7.4.1(typescript@5.6.3)
     optionalDependencies:
       express: 4.21.2
       zod: 4.2.1
@@ -8690,18 +8690,18 @@ snapshots:
       - react-dom
       - typescript
 
-  '@valentine-efagene/qshelter-common@2.0.204(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(zod@4.3.4)':
+  '@valentine-efagene/qshelter-common@2.0.205(express@4.21.2)(typescript@5.9.3)(zod@4.3.4)':
     dependencies:
       '@aws-sdk/client-eventbridge': 3.958.0
       '@aws-sdk/client-secrets-manager': 3.962.0
       '@aws-sdk/client-sns': 3.969.0
       '@aws-sdk/client-sqs': 3.960.0
       '@aws-sdk/client-ssm': 3.962.0
-      '@prisma/client': 7.4.1(prisma@7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)
+      '@prisma/client': 7.4.1(prisma@7.4.1(typescript@5.9.3))(typescript@5.9.3)
       axios: 1.13.5
       dotenv: 17.3.1
       jsonwebtoken: 9.0.3
-      prisma: 7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
+      prisma: 7.4.1(typescript@5.9.3)
     optionalDependencies:
       express: 4.21.2
       zod: 4.3.4
@@ -8715,18 +8715,18 @@ snapshots:
       - react-dom
       - typescript
 
-  '@valentine-efagene/qshelter-common@2.0.204(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(zod@4.3.5)':
+  '@valentine-efagene/qshelter-common@2.0.205(express@4.21.2)(typescript@5.9.3)(zod@4.3.5)':
     dependencies:
       '@aws-sdk/client-eventbridge': 3.958.0
       '@aws-sdk/client-secrets-manager': 3.962.0
       '@aws-sdk/client-sns': 3.969.0
       '@aws-sdk/client-sqs': 3.960.0
       '@aws-sdk/client-ssm': 3.962.0
-      '@prisma/client': 7.4.1(prisma@7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)
+      '@prisma/client': 7.4.1(prisma@7.4.1(typescript@5.9.3))(typescript@5.9.3)
       axios: 1.13.5
       dotenv: 17.3.1
       jsonwebtoken: 9.0.3
-      prisma: 7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
+      prisma: 7.4.1(typescript@5.9.3)
     optionalDependencies:
       express: 4.21.2
       zod: 4.3.5
@@ -10905,22 +10905,6 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
-  prisma@7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3):
-    dependencies:
-      '@prisma/config': 7.4.1
-      '@prisma/dev': 0.20.0(typescript@5.6.3)
-      '@prisma/engines': 7.4.1
-      '@prisma/studio-core': 0.13.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      mysql2: 3.15.3
-      postgres: 3.4.7
-    optionalDependencies:
-      typescript: 5.6.3
-    transitivePeerDependencies:
-      - '@types/react'
-      - magicast
-      - react
-      - react-dom
-
   prisma@7.4.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3):
     dependencies:
       '@prisma/config': 7.4.1
@@ -10931,6 +10915,22 @@ snapshots:
       postgres: 3.4.7
     optionalDependencies:
       typescript: 5.9.3
+    transitivePeerDependencies:
+      - '@types/react'
+      - magicast
+      - react
+      - react-dom
+
+  prisma@7.4.1(typescript@5.6.3):
+    dependencies:
+      '@prisma/config': 7.4.1
+      '@prisma/dev': 0.20.0(typescript@5.6.3)
+      '@prisma/engines': 7.4.1
+      '@prisma/studio-core': 0.13.1(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      mysql2: 3.15.3
+      postgres: 3.4.7
+    optionalDependencies:
+      typescript: 5.6.3
     transitivePeerDependencies:
       - '@types/react'
       - magicast

@@ -1,6 +1,7 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
 import {
     AppError,
+    Prisma,
     PrismaClient,
     StepType,
     ApplicationStatus,
@@ -362,7 +363,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
         const unitPrice = propertyUnit.priceOverride ?? propertyUnit.variant.price;
         const totalAmount = data.totalAmount ?? unitPrice;
 
-        const application = await prisma.$transaction(async (tx: any) => {
+        const application = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             await tx.propertyUnit.update({
                 where: { id: data.propertyUnitId },
                 data: {
@@ -384,7 +385,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 data: {
                     tenantId: (data as any).tenantId,
                     propertyUnitId: data.propertyUnitId,
-                    buyerId: data.buyerId,
+                    buyerId: data.buyerId!,
                     sellerId: data.sellerId ?? propertyUnit.variant.property.userId,
                     paymentMethodId: data.paymentMethodId,
                     applicationNumber: generateApplicationNumber(),
@@ -459,7 +460,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                                 scoringStrategy: questionnairePlan.scoringStrategy,
                                 passingScore: questionnairePlan.passingScore,
                                 autoDecisionEnabled: questionnairePlan.autoDecisionEnabled,
-                            } : null,
+                            } : Prisma.DbNull,
                         },
                     });
 
@@ -982,7 +983,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(400, `Invalid transition: ${data.trigger} from status ${fromStatus}`);
         }
 
-        const updated = await prisma.$transaction(async (tx: any) => {
+        const updated = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const result = await tx.application.update({
                 where: { id },
                 data: {
@@ -1065,7 +1066,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(403, 'Only the buyer can sign the application');
         }
 
-        const updated = await prisma.$transaction(async (tx: any) => {
+        const updated = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const result = await tx.application.update({
                 where: { id },
                 data: {
@@ -1146,7 +1147,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             // Continue with cancellation even if release fails
         }
 
-        const updated = await prisma.$transaction(async (tx: any) => {
+        const updated = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const result = await tx.application.update({
                 where: { id },
                 data: {
@@ -1189,7 +1190,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(403, 'Only the buyer can delete the application');
         }
 
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             await tx.applicationPayment.deleteMany({ where: { applicationId: id } });
             await tx.applicationDocument.deleteMany({ where: { applicationId: id } });
 
@@ -1206,12 +1207,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 // Delete DocumentationPhase extension and children
                 if (phase.documentationPhase) {
                     const docPhaseId = phase.documentationPhase.id;
-                    const steps = await tx.documentationStep.findMany({ where: { documentationPhaseId: docPhaseId } });
-                    for (const step of steps) {
-                        await tx.documentationStepApproval.deleteMany({ where: { stepId: step.id } });
-                        await tx.documentationStepDocument.deleteMany({ where: { stepId: step.id } });
-                    }
-                    await tx.documentationStep.deleteMany({ where: { documentationPhaseId: docPhaseId } });
+                    await tx.approvalStageProgress.deleteMany({ where: { documentationPhaseId: docPhaseId } });
                     await tx.documentationPhase.delete({ where: { id: docPhaseId } });
                 }
 

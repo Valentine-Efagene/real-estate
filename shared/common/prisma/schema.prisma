@@ -459,12 +459,15 @@ enum EventActorType {
 }
 
 enum RefundStatus {
+  NOT_APPLICABLE
   PENDING
   APPROVED
   REJECTED
+  INITIATED
   PROCESSING
   COMPLETED
   FAILED
+  PARTIAL
   CANCELLED
 }
 

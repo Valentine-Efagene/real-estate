@@ -551,7 +551,7 @@ export class PaymentMethodChangeService {
         const maxOrder = Math.max(...application.phases.map((p: { order: number }) => p.order));
 
         // Execute in transaction
-        const result = await this.db.$transaction(async (tx) => {
+        const result = await this.db.$transaction(async (tx: Prisma.TransactionClient) => {
             // 1. Supersede current payment phases
             for (const phase of currentPaymentPhases) {
                 await tx.applicationPhase.update({

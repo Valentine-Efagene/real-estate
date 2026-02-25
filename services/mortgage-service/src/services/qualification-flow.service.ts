@@ -1,5 +1,5 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
+import { AppError, Prisma, PrismaClient } from '@valentine-efagene/qshelter-common';
 import type {
     CreateQualificationFlowInput,
     UpdateQualificationFlowInput,
@@ -64,7 +64,7 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
     async function createFlow(tenantId: string, data: CreateQualificationFlowInput) {
         const { phases, ...flowData } = data;
 
-        return prisma.$transaction(async (tx: any) => {
+        return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const flow = await tx.qualificationFlow.create({
                 data: {
                     tenantId,
@@ -135,7 +135,7 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
         const existing = await findFlowById(id);
         const { phases, ...flowData } = data;
 
-        return prisma.$transaction(async (tx: any) => {
+        return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // Update flow metadata
             const flow = await tx.qualificationFlow.update({
                 where: { id },
@@ -274,7 +274,7 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
         );
         const qualificationFlow = matchingConfig?.qualificationFlow || null;
 
-        return prisma.$transaction(async (tx: any) => {
+        return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // Create the org-payment-method assignment
             const assignment = await tx.organizationPaymentMethod.create({
                 data: {
@@ -518,7 +518,7 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
             throw new AppError(400, `Cannot review a phase in ${phase.status} status`);
         }
 
-        return prisma.$transaction(async (tx: any) => {
+        return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const gate = phase.gatePhase!;
             const qualification = phase.qualification;
 

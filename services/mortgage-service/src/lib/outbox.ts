@@ -46,7 +46,7 @@ export interface OutboxEnqueueOptions<T> {
  * Uses the DomainEvent model as outbox.
  */
 export async function enqueueOutboxInTx<T>(
-    tx: PrismaClient,
+    tx: Pick<PrismaClient, 'domainEvent'>,
     opts: OutboxEnqueueOptions<T>
 ): Promise<string> {
     const id = uuidv4();

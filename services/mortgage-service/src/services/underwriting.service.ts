@@ -1,4 +1,5 @@
 import {
+    Prisma,
     PrismaClient,
     NotificationType,
 } from '@valentine-efagene/qshelter-common';
@@ -344,7 +345,7 @@ export class UnderwritingService {
         }
 
         // Update questionnaire phase in transaction
-        const result = await this.prisma.$transaction(async (tx: any) => {
+        const result = await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // Store underwriting results in the QuestionnairePhase
             if (questionnairePhase) {
                 await tx.questionnairePhase.update({

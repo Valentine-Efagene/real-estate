@@ -71,9 +71,6 @@ class EventHandlerService {
             where: { id },
             include: {
                 eventType: true,
-                stepAttachments: {
-                    include: { step: true },
-                },
                 phaseAttachments: {
                     include: { phase: true },
                 },

@@ -1,6 +1,7 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
 import {
     AppError,
+    Prisma,
     PrismaClient,
 } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
@@ -191,7 +192,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
         expiresAt.setDate(expiresAt.getDate() + (data.expiresInDays || 30));
 
         // Create the offer letter
-        const offerLetter = await prisma.$transaction(async (tx: any) => {
+        const offerLetter = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const created = await tx.offerLetter.create({
                 data: {
                     tenantId,
@@ -362,7 +363,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
         const application = offerLetter.application;
         const buyer = application.buyer;
 
-        const updated = await prisma.$transaction(async (tx: any) => {
+        const updated = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const result = await tx.offerLetter.update({
                 where: { id },
                 data: {
@@ -453,7 +454,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
         const application = offerLetter.application;
         const buyer = application.buyer;
 
-        const updated = await prisma.$transaction(async (tx: any) => {
+        const updated = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const result = await tx.offerLetter.update({
                 where: { id },
                 data: {
@@ -523,7 +524,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(400, `Cannot cancel offer letter in ${offerLetter.status} status`);
         }
 
-        const updated = await prisma.$transaction(async (tx: any) => {
+        const updated = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const result = await tx.offerLetter.update({
                 where: { id },
                 data: {

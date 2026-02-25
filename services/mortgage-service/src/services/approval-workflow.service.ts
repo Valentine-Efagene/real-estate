@@ -1,6 +1,7 @@
 import { prisma } from '../lib/prisma';
 import {
     AppError,
+    Prisma,
     StageStatus,
     ReviewDecision,
     DocumentStatus,
@@ -308,7 +309,7 @@ export function createApprovalWorkflowService() {
 
                 if (currentStage) {
                     // Auto-approve the document and check for stage completion
-                    await prisma.$transaction(async (tx: any) => {
+                    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
                         // Create auto-approval record
                         await tx.documentApproval.create({
                             data: {

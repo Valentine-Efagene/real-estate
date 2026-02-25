@@ -1,5 +1,5 @@
 import { prisma } from '../lib/prisma';
-import { PhaseStatus, StageStatus, PaymentEventPublisher } from '@valentine-efagene/qshelter-common';
+import { Prisma, PhaseStatus, StageStatus, PaymentEventPublisher } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import { approvalWorkflowService, type ApprovalStageSnapshot } from './approval-workflow.service';
 import { createConditionEvaluatorService } from './condition-evaluator.service';
@@ -71,7 +71,7 @@ class PhaseOrchestratorService {
         const applicationId = phase.applicationId;
 
         // Use transaction if not already in one
-        const executeInTransaction = async (tx: any) => {
+        const executeInTransaction = async (tx: Prisma.TransactionClient) => {
             let completedPhase = phase;
 
             // 1. Mark phase as completed (skip if already done)
@@ -152,7 +152,7 @@ class PhaseOrchestratorService {
 
                     // Initialize approval stages for DOCUMENTATION phases
                     if (nextPhase.documentationPhase) {
-                        const approvalStages = (nextPhase.documentationPhase.approvalStagesSnapshot as ApprovalStageSnapshot[]) ||
+                        const approvalStages = (nextPhase.documentationPhase.approvalStagesSnapshot as unknown as ApprovalStageSnapshot[]) ||
                             nextPhase.documentationPhase.documentationPlan?.approvalStages || [];
 
                         if (approvalStages.length > 0) {

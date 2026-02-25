@@ -441,12 +441,15 @@ export type EventActorType = (typeof EventActorType)[keyof typeof EventActorType
 
 
 export const RefundStatus = {
+  NOT_APPLICABLE: 'NOT_APPLICABLE',
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
+  INITIATED: 'INITIATED',
   PROCESSING: 'PROCESSING',
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
+  PARTIAL: 'PARTIAL',
   CANCELLED: 'CANCELLED'
 } as const
 

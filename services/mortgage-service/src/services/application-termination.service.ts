@@ -1,5 +1,5 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
+import { AppError, Prisma, PrismaClient, RefundStatus } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import {
     sendApplicationTerminationRequestedNotification,
@@ -41,15 +41,6 @@ type TerminationStatus =
     | 'REFUND_COMPLETED'
     | 'COMPLETED'
     | 'CANCELLED';
-
-type RefundStatus =
-    | 'NOT_APPLICABLE'
-    | 'PENDING'
-    | 'INITIATED'
-    | 'PROCESSING'
-    | 'COMPLETED'
-    | 'FAILED'
-    | 'PARTIAL';
 
 type TerminationInitiator = 'BUYER' | 'SELLER' | 'ADMIN' | 'SYSTEM';
 
@@ -106,6 +97,16 @@ function generateRequestNumber(): string {
     const timestamp = Date.now().toString(36).toUpperCase();
     const random = Math.random().toString(36).substring(2, 6).toUpperCase();
     return `TRM-${timestamp}-${random}`;
+}
+
+/**
+ * Compute total paid amount from completed/paid payments.
+ * The Application model doesn't store totalPaidToDate — it must be derived from payments.
+ */
+function computeTotalPaidToDate(payments: { status: string; amount: number }[]): number {
+    return (payments || [])
+        .filter(p => p.status === 'COMPLETED' || p.status === 'PAID')
+        .reduce((sum, p) => sum + p.amount, 0);
 }
 
 /**
@@ -238,7 +239,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
         data: RequestTerminationInput,
         opts?: { idempotencyKey?: string }
     ) {
-        return prisma.$transaction(async (tx: any) => {
+        return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // Check idempotency
             if (opts?.idempotencyKey) {
                 const existing = await tx.applicationTermination.findUnique({
@@ -295,11 +296,13 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
             const autoApproveEligible = !isSigned && !hasPayments;
 
             // Calculate settlement
-            const settlement = calculateSettlement(application, data.type as TerminationType);
+            const totalPaidToDate = computeTotalPaidToDate(application.payments);
+            const appWithPaid = { ...application, totalPaidToDate };
+            const settlement = calculateSettlement(appWithPaid, data.type as TerminationType);
 
             // Determine refund status
             let refundStatus: RefundStatus = 'NOT_APPLICABLE';
-            if (application.totalPaidToDate > 0 && settlement.netRefundAmount > 0) {
+            if (totalPaidToDate > 0 && settlement.netRefundAmount > 0) {
                 refundStatus = 'PENDING';
             }
 
@@ -323,7 +326,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
                         applicationNumber: application.applicationNumber,
                         status: application.status,
                         totalAmount: application.totalAmount,
-                        totalPaidToDate: application.totalPaidToDate,
+                        totalPaidToDate,
                         signedAt: application.signedAt,
                         phases: application.phases.map((p: any) => ({
                             id: p.id,
@@ -333,8 +336,8 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
                         })),
                     },
                     totalApplicationAmount: application.totalAmount,
-                    totalPaidToDate: application.totalPaidToDate,
-                    outstandingBalance: application.totalAmount - application.totalPaidToDate,
+                    totalPaidToDate,
+                    outstandingBalance: application.totalAmount - totalPaidToDate,
                     // Settlement
                     ...settlement,
                     refundStatus,
@@ -400,7 +403,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
         data: AdminTerminationInput,
         opts?: { idempotencyKey?: string }
     ) {
-        return prisma.$transaction(async (tx: any) => {
+        return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // Check idempotency
             if (opts?.idempotencyKey) {
                 const existing = await tx.applicationTermination.findUnique({
@@ -428,10 +431,12 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
                 throw new AppError(400, `Application is already ${application.status.toLowerCase()}`);
             }
 
-            const settlement = calculateSettlement(application, data.type as TerminationType);
+            const totalPaidToDate = computeTotalPaidToDate(application.payments);
+            const appWithPaid = { ...application, totalPaidToDate };
+            const settlement = calculateSettlement(appWithPaid, data.type as TerminationType);
 
             let refundStatus: RefundStatus = 'NOT_APPLICABLE';
-            if (application.totalPaidToDate > 0 && settlement.netRefundAmount > 0) {
+            if (totalPaidToDate > 0 && settlement.netRefundAmount > 0) {
                 refundStatus = 'PENDING';
             }
 
@@ -453,12 +458,12 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
                         applicationNumber: application.applicationNumber,
                         status: application.status,
                         totalAmount: application.totalAmount,
-                        totalPaidToDate: application.totalPaidToDate,
+                        totalPaidToDate,
                         signedAt: application.signedAt,
                     },
                     totalApplicationAmount: application.totalAmount,
-                    totalPaidToDate: application.totalPaidToDate,
-                    outstandingBalance: application.totalAmount - application.totalPaidToDate,
+                    totalPaidToDate,
+                    outstandingBalance: application.totalAmount - totalPaidToDate,
                     ...settlement,
                     refundStatus,
                     approvedAt: data.bypassApproval ? new Date() : null,
@@ -504,7 +509,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
         reviewerId: string,
         data: ReviewTerminationInput
     ) {
-        return prisma.$transaction(async (tx: any) => {
+        return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const termination = await tx.applicationTermination.findUnique({
                 where: { id: terminationId },
                 include: { application: true },
@@ -637,7 +642,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
         adminId: string,
         data: ProcessRefundInput
     ) {
-        return prisma.$transaction(async (tx: any) => {
+        return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const termination = await tx.applicationTermination.findUnique({
                 where: { id: terminationId },
             });
@@ -698,7 +703,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
         adminId: string,
         data: CompleteRefundInput
     ) {
-        return prisma.$transaction(async (tx: any) => {
+        return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const termination = await tx.applicationTermination.findUnique({
                 where: { id: terminationId },
             });
@@ -755,7 +760,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
         actorId: string,
         txOrPrisma: any = prisma
     ) {
-        const execute = async (tx: any) => {
+        const execute = async (tx: Prisma.TransactionClient) => {
             const termination = await tx.applicationTermination.findUnique({
                 where: { id: terminationId },
                 include: {
@@ -780,7 +785,6 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
                 where: { id: termination.applicationId },
                 data: {
                     status: 'TERMINATED',
-                    state: 'TERMINATED',
                     terminatedAt: new Date(),
                 },
             });
@@ -879,7 +883,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
         userId: string,
         data?: CancelTerminationInput
     ) {
-        return prisma.$transaction(async (tx: any) => {
+        return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const termination = await tx.applicationTermination.findUnique({
                 where: { id: terminationId },
             });
@@ -904,7 +908,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
                     status: 'CANCELLED',
                     cancelledAt: new Date(),
                     metadata: {
-                        ...(termination.metadata || {}),
+                        ...((termination.metadata as Record<string, unknown>) || {}),
                         cancellationReason: data?.reason,
                         cancelledBy: userId,
                     },

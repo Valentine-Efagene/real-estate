@@ -1,5 +1,5 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, PrismaClient, PhaseType, PhaseTrigger } from '@valentine-efagene/qshelter-common';
+import { AppError, Prisma, PrismaClient, PhaseType, PhaseTrigger } from '@valentine-efagene/qshelter-common';
 import type {
     CreatePaymentMethodInput,
     UpdatePaymentMethodInput,
@@ -43,7 +43,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
     async function create(tenantId: string, data: CreatePaymentMethodInput) {
         const { phases, ...methodData } = data;
 
-        const method = await prisma.$transaction(async (tx: any) => {
+        const method = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const created = await tx.propertyPaymentMethod.create({
                 data: {
                     tenantId,
@@ -197,7 +197,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(400, `Cannot delete payment method: used by ${applicationCount} application(s)`);
         }
 
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             await tx.propertyPaymentMethodPhase.deleteMany({
                 where: { paymentMethodId: id },
             });
@@ -258,7 +258,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             }
         }
 
-        const phase = await prisma.$transaction(async (tx: any) => {
+        const phase = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const createdPhase = await tx.propertyPaymentMethodPhase.create({
                 data: {
                     tenantId: method.tenantId,
@@ -335,7 +335,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(404, 'Phase not found');
         }
 
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // Delete the phase
             await tx.propertyPaymentMethodPhase.delete({
                 where: { id: phaseId },
@@ -400,7 +400,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(400, 'Duplicate phase orders are not allowed');
         }
 
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // Temporarily set all orders to negative to avoid unique constraint conflicts during reorder
             for (let i = 0; i < phaseOrders.length; i++) {
                 await tx.propertyPaymentMethodPhase.update({
@@ -428,7 +428,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
     async function clone(id: string, tenantId: string, data: ClonePaymentMethodInput) {
         const source = await findById(id);
 
-        const cloned = await prisma.$transaction(async (tx: any) => {
+        const cloned = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // Create the new payment method
             const newMethod = await tx.propertyPaymentMethod.create({
                 data: {
