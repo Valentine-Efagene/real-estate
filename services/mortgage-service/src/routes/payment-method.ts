@@ -16,8 +16,8 @@ import {
     getAuthContext,
     successResponse,
     requireTenant,
-    requireRole,
-    ADMIN_ROLES,
+    requirePlatformRole as requireRole,
+    PLATFORM_ADMIN_ROLES as ADMIN_ROLES,
 } from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
 import { getTenantPrisma } from '../lib/tenant-services';

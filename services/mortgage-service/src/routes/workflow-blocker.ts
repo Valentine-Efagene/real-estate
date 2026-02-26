@@ -3,8 +3,8 @@ import { z } from "zod";
 import {
     getAuthContext,
     requireTenant,
-    requireRole,
-    ADMIN_ROLES,
+    requirePlatformRole as requireRole,
+    PLATFORM_ADMIN_ROLES as ADMIN_ROLES,
     BlockerActor,
     BlockerCategory,
     BlockerUrgency,

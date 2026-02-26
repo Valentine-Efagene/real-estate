@@ -219,10 +219,16 @@ class InvitationService {
 
         // Use a transaction to create user, add to org, and update invitation
         const result = await prisma.$transaction(async (tx) => {
+            if (!invitation.roleId) {
+                throw new ValidationError('Invitation is missing role assignment');
+            }
+
             // Check if user already exists
             let user = await tx.user.findUnique({
                 where: { email: invitation.email },
             });
+
+            let membership = null as any;
 
             if (user) {
                 // User exists - just add them to the organization
@@ -236,6 +242,27 @@ class InvitationService {
 
                 if (existingMember) {
                     throw new ConflictError('You are already a member of this organization');
+                }
+
+                membership = await tx.tenantMembership.findUnique({
+                    where: {
+                        userId_tenantId: {
+                            userId: user.id,
+                            tenantId: invitation.tenantId,
+                        },
+                    },
+                });
+
+                if (!membership) {
+                    membership = await tx.tenantMembership.create({
+                        data: {
+                            userId: user.id,
+                            tenantId: invitation.tenantId,
+                            roleId: invitation.roleId,
+                            isDefault: true,
+                            isActive: true,
+                        },
+                    });
                 }
             } else {
                 // Create new user
@@ -251,10 +278,7 @@ class InvitationService {
                 });
 
                 // Create tenant membership with the assigned role
-                if (!invitation.roleId) {
-                    throw new ValidationError('Invitation is missing role assignment');
-                }
-                await tx.tenantMembership.create({
+                membership = await tx.tenantMembership.create({
                     data: {
                         userId: user.id,
                         tenantId: invitation.tenantId,
@@ -265,11 +289,30 @@ class InvitationService {
                 });
             }
 
+            // Multi-role support: add invitation role to tenant membership as an additional role
+            // when it differs from the membership's primary role.
+            if (membership && membership.roleId !== invitation.roleId) {
+                await tx.tenantMembershipRole.upsert({
+                    where: {
+                        tenantMembershipId_roleId: {
+                            tenantMembershipId: membership.id,
+                            roleId: invitation.roleId,
+                        },
+                    },
+                    update: {},
+                    create: {
+                        tenantMembershipId: membership.id,
+                        roleId: invitation.roleId,
+                    },
+                });
+            }
+
             // Add user to organization
             const member = await tx.organizationMember.create({
                 data: {
                     organizationId: invitation.organizationId,
                     userId: user.id,
+                    roleId: invitation.roleId,
                     title: invitation.title,
                     department: invitation.department,
                     isActive: true,

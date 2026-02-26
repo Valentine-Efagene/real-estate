@@ -276,6 +276,7 @@ export async function runDemoBootstrap(
     const roles = bootstrapResult.roles as Array<{ id: string; name: string; isNew?: boolean }>;
     const mortgageOpsRoleId = roles.find((r) => r.name === 'mortgage_ops')!.id;
     const agentRoleId = roles.find((r) => r.name === 'agent')!.id;
+    const lenderOpsRoleId = roles.find((r) => r.name === 'lender_ops')!.id;
     log('Bootstrap tenant', `Tenant: ${tenantId}, Admin: ${adminId}`);
 
     // =========================================================================
@@ -371,20 +372,20 @@ export async function runDemoBootstrap(
     const bankOrgId = bankOrg.id;
     log('Create Access Bank org', bankOrgId);
 
-    // Invite Eniola as mortgage_ops + onboarder
+    // Invite Eniola as lender_ops + onboarder
     const eniolaInvitation = await invitationService.createInvitation(tenantId, adminId, {
         organizationId: bankOrgId,
         email: 'eniola@mailsac.com',
         firstName: 'Eniola',
         lastName: 'Adeyemi',
-        roleId: mortgageOpsRoleId,
+        roleId: lenderOpsRoleId,
         title: 'Mortgage Operations Officer',
         department: 'Mortgage Lending',
         isOnboarder: true,
     });
     const eniolaAccept = await invitationService.acceptInvitation(eniolaInvitation.token, DEFAULT_PASSWORD);
     const eniolaId = eniolaAccept.user.id;
-    log('Create Eniola (mortgage_ops/onboarder)', eniolaId);
+    log('Create Eniola (lender_ops/onboarder)', eniolaId);
 
     // Complete bank onboarding
     await completeOnboardingInternal(tenantId, bankOrgId, adminId, eniolaId);

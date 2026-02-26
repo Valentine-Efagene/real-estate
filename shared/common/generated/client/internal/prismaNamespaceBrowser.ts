@@ -58,8 +58,10 @@ export const ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   TenantMembership: 'TenantMembership',
+  TenantMembershipRole: 'TenantMembershipRole',
   Organization: 'Organization',
   OrganizationMember: 'OrganizationMember',
+  OrganizationMemberRole: 'OrganizationMemberRole',
   OrganizationInvitation: 'OrganizationInvitation',
   OnboardingFlow: 'OnboardingFlow',
   OnboardingFlowPhase: 'OnboardingFlowPhase',
@@ -259,6 +261,15 @@ export const TenantMembershipScalarFieldEnum = {
 export type TenantMembershipScalarFieldEnum = (typeof TenantMembershipScalarFieldEnum)[keyof typeof TenantMembershipScalarFieldEnum]
 
 
+export const TenantMembershipRoleScalarFieldEnum = {
+  tenantMembershipId: 'tenantMembershipId',
+  roleId: 'roleId',
+  assignedAt: 'assignedAt'
+} as const
+
+export type TenantMembershipRoleScalarFieldEnum = (typeof TenantMembershipRoleScalarFieldEnum)[keyof typeof TenantMembershipRoleScalarFieldEnum]
+
+
 export const OrganizationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -294,6 +305,7 @@ export const OrganizationMemberScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   userId: 'userId',
+  roleId: 'roleId',
   title: 'title',
   department: 'department',
   employeeId: 'employeeId',
@@ -307,6 +319,15 @@ export const OrganizationMemberScalarFieldEnum = {
 } as const
 
 export type OrganizationMemberScalarFieldEnum = (typeof OrganizationMemberScalarFieldEnum)[keyof typeof OrganizationMemberScalarFieldEnum]
+
+
+export const OrganizationMemberRoleScalarFieldEnum = {
+  organizationMemberId: 'organizationMemberId',
+  roleId: 'roleId',
+  assignedAt: 'assignedAt'
+} as const
+
+export type OrganizationMemberRoleScalarFieldEnum = (typeof OrganizationMemberRoleScalarFieldEnum)[keyof typeof OrganizationMemberRoleScalarFieldEnum]
 
 
 export const OrganizationInvitationScalarFieldEnum = {
@@ -2014,6 +2035,14 @@ export const TenantMembershipOrderByRelevanceFieldEnum = {
 export type TenantMembershipOrderByRelevanceFieldEnum = (typeof TenantMembershipOrderByRelevanceFieldEnum)[keyof typeof TenantMembershipOrderByRelevanceFieldEnum]
 
 
+export const TenantMembershipRoleOrderByRelevanceFieldEnum = {
+  tenantMembershipId: 'tenantMembershipId',
+  roleId: 'roleId'
+} as const
+
+export type TenantMembershipRoleOrderByRelevanceFieldEnum = (typeof TenantMembershipRoleOrderByRelevanceFieldEnum)[keyof typeof TenantMembershipRoleOrderByRelevanceFieldEnum]
+
+
 export const OrganizationOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -2044,6 +2073,7 @@ export const OrganizationMemberOrderByRelevanceFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   userId: 'userId',
+  roleId: 'roleId',
   title: 'title',
   department: 'department',
   employeeId: 'employeeId',
@@ -2051,6 +2081,14 @@ export const OrganizationMemberOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrganizationMemberOrderByRelevanceFieldEnum = (typeof OrganizationMemberOrderByRelevanceFieldEnum)[keyof typeof OrganizationMemberOrderByRelevanceFieldEnum]
+
+
+export const OrganizationMemberRoleOrderByRelevanceFieldEnum = {
+  organizationMemberId: 'organizationMemberId',
+  roleId: 'roleId'
+} as const
+
+export type OrganizationMemberRoleOrderByRelevanceFieldEnum = (typeof OrganizationMemberRoleOrderByRelevanceFieldEnum)[keyof typeof OrganizationMemberRoleOrderByRelevanceFieldEnum]
 
 
 export const OrganizationInvitationOrderByRelevanceFieldEnum = {

@@ -63,12 +63,15 @@ export interface UpdateOrganizationInput {
 export interface AddMemberInput {
     userId: string;
     roleId?: string;
+    additionalRoleIds?: string[];
     title?: string;
     department?: string;
     employeeId?: string;
 }
 
 export interface UpdateMemberInput {
+    roleId?: string;
+    additionalRoleIds?: string[];
     title?: string;
     department?: string;
     employeeId?: string;
@@ -476,26 +479,6 @@ class OrganizationService {
 
         // Create member and assign role in a transaction
         const result = await prisma.$transaction(async (tx) => {
-            // Create organization member
-            const member = await tx.organizationMember.create({
-                data: {
-                    organizationId,
-                    userId: data.userId,
-                    title: data.title,
-                    department: data.department,
-                    employeeId: data.employeeId,
-                    joinedAt: new Date(),
-                },
-                include: {
-                    user: {
-                        select: { id: true, email: true, firstName: true, lastName: true },
-                    },
-                    organization: {
-                        select: { id: true, name: true },
-                    },
-                },
-            });
-
             // Determine the role to assign
             let role;
             if (data.roleId) {
@@ -529,12 +512,33 @@ class OrganizationService {
                 }
             }
 
+            // Create organization member with primary org role
+            const member = await tx.organizationMember.create({
+                data: {
+                    organizationId,
+                    userId: data.userId,
+                    roleId: role.id,
+                    title: data.title,
+                    department: data.department,
+                    employeeId: data.employeeId,
+                    joinedAt: new Date(),
+                },
+                include: {
+                    user: {
+                        select: { id: true, email: true, firstName: true, lastName: true },
+                    },
+                    organization: {
+                        select: { id: true, name: true },
+                    },
+                },
+            });
+
             // Assign the role to the user via TenantMembership
             // IMPORTANT: Only set roleId on CREATE (new membership).
             // On UPDATE, do NOT overwrite the existing role — the user may already
             // have a higher-privilege role (e.g., admin from bootstrap) that should
             // not be downgraded when they're added to an organization.
-            await tx.tenantMembership.upsert({
+            const membership = await tx.tenantMembership.upsert({
                 where: { userId_tenantId: { userId: data.userId, tenantId } },
                 create: {
                     userId: data.userId,
@@ -546,6 +550,60 @@ class OrganizationService {
                     isActive: true,
                 },
             });
+
+            const additionalRoleIds = [...new Set(data.additionalRoleIds ?? [])]
+                .filter((id) => id && id !== role.id);
+
+            if (additionalRoleIds.length > 0) {
+                const additionalRoles = await tx.role.findMany({
+                    where: {
+                        id: { in: additionalRoleIds },
+                        tenantId,
+                        isActive: true,
+                    },
+                    select: { id: true },
+                });
+
+                if (additionalRoles.length !== additionalRoleIds.length) {
+                    throw new ValidationError('One or more additional roles are invalid for this tenant');
+                }
+
+                for (const additionalRoleId of additionalRoleIds) {
+                    await tx.organizationMemberRole.upsert({
+                        where: {
+                            organizationMemberId_roleId: {
+                                organizationMemberId: member.id,
+                                roleId: additionalRoleId,
+                            },
+                        },
+                        update: {},
+                        create: {
+                            organizationMemberId: member.id,
+                            roleId: additionalRoleId,
+                        },
+                    });
+                }
+            }
+
+            // Multi-role support at tenant level: keep non-primary org roles as additive tenant roles.
+            const tenantAdditiveRoleIds = [...new Set([role.id, ...(data.additionalRoleIds ?? [])])]
+                .filter((id) => id && id !== membership.roleId);
+
+            for (const additiveRoleId of tenantAdditiveRoleIds) {
+                await tx.tenantMembershipRole.upsert({
+                    where: {
+                        tenantMembershipId_roleId: {
+                            tenantMembershipId: membership.id,
+                            roleId: additiveRoleId,
+                        },
+                    },
+                    update: {},
+                    create: {
+                        tenantMembershipId: membership.id,
+                        roleId: additiveRoleId,
+                    },
+                });
+            }
 
             return { member, role };
         });
@@ -583,14 +641,67 @@ class OrganizationService {
             throw new NotFoundError('Member not found');
         }
 
-        return prisma.organizationMember.update({
-            where: { id: memberId },
-            data,
-            include: {
-                user: {
-                    select: { id: true, email: true, firstName: true, lastName: true },
+        return prisma.$transaction(async (tx) => {
+            const scalarUpdate: any = {
+                title: data.title,
+                department: data.department,
+                employeeId: data.employeeId,
+                isActive: data.isActive,
+            };
+
+            if (data.roleId) {
+                const role = await tx.role.findFirst({
+                    where: { id: data.roleId, tenantId, isActive: true },
+                    select: { id: true },
+                });
+                if (!role) {
+                    throw new ValidationError('Invalid roleId for this tenant');
+                }
+                scalarUpdate.roleId = data.roleId;
+            }
+
+            const updatedMember = await tx.organizationMember.update({
+                where: { id: memberId },
+                data: scalarUpdate,
+                include: {
+                    user: {
+                        select: { id: true, email: true, firstName: true, lastName: true },
+                    },
                 },
-            },
+            });
+
+            if (data.additionalRoleIds) {
+                const additionalRoleIds = [...new Set(data.additionalRoleIds)]
+                    .filter((id) => id && id !== updatedMember.roleId);
+
+                const roles = await tx.role.findMany({
+                    where: {
+                        id: { in: additionalRoleIds },
+                        tenantId,
+                        isActive: true,
+                    },
+                    select: { id: true },
+                });
+
+                if (roles.length !== additionalRoleIds.length) {
+                    throw new ValidationError('One or more additional roles are invalid for this tenant');
+                }
+
+                await tx.organizationMemberRole.deleteMany({
+                    where: { organizationMemberId: memberId },
+                });
+
+                if (additionalRoleIds.length > 0) {
+                    await tx.organizationMemberRole.createMany({
+                        data: additionalRoleIds.map((roleId) => ({
+                            organizationMemberId: memberId,
+                            roleId,
+                        })),
+                    });
+                }
+            }
+
+            return updatedMember;
         });
     }
 

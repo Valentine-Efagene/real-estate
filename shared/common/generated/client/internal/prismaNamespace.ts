@@ -391,8 +391,10 @@ export const ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   TenantMembership: 'TenantMembership',
+  TenantMembershipRole: 'TenantMembershipRole',
   Organization: 'Organization',
   OrganizationMember: 'OrganizationMember',
+  OrganizationMemberRole: 'OrganizationMemberRole',
   OrganizationInvitation: 'OrganizationInvitation',
   OnboardingFlow: 'OnboardingFlow',
   OnboardingFlowPhase: 'OnboardingFlowPhase',
@@ -487,7 +489,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "organization" | "organizationMember" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver" | "asyncJob"
+    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "tenantMembershipRole" | "organization" | "organizationMember" | "organizationMemberRole" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver" | "asyncJob"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -953,6 +955,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TenantMembershipRole: {
+      payload: Prisma.$TenantMembershipRolePayload<ExtArgs>
+      fields: Prisma.TenantMembershipRoleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TenantMembershipRoleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipRolePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TenantMembershipRoleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipRolePayload>
+        }
+        findFirst: {
+          args: Prisma.TenantMembershipRoleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipRolePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TenantMembershipRoleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipRolePayload>
+        }
+        findMany: {
+          args: Prisma.TenantMembershipRoleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipRolePayload>[]
+        }
+        create: {
+          args: Prisma.TenantMembershipRoleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipRolePayload>
+        }
+        createMany: {
+          args: Prisma.TenantMembershipRoleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.TenantMembershipRoleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipRolePayload>
+        }
+        update: {
+          args: Prisma.TenantMembershipRoleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipRolePayload>
+        }
+        deleteMany: {
+          args: Prisma.TenantMembershipRoleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TenantMembershipRoleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.TenantMembershipRoleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipRolePayload>
+        }
+        aggregate: {
+          args: Prisma.TenantMembershipRoleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTenantMembershipRole>
+        }
+        groupBy: {
+          args: Prisma.TenantMembershipRoleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantMembershipRoleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TenantMembershipRoleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantMembershipRoleCountAggregateOutputType> | number
+        }
+      }
+    }
     Organization: {
       payload: Prisma.$OrganizationPayload<ExtArgs>
       fields: Prisma.OrganizationFieldRefs
@@ -1082,6 +1150,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.OrganizationMemberCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.OrganizationMemberCountAggregateOutputType> | number
+        }
+      }
+    }
+    OrganizationMemberRole: {
+      payload: Prisma.$OrganizationMemberRolePayload<ExtArgs>
+      fields: Prisma.OrganizationMemberRoleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrganizationMemberRoleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationMemberRolePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrganizationMemberRoleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationMemberRolePayload>
+        }
+        findFirst: {
+          args: Prisma.OrganizationMemberRoleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationMemberRolePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrganizationMemberRoleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationMemberRolePayload>
+        }
+        findMany: {
+          args: Prisma.OrganizationMemberRoleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationMemberRolePayload>[]
+        }
+        create: {
+          args: Prisma.OrganizationMemberRoleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationMemberRolePayload>
+        }
+        createMany: {
+          args: Prisma.OrganizationMemberRoleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OrganizationMemberRoleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationMemberRolePayload>
+        }
+        update: {
+          args: Prisma.OrganizationMemberRoleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationMemberRolePayload>
+        }
+        deleteMany: {
+          args: Prisma.OrganizationMemberRoleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrganizationMemberRoleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OrganizationMemberRoleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationMemberRolePayload>
+        }
+        aggregate: {
+          args: Prisma.OrganizationMemberRoleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganizationMemberRole>
+        }
+        groupBy: {
+          args: Prisma.OrganizationMemberRoleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationMemberRoleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrganizationMemberRoleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationMemberRoleCountAggregateOutputType> | number
         }
       }
     }
@@ -6440,6 +6574,15 @@ export const TenantMembershipScalarFieldEnum = {
 export type TenantMembershipScalarFieldEnum = (typeof TenantMembershipScalarFieldEnum)[keyof typeof TenantMembershipScalarFieldEnum]
 
 
+export const TenantMembershipRoleScalarFieldEnum = {
+  tenantMembershipId: 'tenantMembershipId',
+  roleId: 'roleId',
+  assignedAt: 'assignedAt'
+} as const
+
+export type TenantMembershipRoleScalarFieldEnum = (typeof TenantMembershipRoleScalarFieldEnum)[keyof typeof TenantMembershipRoleScalarFieldEnum]
+
+
 export const OrganizationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -6475,6 +6618,7 @@ export const OrganizationMemberScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   userId: 'userId',
+  roleId: 'roleId',
   title: 'title',
   department: 'department',
   employeeId: 'employeeId',
@@ -6488,6 +6632,15 @@ export const OrganizationMemberScalarFieldEnum = {
 } as const
 
 export type OrganizationMemberScalarFieldEnum = (typeof OrganizationMemberScalarFieldEnum)[keyof typeof OrganizationMemberScalarFieldEnum]
+
+
+export const OrganizationMemberRoleScalarFieldEnum = {
+  organizationMemberId: 'organizationMemberId',
+  roleId: 'roleId',
+  assignedAt: 'assignedAt'
+} as const
+
+export type OrganizationMemberRoleScalarFieldEnum = (typeof OrganizationMemberRoleScalarFieldEnum)[keyof typeof OrganizationMemberRoleScalarFieldEnum]
 
 
 export const OrganizationInvitationScalarFieldEnum = {
@@ -8195,6 +8348,14 @@ export const TenantMembershipOrderByRelevanceFieldEnum = {
 export type TenantMembershipOrderByRelevanceFieldEnum = (typeof TenantMembershipOrderByRelevanceFieldEnum)[keyof typeof TenantMembershipOrderByRelevanceFieldEnum]
 
 
+export const TenantMembershipRoleOrderByRelevanceFieldEnum = {
+  tenantMembershipId: 'tenantMembershipId',
+  roleId: 'roleId'
+} as const
+
+export type TenantMembershipRoleOrderByRelevanceFieldEnum = (typeof TenantMembershipRoleOrderByRelevanceFieldEnum)[keyof typeof TenantMembershipRoleOrderByRelevanceFieldEnum]
+
+
 export const OrganizationOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -8225,6 +8386,7 @@ export const OrganizationMemberOrderByRelevanceFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   userId: 'userId',
+  roleId: 'roleId',
   title: 'title',
   department: 'department',
   employeeId: 'employeeId',
@@ -8232,6 +8394,14 @@ export const OrganizationMemberOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrganizationMemberOrderByRelevanceFieldEnum = (typeof OrganizationMemberOrderByRelevanceFieldEnum)[keyof typeof OrganizationMemberOrderByRelevanceFieldEnum]
+
+
+export const OrganizationMemberRoleOrderByRelevanceFieldEnum = {
+  organizationMemberId: 'organizationMemberId',
+  roleId: 'roleId'
+} as const
+
+export type OrganizationMemberRoleOrderByRelevanceFieldEnum = (typeof OrganizationMemberRoleOrderByRelevanceFieldEnum)[keyof typeof OrganizationMemberRoleOrderByRelevanceFieldEnum]
 
 
 export const OrganizationInvitationOrderByRelevanceFieldEnum = {
@@ -9758,8 +9928,10 @@ export type GlobalOmitConfig = {
   permission?: Prisma.PermissionOmit
   rolePermission?: Prisma.RolePermissionOmit
   tenantMembership?: Prisma.TenantMembershipOmit
+  tenantMembershipRole?: Prisma.TenantMembershipRoleOmit
   organization?: Prisma.OrganizationOmit
   organizationMember?: Prisma.OrganizationMemberOmit
+  organizationMemberRole?: Prisma.OrganizationMemberRoleOmit
   organizationInvitation?: Prisma.OrganizationInvitationOmit
   onboardingFlow?: Prisma.OnboardingFlowOmit
   onboardingFlowPhase?: Prisma.OnboardingFlowPhaseOmit

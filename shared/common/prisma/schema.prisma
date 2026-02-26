@@ -595,9 +595,16 @@ model Role {
   // System roles cannot be deleted (admin, user, etc.)
   isSystem    Boolean            @default(false)
   isActive    Boolean            @default(true)
-  // TenantMembership for federated users
+  // TenantMembership for federated users (tenant-level default role for customers)
   memberships TenantMembership[]
   permissions RolePermission[]
+
+  // Org-scoped role assignments (Clerk-style: role per organization membership)
+  organizationMembers OrganizationMember[]
+
+  // Additional multi-role assignments on memberships
+  tenantMembershipRoles       TenantMembershipRole[]
+  organizationMembershipRoles OrganizationMemberRole[]
 
   // Organization invitations with this role
   invitations OrganizationInvitation[]
@@ -665,10 +672,27 @@ model TenantMembership {
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   role   Role   @relation(fields: [roleId], references: [id], onDelete: Restrict)
 
+  // Additional roles (multi-role support). `roleId` remains the primary/default role.
+  additionalRoles TenantMembershipRole[]
+
   @@unique([userId, tenantId]) // User can only have one membership per tenant
   @@index([tenantId])
   @@index([userId])
   @@map("tenant_memberships")
+}
+
+/// Additional tenant-level roles for a membership (multi-role support)
+model TenantMembershipRole {
+  tenantMembershipId String
+  roleId             String
+  assignedAt         DateTime @default(now())
+
+  tenantMembership TenantMembership @relation(fields: [tenantMembershipId], references: [id], onDelete: Cascade)
+  role             Role             @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([tenantMembershipId, roleId])
+  @@index([roleId])
+  @@map("tenant_membership_roles")
 }
 
 // =============================================================================
@@ -753,12 +777,18 @@ model Organization {
   @@map("organizations")
 }
 
-/// OrganizationMember: Links users to organizations
-/// User's roles are determined by TenantMembership (tenant-scoped RBAC)
+/// OrganizationMember: Links users to organizations with org-scoped roles (Clerk-style RBAC)
+/// Each membership carries a role that defines what the user can do within that organization.
+/// A user can have different roles in different organizations (e.g., agent at Developer A, lender_ops at Bank B).
 model OrganizationMember {
   id             String @id @default(cuid())
   organizationId String
   userId         String
+
+  // Org-scoped role: defines what this user can do within THIS organization
+  // e.g., admin at QShelter (PLATFORM), lender_ops at Access Bank, agent at Lekki Gardens
+  roleId String?
+  role   Role?   @relation(fields: [roleId], references: [id], onDelete: Restrict)
 
   // Employee details
   title      String? // Job title (e.g., "Loan Officer", "Mortgage Operations Officer")
@@ -780,10 +810,28 @@ model OrganizationMember {
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  // Additional org roles (multi-role support). `roleId` remains the primary/default org role.
+  additionalRoles OrganizationMemberRole[]
+
   @@unique([organizationId, userId]) // User can only be member once per org
   @@index([userId])
   @@index([organizationId])
+  @@index([roleId])
   @@map("organization_members")
+}
+
+/// Additional organization-level roles for a membership (multi-role support)
+model OrganizationMemberRole {
+  organizationMemberId String
+  roleId               String
+  assignedAt           DateTime @default(now())
+
+  organizationMember OrganizationMember @relation(fields: [organizationMemberId], references: [id], onDelete: Cascade)
+  role               Role               @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([organizationMemberId, roleId])
+  @@index([roleId])
+  @@map("organization_member_roles")
 }
 
 /// OrganizationInvitation: Pending invitations for users who don't have accounts yet

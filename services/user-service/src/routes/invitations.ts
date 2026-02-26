@@ -2,8 +2,7 @@ import { Router } from 'express';
 import {
     successResponse,
     getAuthContext,
-    hasAnyRole,
-    ADMIN_ROLES,
+    isAdmin,
 } from '@valentine-efagene/qshelter-common';
 import { invitationService } from '../services/invitation.service';
 import { z } from 'zod';
@@ -48,7 +47,7 @@ const ListInvitationsQuerySchema = z.object({
 invitationRouter.post('/organizations/:id/invitations', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 
@@ -71,7 +70,7 @@ invitationRouter.post('/organizations/:id/invitations', async (req, res, next) =
 invitationRouter.get('/organizations/:id/invitations', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 
@@ -91,7 +90,7 @@ invitationRouter.get('/organizations/:id/invitations', async (req, res, next) =>
 invitationRouter.delete('/invitations/:id', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 
@@ -110,7 +109,7 @@ invitationRouter.delete('/invitations/:id', async (req, res, next) => {
 invitationRouter.post('/invitations/:id/resend', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 

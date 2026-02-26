@@ -331,12 +331,27 @@ class BootstrapService {
                         data: {
                             organizationId: platformOrg.id,
                             userId: adminUser.id,
+                            roleId: adminRole.id,
                             title: 'Operations Manager',
                             department: 'Operations',
                             isActive: true,
                         },
                     });
                     console.log(`[Bootstrap] Added ${adminUser.email} as member of ${platformOrg.name}`);
+                } else if (!existingOrgMembership.roleId) {
+                    // Backfill role for pre-existing memberships created before org-scoped RBAC
+                    await tx.organizationMember.update({
+                        where: {
+                            organizationId_userId: {
+                                organizationId: platformOrg.id,
+                                userId: adminUser.id,
+                            },
+                        },
+                        data: {
+                            roleId: adminRole.id,
+                        },
+                    });
+                    console.log(`[Bootstrap] Backfilled org role for ${adminUser.email} in ${platformOrg.name}`);
                 }
             }
 

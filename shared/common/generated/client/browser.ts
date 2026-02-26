@@ -56,16 +56,27 @@ export type RolePermission = Prisma.RolePermissionModel
  */
 export type TenantMembership = Prisma.TenantMembershipModel
 /**
+ * Model TenantMembershipRole
+ * Additional tenant-level roles for a membership (multi-role support)
+ */
+export type TenantMembershipRole = Prisma.TenantMembershipRoleModel
+/**
  * Model Organization
  * Organization: Banks, Developers, and other partner entities
  */
 export type Organization = Prisma.OrganizationModel
 /**
  * Model OrganizationMember
- * OrganizationMember: Links users to organizations
- * User's roles are determined by TenantMembership (tenant-scoped RBAC)
+ * OrganizationMember: Links users to organizations with org-scoped roles (Clerk-style RBAC)
+ * Each membership carries a role that defines what the user can do within that organization.
+ * A user can have different roles in different organizations (e.g., agent at Developer A, lender_ops at Bank B).
  */
 export type OrganizationMember = Prisma.OrganizationMemberModel
+/**
+ * Model OrganizationMemberRole
+ * Additional organization-level roles for a membership (multi-role support)
+ */
+export type OrganizationMemberRole = Prisma.OrganizationMemberRoleModel
 /**
  * Model OrganizationInvitation
  * OrganizationInvitation: Pending invitations for users who don't have accounts yet

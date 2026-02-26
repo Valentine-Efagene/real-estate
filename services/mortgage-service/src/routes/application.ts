@@ -8,9 +8,9 @@ import {
     successResponse,
     getAuthContext,
     requireTenant,
-    requireRole,
+    requirePlatformRole,
     isAdmin,
-    ADMIN_ROLES,
+    PLATFORM_ADMIN_ROLES,
     ROLES,
 } from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
@@ -68,11 +68,12 @@ function getAppOrgService(req: Request) {
  */
 async function canAccessApplication(req: Request, res: Response, next: NextFunction) {
     try {
-        const { userId, roles, tenantId } = getAuthContext(req);
+        const auth = getAuthContext(req);
+        const { userId, roles, tenantId } = auth;
         const applicationId = req.params.id as string;
 
         // Admins can access any application
-        if (isAdmin(roles)) {
+        if (isAdmin(roles, auth)) {
             return next();
         }
 
@@ -145,7 +146,8 @@ router.post('/', requireTenant, async (req: Request, res: Response, next: NextFu
 router.get('/', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { buyerId, propertyUnitId, status, page, limit } = req.query;
-        const { userId, roles } = getAuthContext(req);
+        const auth = getAuthContext(req);
+        const { userId, roles } = auth;
         const applicationService = getApplicationService(req);
         const appOrgService = getAppOrgService(req);
 
@@ -157,7 +159,7 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
             limit: limit ? parseInt(limit as string, 10) : 20,
         };
 
-        if (isAdmin(roles)) {
+        if (isAdmin(roles, auth)) {
             // Platform admins can filter by any buyerId and see all applications
             filters.buyerId = buyerId as string;
         } else if (isOrgStaffRole(roles)) {
@@ -319,8 +321,9 @@ router.get('/number/:applicationNumber', requireTenant, async (req: Request, res
         const application = await applicationService.findByApplicationNumber(req.params.applicationNumber as string);
 
         // Check access - admins can access any, customers only their own
-        const { userId, roles } = getAuthContext(req);
-        if (!isAdmin(roles) && application.buyerId !== userId) {
+        const auth = getAuthContext(req);
+        const { userId, roles } = auth;
+        if (!isAdmin(roles, auth) && application.buyerId !== userId) {
             throw new AppError(403, 'You do not have permission to access this application');
         }
 
@@ -408,7 +411,7 @@ router.delete('/:id', requireTenant, canAccessApplication, async (req: Request, 
 // are authorized to interact with specific applications.
 
 // Bind an organization to an application (admin only)
-router.post('/:id/organizations', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/organizations', requireTenant, requirePlatformRole(PLATFORM_ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = BindOrganizationSchema.parse(req.body);
         const { userId, tenantId } = getAuthContext(req);
@@ -441,7 +444,7 @@ router.get('/:id/organizations', requireTenant, canAccessApplication, async (req
 });
 
 // Update an organization binding (admin only)
-router.patch('/:id/organizations/:bindingId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/:id/organizations/:bindingId', requireTenant, requirePlatformRole(PLATFORM_ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UpdateOrganizationBindingSchema.parse(req.body);
         const { userId } = getAuthContext(req);
@@ -462,7 +465,7 @@ router.patch('/:id/organizations/:bindingId', requireTenant, requireRole(ADMIN_R
 });
 
 // Remove an organization binding (admin only)
-router.delete('/:id/organizations/:bindingId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/:id/organizations/:bindingId', requireTenant, requirePlatformRole(PLATFORM_ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const appOrgService = getAppOrgService(req);
         const result = await appOrgService.unbindOrganization(req.params.bindingId as string);
@@ -626,7 +629,7 @@ router.post('/:id/phases/:phaseId/steps/complete', requireTenant, canAccessAppli
 });
 
 // Reject a step in a documentation phase (admin action)
-router.post('/:id/phases/:phaseId/steps/:stepId/reject', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/steps/:stepId/reject', requireTenant, requirePlatformRole(PLATFORM_ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { reason } = req.body;
         if (!reason) {
@@ -642,7 +645,7 @@ router.post('/:id/phases/:phaseId/steps/:stepId/reject', requireTenant, requireR
 });
 
 // Request changes on a step (admin action)
-router.post('/:id/phases/:phaseId/steps/:stepId/request-changes', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/steps/:stepId/request-changes', requireTenant, requirePlatformRole(PLATFORM_ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { reason } = req.body;
         if (!reason) {
@@ -722,7 +725,8 @@ router.post('/:id/phases/:phaseId/documents', requireTenant, canAccessApplicatio
 router.post('/:id/documents/:documentId/review', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ApproveDocumentSchema.parse(req.body);
-        const { userId, tenantId, roles } = getAuthContext(req);
+        const auth = getAuthContext(req);
+        const { userId, tenantId, roles } = auth;
 
         // Map status to ReviewDecision
         const decisionMap: Record<string, string> = {
@@ -749,7 +753,7 @@ router.post('/:id/documents/:documentId/review', requireTenant, canAccessApplica
         // Resolve organization type code to ID
         // Default to 'PLATFORM' for admins if not specified
         let organizationTypeId: string;
-        const orgTypeCode = data.organizationTypeCode || (isAdmin(roles) ? 'PLATFORM' : null);
+        const orgTypeCode = data.organizationTypeCode || (isAdmin(roles, auth) ? 'PLATFORM' : null);
 
         if (!orgTypeCode) {
             res.status(400).json({
@@ -792,7 +796,7 @@ router.post('/:id/documents/:documentId/review', requireTenant, canAccessApplica
 
 // Revert document approval - return to PENDING state (admin only)
 // Allows undoing a document approval, returning it to pending for re-review
-router.post('/:id/documents/:documentId/revert', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/documents/:documentId/revert', requireTenant, requirePlatformRole(PLATFORM_ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = RevertDocumentSchema.parse(req.body);
         const { userId, tenantId, roles } = getAuthContext(req);
@@ -844,7 +848,7 @@ router.post('/:id/documents/:documentId/revert', requireTenant, requireRole(ADMI
 
 // Reopen a completed phase (admin only)
 // Allows reopening a completed phase to make corrections
-router.post('/:id/phases/:phaseId/reopen', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/reopen', requireTenant, requirePlatformRole(PLATFORM_ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ReopenPhaseSchema.parse(req.body);
         const { userId } = getAuthContext(req);
@@ -877,7 +881,7 @@ router.post('/:id/phases/:phaseId/complete', requireTenant, canAccessApplication
 });
 
 // Skip phase (admin only)
-router.post('/:id/phases/:phaseId/skip', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/skip', requireTenant, requirePlatformRole(PLATFORM_ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
         const { reason } = req.body;
@@ -947,7 +951,7 @@ router.post('/payments/process', requireTenant, async (req: Request, res: Respon
 });
 
 // Refund payment (admin only)
-router.post('/:id/payments/:paymentId/refund', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/payments/:paymentId/refund', requireTenant, requirePlatformRole(PLATFORM_ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = RefundPaymentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
@@ -1033,7 +1037,7 @@ router.post('/:id/documents/:documentId/reviews', requireTenant, canAccessApplic
 });
 
 // Waive a review requirement (admin only)
-router.post('/:id/documents/:documentId/reviews/waive', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/documents/:documentId/reviews/waive', requireTenant, requirePlatformRole(PLATFORM_ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { WaiveReviewSchema } = await import('../validators/document-review.validator');
         const { createDocumentReviewService } = await import('../services/document-review.service');

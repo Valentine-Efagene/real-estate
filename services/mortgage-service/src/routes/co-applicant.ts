@@ -28,10 +28,11 @@ function getService(req: Request) {
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const applicationId = req.params.id as string;
-        const { userId, roles } = getAuthContext(req);
+        const auth = getAuthContext(req);
+        const { userId, roles } = auth;
 
         // Admins or the buyer can list co-applicants
-        if (!isAdmin(roles)) {
+        if (!isAdmin(roles, auth)) {
             const appService = createApplicationService(getTenantPrisma(req));
             const application = await appService.findById(applicationId);
             if (application.buyerId !== userId) {
@@ -55,9 +56,10 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const applicationId = req.params.id as string;
-        const { userId, roles, tenantId } = getAuthContext(req);
+        const auth = getAuthContext(req);
+        const { userId, roles, tenantId } = auth;
 
-        if (!isAdmin(roles)) {
+        if (!isAdmin(roles, auth)) {
             const appService = createApplicationService(getTenantPrisma(req));
             const application = await appService.findById(applicationId);
             if (application.buyerId !== userId) {
@@ -85,9 +87,10 @@ router.patch('/:coApplicantId', async (req: Request, res: Response, next: NextFu
     try {
         const applicationId = req.params.id as string;
         const coApplicantId = req.params.coApplicantId as string;
-        const { userId, roles } = getAuthContext(req);
+        const auth = getAuthContext(req);
+        const { userId, roles } = auth;
 
-        if (!isAdmin(roles)) {
+        if (!isAdmin(roles, auth)) {
             const appService = createApplicationService(getTenantPrisma(req));
             const application = await appService.findById(applicationId);
             if (application.buyerId !== userId) {
@@ -146,9 +149,10 @@ router.delete('/:coApplicantId', async (req: Request, res: Response, next: NextF
     try {
         const applicationId = req.params.id as string;
         const coApplicantId = req.params.coApplicantId as string;
-        const { userId, roles } = getAuthContext(req);
+        const auth = getAuthContext(req);
+        const { userId, roles } = auth;
 
-        if (!isAdmin(roles)) {
+        if (!isAdmin(roles, auth)) {
             const appService = createApplicationService(getTenantPrisma(req));
             const application = await appService.findById(applicationId);
             if (application.buyerId !== userId) {

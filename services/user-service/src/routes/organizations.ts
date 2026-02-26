@@ -2,8 +2,7 @@ import { Router } from 'express';
 import {
     successResponse,
     getAuthContext,
-    hasAnyRole,
-    ADMIN_ROLES,
+    isAdmin,
     OrganizationStatus,
 } from '@valentine-efagene/qshelter-common';
 import { organizationService } from '../services/organization.service';
@@ -66,12 +65,15 @@ const UpdateOrganizationSchema = z.object({
 const AddMemberSchema = z.object({
     userId: z.string().min(1),
     roleId: z.string().optional(),
+    additionalRoleIds: z.array(z.string().min(1)).optional(),
     title: z.string().optional(),
     department: z.string().optional(),
     employeeId: z.string().optional(),
 });
 
 const UpdateMemberSchema = z.object({
+    roleId: z.string().optional(),
+    additionalRoleIds: z.array(z.string().min(1)).optional(),
     title: z.string().optional(),
     department: z.string().optional(),
     employeeId: z.string().optional(),
@@ -90,7 +92,7 @@ const UpdateMemberSchema = z.object({
 organizationRouter.post('/', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 
@@ -149,7 +151,7 @@ organizationRouter.get('/:id', async (req, res, next) => {
 organizationRouter.patch('/:id', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 
@@ -169,7 +171,7 @@ organizationRouter.patch('/:id', async (req, res, next) => {
 organizationRouter.delete('/:id', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 
@@ -192,7 +194,7 @@ organizationRouter.delete('/:id', async (req, res, next) => {
 organizationRouter.post('/:id/members', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 
@@ -226,7 +228,7 @@ organizationRouter.get('/:id/members', async (req, res, next) => {
 organizationRouter.patch('/:orgId/members/:memberId', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 
@@ -251,7 +253,7 @@ organizationRouter.patch('/:orgId/members/:memberId', async (req, res, next) => 
 organizationRouter.delete('/:orgId/members/:memberId', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 

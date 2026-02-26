@@ -32,10 +32,41 @@ interface JWTPayload {
     userId: string;
     email: string;
     roles?: string[];
+    orgRole?: string;
+    orgRoles?: string[];
+    activeOrgId?: string;
+    isPlatformOrg?: boolean;
     jti?: string;
 }
 
+/** Org-scoped context for JWT generation */
+interface OrgContext {
+    orgRole: string;
+    orgRoles: string[];
+    activeOrgId: string;
+    isPlatformOrg: boolean;
+}
+
 class AuthService {
+    private resolveTenantRoles(
+        memberships?: Array<{
+            role: { name: string };
+            additionalRoles?: Array<{ role: { name: string } }>;
+        }>
+    ): string[] {
+        if (!memberships?.length) return [];
+
+        const roleNames = new Set<string>();
+        for (const membership of memberships) {
+            if (membership.role?.name) roleNames.add(membership.role.name);
+            for (const assignment of membership.additionalRoles ?? []) {
+                if (assignment.role?.name) roleNames.add(assignment.role.name);
+            }
+        }
+
+        return [...roleNames];
+    }
+
     async signup(data: SignupInput): Promise<AuthResponse> {
         const existing = await prisma.user.findUnique({ where: { email: data.email } });
         if (existing) {
@@ -129,11 +160,30 @@ class AuthService {
                     where: { isActive: true },
                     include: {
                         role: true,
+                        additionalRoles: {
+                            include: { role: true },
+                        },
                     },
                     orderBy: [
                         { isDefault: 'desc' }, // Default tenant first
                         { createdAt: 'asc' },
                     ],
+                },
+                // Include org memberships with org-scoped roles
+                organizationMemberships: {
+                    where: { isActive: true },
+                    include: {
+                        role: true,
+                        additionalRoles: {
+                            include: { role: true },
+                        },
+                        organization: {
+                            select: {
+                                id: true,
+                                isPlatformOrg: true,
+                            },
+                        },
+                    },
                 },
             },
         });
@@ -163,20 +213,24 @@ class AuthService {
             data: { lastLoginAt: new Date() },
         });
 
-        // Get roles from tenant memberships
+        // Get roles from tenant memberships (legacy)
         const defaultMembership = user.tenantMemberships?.[0];
         let roleNames: string[];
         let tenantId: string | null = null;
 
         if (defaultMembership) {
-            roleNames = [...new Set(user.tenantMemberships!.map((m) => m.role.name))];
+            roleNames = this.resolveTenantRoles(user.tenantMemberships as any);
             tenantId = defaultMembership.tenantId;
         } else {
             roleNames = [];
             tenantId = user.tenantId;
         }
 
-        return this.generateTokens(user.id, user.email, roleNames, tenantId);
+        // Resolve org-scoped role context (Clerk-style)
+        // Priority: platform org first (for admins), then first org membership with a role
+        const orgContext = this.resolveOrgContext(user.organizationMemberships);
+
+        return this.generateTokens(user.id, user.email, roleNames, tenantId, orgContext);
     }
 
     async verifyEmail(token: string) {
@@ -371,11 +425,30 @@ class AuthService {
                                 where: { isActive: true },
                                 include: {
                                     role: true,
+                                    additionalRoles: {
+                                        include: { role: true },
+                                    },
                                 },
                                 orderBy: [
                                     { isDefault: 'desc' }, // Default tenant first
                                     { createdAt: 'asc' },
                                 ],
+                            },
+                            // Include org memberships with org-scoped roles
+                            organizationMemberships: {
+                                where: { isActive: true },
+                                include: {
+                                    role: true,
+                                    additionalRoles: {
+                                        include: { role: true },
+                                    },
+                                    organization: {
+                                        select: {
+                                            id: true,
+                                            isPlatformOrg: true,
+                                        },
+                                    },
+                                },
                             },
                         },
                     },
@@ -397,20 +470,23 @@ class AuthService {
                 where: { jti: payload.jti },
             });
 
-            // Get roles from tenant memberships
+            // Get roles from tenant memberships (legacy)
             const defaultMembership = user.tenantMemberships?.[0];
             let roleNames: string[];
             let tenantId: string | null = null;
 
             if (defaultMembership) {
-                roleNames = [...new Set(user.tenantMemberships!.map((m) => m.role.name))];
+                roleNames = this.resolveTenantRoles(user.tenantMemberships as any);
                 tenantId = defaultMembership.tenantId;
             } else {
                 roleNames = [];
                 tenantId = user.tenantId;
             }
 
-            return this.generateTokens(user.id, user.email, roleNames, tenantId);
+            // Resolve org-scoped role context
+            const orgContext = this.resolveOrgContext(user.organizationMemberships);
+
+            return this.generateTokens(user.id, user.email, roleNames, tenantId, orgContext);
         } catch (error) {
             throw new UnauthorizedError('Invalid or expired token');
         }
@@ -435,7 +511,24 @@ class AuthService {
                 include: {
                     tenantMemberships: {
                         where: { isActive: true },
-                        include: { role: true },
+                        include: {
+                            role: true,
+                            additionalRoles: {
+                                include: { role: true },
+                            },
+                        },
+                    },
+                    organizationMemberships: {
+                        where: { isActive: true },
+                        include: {
+                            role: true,
+                            additionalRoles: {
+                                include: { role: true },
+                            },
+                            organization: {
+                                select: { id: true, isPlatformOrg: true },
+                            },
+                        },
                     },
                 },
             });
@@ -446,8 +539,9 @@ class AuthService {
                     data: { lastLoginAt: new Date() },
                 });
 
-                const roleNames = user.tenantMemberships?.map((m) => m.role.name) || [];
-                return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId);
+                const roleNames = this.resolveTenantRoles(user.tenantMemberships as any);
+                const orgContext = this.resolveOrgContext(user.organizationMemberships);
+                return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId, orgContext);
             }
 
             // Create new user
@@ -468,13 +562,31 @@ class AuthService {
                 include: {
                     tenantMemberships: {
                         where: { isActive: true },
-                        include: { role: true },
+                        include: {
+                            role: true,
+                            additionalRoles: {
+                                include: { role: true },
+                            },
+                        },
+                    },
+                    organizationMemberships: {
+                        where: { isActive: true },
+                        include: {
+                            role: true,
+                            additionalRoles: {
+                                include: { role: true },
+                            },
+                            organization: {
+                                select: { id: true, isPlatformOrg: true },
+                            },
+                        },
                     },
                 },
             });
 
-            const roleNames = user.tenantMemberships?.map((m) => m.role.name) || [];
-            return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId);
+            const roleNames = this.resolveTenantRoles(user.tenantMemberships as any);
+            const orgContext = this.resolveOrgContext(user.organizationMemberships);
+            return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId, orgContext);
         } catch (error) {
             throw new UnauthorizedError('Invalid Google token');
         }
@@ -539,7 +651,24 @@ class AuthService {
                 include: {
                     tenantMemberships: {
                         where: { isActive: true },
-                        include: { role: true },
+                        include: {
+                            role: true,
+                            additionalRoles: {
+                                include: { role: true },
+                            },
+                        },
+                    },
+                    organizationMemberships: {
+                        where: { isActive: true },
+                        include: {
+                            role: true,
+                            additionalRoles: {
+                                include: { role: true },
+                            },
+                            organization: {
+                                select: { id: true, isPlatformOrg: true },
+                            },
+                        },
                     },
                 },
             });
@@ -551,8 +680,9 @@ class AuthService {
                     data: { lastLoginAt: new Date() },
                 });
 
-                const roleNames = user.tenantMemberships?.map((m) => m.role.name) || [];
-                return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId);
+                const roleNames = this.resolveTenantRoles(user.tenantMemberships as any);
+                const orgContext = this.resolveOrgContext(user.organizationMemberships);
+                return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId, orgContext);
             }
 
             // Create new user
@@ -573,13 +703,31 @@ class AuthService {
                 include: {
                     tenantMemberships: {
                         where: { isActive: true },
-                        include: { role: true },
+                        include: {
+                            role: true,
+                            additionalRoles: {
+                                include: { role: true },
+                            },
+                        },
+                    },
+                    organizationMemberships: {
+                        where: { isActive: true },
+                        include: {
+                            role: true,
+                            additionalRoles: {
+                                include: { role: true },
+                            },
+                            organization: {
+                                select: { id: true, isPlatformOrg: true },
+                            },
+                        },
                     },
                 },
             });
 
-            const roleNames = user.tenantMemberships?.map((m) => m.role.name) || [];
-            return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId);
+            const roleNames = this.resolveTenantRoles(user.tenantMemberships as any);
+            const orgContext = this.resolveOrgContext(user.organizationMemberships);
+            return this.generateTokens(user.id, user.email, roleNames, user.tenantMemberships?.[0]?.tenantId || user.tenantId, orgContext);
         } catch (error) {
             throw new UnauthorizedError('Failed to authenticate with Google');
         }
@@ -610,10 +758,39 @@ class AuthService {
                                 description: true,
                             },
                         },
+                        additionalRoles: {
+                            include: {
+                                role: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        description: true,
+                                    },
+                                },
+                            },
+                        },
                     },
                 },
                 organizationMemberships: {
                     include: {
+                        role: {
+                            select: {
+                                id: true,
+                                name: true,
+                                description: true,
+                            },
+                        },
+                        additionalRoles: {
+                            include: {
+                                role: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        description: true,
+                                    },
+                                },
+                            },
+                        },
                         organization: {
                             select: {
                                 id: true,
@@ -655,11 +832,57 @@ class AuthService {
      * Generate tokens for a user (public wrapper for invitation acceptance, etc.)
      * Use when you need to log in a user programmatically without password verification.
      */
-    async generateTokensForUser(userId: string, email: string, roles: string[], tenantId?: string | null): Promise<AuthResponse> {
-        return this.generateTokens(userId, email, roles, tenantId);
+    async generateTokensForUser(userId: string, email: string, roles: string[], tenantId?: string | null, orgContext?: OrgContext): Promise<AuthResponse> {
+        return this.generateTokens(userId, email, roles, tenantId, orgContext);
     }
 
-    private async generateTokens(userId: string, email: string, roles: string[], tenantId?: string | null): Promise<AuthResponse> {
+    /**
+     * Resolve the active organization context from a user's organization memberships.
+     * Priority: platform org membership first, then first org with a role set.
+     * Returns undefined if the user has no active org memberships with roles.
+     */
+    private resolveOrgContext(
+        organizationMembers?: Array<{
+            role: { name: string } | null;
+            additionalRoles?: Array<{ role: { name: string } }>;
+            organization: { id: string; isPlatformOrg: boolean };
+        }>
+    ): OrgContext | undefined {
+        if (!organizationMembers?.length) return undefined;
+
+        // Filter to members that have at least one role assigned
+        const membersWithRoles = organizationMembers.filter((m) =>
+            Boolean(m.role?.name) || Boolean(m.additionalRoles?.length)
+        );
+
+        if (!membersWithRoles.length) return undefined;
+
+        // Prioritize platform org membership
+        const platformMember = membersWithRoles.find((m) => m.organization.isPlatformOrg);
+        const activeMember = platformMember || membersWithRoles[0];
+
+        const activeOrgRoleSet = new Set<string>();
+        if (activeMember.role?.name) {
+            activeOrgRoleSet.add(activeMember.role.name);
+        }
+        for (const assignment of activeMember.additionalRoles ?? []) {
+            if (assignment.role?.name) {
+                activeOrgRoleSet.add(assignment.role.name);
+            }
+        }
+
+        const activeOrgRoles = [...activeOrgRoleSet];
+        if (!activeOrgRoles.length) return undefined;
+
+        return {
+            orgRole: activeOrgRoles[0],
+            orgRoles: activeOrgRoles,
+            activeOrgId: activeMember.organization.id,
+            isPlatformOrg: activeMember.organization.isPlatformOrg,
+        };
+    }
+
+    private async generateTokens(userId: string, email: string, roles: string[], tenantId?: string | null, orgContext?: OrgContext): Promise<AuthResponse> {
         // Get JWT secrets from ConfigService (Secrets Manager)
         const configService = ConfigService.getInstance();
         const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
@@ -684,8 +907,18 @@ class AuthService {
         const accessJti = randomUUID();
         const refreshJti = randomUUID();
 
-        // Build payload with optional tenantId
-        const payload: { sub: string; email: string; roles: string[]; jti: string; tenantId?: string } = {
+        // Build payload with optional tenantId and org context
+        const payload: {
+            sub: string;
+            email: string;
+            roles: string[];
+            jti: string;
+            tenantId?: string;
+            orgRole?: string;
+            orgRoles?: string[];
+            activeOrgId?: string;
+            isPlatformOrg?: boolean;
+        } = {
             sub: userId,
             email,
             roles,
@@ -693,6 +926,12 @@ class AuthService {
         };
         if (tenantId) {
             payload.tenantId = tenantId;
+        }
+        if (orgContext) {
+            payload.orgRole = orgContext.orgRole;
+            payload.orgRoles = orgContext.orgRoles;
+            payload.activeOrgId = orgContext.activeOrgId;
+            payload.isPlatformOrg = orgContext.isPlatformOrg;
         }
 
         const refreshPayload = { ...payload, jti: refreshJti };

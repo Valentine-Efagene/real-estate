@@ -7,6 +7,12 @@ import { ConfigService } from '../config/config.service';
  * Services verify JWTs directly using the shared middleware —
  * no external Lambda authorizer or DynamoDB policy lookup needed.
  *
+ * Org-scoped RBAC (Clerk-style):
+ * - `orgRole` is the user's role in their active organization
+ * - `activeOrgId` is the organization they're currently acting as
+ * - `isPlatformOrg` indicates if the active org is the platform org (tenant-wide powers)
+ * - Legacy `roles` field kept for backward compatibility during migration
+ *
  * Priority:
  * 1. Verify JWT from Authorization header (all environments)
  * 2. Mock headers for unit tests (x-authorizer-* headers)
@@ -15,7 +21,16 @@ export interface AuthContext {
     userId: string;
     tenantId: string;
     email?: string;
+    /** @deprecated Use orgRole instead. Legacy flat role array for backward compatibility. */
     roles?: string[];
+    /** The user's role in the active organization (Clerk-style org-scoped role) */
+    orgRole?: string;
+    /** All roles for the active organization (multi-role support) */
+    orgRoles?: string[];
+    /** The active organization the user is acting within */
+    activeOrgId?: string;
+    /** Whether the active organization is the platform org (grants tenant-wide visibility) */
+    isPlatformOrg?: boolean;
 }
 
 interface AuthenticatedRequest extends Request {
@@ -113,6 +128,10 @@ export function extractAuthContext(req: Request): AuthContext | null {
                         tenantId: payload.tenantId,
                         email: payload.email,
                         roles: Array.isArray(payload.roles) ? payload.roles : [],
+                        orgRole: payload.orgRole,
+                        orgRoles: Array.isArray(payload.orgRoles) ? payload.orgRoles : undefined,
+                        activeOrgId: payload.activeOrgId,
+                        isPlatformOrg: payload.isPlatformOrg === true,
                     };
                 }
             } catch {
@@ -128,6 +147,10 @@ export function extractAuthContext(req: Request): AuthContext | null {
                     tenantId: payload.tenantId,
                     email: payload.email,
                     roles: Array.isArray(payload.roles) ? payload.roles : [],
+                    orgRole: payload.orgRole,
+                    orgRoles: Array.isArray(payload.orgRoles) ? payload.orgRoles : undefined,
+                    activeOrgId: payload.activeOrgId,
+                    isPlatformOrg: payload.isPlatformOrg === true,
                 };
             }
         }
@@ -143,6 +166,10 @@ export function extractAuthContext(req: Request): AuthContext | null {
             tenantId: mockTenantId,
             email: req.headers['x-authorizer-email'] as string,
             roles: rolesHeader ? JSON.parse(rolesHeader) : [],
+            orgRole: req.headers['x-authorizer-org-role'] as string,
+            orgRoles: req.headers['x-authorizer-org-roles'] ? JSON.parse(req.headers['x-authorizer-org-roles'] as string) : undefined,
+            activeOrgId: req.headers['x-authorizer-active-org-id'] as string,
+            isPlatformOrg: req.headers['x-authorizer-is-platform-org'] === 'true',
         };
     }
 
@@ -205,7 +232,7 @@ export function getAuthContext(req: Request): AuthContext {
 export function authHeaders(
     userId: string,
     tenantId: string,
-    extras?: { email?: string; roles?: string[]; token?: string }
+    extras?: { email?: string; roles?: string[]; token?: string; orgRole?: string; orgRoles?: string[]; activeOrgId?: string; isPlatformOrg?: boolean }
 ): Record<string, string> {
     if (extras?.token) {
         return { 'Authorization': `Bearer ${extras.token}` };
@@ -216,22 +243,31 @@ export function authHeaders(
         'x-authorizer-tenant-id': tenantId,
         ...(extras?.email && { 'x-authorizer-email': extras.email }),
         ...(extras?.roles && { 'x-authorizer-roles': JSON.stringify(extras.roles) }),
+        ...(extras?.orgRole && { 'x-authorizer-org-role': extras.orgRole }),
+        ...(extras?.orgRoles && { 'x-authorizer-org-roles': JSON.stringify(extras.orgRoles) }),
+        ...(extras?.activeOrgId && { 'x-authorizer-active-org-id': extras.activeOrgId }),
+        ...(extras?.isPlatformOrg !== undefined && { 'x-authorizer-is-platform-org': String(extras.isPlatformOrg) }),
     };
 }
 
 /**
  * Generate mock authorization headers for unit tests.
+ * Supports both legacy roles[] and org-scoped role fields.
  */
 export function mockAuthHeaders(
     userId: string,
     tenantId: string,
-    options?: { email?: string; roles?: string[] }
+    options?: { email?: string; roles?: string[]; orgRole?: string; orgRoles?: string[]; activeOrgId?: string; isPlatformOrg?: boolean }
 ): Record<string, string> {
     return {
         'x-authorizer-user-id': userId,
         'x-authorizer-tenant-id': tenantId,
         ...(options?.email && { 'x-authorizer-email': options.email }),
         ...(options?.roles && { 'x-authorizer-roles': JSON.stringify(options.roles) }),
+        ...(options?.orgRole && { 'x-authorizer-org-role': options.orgRole }),
+        ...(options?.orgRoles && { 'x-authorizer-org-roles': JSON.stringify(options.orgRoles) }),
+        ...(options?.activeOrgId && { 'x-authorizer-active-org-id': options.activeOrgId }),
+        ...(options?.isPlatformOrg !== undefined && { 'x-authorizer-is-platform-org': String(options.isPlatformOrg) }),
     };
 }
 
@@ -258,6 +294,8 @@ export const ROLES = {
     MORTGAGE_OPS: 'mortgage_ops',
     FINANCE: 'finance',
     LEGAL_TEAM: 'legal',
+    AGENT: 'agent',
+    LENDER_OPS: 'lender_ops',
 } as const;
 
 export type RoleName = (typeof ROLES)[keyof typeof ROLES];
@@ -265,6 +303,9 @@ export type RoleName = (typeof ROLES)[keyof typeof ROLES];
 /**
  * Roles that have admin privileges (can manage resources).
  * Includes both legacy uppercase names and bootstrap lowercase names.
+ *
+ * NOTE: With org-scoped RBAC, ADMIN_ROLES is used for the legacy `roles[]` JWT field.
+ * Prefer isPlatformAdmin() or requirePlatformRole() for new code.
  */
 export const ADMIN_ROLES: string[] = [
     ROLES.SUPER_ADMIN,
@@ -275,7 +316,25 @@ export const ADMIN_ROLES: string[] = [
 ];
 
 /**
+ * Roles that grant platform-wide administrative powers when held
+ * in the PLATFORM organization. Only platform org admins get god-mode.
+ */
+export const PLATFORM_ADMIN_ROLES: string[] = [
+    ROLES.ADMIN,
+    ROLES.MORTGAGE_OPS,
+];
+
+/**
+ * Tenant-level god-mode roles.
+ * These roles bypass org-scoped restrictions and retain tenant-wide access.
+ */
+export const TENANT_GOD_MODE_ROLES: string[] = [
+    ROLES.SUPER_ADMIN,
+];
+
+/**
  * Check if user has any of the specified roles.
+ * Works with both legacy roles[] and new orgRole.
  */
 export function hasAnyRole(userRoles: string[] | undefined, requiredRoles: string[]): boolean {
     if (!userRoles || userRoles.length === 0) return false;
@@ -284,20 +343,64 @@ export function hasAnyRole(userRoles: string[] | undefined, requiredRoles: strin
 
 /**
  * Check if user has admin privileges.
+ * With org-scoped RBAC: checks if user is admin/mortgage_ops in the PLATFORM org.
+ * Falls back to legacy flat roles check for backward compatibility.
  */
-export function isAdmin(userRoles: string[] | undefined): boolean {
+export function isAdmin(userRoles: string[] | undefined, auth?: AuthContext): boolean {
+    // Tenant-level god mode
+    if (hasAnyRole(userRoles, TENANT_GOD_MODE_ROLES)) {
+        return true;
+    }
+
+    // New path: check org-scoped role
+    if (auth?.isPlatformOrg) {
+        const activeOrgRoles = auth.orgRoles && auth.orgRoles.length > 0
+            ? auth.orgRoles
+            : (auth.orgRole ? [auth.orgRole] : []);
+        if (activeOrgRoles.some((role) => PLATFORM_ADMIN_ROLES.includes(role))) {
+            return true;
+        }
+    }
+    // Legacy fallback: check flat roles array
     return hasAnyRole(userRoles, ADMIN_ROLES);
 }
 
 /**
+ * Check if user is acting as a platform administrator.
+ * True only if the user's active organization is the PLATFORM org
+ * AND their org role is admin or mortgage_ops.
+ *
+ * This replaces the old isAdmin() god-mode check with an org-scoped version.
+ */
+export function isPlatformAdmin(auth: AuthContext): boolean {
+    if (!auth.isPlatformOrg) return false;
+    const activeOrgRoles = auth.orgRoles && auth.orgRoles.length > 0
+        ? auth.orgRoles
+        : (auth.orgRole ? [auth.orgRole] : []);
+    return activeOrgRoles.some((role) => PLATFORM_ADMIN_ROLES.includes(role));
+}
+
+/**
+ * Check if user has a specific org-scoped role.
+ * Checks the orgRole from the active organization in the JWT.
+ */
+export function hasOrgRole(auth: AuthContext, allowedRoles: string[]): boolean {
+    const activeOrgRoles = auth.orgRoles && auth.orgRoles.length > 0
+        ? auth.orgRoles
+        : (auth.orgRole ? [auth.orgRole] : []);
+    if (!activeOrgRoles.length) return false;
+    return allowedRoles.some((role) => activeOrgRoles.includes(role));
+}
+
+/**
  * Middleware factory that requires user to have specific role(s).
- * Uses roles from API Gateway authorizer context.
- * 
+ * Checks both org-scoped orgRole (preferred) and legacy roles[] (fallback).
+ *
  * @example
  * ```typescript
- * // Require any admin role
+ * // Require any admin role (platform org admin or legacy admin)
  * router.post('/payment-plans', requireRole(ADMIN_ROLES), createPaymentPlan);
- * 
+ *
  * // Require specific role
  * router.delete('/users/:id', requireRole(['SUPER_ADMIN']), deleteUser);
  * ```
@@ -313,7 +416,14 @@ export function requireRole(allowedRoles: string[]) {
             });
         }
 
-        if (!hasAnyRole(auth.roles, allowedRoles)) {
+        // Check org-scoped role first, then fall back to legacy roles
+        const activeOrgRoles = auth.orgRoles && auth.orgRoles.length > 0
+            ? auth.orgRoles
+            : (auth.orgRole ? [auth.orgRole] : []);
+        const hasOrgMatch = allowedRoles.some((role) => activeOrgRoles.includes(role));
+        const hasLegacyMatch = hasAnyRole(auth.roles, allowedRoles);
+
+        if (!hasOrgMatch && !hasLegacyMatch) {
             return res.status(403).json({
                 success: false,
                 error: 'Forbidden - insufficient permissions',
@@ -326,9 +436,61 @@ export function requireRole(allowedRoles: string[]) {
 }
 
 /**
+ * Middleware that requires the user to be a platform admin
+ * (admin or mortgage_ops role in the PLATFORM organization).
+ *
+ * This provides tenant-wide administrative powers, replacing the old
+ * requireRole(ADMIN_ROLES) pattern for routes that should only be accessible
+ * to platform staff, not third-party org staff.
+ *
+ * Falls back to legacy ADMIN_ROLES check during migration period.
+ *
+ * @example
+ * ```typescript
+ * router.post('/payment-methods', requirePlatformRole(PLATFORM_ADMIN_ROLES), createPaymentMethod);
+ * ```
+ */
+export function requirePlatformRole(allowedRoles: string[]) {
+    return function (req: Request, res: Response, next: NextFunction) {
+        const auth = extractAuthContext(req);
+
+        if (!auth) {
+            return res.status(401).json({
+                success: false,
+                error: 'Unauthorized - authentication required'
+            });
+        }
+
+        // New path: check if platform org member with correct role
+        const activeOrgRoles = auth.orgRoles && auth.orgRoles.length > 0
+            ? auth.orgRoles
+            : (auth.orgRole ? [auth.orgRole] : []);
+        if (auth.isPlatformOrg && allowedRoles.some((role) => activeOrgRoles.includes(role))) {
+            return next();
+        }
+
+        // Tenant-level god mode bypass
+        if (hasAnyRole(auth.roles, TENANT_GOD_MODE_ROLES)) {
+            return next();
+        }
+
+        // Legacy fallback: check flat roles for backward compatibility during migration
+        if (hasAnyRole(auth.roles, allowedRoles)) {
+            return next();
+        }
+
+        return res.status(403).json({
+            success: false,
+            error: 'Forbidden - platform admin role required',
+            requiredRoles: allowedRoles,
+        });
+    };
+}
+
+/**
  * Middleware that requires admin privileges.
  * Shorthand for requireRole(ADMIN_ROLES).
- * 
+ *
  * @example
  * ```typescript
  * router.post('/payment-methods', requireAdmin, createPaymentMethod);

@@ -2,8 +2,7 @@ import { Router } from 'express';
 import {
     successResponse,
     getAuthContext,
-    hasAnyRole,
-    ADMIN_ROLES,
+    isAdmin,
     NotFoundError,
     ValidationError,
 } from '@valentine-efagene/qshelter-common';
@@ -83,7 +82,7 @@ onboardingRouter.get('/organizations/:id/onboarding/current-action', async (req,
 onboardingRouter.post('/organizations/:id/onboarding', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 
@@ -195,7 +194,7 @@ onboardingRouter.post('/organizations/:id/onboarding/phases/:phaseId/documents',
 onboardingRouter.post('/organizations/:id/onboarding/phases/:phaseId/gate/review', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 
@@ -221,7 +220,7 @@ onboardingRouter.post('/organizations/:id/onboarding/phases/:phaseId/gate/review
 onboardingRouter.patch('/organizations/:id/onboarding/reassign', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
 

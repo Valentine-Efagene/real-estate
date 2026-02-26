@@ -2,8 +2,7 @@ import { Router } from 'express';
 import {
     successResponse,
     getAuthContext,
-    hasAnyRole,
-    ADMIN_ROLES,
+    isAdmin,
 } from '@valentine-efagene/qshelter-common';
 import { onboardingFlowService } from '../services/onboarding-flow.service';
 import { z } from 'zod';
@@ -118,7 +117,7 @@ onboardingFlowRouter.get('/:id', async (req, res, next) => {
 onboardingFlowRouter.post('/', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const data = CreateFlowSchema.parse(req.body);
@@ -137,7 +136,7 @@ onboardingFlowRouter.post('/', async (req, res, next) => {
 onboardingFlowRouter.patch('/:id', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const data = UpdateFlowSchema.parse(req.body);
@@ -156,7 +155,7 @@ onboardingFlowRouter.patch('/:id', async (req, res, next) => {
 onboardingFlowRouter.delete('/:id', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const result = await onboardingFlowService.delete(ctx.tenantId, req.params.id);
@@ -178,7 +177,7 @@ onboardingFlowRouter.delete('/:id', async (req, res, next) => {
 onboardingFlowRouter.post('/:id/phases', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const data = AddPhaseSchema.parse(req.body);
@@ -197,7 +196,7 @@ onboardingFlowRouter.post('/:id/phases', async (req, res, next) => {
 onboardingFlowRouter.patch('/:id/phases/:phaseId', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const data = UpdatePhaseSchema.parse(req.body);
@@ -216,7 +215,7 @@ onboardingFlowRouter.patch('/:id/phases/:phaseId', async (req, res, next) => {
 onboardingFlowRouter.delete('/:id/phases/:phaseId', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const result = await onboardingFlowService.removePhase(ctx.tenantId, req.params.id, req.params.phaseId);
@@ -238,7 +237,7 @@ onboardingFlowRouter.delete('/:id/phases/:phaseId', async (req, res, next) => {
 onboardingFlowRouter.post('/:id/org-types', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const data = LinkOrgTypeSchema.parse(req.body);
@@ -257,7 +256,7 @@ onboardingFlowRouter.post('/:id/org-types', async (req, res, next) => {
 onboardingFlowRouter.delete('/:id/org-types/:orgTypeId', async (req, res, next) => {
     try {
         const ctx = getAuthContext(req);
-        if (!hasAnyRole(ctx.roles, ADMIN_ROLES)) {
+        if (!isAdmin(ctx.roles, ctx)) {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
         const result = await onboardingFlowService.unlinkOrgType(ctx.tenantId, req.params.id, req.params.orgTypeId);
