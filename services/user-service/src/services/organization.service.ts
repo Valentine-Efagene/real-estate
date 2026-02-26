@@ -623,6 +623,10 @@ class OrganizationService {
                 user: {
                     select: { id: true, email: true, firstName: true, lastName: true },
                 },
+                role: { select: { id: true, name: true } },
+                additionalRoles: {
+                    include: { role: { select: { id: true, name: true } } },
+                },
             },
             orderBy: { createdAt: 'asc' },
         });
