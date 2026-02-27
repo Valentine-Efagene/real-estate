@@ -245,10 +245,10 @@ export async function runDemoBootstrap(
         'paymentMethodQualification', 'organizationPaymentMethod',
         'qualificationFlowPhase', 'paymentMethodQualificationConfig',
         'qualificationFlow', 'gatePlan',
-        'organizationMember', 'organization',
+        'organizationMemberRole', 'organizationMember', 'organization',
         'eventHandler', 'eventType', 'eventChannel', 'apiKey',
         'refreshToken', 'passwordReset', 'userSuspension', 'emailPreference',
-        'deviceEndpoint', 'social', 'rolePermission', 'tenantMembership',
+        'deviceEndpoint', 'social', 'rolePermission', 'tenantMembershipRole', 'tenantMembership',
         'transaction', 'wallet',
         'user', 'permission', 'role', 'settings', 'oAuthState', 'tenant',
     ];

@@ -492,6 +492,7 @@ router.post(
             // Level 6: Organizations, org types, and onboarding flows
             const level6Tables = [
                 'bankDocumentRequirement',
+                'organizationMemberRole',
                 'organizationMember',
                 'organizationTypeAssignment',
                 'organization',
@@ -534,6 +535,7 @@ router.post(
                 'deviceEndpoint',
                 'social',
                 'rolePermission',
+                'tenantMembershipRole',
                 'tenantMembership',
                 'transaction',
                 'wallet',
