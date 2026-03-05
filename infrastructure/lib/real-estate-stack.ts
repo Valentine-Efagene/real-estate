@@ -57,7 +57,7 @@ export class RealEstateStack extends cdk.Stack {
       }),
       // Scale to 0 ACU when idle — only pay for storage (~$0.10/GB/month)
       // Resume takes ~15-30s on first connection after pause
-      serverlessV2MinCapacity: 0,
+      serverlessV2MinCapacity: 0.5,
       serverlessV2MaxCapacity: 2,
       vpc,
       vpcSubnets: {

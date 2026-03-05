@@ -13,7 +13,6 @@ export interface InfrastructureConfig {
     databaseSecretArn: string;
     redisHost?: string;
     redisPort?: number;
-    rolePoliciesTableName: string;
     s3BucketName: string;
     eventBridgeBusName: string;
 }
@@ -134,7 +133,6 @@ export class ConfigService {
                 databaseSecretArn: this.getParamValue(params, `${pathPrefix}database-secret-arn`),
                 redisHost: redisHost || undefined,
                 redisPort: redisPortStr ? parseInt(redisPortStr, 10) : undefined,
-                rolePoliciesTableName: this.getParamValue(params, `${pathPrefix}role-policies-table-name`),
                 s3BucketName: this.getParamValue(params, `${pathPrefix}s3-bucket-name`),
                 eventBridgeBusName: this.getParamValue(params, `${pathPrefix}eventbridge-bus-name`),
             };
