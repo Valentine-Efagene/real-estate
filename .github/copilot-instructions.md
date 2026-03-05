@@ -702,11 +702,11 @@ After every AWS deployment, you MUST:
 1. **Update Postman environment file** (`postman/QShelter-AWS-Staging.postman_environment.json`):
    - Update all service URLs from CloudFormation outputs
    - Get bootstrap secret from SSM if changed
-2. **Update `DEPLOYMENT_STATUS.md`**:
-   - New endpoint URLs
-   - Package sizes
-   - Health check status
-   - Deployment date
+2. **Update deployment notes in `README.md` (or current runbook)**:
+
+- New endpoint URLs
+- Health check status
+- Deployment date
 
 3. **Verify health endpoints**:
 

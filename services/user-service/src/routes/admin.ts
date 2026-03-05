@@ -657,4 +657,37 @@ router.post(
     }
 );
 
+/**
+ * GET /admin/demo-bootstrap/:jobId
+ *
+ * Poll for demo-bootstrap job status.
+ * Returns { jobId, status, result?, error? }
+ *
+ * Security: Requires x-bootstrap-secret header
+ */
+router.get(
+    '/demo-bootstrap/:jobId',
+    verifyBootstrapSecret,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const jobId = req.params.jobId as string;
+            const jobStore = new AsyncJobStore(prisma, 'DEMO_BOOTSTRAP');
+            const job = await jobStore.get(jobId);
+
+            if (!job) {
+                res.status(404).json({
+                    jobId,
+                    status: 'NOT_FOUND',
+                    error: 'Job not found',
+                });
+                return;
+            }
+
+            res.json(job);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 export const adminRouter = router;

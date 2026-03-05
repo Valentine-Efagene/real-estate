@@ -273,7 +273,7 @@ Initial setup of payment plans and methods:
 
 ## Related Documentation
 
-- [API Documentation](../API_DOCUMENTATION.md)
-- [Deployment Guide](../DEPLOYMENT_GUIDE.md)
+- [API Monorepo README](../README.md)
+- [Infrastructure Guide](../infrastructure/README.md)
 - [Scenario: Chidi Lekki Mortgage](../docs/SIMPLIFIED_LOS_FLOW.md)
 - [Scenario: Property Transfer](../docs/PROPERTY_TRANSFER_SCENARIO.md)
