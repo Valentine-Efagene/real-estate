@@ -10,6 +10,8 @@
     "dev": "tsc --watch",
     "generate:prisma": "prisma generate && node scripts/generate-models-index.mjs",
     "postgenerate": "node scripts/generate-models-index.mjs",
+    "studio:local": "prisma studio",
+    "studio:staging": "bash scripts/studio-staging.sh",
     "migrate:local": "prisma migrate dev",
     "migrate:local:reset": "prisma migrate reset --force",
     "migrate:local:status": "prisma migrate status",

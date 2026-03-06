@@ -35,25 +35,74 @@ api/
 
 ## Quick start
 
-### LocalStack environment
+### Install dependencies (monorepo)
 
 ```bash
-cd local-dev
+cd api
+pnpm install
+```
+
+### Run backend project locally (LocalStack + Docker MySQL)
+
+```bash
+cd api/local-dev
 ./scripts/start.sh
 ```
+
+This boots LocalStack, MySQL, and deploys localstack service configs needed for local API development.
 
 ### AWS staging deploy
 
 ```bash
-cd scripts
+cd api/scripts
 ./deploy-staging.sh all
 ```
 
 ### Teardown staging (destructive)
 
 ```bash
-cd scripts
+cd api/scripts
 ./teardown-staging.sh
+```
+
+## Prisma workflows (shared/common)
+
+All Prisma commands run from `api/shared/common`.
+
+### Generate Prisma client/types
+
+```bash
+cd api/shared/common
+npm run generate:prisma
+```
+
+### Migrations (local)
+
+```bash
+cd api/shared/common
+npm run migrate:local
+```
+
+### Prisma Studio
+
+```bash
+# Local DB (reads DATABASE_URL from api/shared/common/.env)
+cd api/shared/common
+npm run studio:local
+
+# AWS staging DB (fetches /qshelter/staging/database-secret-arn and launches Studio)
+cd api/shared/common
+npm run studio:staging
+```
+
+Optional overrides:
+
+```bash
+# Use non-default AWS profile
+AWS_PROFILE=default npm run studio:staging
+
+# Use a different stage (example: localstack)
+npm run studio:staging -- localstack
 ```
 
 ## Common workflows
