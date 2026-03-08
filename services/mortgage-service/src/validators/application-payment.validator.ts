@@ -40,6 +40,41 @@ export const RefundPaymentSchema = z
     })
     .openapi('RefundPayment');
 
+export const ApplicationAdjustmentTypeSchema = z.enum([
+    'PROMO_DISCOUNT',
+    'THIRD_PARTY_CREDIT',
+    'WAIVER',
+    'MANUAL_ADJUSTMENT',
+    'SURCHARGE',
+    'CORRECTION',
+]);
+
+export const AdjustmentDirectionSchema = z.enum(['REDUCTION', 'ADDITION']);
+
+export const AdjustmentSourceTypeSchema = z.enum([
+    'MANUAL',
+    'PROMO',
+    'RSA_PFA',
+    'BANK_DIRECT',
+    'SYSTEM',
+]);
+
+export const CreateApplicationAdjustmentSchema = z
+    .object({
+        applicationId: z.string(),
+        phaseId: z.string().optional(),
+        installmentId: z.string().optional(),
+        type: ApplicationAdjustmentTypeSchema,
+        direction: AdjustmentDirectionSchema.default('REDUCTION'),
+        amount: z.number().positive(),
+        sourceType: AdjustmentSourceTypeSchema.default('MANUAL'),
+        sourceOrganizationId: z.string().optional(),
+        sourceReference: z.string().optional(),
+        description: z.string().optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
+    })
+    .openapi('CreateApplicationAdjustment');
+
 // Payment response
 export const ApplicationPaymentResponseSchema = z
     .object({
@@ -64,3 +99,4 @@ export const ApplicationPaymentResponseSchema = z
 export type CreatePaymentInput = z.infer<typeof CreatePaymentSchema>;
 export type ProcessPaymentInput = z.infer<typeof ProcessPaymentSchema>;
 export type RefundPaymentInput = z.infer<typeof RefundPaymentSchema>;
+export type CreateApplicationAdjustmentInput = z.infer<typeof CreateApplicationAdjustmentSchema>;

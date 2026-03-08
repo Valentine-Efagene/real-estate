@@ -320,6 +320,7 @@ export type ApplicationPhaseWhereInput = {
   paymentPhase?: Prisma.XOR<Prisma.PaymentPhaseNullableScalarRelationFilter, Prisma.PaymentPhaseWhereInput> | null
   gatePhase?: Prisma.XOR<Prisma.GatePhaseNullableScalarRelationFilter, Prisma.GatePhaseWhereInput> | null
   payments?: Prisma.ApplicationPaymentListRelationFilter
+  adjustments?: Prisma.ApplicationAdjustmentListRelationFilter
   currentForApplications?: Prisma.ApplicationListRelationFilter
 }
 
@@ -349,6 +350,7 @@ export type ApplicationPhaseOrderByWithRelationInput = {
   paymentPhase?: Prisma.PaymentPhaseOrderByWithRelationInput
   gatePhase?: Prisma.GatePhaseOrderByWithRelationInput
   payments?: Prisma.ApplicationPaymentOrderByRelationAggregateInput
+  adjustments?: Prisma.ApplicationAdjustmentOrderByRelationAggregateInput
   currentForApplications?: Prisma.ApplicationOrderByRelationAggregateInput
   _relevance?: Prisma.ApplicationPhaseOrderByRelevanceInput
 }
@@ -382,6 +384,7 @@ export type ApplicationPhaseWhereUniqueInput = Prisma.AtLeast<{
   paymentPhase?: Prisma.XOR<Prisma.PaymentPhaseNullableScalarRelationFilter, Prisma.PaymentPhaseWhereInput> | null
   gatePhase?: Prisma.XOR<Prisma.GatePhaseNullableScalarRelationFilter, Prisma.GatePhaseWhereInput> | null
   payments?: Prisma.ApplicationPaymentListRelationFilter
+  adjustments?: Prisma.ApplicationAdjustmentListRelationFilter
   currentForApplications?: Prisma.ApplicationListRelationFilter
 }, "id">
 
@@ -456,6 +459,7 @@ export type ApplicationPhaseCreateInput = {
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -482,6 +486,7 @@ export type ApplicationPhaseUncheckedCreateInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseUncheckedCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -508,6 +513,7 @@ export type ApplicationPhaseUpdateInput = {
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -534,6 +540,7 @@ export type ApplicationPhaseUncheckedUpdateInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUncheckedUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -908,6 +915,22 @@ export type ApplicationPhaseUpdateOneWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationPhaseUpdateToOneWithWhereWithoutPaymentsInput, Prisma.ApplicationPhaseUpdateWithoutPaymentsInput>, Prisma.ApplicationPhaseUncheckedUpdateWithoutPaymentsInput>
 }
 
+export type ApplicationPhaseCreateNestedOneWithoutAdjustmentsInput = {
+  create?: Prisma.XOR<Prisma.ApplicationPhaseCreateWithoutAdjustmentsInput, Prisma.ApplicationPhaseUncheckedCreateWithoutAdjustmentsInput>
+  connectOrCreate?: Prisma.ApplicationPhaseCreateOrConnectWithoutAdjustmentsInput
+  connect?: Prisma.ApplicationPhaseWhereUniqueInput
+}
+
+export type ApplicationPhaseUpdateOneWithoutAdjustmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationPhaseCreateWithoutAdjustmentsInput, Prisma.ApplicationPhaseUncheckedCreateWithoutAdjustmentsInput>
+  connectOrCreate?: Prisma.ApplicationPhaseCreateOrConnectWithoutAdjustmentsInput
+  upsert?: Prisma.ApplicationPhaseUpsertWithoutAdjustmentsInput
+  disconnect?: Prisma.ApplicationPhaseWhereInput | boolean
+  delete?: Prisma.ApplicationPhaseWhereInput | boolean
+  connect?: Prisma.ApplicationPhaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationPhaseUpdateToOneWithWhereWithoutAdjustmentsInput, Prisma.ApplicationPhaseUpdateWithoutAdjustmentsInput>, Prisma.ApplicationPhaseUncheckedUpdateWithoutAdjustmentsInput>
+}
+
 export type ApplicationPhaseCreateWithoutTenantInput = {
   id?: string
   name: string
@@ -930,6 +953,7 @@ export type ApplicationPhaseCreateWithoutTenantInput = {
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -955,6 +979,7 @@ export type ApplicationPhaseUncheckedCreateWithoutTenantInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseUncheckedCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1029,6 +1054,7 @@ export type ApplicationPhaseCreateWithoutPhaseTemplateInput = {
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1054,6 +1080,7 @@ export type ApplicationPhaseUncheckedCreateWithoutPhaseTemplateInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseUncheckedCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1106,6 +1133,7 @@ export type ApplicationPhaseCreateWithoutCurrentForApplicationsInput = {
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutPhaseInput
 }
 
 export type ApplicationPhaseUncheckedCreateWithoutCurrentForApplicationsInput = {
@@ -1131,6 +1159,7 @@ export type ApplicationPhaseUncheckedCreateWithoutCurrentForApplicationsInput = 
   paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseUncheckedCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutPhaseInput
 }
 
 export type ApplicationPhaseCreateOrConnectWithoutCurrentForApplicationsInput = {
@@ -1160,6 +1189,7 @@ export type ApplicationPhaseCreateWithoutApplicationInput = {
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1185,6 +1215,7 @@ export type ApplicationPhaseUncheckedCreateWithoutApplicationInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseUncheckedCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1232,6 +1263,7 @@ export type ApplicationPhaseUpdateWithoutCurrentForApplicationsInput = {
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutPhaseNestedInput
 }
 
 export type ApplicationPhaseUncheckedUpdateWithoutCurrentForApplicationsInput = {
@@ -1257,6 +1289,7 @@ export type ApplicationPhaseUncheckedUpdateWithoutCurrentForApplicationsInput = 
   paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUncheckedUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutPhaseNestedInput
 }
 
 export type ApplicationPhaseUpsertWithWhereUniqueWithoutApplicationInput = {
@@ -1297,6 +1330,7 @@ export type ApplicationPhaseCreateWithoutQuestionnairePhaseInput = {
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1322,6 +1356,7 @@ export type ApplicationPhaseUncheckedCreateWithoutQuestionnairePhaseInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseUncheckedCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1363,6 +1398,7 @@ export type ApplicationPhaseUpdateWithoutQuestionnairePhaseInput = {
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1388,6 +1424,7 @@ export type ApplicationPhaseUncheckedUpdateWithoutQuestionnairePhaseInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUncheckedUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1413,6 +1450,7 @@ export type ApplicationPhaseCreateWithoutGatePhaseInput = {
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1438,6 +1476,7 @@ export type ApplicationPhaseUncheckedCreateWithoutGatePhaseInput = {
   documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
   paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1479,6 +1518,7 @@ export type ApplicationPhaseUpdateWithoutGatePhaseInput = {
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1504,6 +1544,7 @@ export type ApplicationPhaseUncheckedUpdateWithoutGatePhaseInput = {
   documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1529,6 +1570,7 @@ export type ApplicationPhaseCreateWithoutDocumentationPhaseInput = {
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1554,6 +1596,7 @@ export type ApplicationPhaseUncheckedCreateWithoutDocumentationPhaseInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseUncheckedCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1595,6 +1638,7 @@ export type ApplicationPhaseUpdateWithoutDocumentationPhaseInput = {
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1620,6 +1664,7 @@ export type ApplicationPhaseUncheckedUpdateWithoutDocumentationPhaseInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUncheckedUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1645,6 +1690,7 @@ export type ApplicationPhaseCreateWithoutPaymentPhaseInput = {
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1670,6 +1716,7 @@ export type ApplicationPhaseUncheckedCreateWithoutPaymentPhaseInput = {
   documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseUncheckedCreateNestedOneWithoutApplicationPhaseInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1711,6 +1758,7 @@ export type ApplicationPhaseUpdateWithoutPaymentPhaseInput = {
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1736,6 +1784,7 @@ export type ApplicationPhaseUncheckedUpdateWithoutPaymentPhaseInput = {
   documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUncheckedUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1761,6 +1810,7 @@ export type ApplicationPhaseCreateWithoutPaymentsInput = {
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutApplicationPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1786,6 +1836,7 @@ export type ApplicationPhaseUncheckedCreateWithoutPaymentsInput = {
   documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
   paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   gatePhase?: Prisma.GatePhaseUncheckedCreateNestedOneWithoutApplicationPhaseInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutPhaseInput
   currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
@@ -1827,6 +1878,7 @@ export type ApplicationPhaseUpdateWithoutPaymentsInput = {
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutApplicationPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1852,6 +1904,127 @@ export type ApplicationPhaseUncheckedUpdateWithoutPaymentsInput = {
   documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUncheckedUpdateOneWithoutApplicationPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutPhaseNestedInput
+  currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
+}
+
+export type ApplicationPhaseCreateWithoutAdjustmentsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  phaseCategory: $Enums.PhaseCategory
+  order: number
+  status?: $Enums.PhaseStatus
+  dueDate?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  requiresPreviousPhaseCompletion?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationPhasesInput
+  application: Prisma.ApplicationCreateNestedOneWithoutPhasesInput
+  phaseTemplate?: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutApplicationPhasesInput
+  questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
+  gatePhase?: Prisma.GatePhaseCreateNestedOneWithoutApplicationPhaseInput
+  payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
+}
+
+export type ApplicationPhaseUncheckedCreateWithoutAdjustmentsInput = {
+  id?: string
+  tenantId: string
+  applicationId: string
+  phaseTemplateId?: string | null
+  name: string
+  description?: string | null
+  phaseCategory: $Enums.PhaseCategory
+  order: number
+  status?: $Enums.PhaseStatus
+  dueDate?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  requiresPreviousPhaseCompletion?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  gatePhase?: Prisma.GatePhaseUncheckedCreateNestedOneWithoutApplicationPhaseInput
+  payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
+}
+
+export type ApplicationPhaseCreateOrConnectWithoutAdjustmentsInput = {
+  where: Prisma.ApplicationPhaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationPhaseCreateWithoutAdjustmentsInput, Prisma.ApplicationPhaseUncheckedCreateWithoutAdjustmentsInput>
+}
+
+export type ApplicationPhaseUpsertWithoutAdjustmentsInput = {
+  update: Prisma.XOR<Prisma.ApplicationPhaseUpdateWithoutAdjustmentsInput, Prisma.ApplicationPhaseUncheckedUpdateWithoutAdjustmentsInput>
+  create: Prisma.XOR<Prisma.ApplicationPhaseCreateWithoutAdjustmentsInput, Prisma.ApplicationPhaseUncheckedCreateWithoutAdjustmentsInput>
+  where?: Prisma.ApplicationPhaseWhereInput
+}
+
+export type ApplicationPhaseUpdateToOneWithWhereWithoutAdjustmentsInput = {
+  where?: Prisma.ApplicationPhaseWhereInput
+  data: Prisma.XOR<Prisma.ApplicationPhaseUpdateWithoutAdjustmentsInput, Prisma.ApplicationPhaseUncheckedUpdateWithoutAdjustmentsInput>
+}
+
+export type ApplicationPhaseUpdateWithoutAdjustmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationPhasesNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutPhasesNestedInput
+  phaseTemplate?: Prisma.PropertyPaymentMethodPhaseUpdateOneWithoutApplicationPhasesNestedInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
+  gatePhase?: Prisma.GatePhaseUpdateOneWithoutApplicationPhaseNestedInput
+  payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
+}
+
+export type ApplicationPhaseUncheckedUpdateWithoutAdjustmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseTemplateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  gatePhase?: Prisma.GatePhaseUncheckedUpdateOneWithoutApplicationPhaseNestedInput
+  payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1896,6 +2069,7 @@ export type ApplicationPhaseUpdateWithoutTenantInput = {
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1921,6 +2095,7 @@ export type ApplicationPhaseUncheckedUpdateWithoutTenantInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUncheckedUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -1984,6 +2159,7 @@ export type ApplicationPhaseUpdateWithoutPhaseTemplateInput = {
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -2009,6 +2185,7 @@ export type ApplicationPhaseUncheckedUpdateWithoutPhaseTemplateInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUncheckedUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -2072,6 +2249,7 @@ export type ApplicationPhaseUpdateWithoutApplicationInput = {
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -2097,6 +2275,7 @@ export type ApplicationPhaseUncheckedUpdateWithoutApplicationInput = {
   paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   gatePhase?: Prisma.GatePhaseUncheckedUpdateOneWithoutApplicationPhaseNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutPhaseNestedInput
   currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
@@ -2126,11 +2305,13 @@ export type ApplicationPhaseUncheckedUpdateManyWithoutApplicationInput = {
 
 export type ApplicationPhaseCountOutputType = {
   payments: number
+  adjustments: number
   currentForApplications: number
 }
 
 export type ApplicationPhaseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payments?: boolean | ApplicationPhaseCountOutputTypeCountPaymentsArgs
+  adjustments?: boolean | ApplicationPhaseCountOutputTypeCountAdjustmentsArgs
   currentForApplications?: boolean | ApplicationPhaseCountOutputTypeCountCurrentForApplicationsArgs
 }
 
@@ -2149,6 +2330,13 @@ export type ApplicationPhaseCountOutputTypeDefaultArgs<ExtArgs extends runtime.T
  */
 export type ApplicationPhaseCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ApplicationPaymentWhereInput
+}
+
+/**
+ * ApplicationPhaseCountOutputType without action
+ */
+export type ApplicationPhaseCountOutputTypeCountAdjustmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApplicationAdjustmentWhereInput
 }
 
 /**
@@ -2185,6 +2373,7 @@ export type ApplicationPhaseSelect<ExtArgs extends runtime.Types.Extensions.Inte
   paymentPhase?: boolean | Prisma.ApplicationPhase$paymentPhaseArgs<ExtArgs>
   gatePhase?: boolean | Prisma.ApplicationPhase$gatePhaseArgs<ExtArgs>
   payments?: boolean | Prisma.ApplicationPhase$paymentsArgs<ExtArgs>
+  adjustments?: boolean | Prisma.ApplicationPhase$adjustmentsArgs<ExtArgs>
   currentForApplications?: boolean | Prisma.ApplicationPhase$currentForApplicationsArgs<ExtArgs>
   _count?: boolean | Prisma.ApplicationPhaseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["applicationPhase"]>
@@ -2221,6 +2410,7 @@ export type ApplicationPhaseInclude<ExtArgs extends runtime.Types.Extensions.Int
   paymentPhase?: boolean | Prisma.ApplicationPhase$paymentPhaseArgs<ExtArgs>
   gatePhase?: boolean | Prisma.ApplicationPhase$gatePhaseArgs<ExtArgs>
   payments?: boolean | Prisma.ApplicationPhase$paymentsArgs<ExtArgs>
+  adjustments?: boolean | Prisma.ApplicationPhase$adjustmentsArgs<ExtArgs>
   currentForApplications?: boolean | Prisma.ApplicationPhase$currentForApplicationsArgs<ExtArgs>
   _count?: boolean | Prisma.ApplicationPhaseCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -2236,6 +2426,7 @@ export type $ApplicationPhasePayload<ExtArgs extends runtime.Types.Extensions.In
     paymentPhase: Prisma.$PaymentPhasePayload<ExtArgs> | null
     gatePhase: Prisma.$GatePhasePayload<ExtArgs> | null
     payments: Prisma.$ApplicationPaymentPayload<ExtArgs>[]
+    adjustments: Prisma.$ApplicationAdjustmentPayload<ExtArgs>[]
     currentForApplications: Prisma.$ApplicationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -2604,6 +2795,7 @@ export interface Prisma__ApplicationPhaseClient<T, Null = never, ExtArgs extends
   paymentPhase<T extends Prisma.ApplicationPhase$paymentPhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhase$paymentPhaseArgs<ExtArgs>>): Prisma.Prisma__PaymentPhaseClient<runtime.Types.Result.GetResult<Prisma.$PaymentPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   gatePhase<T extends Prisma.ApplicationPhase$gatePhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhase$gatePhaseArgs<ExtArgs>>): Prisma.Prisma__GatePhaseClient<runtime.Types.Result.GetResult<Prisma.$GatePhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   payments<T extends Prisma.ApplicationPhase$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhase$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adjustments<T extends Prisma.ApplicationPhase$adjustmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhase$adjustmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   currentForApplications<T extends Prisma.ApplicationPhase$currentForApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhase$currentForApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3110,6 +3302,30 @@ export type ApplicationPhase$paymentsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.ApplicationPaymentScalarFieldEnum | Prisma.ApplicationPaymentScalarFieldEnum[]
+}
+
+/**
+ * ApplicationPhase.adjustments
+ */
+export type ApplicationPhase$adjustmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApplicationAdjustment
+   */
+  select?: Prisma.ApplicationAdjustmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApplicationAdjustment
+   */
+  omit?: Prisma.ApplicationAdjustmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApplicationAdjustmentInclude<ExtArgs> | null
+  where?: Prisma.ApplicationAdjustmentWhereInput
+  orderBy?: Prisma.ApplicationAdjustmentOrderByWithRelationInput | Prisma.ApplicationAdjustmentOrderByWithRelationInput[]
+  cursor?: Prisma.ApplicationAdjustmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApplicationAdjustmentScalarFieldEnum | Prisma.ApplicationAdjustmentScalarFieldEnum[]
 }
 
 /**

@@ -397,6 +397,7 @@ export type ApplicationWhereInput = {
   phases?: Prisma.ApplicationPhaseListRelationFilter
   documents?: Prisma.ApplicationDocumentListRelationFilter
   payments?: Prisma.ApplicationPaymentListRelationFilter
+  adjustments?: Prisma.ApplicationAdjustmentListRelationFilter
   terminations?: Prisma.ApplicationTerminationListRelationFilter
   offerLetters?: Prisma.OfferLetterListRelationFilter
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
@@ -449,6 +450,7 @@ export type ApplicationOrderByWithRelationInput = {
   phases?: Prisma.ApplicationPhaseOrderByRelationAggregateInput
   documents?: Prisma.ApplicationDocumentOrderByRelationAggregateInput
   payments?: Prisma.ApplicationPaymentOrderByRelationAggregateInput
+  adjustments?: Prisma.ApplicationAdjustmentOrderByRelationAggregateInput
   terminations?: Prisma.ApplicationTerminationOrderByRelationAggregateInput
   offerLetters?: Prisma.OfferLetterOrderByRelationAggregateInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestOrderByRelationAggregateInput
@@ -505,6 +507,7 @@ export type ApplicationWhereUniqueInput = Prisma.AtLeast<{
   phases?: Prisma.ApplicationPhaseListRelationFilter
   documents?: Prisma.ApplicationDocumentListRelationFilter
   payments?: Prisma.ApplicationPaymentListRelationFilter
+  adjustments?: Prisma.ApplicationAdjustmentListRelationFilter
   terminations?: Prisma.ApplicationTerminationListRelationFilter
   offerLetters?: Prisma.OfferLetterListRelationFilter
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
@@ -617,6 +620,7 @@ export type ApplicationCreateInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -663,6 +667,7 @@ export type ApplicationUncheckedCreateInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -705,6 +710,7 @@ export type ApplicationUpdateInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -751,6 +757,7 @@ export type ApplicationUncheckedUpdateInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -1414,6 +1421,20 @@ export type ApplicationUpdateOneRequiredWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationUpdateToOneWithWhereWithoutPaymentsInput, Prisma.ApplicationUpdateWithoutPaymentsInput>, Prisma.ApplicationUncheckedUpdateWithoutPaymentsInput>
 }
 
+export type ApplicationCreateNestedOneWithoutAdjustmentsInput = {
+  create?: Prisma.XOR<Prisma.ApplicationCreateWithoutAdjustmentsInput, Prisma.ApplicationUncheckedCreateWithoutAdjustmentsInput>
+  connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutAdjustmentsInput
+  connect?: Prisma.ApplicationWhereUniqueInput
+}
+
+export type ApplicationUpdateOneRequiredWithoutAdjustmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationCreateWithoutAdjustmentsInput, Prisma.ApplicationUncheckedCreateWithoutAdjustmentsInput>
+  connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutAdjustmentsInput
+  upsert?: Prisma.ApplicationUpsertWithoutAdjustmentsInput
+  connect?: Prisma.ApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationUpdateToOneWithWhereWithoutAdjustmentsInput, Prisma.ApplicationUpdateWithoutAdjustmentsInput>, Prisma.ApplicationUncheckedUpdateWithoutAdjustmentsInput>
+}
+
 export type ApplicationCreateNestedOneWithoutDocumentsInput = {
   create?: Prisma.XOR<Prisma.ApplicationCreateWithoutDocumentsInput, Prisma.ApplicationUncheckedCreateWithoutDocumentsInput>
   connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutDocumentsInput
@@ -1528,6 +1549,7 @@ export type ApplicationCreateWithoutBuyerInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -1573,6 +1595,7 @@ export type ApplicationUncheckedCreateWithoutBuyerInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -1624,6 +1647,7 @@ export type ApplicationCreateWithoutSellerInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -1669,6 +1693,7 @@ export type ApplicationUncheckedCreateWithoutSellerInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -1785,6 +1810,7 @@ export type ApplicationCreateWithoutTenantInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -1830,6 +1856,7 @@ export type ApplicationUncheckedCreateWithoutTenantInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -1897,6 +1924,7 @@ export type ApplicationCreateWithoutPropertyUnitInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -1942,6 +1970,7 @@ export type ApplicationUncheckedCreateWithoutPropertyUnitInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -2009,6 +2038,7 @@ export type ApplicationCreateWithoutPaymentMethodInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -2054,6 +2084,7 @@ export type ApplicationUncheckedCreateWithoutPaymentMethodInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -2122,6 +2153,7 @@ export type ApplicationCreateWithoutTransferredToInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -2167,6 +2199,7 @@ export type ApplicationUncheckedCreateWithoutTransferredToInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -2213,6 +2246,7 @@ export type ApplicationCreateWithoutTransferredFromInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -2257,6 +2291,7 @@ export type ApplicationUncheckedCreateWithoutTransferredFromInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -2304,6 +2339,7 @@ export type ApplicationCreateWithoutSupersededApplicationsInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -2349,6 +2385,7 @@ export type ApplicationUncheckedCreateWithoutSupersededApplicationsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -2395,6 +2432,7 @@ export type ApplicationCreateWithoutSupersededByInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -2439,6 +2477,7 @@ export type ApplicationUncheckedCreateWithoutSupersededByInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -2502,6 +2541,7 @@ export type ApplicationUpdateWithoutTransferredToInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -2547,6 +2587,7 @@ export type ApplicationUncheckedUpdateWithoutTransferredToInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -2599,6 +2640,7 @@ export type ApplicationUpdateWithoutTransferredFromInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -2643,6 +2685,7 @@ export type ApplicationUncheckedUpdateWithoutTransferredFromInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -2696,6 +2739,7 @@ export type ApplicationUpdateWithoutSupersededApplicationsInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -2741,6 +2785,7 @@ export type ApplicationUncheckedUpdateWithoutSupersededApplicationsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -2798,6 +2843,7 @@ export type ApplicationCreateWithoutCoApplicantsInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -2843,6 +2889,7 @@ export type ApplicationUncheckedCreateWithoutCoApplicantsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -2900,6 +2947,7 @@ export type ApplicationUpdateWithoutCoApplicantsInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -2945,6 +2993,7 @@ export type ApplicationUncheckedUpdateWithoutCoApplicantsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -2986,6 +3035,7 @@ export type ApplicationCreateWithoutOrganizationsInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -3031,6 +3081,7 @@ export type ApplicationUncheckedCreateWithoutOrganizationsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -3088,6 +3139,7 @@ export type ApplicationUpdateWithoutOrganizationsInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -3133,6 +3185,7 @@ export type ApplicationUncheckedUpdateWithoutOrganizationsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -3174,6 +3227,7 @@ export type ApplicationCreateWithoutRefundsInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -3219,6 +3273,7 @@ export type ApplicationUncheckedCreateWithoutRefundsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -3276,6 +3331,7 @@ export type ApplicationUpdateWithoutRefundsInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -3321,6 +3377,7 @@ export type ApplicationUncheckedUpdateWithoutRefundsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -3361,6 +3418,7 @@ export type ApplicationCreateWithoutPhasesInput = {
   currentPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutCurrentForApplicationsInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -3406,6 +3464,7 @@ export type ApplicationUncheckedCreateWithoutPhasesInput = {
   supersededAt?: Date | string | null
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -3452,6 +3511,7 @@ export type ApplicationCreateWithoutCurrentPhaseInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -3497,6 +3557,7 @@ export type ApplicationUncheckedCreateWithoutCurrentPhaseInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -3559,6 +3620,7 @@ export type ApplicationUpdateWithoutPhasesInput = {
   currentPhase?: Prisma.ApplicationPhaseUpdateOneWithoutCurrentForApplicationsNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -3604,6 +3666,7 @@ export type ApplicationUncheckedUpdateWithoutPhasesInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -3662,6 +3725,7 @@ export type ApplicationCreateWithoutEventsInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -3707,6 +3771,7 @@ export type ApplicationUncheckedCreateWithoutEventsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -3764,6 +3829,7 @@ export type ApplicationUpdateWithoutEventsInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -3809,6 +3875,7 @@ export type ApplicationUncheckedUpdateWithoutEventsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -3849,6 +3916,7 @@ export type ApplicationCreateWithoutPaymentsInput = {
   currentPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutCurrentForApplicationsInput
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -3894,6 +3962,7 @@ export type ApplicationUncheckedCreateWithoutPaymentsInput = {
   supersededAt?: Date | string | null
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -3951,6 +4020,7 @@ export type ApplicationUpdateWithoutPaymentsInput = {
   currentPhase?: Prisma.ApplicationPhaseUpdateOneWithoutCurrentForApplicationsNestedInput
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -3996,6 +4066,199 @@ export type ApplicationUncheckedUpdateWithoutPaymentsInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
+  terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
+  transferredTo?: Prisma.ApplicationUncheckedUpdateOneWithoutTransferredFromNestedInput
+  supersededApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSupersededByNestedInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutSourceApplicationNestedInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
+  events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
+  refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutApplicationNestedInput
+}
+
+export type ApplicationCreateWithoutAdjustmentsInput = {
+  id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
+  applicationNumber: string
+  title: string
+  description?: string | null
+  applicationType: string
+  totalAmount: number
+  status?: $Enums.ApplicationStatus
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  supersededAt?: Date | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationsInput
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutApplicationsInput
+  buyer: Prisma.UserCreateNestedOneWithoutApplicationsInput
+  seller?: Prisma.UserCreateNestedOneWithoutSoldApplicationsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutApplicationsInput
+  currentPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutCurrentForApplicationsInput
+  phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
+  documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
+  payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
+  transferredFrom?: Prisma.ApplicationCreateNestedOneWithoutTransferredToInput
+  transferredTo?: Prisma.ApplicationCreateNestedOneWithoutTransferredFromInput
+  supersededBy?: Prisma.ApplicationCreateNestedOneWithoutSupersededApplicationsInput
+  supersededApplications?: Prisma.ApplicationCreateNestedManyWithoutSupersededByInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutSourceApplicationInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
+  events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
+  refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutApplicationInput
+}
+
+export type ApplicationUncheckedCreateWithoutAdjustmentsInput = {
+  id?: string
+  tenantId: string
+  propertyUnitId: string
+  buyerId: string
+  sellerId?: string | null
+  paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
+  applicationNumber: string
+  title: string
+  description?: string | null
+  applicationType: string
+  totalAmount: number
+  status?: $Enums.ApplicationStatus
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  transferredFromId?: string | null
+  supersededById?: string | null
+  supersededAt?: Date | string | null
+  phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
+  documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
+  payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
+  transferredTo?: Prisma.ApplicationUncheckedCreateNestedOneWithoutTransferredFromInput
+  supersededApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSupersededByInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutSourceApplicationInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
+  events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
+  refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
+  coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutApplicationInput
+}
+
+export type ApplicationCreateOrConnectWithoutAdjustmentsInput = {
+  where: Prisma.ApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationCreateWithoutAdjustmentsInput, Prisma.ApplicationUncheckedCreateWithoutAdjustmentsInput>
+}
+
+export type ApplicationUpsertWithoutAdjustmentsInput = {
+  update: Prisma.XOR<Prisma.ApplicationUpdateWithoutAdjustmentsInput, Prisma.ApplicationUncheckedUpdateWithoutAdjustmentsInput>
+  create: Prisma.XOR<Prisma.ApplicationCreateWithoutAdjustmentsInput, Prisma.ApplicationUncheckedCreateWithoutAdjustmentsInput>
+  where?: Prisma.ApplicationWhereInput
+}
+
+export type ApplicationUpdateToOneWithWhereWithoutAdjustmentsInput = {
+  where?: Prisma.ApplicationWhereInput
+  data: Prisma.XOR<Prisma.ApplicationUpdateWithoutAdjustmentsInput, Prisma.ApplicationUncheckedUpdateWithoutAdjustmentsInput>
+}
+
+export type ApplicationUpdateWithoutAdjustmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationsNestedInput
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutApplicationsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
+  seller?: Prisma.UserUpdateOneWithoutSoldApplicationsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutApplicationsNestedInput
+  currentPhase?: Prisma.ApplicationPhaseUpdateOneWithoutCurrentForApplicationsNestedInput
+  phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
+  documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
+  payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
+  transferredFrom?: Prisma.ApplicationUpdateOneWithoutTransferredToNestedInput
+  transferredTo?: Prisma.ApplicationUpdateOneWithoutTransferredFromNestedInput
+  supersededBy?: Prisma.ApplicationUpdateOneWithoutSupersededApplicationsNestedInput
+  supersededApplications?: Prisma.ApplicationUpdateManyWithoutSupersededByNestedInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutSourceApplicationNestedInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
+  events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
+  refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
+  coApplicants?: Prisma.CoApplicantUpdateManyWithoutApplicationNestedInput
+}
+
+export type ApplicationUncheckedUpdateWithoutAdjustmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  transferredFromId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
+  documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
+  payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -4037,6 +4300,7 @@ export type ApplicationCreateWithoutDocumentsInput = {
   currentPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutCurrentForApplicationsInput
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -4082,6 +4346,7 @@ export type ApplicationUncheckedCreateWithoutDocumentsInput = {
   supersededAt?: Date | string | null
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -4139,6 +4404,7 @@ export type ApplicationUpdateWithoutDocumentsInput = {
   currentPhase?: Prisma.ApplicationPhaseUpdateOneWithoutCurrentForApplicationsNestedInput
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -4184,6 +4450,7 @@ export type ApplicationUncheckedUpdateWithoutDocumentsInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -4226,6 +4493,7 @@ export type ApplicationCreateWithoutOfferLettersInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
   transferredFrom?: Prisma.ApplicationCreateNestedOneWithoutTransferredToInput
@@ -4271,6 +4539,7 @@ export type ApplicationUncheckedCreateWithoutOfferLettersInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
   transferredTo?: Prisma.ApplicationUncheckedCreateNestedOneWithoutTransferredFromInput
@@ -4328,6 +4597,7 @@ export type ApplicationUpdateWithoutOfferLettersInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
   transferredFrom?: Prisma.ApplicationUpdateOneWithoutTransferredToNestedInput
@@ -4373,6 +4643,7 @@ export type ApplicationUncheckedUpdateWithoutOfferLettersInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
   transferredTo?: Prisma.ApplicationUncheckedUpdateOneWithoutTransferredFromNestedInput
@@ -4414,6 +4685,7 @@ export type ApplicationCreateWithoutTerminationsInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
   transferredFrom?: Prisma.ApplicationCreateNestedOneWithoutTransferredToInput
@@ -4459,6 +4731,7 @@ export type ApplicationUncheckedCreateWithoutTerminationsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
   transferredTo?: Prisma.ApplicationUncheckedCreateNestedOneWithoutTransferredFromInput
@@ -4516,6 +4789,7 @@ export type ApplicationUpdateWithoutTerminationsInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
   transferredFrom?: Prisma.ApplicationUpdateOneWithoutTransferredToNestedInput
@@ -4561,6 +4835,7 @@ export type ApplicationUncheckedUpdateWithoutTerminationsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
   transferredTo?: Prisma.ApplicationUncheckedUpdateOneWithoutTransferredFromNestedInput
@@ -4602,6 +4877,7 @@ export type ApplicationCreateWithoutPaymentMethodChangeRequestsInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   transferredFrom?: Prisma.ApplicationCreateNestedOneWithoutTransferredToInput
@@ -4647,6 +4923,7 @@ export type ApplicationUncheckedCreateWithoutPaymentMethodChangeRequestsInput = 
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   transferredTo?: Prisma.ApplicationUncheckedCreateNestedOneWithoutTransferredFromInput
@@ -4704,6 +4981,7 @@ export type ApplicationUpdateWithoutPaymentMethodChangeRequestsInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   transferredFrom?: Prisma.ApplicationUpdateOneWithoutTransferredToNestedInput
@@ -4749,6 +5027,7 @@ export type ApplicationUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = 
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   transferredTo?: Prisma.ApplicationUncheckedUpdateOneWithoutTransferredFromNestedInput
@@ -4790,6 +5069,7 @@ export type ApplicationCreateWithoutOutgoingTransferRequestsInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -4835,6 +5115,7 @@ export type ApplicationUncheckedCreateWithoutOutgoingTransferRequestsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -4881,6 +5162,7 @@ export type ApplicationCreateWithoutIncomingTransferRequestsInput = {
   phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
@@ -4926,6 +5208,7 @@ export type ApplicationUncheckedCreateWithoutIncomingTransferRequestsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
   documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutApplicationInput
   terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
@@ -4983,6 +5266,7 @@ export type ApplicationUpdateWithoutOutgoingTransferRequestsInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -5028,6 +5312,7 @@ export type ApplicationUncheckedUpdateWithoutOutgoingTransferRequestsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -5080,6 +5365,7 @@ export type ApplicationUpdateWithoutIncomingTransferRequestsInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -5125,6 +5411,7 @@ export type ApplicationUncheckedUpdateWithoutIncomingTransferRequestsInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -5223,6 +5510,7 @@ export type ApplicationUpdateWithoutBuyerInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -5268,6 +5556,7 @@ export type ApplicationUncheckedUpdateWithoutBuyerInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -5338,6 +5627,7 @@ export type ApplicationUpdateWithoutSellerInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -5383,6 +5673,7 @@ export type ApplicationUncheckedUpdateWithoutSellerInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -5482,6 +5773,7 @@ export type ApplicationUpdateWithoutTenantInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -5527,6 +5819,7 @@ export type ApplicationUncheckedUpdateWithoutTenantInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -5626,6 +5919,7 @@ export type ApplicationUpdateWithoutPropertyUnitInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -5671,6 +5965,7 @@ export type ApplicationUncheckedUpdateWithoutPropertyUnitInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -5770,6 +6065,7 @@ export type ApplicationUpdateWithoutPaymentMethodInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -5815,6 +6111,7 @@ export type ApplicationUncheckedUpdateWithoutPaymentMethodInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -5915,6 +6212,7 @@ export type ApplicationUpdateWithoutSupersededByInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -5959,6 +6257,7 @@ export type ApplicationUncheckedUpdateWithoutSupersededByInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -6058,6 +6357,7 @@ export type ApplicationUpdateWithoutCurrentPhaseInput = {
   phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
@@ -6103,6 +6403,7 @@ export type ApplicationUncheckedUpdateWithoutCurrentPhaseInput = {
   phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
   documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutApplicationNestedInput
   terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
@@ -6154,6 +6455,7 @@ export type ApplicationCountOutputType = {
   phases: number
   documents: number
   payments: number
+  adjustments: number
   terminations: number
   offerLetters: number
   paymentMethodChangeRequests: number
@@ -6170,6 +6472,7 @@ export type ApplicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exten
   phases?: boolean | ApplicationCountOutputTypeCountPhasesArgs
   documents?: boolean | ApplicationCountOutputTypeCountDocumentsArgs
   payments?: boolean | ApplicationCountOutputTypeCountPaymentsArgs
+  adjustments?: boolean | ApplicationCountOutputTypeCountAdjustmentsArgs
   terminations?: boolean | ApplicationCountOutputTypeCountTerminationsArgs
   offerLetters?: boolean | ApplicationCountOutputTypeCountOfferLettersArgs
   paymentMethodChangeRequests?: boolean | ApplicationCountOutputTypeCountPaymentMethodChangeRequestsArgs
@@ -6211,6 +6514,13 @@ export type ApplicationCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime
  */
 export type ApplicationCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ApplicationPaymentWhereInput
+}
+
+/**
+ * ApplicationCountOutputType without action
+ */
+export type ApplicationCountOutputTypeCountAdjustmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApplicationAdjustmentWhereInput
 }
 
 /**
@@ -6321,6 +6631,7 @@ export type ApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   phases?: boolean | Prisma.Application$phasesArgs<ExtArgs>
   documents?: boolean | Prisma.Application$documentsArgs<ExtArgs>
   payments?: boolean | Prisma.Application$paymentsArgs<ExtArgs>
+  adjustments?: boolean | Prisma.Application$adjustmentsArgs<ExtArgs>
   terminations?: boolean | Prisma.Application$terminationsArgs<ExtArgs>
   offerLetters?: boolean | Prisma.Application$offerLettersArgs<ExtArgs>
   paymentMethodChangeRequests?: boolean | Prisma.Application$paymentMethodChangeRequestsArgs<ExtArgs>
@@ -6380,6 +6691,7 @@ export type ApplicationInclude<ExtArgs extends runtime.Types.Extensions.Internal
   phases?: boolean | Prisma.Application$phasesArgs<ExtArgs>
   documents?: boolean | Prisma.Application$documentsArgs<ExtArgs>
   payments?: boolean | Prisma.Application$paymentsArgs<ExtArgs>
+  adjustments?: boolean | Prisma.Application$adjustmentsArgs<ExtArgs>
   terminations?: boolean | Prisma.Application$terminationsArgs<ExtArgs>
   offerLetters?: boolean | Prisma.Application$offerLettersArgs<ExtArgs>
   paymentMethodChangeRequests?: boolean | Prisma.Application$paymentMethodChangeRequestsArgs<ExtArgs>
@@ -6408,6 +6720,7 @@ export type $ApplicationPayload<ExtArgs extends runtime.Types.Extensions.Interna
     phases: Prisma.$ApplicationPhasePayload<ExtArgs>[]
     documents: Prisma.$ApplicationDocumentPayload<ExtArgs>[]
     payments: Prisma.$ApplicationPaymentPayload<ExtArgs>[]
+    adjustments: Prisma.$ApplicationAdjustmentPayload<ExtArgs>[]
     terminations: Prisma.$ApplicationTerminationPayload<ExtArgs>[]
     offerLetters: Prisma.$OfferLetterPayload<ExtArgs>[]
     paymentMethodChangeRequests: Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>[]
@@ -6799,6 +7112,7 @@ export interface Prisma__ApplicationClient<T, Null = never, ExtArgs extends runt
   phases<T extends Prisma.Application$phasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$phasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documents<T extends Prisma.Application$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.Application$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adjustments<T extends Prisma.Application$adjustmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$adjustmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   terminations<T extends Prisma.Application$terminationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$terminationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   offerLetters<T extends Prisma.Application$offerLettersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$offerLettersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OfferLetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentMethodChangeRequests<T extends Prisma.Application$paymentMethodChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$paymentMethodChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7337,6 +7651,30 @@ export type Application$paymentsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ApplicationPaymentScalarFieldEnum | Prisma.ApplicationPaymentScalarFieldEnum[]
+}
+
+/**
+ * Application.adjustments
+ */
+export type Application$adjustmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApplicationAdjustment
+   */
+  select?: Prisma.ApplicationAdjustmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApplicationAdjustment
+   */
+  omit?: Prisma.ApplicationAdjustmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApplicationAdjustmentInclude<ExtArgs> | null
+  where?: Prisma.ApplicationAdjustmentWhereInput
+  orderBy?: Prisma.ApplicationAdjustmentOrderByWithRelationInput | Prisma.ApplicationAdjustmentOrderByWithRelationInput[]
+  cursor?: Prisma.ApplicationAdjustmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApplicationAdjustmentScalarFieldEnum | Prisma.ApplicationAdjustmentScalarFieldEnum[]
 }
 
 /**

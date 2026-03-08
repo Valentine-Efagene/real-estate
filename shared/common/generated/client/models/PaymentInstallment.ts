@@ -351,6 +351,7 @@ export type PaymentInstallmentWhereInput = {
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   paymentPhase?: Prisma.XOR<Prisma.PaymentPhaseScalarRelationFilter, Prisma.PaymentPhaseWhereInput>
   payments?: Prisma.ApplicationPaymentListRelationFilter
+  adjustments?: Prisma.ApplicationAdjustmentListRelationFilter
 }
 
 export type PaymentInstallmentOrderByWithRelationInput = {
@@ -375,6 +376,7 @@ export type PaymentInstallmentOrderByWithRelationInput = {
   tenant?: Prisma.TenantOrderByWithRelationInput
   paymentPhase?: Prisma.PaymentPhaseOrderByWithRelationInput
   payments?: Prisma.ApplicationPaymentOrderByRelationAggregateInput
+  adjustments?: Prisma.ApplicationAdjustmentOrderByRelationAggregateInput
   _relevance?: Prisma.PaymentInstallmentOrderByRelevanceInput
 }
 
@@ -403,6 +405,7 @@ export type PaymentInstallmentWhereUniqueInput = Prisma.AtLeast<{
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   paymentPhase?: Prisma.XOR<Prisma.PaymentPhaseScalarRelationFilter, Prisma.PaymentPhaseWhereInput>
   payments?: Prisma.ApplicationPaymentListRelationFilter
+  adjustments?: Prisma.ApplicationAdjustmentListRelationFilter
 }, "id">
 
 export type PaymentInstallmentOrderByWithAggregationInput = {
@@ -475,6 +478,7 @@ export type PaymentInstallmentCreateInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentInstallmentsInput
   paymentPhase: Prisma.PaymentPhaseCreateNestedOneWithoutInstallmentsInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutInstallmentInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutInstallmentInput
 }
 
 export type PaymentInstallmentUncheckedCreateInput = {
@@ -497,6 +501,7 @@ export type PaymentInstallmentUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutInstallmentInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutInstallmentInput
 }
 
 export type PaymentInstallmentUpdateInput = {
@@ -519,6 +524,7 @@ export type PaymentInstallmentUpdateInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentInstallmentsNestedInput
   paymentPhase?: Prisma.PaymentPhaseUpdateOneRequiredWithoutInstallmentsNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutInstallmentNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutInstallmentNestedInput
 }
 
 export type PaymentInstallmentUncheckedUpdateInput = {
@@ -541,6 +547,7 @@ export type PaymentInstallmentUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutInstallmentNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutInstallmentNestedInput
 }
 
 export type PaymentInstallmentCreateManyInput = {
@@ -814,6 +821,22 @@ export type PaymentInstallmentUpdateOneWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentInstallmentUpdateToOneWithWhereWithoutPaymentsInput, Prisma.PaymentInstallmentUpdateWithoutPaymentsInput>, Prisma.PaymentInstallmentUncheckedUpdateWithoutPaymentsInput>
 }
 
+export type PaymentInstallmentCreateNestedOneWithoutAdjustmentsInput = {
+  create?: Prisma.XOR<Prisma.PaymentInstallmentCreateWithoutAdjustmentsInput, Prisma.PaymentInstallmentUncheckedCreateWithoutAdjustmentsInput>
+  connectOrCreate?: Prisma.PaymentInstallmentCreateOrConnectWithoutAdjustmentsInput
+  connect?: Prisma.PaymentInstallmentWhereUniqueInput
+}
+
+export type PaymentInstallmentUpdateOneWithoutAdjustmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentInstallmentCreateWithoutAdjustmentsInput, Prisma.PaymentInstallmentUncheckedCreateWithoutAdjustmentsInput>
+  connectOrCreate?: Prisma.PaymentInstallmentCreateOrConnectWithoutAdjustmentsInput
+  upsert?: Prisma.PaymentInstallmentUpsertWithoutAdjustmentsInput
+  disconnect?: Prisma.PaymentInstallmentWhereInput | boolean
+  delete?: Prisma.PaymentInstallmentWhereInput | boolean
+  connect?: Prisma.PaymentInstallmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentInstallmentUpdateToOneWithWhereWithoutAdjustmentsInput, Prisma.PaymentInstallmentUpdateWithoutAdjustmentsInput>, Prisma.PaymentInstallmentUncheckedUpdateWithoutAdjustmentsInput>
+}
+
 export type PaymentInstallmentCreateWithoutTenantInput = {
   id?: string
   installmentNumber: number
@@ -833,6 +856,7 @@ export type PaymentInstallmentCreateWithoutTenantInput = {
   updatedAt?: Date | string
   paymentPhase: Prisma.PaymentPhaseCreateNestedOneWithoutInstallmentsInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutInstallmentInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutInstallmentInput
 }
 
 export type PaymentInstallmentUncheckedCreateWithoutTenantInput = {
@@ -854,6 +878,7 @@ export type PaymentInstallmentUncheckedCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutInstallmentInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutInstallmentInput
 }
 
 export type PaymentInstallmentCreateOrConnectWithoutTenantInput = {
@@ -925,6 +950,7 @@ export type PaymentInstallmentCreateWithoutPaymentPhaseInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentInstallmentsInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutInstallmentInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutInstallmentInput
 }
 
 export type PaymentInstallmentUncheckedCreateWithoutPaymentPhaseInput = {
@@ -946,6 +972,7 @@ export type PaymentInstallmentUncheckedCreateWithoutPaymentPhaseInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutInstallmentInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutInstallmentInput
 }
 
 export type PaymentInstallmentCreateOrConnectWithoutPaymentPhaseInput = {
@@ -993,6 +1020,7 @@ export type PaymentInstallmentCreateWithoutPaymentsInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentInstallmentsInput
   paymentPhase: Prisma.PaymentPhaseCreateNestedOneWithoutInstallmentsInput
+  adjustments?: Prisma.ApplicationAdjustmentCreateNestedManyWithoutInstallmentInput
 }
 
 export type PaymentInstallmentUncheckedCreateWithoutPaymentsInput = {
@@ -1014,6 +1042,7 @@ export type PaymentInstallmentUncheckedCreateWithoutPaymentsInput = {
   version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedCreateNestedManyWithoutInstallmentInput
 }
 
 export type PaymentInstallmentCreateOrConnectWithoutPaymentsInput = {
@@ -1051,6 +1080,7 @@ export type PaymentInstallmentUpdateWithoutPaymentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentInstallmentsNestedInput
   paymentPhase?: Prisma.PaymentPhaseUpdateOneRequiredWithoutInstallmentsNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutInstallmentNestedInput
 }
 
 export type PaymentInstallmentUncheckedUpdateWithoutPaymentsInput = {
@@ -1072,6 +1102,111 @@ export type PaymentInstallmentUncheckedUpdateWithoutPaymentsInput = {
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutInstallmentNestedInput
+}
+
+export type PaymentInstallmentCreateWithoutAdjustmentsInput = {
+  id?: string
+  installmentNumber: number
+  amount: number
+  principalAmount?: number
+  interestAmount?: number
+  dueDate: Date | string
+  status?: $Enums.InstallmentStatus
+  paidAmount?: number
+  paidDate?: Date | string | null
+  lateFee?: number
+  lateFeeWaived?: boolean
+  gracePeriodDays?: number
+  gracePeriodEndDate?: Date | string | null
+  version?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPaymentInstallmentsInput
+  paymentPhase: Prisma.PaymentPhaseCreateNestedOneWithoutInstallmentsInput
+  payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutInstallmentInput
+}
+
+export type PaymentInstallmentUncheckedCreateWithoutAdjustmentsInput = {
+  id?: string
+  tenantId: string
+  paymentPhaseId: string
+  installmentNumber: number
+  amount: number
+  principalAmount?: number
+  interestAmount?: number
+  dueDate: Date | string
+  status?: $Enums.InstallmentStatus
+  paidAmount?: number
+  paidDate?: Date | string | null
+  lateFee?: number
+  lateFeeWaived?: boolean
+  gracePeriodDays?: number
+  gracePeriodEndDate?: Date | string | null
+  version?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutInstallmentInput
+}
+
+export type PaymentInstallmentCreateOrConnectWithoutAdjustmentsInput = {
+  where: Prisma.PaymentInstallmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaymentInstallmentCreateWithoutAdjustmentsInput, Prisma.PaymentInstallmentUncheckedCreateWithoutAdjustmentsInput>
+}
+
+export type PaymentInstallmentUpsertWithoutAdjustmentsInput = {
+  update: Prisma.XOR<Prisma.PaymentInstallmentUpdateWithoutAdjustmentsInput, Prisma.PaymentInstallmentUncheckedUpdateWithoutAdjustmentsInput>
+  create: Prisma.XOR<Prisma.PaymentInstallmentCreateWithoutAdjustmentsInput, Prisma.PaymentInstallmentUncheckedCreateWithoutAdjustmentsInput>
+  where?: Prisma.PaymentInstallmentWhereInput
+}
+
+export type PaymentInstallmentUpdateToOneWithWhereWithoutAdjustmentsInput = {
+  where?: Prisma.PaymentInstallmentWhereInput
+  data: Prisma.XOR<Prisma.PaymentInstallmentUpdateWithoutAdjustmentsInput, Prisma.PaymentInstallmentUncheckedUpdateWithoutAdjustmentsInput>
+}
+
+export type PaymentInstallmentUpdateWithoutAdjustmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  installmentNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
+  lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentInstallmentsNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneRequiredWithoutInstallmentsNestedInput
+  payments?: Prisma.ApplicationPaymentUpdateManyWithoutInstallmentNestedInput
+}
+
+export type PaymentInstallmentUncheckedUpdateWithoutAdjustmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentPhaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  installmentNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
+  lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutInstallmentNestedInput
 }
 
 export type PaymentInstallmentCreateManyTenantInput = {
@@ -1113,6 +1248,7 @@ export type PaymentInstallmentUpdateWithoutTenantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentPhase?: Prisma.PaymentPhaseUpdateOneRequiredWithoutInstallmentsNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutInstallmentNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutInstallmentNestedInput
 }
 
 export type PaymentInstallmentUncheckedUpdateWithoutTenantInput = {
@@ -1134,6 +1270,7 @@ export type PaymentInstallmentUncheckedUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutInstallmentNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutInstallmentNestedInput
 }
 
 export type PaymentInstallmentUncheckedUpdateManyWithoutTenantInput = {
@@ -1195,6 +1332,7 @@ export type PaymentInstallmentUpdateWithoutPaymentPhaseInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentInstallmentsNestedInput
   payments?: Prisma.ApplicationPaymentUpdateManyWithoutInstallmentNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUpdateManyWithoutInstallmentNestedInput
 }
 
 export type PaymentInstallmentUncheckedUpdateWithoutPaymentPhaseInput = {
@@ -1216,6 +1354,7 @@ export type PaymentInstallmentUncheckedUpdateWithoutPaymentPhaseInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutInstallmentNestedInput
+  adjustments?: Prisma.ApplicationAdjustmentUncheckedUpdateManyWithoutInstallmentNestedInput
 }
 
 export type PaymentInstallmentUncheckedUpdateManyWithoutPaymentPhaseInput = {
@@ -1245,10 +1384,12 @@ export type PaymentInstallmentUncheckedUpdateManyWithoutPaymentPhaseInput = {
 
 export type PaymentInstallmentCountOutputType = {
   payments: number
+  adjustments: number
 }
 
 export type PaymentInstallmentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payments?: boolean | PaymentInstallmentCountOutputTypeCountPaymentsArgs
+  adjustments?: boolean | PaymentInstallmentCountOutputTypeCountAdjustmentsArgs
 }
 
 /**
@@ -1266,6 +1407,13 @@ export type PaymentInstallmentCountOutputTypeDefaultArgs<ExtArgs extends runtime
  */
 export type PaymentInstallmentCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ApplicationPaymentWhereInput
+}
+
+/**
+ * PaymentInstallmentCountOutputType without action
+ */
+export type PaymentInstallmentCountOutputTypeCountAdjustmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApplicationAdjustmentWhereInput
 }
 
 
@@ -1291,6 +1439,7 @@ export type PaymentInstallmentSelect<ExtArgs extends runtime.Types.Extensions.In
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   paymentPhase?: boolean | Prisma.PaymentPhaseDefaultArgs<ExtArgs>
   payments?: boolean | Prisma.PaymentInstallment$paymentsArgs<ExtArgs>
+  adjustments?: boolean | Prisma.PaymentInstallment$adjustmentsArgs<ExtArgs>
   _count?: boolean | Prisma.PaymentInstallmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paymentInstallment"]>
 
@@ -1322,6 +1471,7 @@ export type PaymentInstallmentInclude<ExtArgs extends runtime.Types.Extensions.I
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   paymentPhase?: boolean | Prisma.PaymentPhaseDefaultArgs<ExtArgs>
   payments?: boolean | Prisma.PaymentInstallment$paymentsArgs<ExtArgs>
+  adjustments?: boolean | Prisma.PaymentInstallment$adjustmentsArgs<ExtArgs>
   _count?: boolean | Prisma.PaymentInstallmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1331,6 +1481,7 @@ export type $PaymentInstallmentPayload<ExtArgs extends runtime.Types.Extensions.
     tenant: Prisma.$TenantPayload<ExtArgs>
     paymentPhase: Prisma.$PaymentPhasePayload<ExtArgs>
     payments: Prisma.$ApplicationPaymentPayload<ExtArgs>[]
+    adjustments: Prisma.$ApplicationAdjustmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1694,6 +1845,7 @@ export interface Prisma__PaymentInstallmentClient<T, Null = never, ExtArgs exten
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   paymentPhase<T extends Prisma.PaymentPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__PaymentPhaseClient<runtime.Types.Result.GetResult<Prisma.$PaymentPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   payments<T extends Prisma.PaymentInstallment$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentInstallment$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adjustments<T extends Prisma.PaymentInstallment$adjustmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentInstallment$adjustmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2105,6 +2257,30 @@ export type PaymentInstallment$paymentsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.ApplicationPaymentScalarFieldEnum | Prisma.ApplicationPaymentScalarFieldEnum[]
+}
+
+/**
+ * PaymentInstallment.adjustments
+ */
+export type PaymentInstallment$adjustmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApplicationAdjustment
+   */
+  select?: Prisma.ApplicationAdjustmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApplicationAdjustment
+   */
+  omit?: Prisma.ApplicationAdjustmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApplicationAdjustmentInclude<ExtArgs> | null
+  where?: Prisma.ApplicationAdjustmentWhereInput
+  orderBy?: Prisma.ApplicationAdjustmentOrderByWithRelationInput | Prisma.ApplicationAdjustmentOrderByWithRelationInput[]
+  cursor?: Prisma.ApplicationAdjustmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApplicationAdjustmentScalarFieldEnum | Prisma.ApplicationAdjustmentScalarFieldEnum[]
 }
 
 /**

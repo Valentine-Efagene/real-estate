@@ -16,6 +16,9 @@ import {
   ReopenPhaseSchema,
 } from '../validators/application-phase.validator';
 import {
+  CreateApplicationAdjustmentSchema,
+} from '../validators/application-payment.validator';
+import {
   CreateQualificationFlowSchema,
   ApplyForPaymentMethodSchema,
   ReviewQualificationSchema,
@@ -1217,6 +1220,64 @@ registry.registerPath({
   },
   responses: {
     200: { description: 'Pay ahead applied' },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/applications/{id}/adjustments',
+  tags: ['application Payments'],
+  summary: 'Create an application adjustment',
+  description: 'Create settlement adjustments like promo discounts, RSA/PFA direct credits, waivers, or manual surcharges.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string() }),
+    body: {
+      content: {
+        'application/json': {
+          schema: CreateApplicationAdjustmentSchema.omit({ applicationId: true }),
+        },
+      },
+    },
+  },
+  responses: {
+    201: {
+      description: 'Adjustment created',
+      content: {
+        'application/json': {
+          schema: z.object({
+            success: z.literal(true),
+            data: z.any(),
+          }),
+        },
+      },
+    },
+    400: { description: 'Validation error' },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/applications/{id}/adjustments',
+  tags: ['application Payments'],
+  summary: 'List application adjustments',
+  description: 'Returns all adjustments applied or pending for the application, newest first.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string() }),
+  },
+  responses: {
+    200: {
+      description: 'List of adjustments',
+      content: {
+        'application/json': {
+          schema: z.object({
+            success: z.literal(true),
+            data: z.array(z.any()),
+          }),
+        },
+      },
+    },
   },
 });
 

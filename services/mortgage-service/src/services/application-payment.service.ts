@@ -3,6 +3,7 @@ import { AppError } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
     CreatePaymentInput,
+    CreateApplicationAdjustmentInput,
     ProcessPaymentInput,
     RefundPaymentInput,
 } from '../validators/application-payment.validator';
@@ -29,6 +30,24 @@ class ApplicationPaymentService {
         const timestamp = Date.now().toString(36).toUpperCase();
         const random = Math.random().toString(36).substring(2, 8).toUpperCase();
         return `PAY-${timestamp}-${random}`;
+    }
+
+    private async getAppliedAdjustmentTotalForPhase(db: any, phaseId: string): Promise<number> {
+        const adjustments = await db.applicationAdjustment.findMany({
+            where: {
+                phaseId,
+                status: { in: ['APPLIED', 'APPROVED'] },
+            },
+            select: {
+                direction: true,
+                amount: true,
+            },
+        });
+
+        return adjustments.reduce((sum: number, adj: { direction: 'REDUCTION' | 'ADDITION'; amount: number }) => {
+            if (adj.direction === 'REDUCTION') return sum + adj.amount;
+            return sum - adj.amount;
+        }, 0);
     }
 
     /**
@@ -271,6 +290,141 @@ class ApplicationPaymentService {
         return payments;
     }
 
+    async createAdjustment(data: CreateApplicationAdjustmentInput, userId: string) {
+        const application = await prisma.application.findUnique({
+            where: { id: data.applicationId },
+            include: { phases: { include: { paymentPhase: true } } },
+        });
+
+        if (!application) {
+            throw new AppError(404, 'application not found');
+        }
+
+        if (data.phaseId) {
+            const phase = application.phases.find((p: any) => p.id === data.phaseId);
+            if (!phase) {
+                throw new AppError(400, 'Invalid phase for this application');
+            }
+        }
+
+        if (data.installmentId) {
+            const installment = await prisma.paymentInstallment.findUnique({
+                where: { id: data.installmentId },
+                include: { paymentPhase: { include: { phase: true } } },
+            });
+
+            if (!installment || installment.paymentPhase?.phase?.applicationId !== data.applicationId) {
+                throw new AppError(400, 'Invalid installment for this application');
+            }
+        }
+
+        const created = await prisma.$transaction(async (tx) => {
+            if (data.sourceReference) {
+                const existing = await tx.applicationAdjustment.findFirst({
+                    where: {
+                        applicationId: data.applicationId,
+                        sourceReference: data.sourceReference,
+                        sourceType: data.sourceType,
+                        status: { not: 'REVERSED' },
+                    },
+                    select: { id: true },
+                });
+
+                if (existing) {
+                    throw new AppError(409, 'Adjustment with this sourceReference already exists for this application');
+                }
+            }
+
+            const adjustment = await tx.applicationAdjustment.create({
+                data: {
+                    tenantId: application.tenantId,
+                    applicationId: data.applicationId,
+                    phaseId: data.phaseId,
+                    installmentId: data.installmentId,
+                    type: data.type,
+                    direction: data.direction,
+                    amount: data.amount,
+                    sourceType: data.sourceType,
+                    sourceOrganizationId: data.sourceOrganizationId,
+                    sourceReference: data.sourceReference,
+                    description: data.description,
+                    metadata: data.metadata,
+                    status: 'APPLIED',
+                    createdById: userId,
+                    approvedAt: new Date(),
+                    appliedAt: new Date(),
+                },
+            });
+
+            if (data.phaseId) {
+                const phase = await tx.applicationPhase.findUnique({
+                    where: { id: data.phaseId },
+                    include: { paymentPhase: true },
+                });
+
+                if (phase?.paymentPhase) {
+                    const adjustmentTotal = await this.getAppliedAdjustmentTotalForPhase(tx, data.phaseId);
+                    const effectivePaid = phase.paymentPhase.paidAmount + adjustmentTotal;
+                    const remaining = (phase.paymentPhase.totalAmount ?? 0) - effectivePaid;
+
+                    if (remaining <= 0 && phase.status !== 'COMPLETED') {
+                        await tx.applicationPhase.update({
+                            where: { id: data.phaseId },
+                            data: {
+                                status: 'COMPLETED',
+                                completedAt: new Date(),
+                            },
+                        });
+                    }
+                }
+            }
+
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    tenantId: application.tenantId,
+                    eventType: 'PAYMENT.ADJUSTMENT_APPLIED',
+                    aggregateType: 'ApplicationAdjustment',
+                    aggregateId: adjustment.id,
+                    queueName: 'accounting',
+                    payload: JSON.stringify({
+                        adjustmentId: adjustment.id,
+                        applicationId: data.applicationId,
+                        phaseId: data.phaseId,
+                        installmentId: data.installmentId,
+                        amount: data.amount,
+                        direction: data.direction,
+                        type: data.type,
+                    }),
+                    actorId: userId,
+                },
+            });
+
+            return adjustment;
+        });
+
+        return created;
+    }
+
+    async findAdjustmentsByApplication(applicationId: string) {
+        return prisma.applicationAdjustment.findMany({
+            where: { applicationId },
+            orderBy: { createdAt: 'desc' },
+            include: {
+                phase: true,
+                installment: true,
+                createdBy: {
+                    select: {
+                        id: true,
+                        email: true,
+                        firstName: true,
+                        lastName: true,
+                    },
+                },
+            },
+        });
+    }
+
     /**
      * Process a payment (typically called from webhook/callback)
      */
@@ -355,7 +509,9 @@ class ApplicationPaymentService {
                 if (phase && phase.paymentPhase) {
                     const paymentPhase = phase.paymentPhase;
                     const newPaidAmount = paymentPhase.paidAmount + payment.amount;
-                    const newRemainingAmount = (paymentPhase.totalAmount ?? 0) - newPaidAmount;
+                    const adjustmentTotal = await this.getAppliedAdjustmentTotalForPhase(tx, payment.phaseId);
+                    const effectivePaidAmount = newPaidAmount + adjustmentTotal;
+                    const newRemainingAmount = (paymentPhase.totalAmount ?? 0) - effectivePaidAmount;
                     const isFullyPaid = newRemainingAmount <= 0;
 
                     // Optimistic lock: update only if version matches
@@ -584,7 +740,21 @@ class ApplicationPaymentService {
                     where: { phase: { applicationId: payment.applicationId } },
                 });
                 const totalPaid = allPaymentPhases.reduce((sum, pp) => sum + pp.paidAmount, 0);
-                const remainingBalance = Math.max(0, application.totalAmount - totalPaid);
+                const allAdjustments = await prisma.applicationAdjustment.findMany({
+                    where: {
+                        applicationId: payment.applicationId,
+                        status: { in: ['APPLIED', 'APPROVED'] },
+                    },
+                    select: {
+                        direction: true,
+                        amount: true,
+                    },
+                });
+                const adjustmentTotal = allAdjustments.reduce((sum, adj) => {
+                    if (adj.direction === 'REDUCTION') return sum + adj.amount;
+                    return sum - adj.amount;
+                }, 0);
+                const remainingBalance = Math.max(0, application.totalAmount - (totalPaid + adjustmentTotal));
 
                 await sendPaymentReceivedNotification({
                     email: application.buyer.email,

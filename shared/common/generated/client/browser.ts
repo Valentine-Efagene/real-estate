@@ -196,6 +196,11 @@ export type Amenity = Prisma.AmenityModel
  */
 export type PropertyVariant = Prisma.PropertyVariantModel
 /**
+ * Model PropertyPromotion
+ * 
+ */
+export type PropertyPromotion = Prisma.PropertyPromotionModel
+/**
  * Model PropertyVariantAmenity
  * 
  */
@@ -346,6 +351,11 @@ export type PaymentInstallment = Prisma.PaymentInstallmentModel
  * 
  */
 export type ApplicationPayment = Prisma.ApplicationPaymentModel
+/**
+ * Model ApplicationAdjustment
+ * 
+ */
+export type ApplicationAdjustment = Prisma.ApplicationAdjustmentModel
 /**
  * Model ApplicationDocument
  * 

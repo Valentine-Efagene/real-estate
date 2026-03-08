@@ -36,6 +36,7 @@ import {
 } from '../validators/application-organization.validator';
 import {
     CreatePaymentSchema,
+    CreateApplicationAdjustmentSchema,
     ProcessPaymentSchema,
     RefundPaymentSchema,
 } from '../validators/application-payment.validator';
@@ -930,6 +931,35 @@ router.get('/:id/payments/:paymentId', requireTenant, canAccessApplication, asyn
     try {
         const payment = await applicationPaymentService.findById(req.params.paymentId as string);
         res.json(successResponse(payment));
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Create application adjustment (promo, direct third-party credit, waiver, etc.)
+router.post('/:id/adjustments', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = CreateApplicationAdjustmentSchema.parse({
+            ...req.body,
+            applicationId: req.params.id as string,
+        });
+        const { userId } = getAuthContext(req);
+        const adjustment = await applicationPaymentService.createAdjustment(data, userId);
+        res.status(201).json(successResponse(adjustment));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Get adjustments for application
+router.get('/:id/adjustments', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const adjustments = await applicationPaymentService.findAdjustmentsByApplication(req.params.id as string);
+        res.json(successResponse(adjustments));
     } catch (error) {
         next(error);
     }

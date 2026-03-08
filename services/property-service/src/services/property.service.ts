@@ -1,8 +1,78 @@
 import { prisma } from '../lib/prisma';
 import { AppError } from '@valentine-efagene/qshelter-common';
 import type { CreatePropertyInput, UpdatePropertyInput } from '../validators/property.validator';
+import type { CreatePropertyPromotionInput, UpdatePropertyPromotionInput } from '../validators/property-promotion.validator';
 
 class PropertyService {
+    private isPromotionActive(promotion: { isActive: boolean; startsAt: Date | null; endsAt: Date | null }, now: Date): boolean {
+        if (!promotion.isActive) return false;
+        if (promotion.startsAt && promotion.startsAt > now) return false;
+        if (promotion.endsAt && promotion.endsAt < now) return false;
+        return true;
+    }
+
+    private calculateDiscount(
+        basePrice: number,
+        promotion: { discountType: 'PERCENTAGE' | 'FIXED_AMOUNT'; discountValue: number; maxDiscount: number | null }
+    ): number {
+        let discount = promotion.discountType === 'PERCENTAGE'
+            ? (basePrice * promotion.discountValue) / 100
+            : promotion.discountValue;
+
+        if (promotion.maxDiscount != null) {
+            discount = Math.min(discount, promotion.maxDiscount);
+        }
+
+        return Math.max(0, Math.min(basePrice, discount));
+    }
+
+    private enrichVariantsWithPromotions(
+        variants: Array<any>,
+        propertyPromotions: Array<any>
+    ) {
+        const now = new Date();
+
+        return variants.map((variant) => {
+            const applicablePromotions = [
+                ...propertyPromotions,
+                ...(variant.promotions || []),
+            ]
+                .filter((p) => this.isPromotionActive(p, now))
+                .map((p) => ({
+                    ...p,
+                    discountAmount: this.calculateDiscount(variant.price, p),
+                }))
+                .filter((p) => p.discountAmount > 0)
+                .sort((a, b) => {
+                    if (a.priority !== b.priority) return a.priority - b.priority;
+                    return b.discountAmount - a.discountAmount;
+                });
+
+            const bestPromotion = applicablePromotions[0] || null;
+            const discountAmount = bestPromotion?.discountAmount ?? 0;
+            const displayPrice = Math.max(0, variant.price - discountAmount);
+            const discountPercentage = variant.price > 0 ? Math.round((discountAmount / variant.price) * 10000) / 100 : 0;
+
+            const { promotions, ...variantBase } = variant;
+
+            return {
+                ...variantBase,
+                originalPrice: variant.price,
+                discountAmount,
+                discountPercentage,
+                displayPrice,
+                activePromotion: bestPromotion
+                    ? {
+                        id: bestPromotion.id,
+                        name: bestPromotion.name,
+                        discountType: bestPromotion.discountType,
+                        discountValue: bestPromotion.discountValue,
+                    }
+                    : null,
+            };
+        });
+    }
+
     async createProperty(data: CreatePropertyInput, userId: string, tenantId: string) {
         let organizationId = data.organizationId;
 
@@ -193,6 +263,20 @@ class PropertyService {
                 take: limit,
                 include: {
                     displayImage: { select: { id: true, url: true } },
+                    promotions: {
+                        where: { variantId: null },
+                        select: {
+                            id: true,
+                            name: true,
+                            discountType: true,
+                            discountValue: true,
+                            maxDiscount: true,
+                            startsAt: true,
+                            endsAt: true,
+                            isActive: true,
+                            priority: true,
+                        },
+                    },
                     variants: {
                         select: {
                             id: true,
@@ -203,6 +287,19 @@ class PropertyService {
                             availableUnits: true,
                             totalUnits: true,
                             status: true,
+                            promotions: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    discountType: true,
+                                    discountValue: true,
+                                    maxDiscount: true,
+                                    startsAt: true,
+                                    endsAt: true,
+                                    isActive: true,
+                                    priority: true,
+                                },
+                            },
                         },
                     },
                     organization: { select: { id: true, name: true } },
@@ -213,13 +310,156 @@ class PropertyService {
             }),
         ]);
 
+        const transformedItems = items.map((item: any) => {
+            const enrichedVariants = this.enrichVariantsWithPromotions(item.variants || [], item.promotions || []);
+            const { promotions, ...propertyBase } = item;
+
+            return {
+                ...propertyBase,
+                variants: enrichedVariants,
+            };
+        });
+
         return {
-            items,
+            items: transformedItems,
             total,
             page,
             limit,
             pages: Math.ceil(total / limit),
         };
+    }
+
+    async createPromotion(propertyId: string, data: CreatePropertyPromotionInput, tenantId: string, userId: string) {
+        const canManage = await this.canManageProperty(propertyId, userId);
+        if (!canManage) {
+            throw new AppError(403, 'Unauthorized to manage promotions for this property');
+        }
+
+        const property = await prisma.property.findFirst({
+            where: { id: propertyId, tenantId },
+        });
+
+        if (!property) {
+            throw new AppError(404, 'Property not found');
+        }
+
+        if (data.variantId) {
+            const variant = await prisma.propertyVariant.findFirst({
+                where: { id: data.variantId, propertyId, tenantId },
+            });
+            if (!variant) {
+                throw new AppError(400, 'variantId does not belong to this property');
+            }
+        }
+
+        const startsAt = data.startsAt ? new Date(data.startsAt) : undefined;
+        const endsAt = data.endsAt ? new Date(data.endsAt) : undefined;
+
+        if (startsAt && endsAt && startsAt > endsAt) {
+            throw new AppError(400, 'startsAt must be before endsAt');
+        }
+
+        return prisma.propertyPromotion.create({
+            data: {
+                tenantId,
+                propertyId,
+                variantId: data.variantId,
+                name: data.name,
+                description: data.description,
+                discountType: data.discountType,
+                discountValue: data.discountValue,
+                maxDiscount: data.maxDiscount,
+                startsAt,
+                endsAt,
+                isActive: data.isActive ?? true,
+                priority: data.priority ?? 100,
+            },
+        });
+    }
+
+    async listPromotions(propertyId: string, tenantId: string) {
+        const property = await prisma.property.findFirst({
+            where: { id: propertyId, tenantId },
+            select: { id: true },
+        });
+
+        if (!property) {
+            throw new AppError(404, 'Property not found');
+        }
+
+        return prisma.propertyPromotion.findMany({
+            where: { propertyId, tenantId },
+            orderBy: [{ priority: 'asc' }, { createdAt: 'desc' }],
+        });
+    }
+
+    async updatePromotion(propertyId: string, promotionId: string, data: UpdatePropertyPromotionInput, tenantId: string, userId: string) {
+        const canManage = await this.canManageProperty(propertyId, userId);
+        if (!canManage) {
+            throw new AppError(403, 'Unauthorized to manage promotions for this property');
+        }
+
+        const existing = await prisma.propertyPromotion.findFirst({
+            where: { id: promotionId, propertyId, tenantId },
+        });
+
+        if (!existing) {
+            throw new AppError(404, 'Promotion not found');
+        }
+
+        if (data.variantId) {
+            const variant = await prisma.propertyVariant.findFirst({
+                where: { id: data.variantId, propertyId, tenantId },
+            });
+            if (!variant) {
+                throw new AppError(400, 'variantId does not belong to this property');
+            }
+        }
+
+        const nextStartsAt = data.startsAt ? new Date(data.startsAt) : data.startsAt === undefined ? existing.startsAt : null;
+        const nextEndsAt = data.endsAt ? new Date(data.endsAt) : data.endsAt === undefined ? existing.endsAt : null;
+
+        if (nextStartsAt && nextEndsAt && nextStartsAt > nextEndsAt) {
+            throw new AppError(400, 'startsAt must be before endsAt');
+        }
+
+        return prisma.propertyPromotion.update({
+            where: { id: promotionId },
+            data: {
+                variantId: data.variantId,
+                name: data.name,
+                description: data.description,
+                discountType: data.discountType,
+                discountValue: data.discountValue,
+                maxDiscount: data.maxDiscount,
+                startsAt: nextStartsAt,
+                endsAt: nextEndsAt,
+                isActive: data.isActive,
+                priority: data.priority,
+            },
+        });
+    }
+
+    async deletePromotion(propertyId: string, promotionId: string, tenantId: string, userId: string) {
+        const canManage = await this.canManageProperty(propertyId, userId);
+        if (!canManage) {
+            throw new AppError(403, 'Unauthorized to manage promotions for this property');
+        }
+
+        const existing = await prisma.propertyPromotion.findFirst({
+            where: { id: promotionId, propertyId, tenantId },
+            select: { id: true },
+        });
+
+        if (!existing) {
+            throw new AppError(404, 'Promotion not found');
+        }
+
+        await prisma.propertyPromotion.delete({
+            where: { id: promotionId },
+        });
+
+        return { success: true };
     }
 
     async getPropertyById(id: string) {

@@ -418,6 +418,7 @@ export const ModelName = {
   PropertyDocument: 'PropertyDocument',
   Amenity: 'Amenity',
   PropertyVariant: 'PropertyVariant',
+  PropertyPromotion: 'PropertyPromotion',
   PropertyVariantAmenity: 'PropertyVariantAmenity',
   PropertyVariantMedia: 'PropertyVariantMedia',
   PropertyUnit: 'PropertyUnit',
@@ -448,6 +449,7 @@ export const ModelName = {
   ApplicationEvent: 'ApplicationEvent',
   PaymentInstallment: 'PaymentInstallment',
   ApplicationPayment: 'ApplicationPayment',
+  ApplicationAdjustment: 'ApplicationAdjustment',
   ApplicationDocument: 'ApplicationDocument',
   DocumentReview: 'DocumentReview',
   ApprovalStageProgress: 'ApprovalStageProgress',
@@ -489,7 +491,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "tenantMembershipRole" | "organization" | "organizationMember" | "organizationMemberRole" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver" | "asyncJob"
+    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "tenantMembershipRole" | "organization" | "organizationMember" | "organizationMemberRole" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyPromotion" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationAdjustment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver" | "asyncJob"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2737,6 +2739,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PropertyPromotion: {
+      payload: Prisma.$PropertyPromotionPayload<ExtArgs>
+      fields: Prisma.PropertyPromotionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PropertyPromotionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyPromotionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PropertyPromotionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyPromotionPayload>
+        }
+        findFirst: {
+          args: Prisma.PropertyPromotionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyPromotionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PropertyPromotionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyPromotionPayload>
+        }
+        findMany: {
+          args: Prisma.PropertyPromotionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyPromotionPayload>[]
+        }
+        create: {
+          args: Prisma.PropertyPromotionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyPromotionPayload>
+        }
+        createMany: {
+          args: Prisma.PropertyPromotionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PropertyPromotionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyPromotionPayload>
+        }
+        update: {
+          args: Prisma.PropertyPromotionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyPromotionPayload>
+        }
+        deleteMany: {
+          args: Prisma.PropertyPromotionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PropertyPromotionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PropertyPromotionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyPromotionPayload>
+        }
+        aggregate: {
+          args: Prisma.PropertyPromotionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePropertyPromotion>
+        }
+        groupBy: {
+          args: Prisma.PropertyPromotionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PropertyPromotionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PropertyPromotionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PropertyPromotionCountAggregateOutputType> | number
+        }
+      }
+    }
     PropertyVariantAmenity: {
       payload: Prisma.$PropertyVariantAmenityPayload<ExtArgs>
       fields: Prisma.PropertyVariantAmenityFieldRefs
@@ -4714,6 +4782,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ApplicationPaymentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ApplicationPaymentCountAggregateOutputType> | number
+        }
+      }
+    }
+    ApplicationAdjustment: {
+      payload: Prisma.$ApplicationAdjustmentPayload<ExtArgs>
+      fields: Prisma.ApplicationAdjustmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApplicationAdjustmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationAdjustmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApplicationAdjustmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationAdjustmentPayload>
+        }
+        findFirst: {
+          args: Prisma.ApplicationAdjustmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationAdjustmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApplicationAdjustmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationAdjustmentPayload>
+        }
+        findMany: {
+          args: Prisma.ApplicationAdjustmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationAdjustmentPayload>[]
+        }
+        create: {
+          args: Prisma.ApplicationAdjustmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationAdjustmentPayload>
+        }
+        createMany: {
+          args: Prisma.ApplicationAdjustmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ApplicationAdjustmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationAdjustmentPayload>
+        }
+        update: {
+          args: Prisma.ApplicationAdjustmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationAdjustmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApplicationAdjustmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApplicationAdjustmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ApplicationAdjustmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationAdjustmentPayload>
+        }
+        aggregate: {
+          args: Prisma.ApplicationAdjustmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApplicationAdjustment>
+        }
+        groupBy: {
+          args: Prisma.ApplicationAdjustmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationAdjustmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApplicationAdjustmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationAdjustmentCountAggregateOutputType> | number
         }
       }
     }
@@ -7019,6 +7153,27 @@ export const PropertyVariantScalarFieldEnum = {
 export type PropertyVariantScalarFieldEnum = (typeof PropertyVariantScalarFieldEnum)[keyof typeof PropertyVariantScalarFieldEnum]
 
 
+export const PropertyPromotionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  propertyId: 'propertyId',
+  variantId: 'variantId',
+  name: 'name',
+  description: 'description',
+  discountType: 'discountType',
+  discountValue: 'discountValue',
+  maxDiscount: 'maxDiscount',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  isActive: 'isActive',
+  priority: 'priority',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PropertyPromotionScalarFieldEnum = (typeof PropertyPromotionScalarFieldEnum)[keyof typeof PropertyPromotionScalarFieldEnum]
+
+
 export const PropertyVariantAmenityScalarFieldEnum = {
   tenantId: 'tenantId',
   variantId: 'variantId',
@@ -7635,6 +7790,34 @@ export const ApplicationPaymentScalarFieldEnum = {
 } as const
 
 export type ApplicationPaymentScalarFieldEnum = (typeof ApplicationPaymentScalarFieldEnum)[keyof typeof ApplicationPaymentScalarFieldEnum]
+
+
+export const ApplicationAdjustmentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
+  installmentId: 'installmentId',
+  type: 'type',
+  direction: 'direction',
+  status: 'status',
+  amount: 'amount',
+  currency: 'currency',
+  sourceType: 'sourceType',
+  sourceOrganizationId: 'sourceOrganizationId',
+  sourceReference: 'sourceReference',
+  description: 'description',
+  metadata: 'metadata',
+  createdById: 'createdById',
+  approvedAt: 'approvedAt',
+  appliedAt: 'appliedAt',
+  reversedAt: 'reversedAt',
+  reversalReason: 'reversalReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApplicationAdjustmentScalarFieldEnum = (typeof ApplicationAdjustmentScalarFieldEnum)[keyof typeof ApplicationAdjustmentScalarFieldEnum]
 
 
 export const ApplicationDocumentScalarFieldEnum = {
@@ -8672,6 +8855,18 @@ export const PropertyVariantOrderByRelevanceFieldEnum = {
 export type PropertyVariantOrderByRelevanceFieldEnum = (typeof PropertyVariantOrderByRelevanceFieldEnum)[keyof typeof PropertyVariantOrderByRelevanceFieldEnum]
 
 
+export const PropertyPromotionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  propertyId: 'propertyId',
+  variantId: 'variantId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type PropertyPromotionOrderByRelevanceFieldEnum = (typeof PropertyPromotionOrderByRelevanceFieldEnum)[keyof typeof PropertyPromotionOrderByRelevanceFieldEnum]
+
+
 export const PropertyVariantAmenityOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   variantId: 'variantId',
@@ -9046,6 +9241,23 @@ export const ApplicationPaymentOrderByRelevanceFieldEnum = {
 } as const
 
 export type ApplicationPaymentOrderByRelevanceFieldEnum = (typeof ApplicationPaymentOrderByRelevanceFieldEnum)[keyof typeof ApplicationPaymentOrderByRelevanceFieldEnum]
+
+
+export const ApplicationAdjustmentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
+  installmentId: 'installmentId',
+  currency: 'currency',
+  sourceOrganizationId: 'sourceOrganizationId',
+  sourceReference: 'sourceReference',
+  description: 'description',
+  createdById: 'createdById',
+  reversalReason: 'reversalReason'
+} as const
+
+export type ApplicationAdjustmentOrderByRelevanceFieldEnum = (typeof ApplicationAdjustmentOrderByRelevanceFieldEnum)[keyof typeof ApplicationAdjustmentOrderByRelevanceFieldEnum]
 
 
 export const ApplicationDocumentOrderByRelevanceFieldEnum = {
@@ -9534,6 +9746,13 @@ export type EnumPropertyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'PromotionDiscountType'
+ */
+export type EnumPromotionDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PromotionDiscountType'>
+    
+
+
+/**
  * Reference to a field of type 'UploadedBy'
  */
 export type EnumUploadedByFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UploadedBy'>
@@ -9670,6 +9889,34 @@ export type EnumInstallmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType
  * Reference to a field of type 'PaymentStatus'
  */
 export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ApplicationAdjustmentType'
+ */
+export type EnumApplicationAdjustmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationAdjustmentType'>
+    
+
+
+/**
+ * Reference to a field of type 'AdjustmentDirection'
+ */
+export type EnumAdjustmentDirectionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdjustmentDirection'>
+    
+
+
+/**
+ * Reference to a field of type 'ApplicationAdjustmentStatus'
+ */
+export type EnumApplicationAdjustmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationAdjustmentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AdjustmentSourceType'
+ */
+export type EnumAdjustmentSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdjustmentSourceType'>
     
 
 
@@ -9955,6 +10202,7 @@ export type GlobalOmitConfig = {
   propertyDocument?: Prisma.PropertyDocumentOmit
   amenity?: Prisma.AmenityOmit
   propertyVariant?: Prisma.PropertyVariantOmit
+  propertyPromotion?: Prisma.PropertyPromotionOmit
   propertyVariantAmenity?: Prisma.PropertyVariantAmenityOmit
   propertyVariantMedia?: Prisma.PropertyVariantMediaOmit
   propertyUnit?: Prisma.PropertyUnitOmit
@@ -9985,6 +10233,7 @@ export type GlobalOmitConfig = {
   applicationEvent?: Prisma.ApplicationEventOmit
   paymentInstallment?: Prisma.PaymentInstallmentOmit
   applicationPayment?: Prisma.ApplicationPaymentOmit
+  applicationAdjustment?: Prisma.ApplicationAdjustmentOmit
   applicationDocument?: Prisma.ApplicationDocumentOmit
   documentReview?: Prisma.DocumentReviewOmit
   approvalStageProgress?: Prisma.ApprovalStageProgressOmit

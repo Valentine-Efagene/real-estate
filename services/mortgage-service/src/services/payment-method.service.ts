@@ -100,6 +100,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                             order: phase.order,
                             interestRate: phase.interestRate,
                             percentOfPrice: phase.percentOfPrice,
+                            collectFunds: phase.collectFunds,
                             requiresPreviousPhaseCompletion: phase.requiresPreviousPhaseCompletion ?? true,
                             minimumCompletionPercentage: phase.minimumCompletionPercentage,
                         },
@@ -264,12 +265,14 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     paymentMethodId: methodId,
                     paymentPlanId: data.paymentPlanId,
                     documentationPlanId: data.documentationPlanId,
+                    questionnairePlanId: data.questionnairePlanId,
                     name: data.name,
                     description: data.description,
                     phaseCategory: data.phaseCategory,
                     order: phaseOrder,
                     interestRate: data.interestRate,
                     percentOfPrice: data.percentOfPrice,
+                    collectFunds: data.collectFunds,
                     requiresPreviousPhaseCompletion: data.requiresPreviousPhaseCompletion ?? true,
                     minimumCompletionPercentage: data.minimumCompletionPercentage,
                     lockUnitOnComplete: data.lockUnitOnComplete ?? false,
@@ -283,6 +286,9 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             where: { id: phase.id },
             include: {
                 paymentPlan: true,
+                questionnairePlan: {
+                    include: { questions: { orderBy: { order: 'asc' } } },
+                },
                 documentationPlan: {
                     include: {
                         documentDefinitions: { orderBy: { order: 'asc' } },
@@ -439,14 +445,18 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                         tenantId,
                         paymentMethodId: newMethod.id,
                         paymentPlanId: phase.paymentPlanId,
+                        documentationPlanId: phase.documentationPlanId,
+                        questionnairePlanId: phase.questionnairePlanId,
                         name: phase.name,
                         description: phase.description,
                         phaseCategory: phase.phaseCategory,
                         order: phase.order,
                         interestRate: phase.interestRate,
                         percentOfPrice: phase.percentOfPrice,
+                        collectFunds: phase.collectFunds,
                         requiresPreviousPhaseCompletion: phase.requiresPreviousPhaseCompletion,
                         minimumCompletionPercentage: phase.minimumCompletionPercentage,
+                        lockUnitOnComplete: phase.lockUnitOnComplete,
                     },
                 });
             }

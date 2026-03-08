@@ -24,6 +24,10 @@ import {
     updateAmenitySchema,
     amenityResponseSchema,
 } from '../validators/amenity.validator';
+import {
+    createPropertyPromotionSchema,
+    updatePropertyPromotionSchema,
+} from '../validators/property-promotion.validator';
 
 extendZodWithOpenApi(z);
 
@@ -191,6 +195,138 @@ registry.registerPath({
                     schema: z.object({
                         success: z.literal(true),
                         data: propertyResponseSchema,
+                    }),
+                },
+            },
+        },
+    },
+});
+
+// =============================================================================
+// Property Promotion Endpoints
+// =============================================================================
+
+const PropertyPromotionResponseSchema = z.object({
+    id: z.string(),
+    propertyId: z.string(),
+    variantId: z.string().nullable(),
+    name: z.string(),
+    description: z.string().nullable(),
+    discountType: z.enum(['PERCENTAGE', 'FIXED_AMOUNT']),
+    discountValue: z.number(),
+    maxDiscount: z.number().nullable(),
+    startsAt: z.string().datetime().nullable(),
+    endsAt: z.string().datetime().nullable(),
+    isActive: z.boolean(),
+    priority: z.number(),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
+}).openapi('PropertyPromotionResponse');
+
+registry.registerPath({
+    method: 'post',
+    path: '/property/properties/{id}/promotions',
+    tags: ['Promotions'],
+    summary: 'Create a property/variant promotion',
+    security: [{ bearerAuth: [] }],
+    request: {
+        params: z.object({ id: z.string() }),
+        body: {
+            content: {
+                'application/json': {
+                    schema: createPropertyPromotionSchema,
+                },
+            },
+        },
+    },
+    responses: {
+        201: {
+            description: 'Promotion created',
+            content: {
+                'application/json': {
+                    schema: z.object({
+                        success: z.literal(true),
+                        data: PropertyPromotionResponseSchema,
+                    }),
+                },
+            },
+        },
+        400: { description: 'Validation error' },
+    },
+});
+
+registry.registerPath({
+    method: 'get',
+    path: '/property/properties/{id}/promotions',
+    tags: ['Promotions'],
+    summary: 'List promotions for a property',
+    security: [{ bearerAuth: [] }],
+    request: {
+        params: z.object({ id: z.string() }),
+    },
+    responses: {
+        200: {
+            description: 'List of promotions',
+            content: {
+                'application/json': {
+                    schema: z.object({
+                        success: z.literal(true),
+                        data: z.array(PropertyPromotionResponseSchema),
+                    }),
+                },
+            },
+        },
+    },
+});
+
+registry.registerPath({
+    method: 'patch',
+    path: '/property/properties/{id}/promotions/{promotionId}',
+    tags: ['Promotions'],
+    summary: 'Update a promotion',
+    security: [{ bearerAuth: [] }],
+    request: {
+        params: z.object({ id: z.string(), promotionId: z.string() }),
+        body: {
+            content: {
+                'application/json': {
+                    schema: updatePropertyPromotionSchema,
+                },
+            },
+        },
+    },
+    responses: {
+        200: {
+            description: 'Promotion updated',
+            content: {
+                'application/json': {
+                    schema: z.object({
+                        success: z.literal(true),
+                        data: PropertyPromotionResponseSchema,
+                    }),
+                },
+            },
+        },
+    },
+});
+
+registry.registerPath({
+    method: 'delete',
+    path: '/property/properties/{id}/promotions/{promotionId}',
+    tags: ['Promotions'],
+    summary: 'Delete a promotion',
+    security: [{ bearerAuth: [] }],
+    request: {
+        params: z.object({ id: z.string(), promotionId: z.string() }),
+    },
+    responses: {
+        200: {
+            description: 'Promotion deleted',
+            content: {
+                'application/json': {
+                    schema: z.object({
+                        success: z.literal(true),
+                        data: z.object({ success: z.boolean() }),
                     }),
                 },
             },
@@ -782,6 +918,7 @@ export function generateOpenAPIDocument(): any {
         ],
         tags: [
             { name: 'Properties', description: 'Property listings management' },
+            { name: 'Promotions', description: 'Property/variant promotion and discount management' },
             { name: 'Variants', description: 'Property variants (unit types like 3-Bedroom, Studio)' },
             { name: 'Units', description: 'Individual sellable/rentable units' },
             { name: 'Amenities', description: 'Amenity management and assignment to variants' },

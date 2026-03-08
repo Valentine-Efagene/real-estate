@@ -85,6 +85,7 @@ export const ModelName = {
   PropertyDocument: 'PropertyDocument',
   Amenity: 'Amenity',
   PropertyVariant: 'PropertyVariant',
+  PropertyPromotion: 'PropertyPromotion',
   PropertyVariantAmenity: 'PropertyVariantAmenity',
   PropertyVariantMedia: 'PropertyVariantMedia',
   PropertyUnit: 'PropertyUnit',
@@ -115,6 +116,7 @@ export const ModelName = {
   ApplicationEvent: 'ApplicationEvent',
   PaymentInstallment: 'PaymentInstallment',
   ApplicationPayment: 'ApplicationPayment',
+  ApplicationAdjustment: 'ApplicationAdjustment',
   ApplicationDocument: 'ApplicationDocument',
   DocumentReview: 'DocumentReview',
   ApprovalStageProgress: 'ApprovalStageProgress',
@@ -704,6 +706,27 @@ export const PropertyVariantScalarFieldEnum = {
 } as const
 
 export type PropertyVariantScalarFieldEnum = (typeof PropertyVariantScalarFieldEnum)[keyof typeof PropertyVariantScalarFieldEnum]
+
+
+export const PropertyPromotionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  propertyId: 'propertyId',
+  variantId: 'variantId',
+  name: 'name',
+  description: 'description',
+  discountType: 'discountType',
+  discountValue: 'discountValue',
+  maxDiscount: 'maxDiscount',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  isActive: 'isActive',
+  priority: 'priority',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PropertyPromotionScalarFieldEnum = (typeof PropertyPromotionScalarFieldEnum)[keyof typeof PropertyPromotionScalarFieldEnum]
 
 
 export const PropertyVariantAmenityScalarFieldEnum = {
@@ -1322,6 +1345,34 @@ export const ApplicationPaymentScalarFieldEnum = {
 } as const
 
 export type ApplicationPaymentScalarFieldEnum = (typeof ApplicationPaymentScalarFieldEnum)[keyof typeof ApplicationPaymentScalarFieldEnum]
+
+
+export const ApplicationAdjustmentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
+  installmentId: 'installmentId',
+  type: 'type',
+  direction: 'direction',
+  status: 'status',
+  amount: 'amount',
+  currency: 'currency',
+  sourceType: 'sourceType',
+  sourceOrganizationId: 'sourceOrganizationId',
+  sourceReference: 'sourceReference',
+  description: 'description',
+  metadata: 'metadata',
+  createdById: 'createdById',
+  approvedAt: 'approvedAt',
+  appliedAt: 'appliedAt',
+  reversedAt: 'reversedAt',
+  reversalReason: 'reversalReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApplicationAdjustmentScalarFieldEnum = (typeof ApplicationAdjustmentScalarFieldEnum)[keyof typeof ApplicationAdjustmentScalarFieldEnum]
 
 
 export const ApplicationDocumentScalarFieldEnum = {
@@ -2359,6 +2410,18 @@ export const PropertyVariantOrderByRelevanceFieldEnum = {
 export type PropertyVariantOrderByRelevanceFieldEnum = (typeof PropertyVariantOrderByRelevanceFieldEnum)[keyof typeof PropertyVariantOrderByRelevanceFieldEnum]
 
 
+export const PropertyPromotionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  propertyId: 'propertyId',
+  variantId: 'variantId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type PropertyPromotionOrderByRelevanceFieldEnum = (typeof PropertyPromotionOrderByRelevanceFieldEnum)[keyof typeof PropertyPromotionOrderByRelevanceFieldEnum]
+
+
 export const PropertyVariantAmenityOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   variantId: 'variantId',
@@ -2733,6 +2796,23 @@ export const ApplicationPaymentOrderByRelevanceFieldEnum = {
 } as const
 
 export type ApplicationPaymentOrderByRelevanceFieldEnum = (typeof ApplicationPaymentOrderByRelevanceFieldEnum)[keyof typeof ApplicationPaymentOrderByRelevanceFieldEnum]
+
+
+export const ApplicationAdjustmentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
+  installmentId: 'installmentId',
+  currency: 'currency',
+  sourceOrganizationId: 'sourceOrganizationId',
+  sourceReference: 'sourceReference',
+  description: 'description',
+  createdById: 'createdById',
+  reversalReason: 'reversalReason'
+} as const
+
+export type ApplicationAdjustmentOrderByRelevanceFieldEnum = (typeof ApplicationAdjustmentOrderByRelevanceFieldEnum)[keyof typeof ApplicationAdjustmentOrderByRelevanceFieldEnum]
 
 
 export const ApplicationDocumentOrderByRelevanceFieldEnum = {

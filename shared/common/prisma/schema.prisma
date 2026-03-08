@@ -171,6 +171,41 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum ApplicationAdjustmentType {
+  PROMO_DISCOUNT
+  THIRD_PARTY_CREDIT
+  WAIVER
+  MANUAL_ADJUSTMENT
+  SURCHARGE
+  CORRECTION
+}
+
+enum AdjustmentDirection {
+  REDUCTION
+  ADDITION
+}
+
+enum ApplicationAdjustmentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  APPLIED
+  REVERSED
+}
+
+enum AdjustmentSourceType {
+  MANUAL
+  PROMO
+  RSA_PFA
+  BANK_DIRECT
+  SYSTEM
+}
+
+enum PromotionDiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
 enum ApprovalDecision {
   APPROVED
   REJECTED
@@ -506,10 +541,11 @@ model User {
   socials                Social[]
 
   // Relations to other domains
-  properties          Property[]
-  applications        Application[]        @relation("ApplicationBuyer")
-  soldApplications    Application[]        @relation("ApplicationSeller")
-  applicationPayments ApplicationPayment[] @relation("ApplicationPayer")
+  properties                    Property[]
+  applications                  Application[]           @relation("ApplicationBuyer")
+  soldApplications              Application[]           @relation("ApplicationSeller")
+  applicationPayments           ApplicationPayment[]    @relation("ApplicationPayer")
+  createdApplicationAdjustments ApplicationAdjustment[] @relation("ApplicationAdjustmentCreator")
 
   // Co-applicant relations
   coApplications      CoApplicant[] @relation("CoApplicantUser")
@@ -1219,6 +1255,7 @@ model Tenant {
   applicationEvents           ApplicationEvent[]
   paymentInstallments         PaymentInstallment[]
   applicationPayments         ApplicationPayment[]
+  applicationAdjustments      ApplicationAdjustment[]
   applicationDocuments        ApplicationDocument[]
   documentApprovals           DocumentApproval[]
   approvalStageProgress       ApprovalStageProgress[]
@@ -1228,6 +1265,7 @@ model Tenant {
   propertyVariantAmenities    PropertyVariantAmenity[]
   propertyVariantMedia        PropertyVariantMedia[]
   propertyUnits               PropertyUnit[]
+  propertyPromotions          PropertyPromotion[]
   propertyAmenities           PropertyAmenity[]
   amenities                   Amenity[]
   socials                     Social[]
@@ -1542,6 +1580,7 @@ model Property {
   amenities      PropertyAmenity[] // Shared amenities (gym, pool, security)
   paymentMethods PropertyPaymentMethodLink[]
   variants       PropertyVariant[]
+  promotions     PropertyPromotion[]
 
   @@index([tenantId])
   @@index([userId])
@@ -1647,15 +1686,51 @@ model PropertyVariant {
   updatedAt DateTime @updatedAt
 
   // Relations
-  amenities PropertyVariantAmenity[]
-  units     PropertyUnit[]
-  media     PropertyVariantMedia[]
+  amenities  PropertyVariantAmenity[]
+  units      PropertyUnit[]
+  media      PropertyVariantMedia[]
+  promotions PropertyPromotion[]
 
   @@index([tenantId])
   @@index([propertyId])
   @@index([status])
   @@index([price])
   @@map("property_variants")
+}
+
+model PropertyPromotion {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  variantId String?
+  variant   PropertyVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  name        String
+  description String? @db.Text
+
+  discountType  PromotionDiscountType
+  discountValue Float
+  maxDiscount   Float?
+
+  startsAt DateTime?
+  endsAt   DateTime?
+  isActive Boolean   @default(true)
+  priority Int       @default(100)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([propertyId])
+  @@index([variantId])
+  @@index([isActive])
+  @@index([startsAt])
+  @@index([endsAt])
+  @@map("property_promotions")
 }
 
 // PropertyVariantAmenity = amenities specific to a variant
@@ -2387,6 +2462,7 @@ model Application {
   phases       ApplicationPhase[]
   documents    ApplicationDocument[]
   payments     ApplicationPayment[]
+  adjustments  ApplicationAdjustment[]
   terminations ApplicationTermination[]
   offerLetters OfferLetter[]
 
@@ -2701,7 +2777,8 @@ model ApplicationPhase {
   gatePhase          GatePhase?
 
   // Payments can be linked to any phase type (for tracking)
-  payments ApplicationPayment[]
+  payments    ApplicationPayment[]
+  adjustments ApplicationAdjustment[]
 
   // Back-relation for applications where this is the current phase
   currentForApplications Application[] @relation("CurrentPhase")
@@ -3125,7 +3202,8 @@ model PaymentInstallment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  payments ApplicationPayment[]
+  payments    ApplicationPayment[]
+  adjustments ApplicationAdjustment[]
 
   @@index([tenantId])
   @@index([paymentPhaseId])
@@ -3171,6 +3249,51 @@ model ApplicationPayment {
   @@index([status])
   @@index([reference])
   @@map("application_payments")
+}
+
+model ApplicationAdjustment {
+  id            String              @id @default(cuid())
+  tenantId      String
+  tenant        Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application         @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  phaseId       String?
+  phase         ApplicationPhase?   @relation(fields: [phaseId], references: [id], onDelete: SetNull)
+  installmentId String?
+  installment   PaymentInstallment? @relation(fields: [installmentId], references: [id], onDelete: SetNull)
+
+  type      ApplicationAdjustmentType
+  direction AdjustmentDirection         @default(REDUCTION)
+  status    ApplicationAdjustmentStatus @default(PENDING)
+  amount    Float
+  currency  String                      @default("NGN")
+
+  sourceType           AdjustmentSourceType @default(MANUAL)
+  sourceOrganizationId String?
+  sourceReference      String?
+
+  description String? @db.Text
+  metadata    Json?
+
+  createdById String?
+  createdBy   User?   @relation("ApplicationAdjustmentCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  approvedAt     DateTime?
+  appliedAt      DateTime?
+  reversedAt     DateTime?
+  reversalReason String?   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([applicationId])
+  @@index([phaseId])
+  @@index([installmentId])
+  @@index([status])
+  @@index([type])
+  @@index([sourceReference])
+  @@map("application_adjustments")
 }
 
 // Contract documents (owned by contract, linked to phases/steps as needed)

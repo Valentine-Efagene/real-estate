@@ -369,6 +369,7 @@ export type PropertyVariantWhereInput = {
   amenities?: Prisma.PropertyVariantAmenityListRelationFilter
   units?: Prisma.PropertyUnitListRelationFilter
   media?: Prisma.PropertyVariantMediaListRelationFilter
+  promotions?: Prisma.PropertyPromotionListRelationFilter
 }
 
 export type PropertyVariantOrderByWithRelationInput = {
@@ -396,6 +397,7 @@ export type PropertyVariantOrderByWithRelationInput = {
   amenities?: Prisma.PropertyVariantAmenityOrderByRelationAggregateInput
   units?: Prisma.PropertyUnitOrderByRelationAggregateInput
   media?: Prisma.PropertyVariantMediaOrderByRelationAggregateInput
+  promotions?: Prisma.PropertyPromotionOrderByRelationAggregateInput
   _relevance?: Prisma.PropertyVariantOrderByRelevanceInput
 }
 
@@ -427,6 +429,7 @@ export type PropertyVariantWhereUniqueInput = Prisma.AtLeast<{
   amenities?: Prisma.PropertyVariantAmenityListRelationFilter
   units?: Prisma.PropertyUnitListRelationFilter
   media?: Prisma.PropertyVariantMediaListRelationFilter
+  promotions?: Prisma.PropertyPromotionListRelationFilter
 }, "id">
 
 export type PropertyVariantOrderByWithAggregationInput = {
@@ -504,6 +507,7 @@ export type PropertyVariantCreateInput = {
   amenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutVariantInput
   units?: Prisma.PropertyUnitCreateNestedManyWithoutVariantInput
   media?: Prisma.PropertyVariantMediaCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantUncheckedCreateInput = {
@@ -529,6 +533,7 @@ export type PropertyVariantUncheckedCreateInput = {
   amenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutVariantInput
   units?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutVariantInput
   media?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionUncheckedCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantUpdateInput = {
@@ -554,6 +559,7 @@ export type PropertyVariantUpdateInput = {
   amenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutVariantNestedInput
   units?: Prisma.PropertyUnitUpdateManyWithoutVariantNestedInput
   media?: Prisma.PropertyVariantMediaUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantUncheckedUpdateInput = {
@@ -579,6 +585,7 @@ export type PropertyVariantUncheckedUpdateInput = {
   amenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutVariantNestedInput
   units?: Prisma.PropertyUnitUncheckedUpdateManyWithoutVariantNestedInput
   media?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUncheckedUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantCreateManyInput = {
@@ -753,6 +760,11 @@ export type PropertyVariantSumOrderByAggregateInput = {
   soldUnits?: Prisma.SortOrder
 }
 
+export type PropertyVariantNullableScalarRelationFilter = {
+  is?: Prisma.PropertyVariantWhereInput | null
+  isNot?: Prisma.PropertyVariantWhereInput | null
+}
+
 export type PropertyVariantScalarRelationFilter = {
   is?: Prisma.PropertyVariantWhereInput
   isNot?: Prisma.PropertyVariantWhereInput
@@ -842,6 +854,22 @@ export type PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput = {
   deleteMany?: Prisma.PropertyVariantScalarWhereInput | Prisma.PropertyVariantScalarWhereInput[]
 }
 
+export type PropertyVariantCreateNestedOneWithoutPromotionsInput = {
+  create?: Prisma.XOR<Prisma.PropertyVariantCreateWithoutPromotionsInput, Prisma.PropertyVariantUncheckedCreateWithoutPromotionsInput>
+  connectOrCreate?: Prisma.PropertyVariantCreateOrConnectWithoutPromotionsInput
+  connect?: Prisma.PropertyVariantWhereUniqueInput
+}
+
+export type PropertyVariantUpdateOneWithoutPromotionsNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyVariantCreateWithoutPromotionsInput, Prisma.PropertyVariantUncheckedCreateWithoutPromotionsInput>
+  connectOrCreate?: Prisma.PropertyVariantCreateOrConnectWithoutPromotionsInput
+  upsert?: Prisma.PropertyVariantUpsertWithoutPromotionsInput
+  disconnect?: Prisma.PropertyVariantWhereInput | boolean
+  delete?: Prisma.PropertyVariantWhereInput | boolean
+  connect?: Prisma.PropertyVariantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PropertyVariantUpdateToOneWithWhereWithoutPromotionsInput, Prisma.PropertyVariantUpdateWithoutPromotionsInput>, Prisma.PropertyVariantUncheckedUpdateWithoutPromotionsInput>
+}
+
 export type PropertyVariantCreateNestedOneWithoutAmenitiesInput = {
   create?: Prisma.XOR<Prisma.PropertyVariantCreateWithoutAmenitiesInput, Prisma.PropertyVariantUncheckedCreateWithoutAmenitiesInput>
   connectOrCreate?: Prisma.PropertyVariantCreateOrConnectWithoutAmenitiesInput
@@ -906,6 +934,7 @@ export type PropertyVariantCreateWithoutTenantInput = {
   amenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutVariantInput
   units?: Prisma.PropertyUnitCreateNestedManyWithoutVariantInput
   media?: Prisma.PropertyVariantMediaCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantUncheckedCreateWithoutTenantInput = {
@@ -930,6 +959,7 @@ export type PropertyVariantUncheckedCreateWithoutTenantInput = {
   amenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutVariantInput
   units?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutVariantInput
   media?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionUncheckedCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantCreateOrConnectWithoutTenantInput = {
@@ -1005,6 +1035,7 @@ export type PropertyVariantCreateWithoutPropertyInput = {
   amenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutVariantInput
   units?: Prisma.PropertyUnitCreateNestedManyWithoutVariantInput
   media?: Prisma.PropertyVariantMediaCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantUncheckedCreateWithoutPropertyInput = {
@@ -1029,6 +1060,7 @@ export type PropertyVariantUncheckedCreateWithoutPropertyInput = {
   amenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutVariantInput
   units?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutVariantInput
   media?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionUncheckedCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantCreateOrConnectWithoutPropertyInput = {
@@ -1057,6 +1089,122 @@ export type PropertyVariantUpdateManyWithWhereWithoutPropertyInput = {
   data: Prisma.XOR<Prisma.PropertyVariantUpdateManyMutationInput, Prisma.PropertyVariantUncheckedUpdateManyWithoutPropertyInput>
 }
 
+export type PropertyVariantCreateWithoutPromotionsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  nBedrooms?: number | null
+  nBathrooms?: number | null
+  nParkingSpots?: number | null
+  area?: number | null
+  price: number
+  pricePerSqm?: number | null
+  totalUnits?: number
+  availableUnits?: number
+  reservedUnits?: number
+  soldUnits?: number
+  status?: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyVariantsInput
+  property: Prisma.PropertyCreateNestedOneWithoutVariantsInput
+  amenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutVariantInput
+  units?: Prisma.PropertyUnitCreateNestedManyWithoutVariantInput
+  media?: Prisma.PropertyVariantMediaCreateNestedManyWithoutVariantInput
+}
+
+export type PropertyVariantUncheckedCreateWithoutPromotionsInput = {
+  id?: string
+  tenantId: string
+  propertyId: string
+  name: string
+  description?: string | null
+  nBedrooms?: number | null
+  nBathrooms?: number | null
+  nParkingSpots?: number | null
+  area?: number | null
+  price: number
+  pricePerSqm?: number | null
+  totalUnits?: number
+  availableUnits?: number
+  reservedUnits?: number
+  soldUnits?: number
+  status?: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  amenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutVariantInput
+  units?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutVariantInput
+  media?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutVariantInput
+}
+
+export type PropertyVariantCreateOrConnectWithoutPromotionsInput = {
+  where: Prisma.PropertyVariantWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyVariantCreateWithoutPromotionsInput, Prisma.PropertyVariantUncheckedCreateWithoutPromotionsInput>
+}
+
+export type PropertyVariantUpsertWithoutPromotionsInput = {
+  update: Prisma.XOR<Prisma.PropertyVariantUpdateWithoutPromotionsInput, Prisma.PropertyVariantUncheckedUpdateWithoutPromotionsInput>
+  create: Prisma.XOR<Prisma.PropertyVariantCreateWithoutPromotionsInput, Prisma.PropertyVariantUncheckedCreateWithoutPromotionsInput>
+  where?: Prisma.PropertyVariantWhereInput
+}
+
+export type PropertyVariantUpdateToOneWithWhereWithoutPromotionsInput = {
+  where?: Prisma.PropertyVariantWhereInput
+  data: Prisma.XOR<Prisma.PropertyVariantUpdateWithoutPromotionsInput, Prisma.PropertyVariantUncheckedUpdateWithoutPromotionsInput>
+}
+
+export type PropertyVariantUpdateWithoutPromotionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nBedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  nBathrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  nParkingSpots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalUnits?: Prisma.IntFieldUpdateOperationsInput | number
+  availableUnits?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedUnits?: Prisma.IntFieldUpdateOperationsInput | number
+  soldUnits?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyVariantsNestedInput
+  property?: Prisma.PropertyUpdateOneRequiredWithoutVariantsNestedInput
+  amenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutVariantNestedInput
+  units?: Prisma.PropertyUnitUpdateManyWithoutVariantNestedInput
+  media?: Prisma.PropertyVariantMediaUpdateManyWithoutVariantNestedInput
+}
+
+export type PropertyVariantUncheckedUpdateWithoutPromotionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nBedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  nBathrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  nParkingSpots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalUnits?: Prisma.IntFieldUpdateOperationsInput | number
+  availableUnits?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedUnits?: Prisma.IntFieldUpdateOperationsInput | number
+  soldUnits?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  amenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutVariantNestedInput
+  units?: Prisma.PropertyUnitUncheckedUpdateManyWithoutVariantNestedInput
+  media?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutVariantNestedInput
+}
+
 export type PropertyVariantCreateWithoutAmenitiesInput = {
   id?: string
   name: string
@@ -1079,6 +1227,7 @@ export type PropertyVariantCreateWithoutAmenitiesInput = {
   property: Prisma.PropertyCreateNestedOneWithoutVariantsInput
   units?: Prisma.PropertyUnitCreateNestedManyWithoutVariantInput
   media?: Prisma.PropertyVariantMediaCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantUncheckedCreateWithoutAmenitiesInput = {
@@ -1103,6 +1252,7 @@ export type PropertyVariantUncheckedCreateWithoutAmenitiesInput = {
   updatedAt?: Date | string
   units?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutVariantInput
   media?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionUncheckedCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantCreateOrConnectWithoutAmenitiesInput = {
@@ -1143,6 +1293,7 @@ export type PropertyVariantUpdateWithoutAmenitiesInput = {
   property?: Prisma.PropertyUpdateOneRequiredWithoutVariantsNestedInput
   units?: Prisma.PropertyUnitUpdateManyWithoutVariantNestedInput
   media?: Prisma.PropertyVariantMediaUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantUncheckedUpdateWithoutAmenitiesInput = {
@@ -1167,6 +1318,7 @@ export type PropertyVariantUncheckedUpdateWithoutAmenitiesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   units?: Prisma.PropertyUnitUncheckedUpdateManyWithoutVariantNestedInput
   media?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUncheckedUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantCreateWithoutMediaInput = {
@@ -1191,6 +1343,7 @@ export type PropertyVariantCreateWithoutMediaInput = {
   property: Prisma.PropertyCreateNestedOneWithoutVariantsInput
   amenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutVariantInput
   units?: Prisma.PropertyUnitCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantUncheckedCreateWithoutMediaInput = {
@@ -1215,6 +1368,7 @@ export type PropertyVariantUncheckedCreateWithoutMediaInput = {
   updatedAt?: Date | string
   amenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutVariantInput
   units?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionUncheckedCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantCreateOrConnectWithoutMediaInput = {
@@ -1255,6 +1409,7 @@ export type PropertyVariantUpdateWithoutMediaInput = {
   property?: Prisma.PropertyUpdateOneRequiredWithoutVariantsNestedInput
   amenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutVariantNestedInput
   units?: Prisma.PropertyUnitUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantUncheckedUpdateWithoutMediaInput = {
@@ -1279,6 +1434,7 @@ export type PropertyVariantUncheckedUpdateWithoutMediaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutVariantNestedInput
   units?: Prisma.PropertyUnitUncheckedUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUncheckedUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantCreateWithoutUnitsInput = {
@@ -1303,6 +1459,7 @@ export type PropertyVariantCreateWithoutUnitsInput = {
   property: Prisma.PropertyCreateNestedOneWithoutVariantsInput
   amenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutVariantInput
   media?: Prisma.PropertyVariantMediaCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantUncheckedCreateWithoutUnitsInput = {
@@ -1327,6 +1484,7 @@ export type PropertyVariantUncheckedCreateWithoutUnitsInput = {
   updatedAt?: Date | string
   amenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutVariantInput
   media?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutVariantInput
+  promotions?: Prisma.PropertyPromotionUncheckedCreateNestedManyWithoutVariantInput
 }
 
 export type PropertyVariantCreateOrConnectWithoutUnitsInput = {
@@ -1367,6 +1525,7 @@ export type PropertyVariantUpdateWithoutUnitsInput = {
   property?: Prisma.PropertyUpdateOneRequiredWithoutVariantsNestedInput
   amenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutVariantNestedInput
   media?: Prisma.PropertyVariantMediaUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantUncheckedUpdateWithoutUnitsInput = {
@@ -1391,6 +1550,7 @@ export type PropertyVariantUncheckedUpdateWithoutUnitsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutVariantNestedInput
   media?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUncheckedUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantCreateManyTenantInput = {
@@ -1436,6 +1596,7 @@ export type PropertyVariantUpdateWithoutTenantInput = {
   amenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutVariantNestedInput
   units?: Prisma.PropertyUnitUpdateManyWithoutVariantNestedInput
   media?: Prisma.PropertyVariantMediaUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantUncheckedUpdateWithoutTenantInput = {
@@ -1460,6 +1621,7 @@ export type PropertyVariantUncheckedUpdateWithoutTenantInput = {
   amenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutVariantNestedInput
   units?: Prisma.PropertyUnitUncheckedUpdateManyWithoutVariantNestedInput
   media?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUncheckedUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantUncheckedUpdateManyWithoutTenantInput = {
@@ -1526,6 +1688,7 @@ export type PropertyVariantUpdateWithoutPropertyInput = {
   amenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutVariantNestedInput
   units?: Prisma.PropertyUnitUpdateManyWithoutVariantNestedInput
   media?: Prisma.PropertyVariantMediaUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantUncheckedUpdateWithoutPropertyInput = {
@@ -1550,6 +1713,7 @@ export type PropertyVariantUncheckedUpdateWithoutPropertyInput = {
   amenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutVariantNestedInput
   units?: Prisma.PropertyUnitUncheckedUpdateManyWithoutVariantNestedInput
   media?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutVariantNestedInput
+  promotions?: Prisma.PropertyPromotionUncheckedUpdateManyWithoutVariantNestedInput
 }
 
 export type PropertyVariantUncheckedUpdateManyWithoutPropertyInput = {
@@ -1582,12 +1746,14 @@ export type PropertyVariantCountOutputType = {
   amenities: number
   units: number
   media: number
+  promotions: number
 }
 
 export type PropertyVariantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   amenities?: boolean | PropertyVariantCountOutputTypeCountAmenitiesArgs
   units?: boolean | PropertyVariantCountOutputTypeCountUnitsArgs
   media?: boolean | PropertyVariantCountOutputTypeCountMediaArgs
+  promotions?: boolean | PropertyVariantCountOutputTypeCountPromotionsArgs
 }
 
 /**
@@ -1621,6 +1787,13 @@ export type PropertyVariantCountOutputTypeCountMediaArgs<ExtArgs extends runtime
   where?: Prisma.PropertyVariantMediaWhereInput
 }
 
+/**
+ * PropertyVariantCountOutputType without action
+ */
+export type PropertyVariantCountOutputTypeCountPromotionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropertyPromotionWhereInput
+}
+
 
 export type PropertyVariantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1647,6 +1820,7 @@ export type PropertyVariantSelect<ExtArgs extends runtime.Types.Extensions.Inter
   amenities?: boolean | Prisma.PropertyVariant$amenitiesArgs<ExtArgs>
   units?: boolean | Prisma.PropertyVariant$unitsArgs<ExtArgs>
   media?: boolean | Prisma.PropertyVariant$mediaArgs<ExtArgs>
+  promotions?: boolean | Prisma.PropertyVariant$promotionsArgs<ExtArgs>
   _count?: boolean | Prisma.PropertyVariantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyVariant"]>
 
@@ -1681,6 +1855,7 @@ export type PropertyVariantInclude<ExtArgs extends runtime.Types.Extensions.Inte
   amenities?: boolean | Prisma.PropertyVariant$amenitiesArgs<ExtArgs>
   units?: boolean | Prisma.PropertyVariant$unitsArgs<ExtArgs>
   media?: boolean | Prisma.PropertyVariant$mediaArgs<ExtArgs>
+  promotions?: boolean | Prisma.PropertyVariant$promotionsArgs<ExtArgs>
   _count?: boolean | Prisma.PropertyVariantCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1692,6 +1867,7 @@ export type $PropertyVariantPayload<ExtArgs extends runtime.Types.Extensions.Int
     amenities: Prisma.$PropertyVariantAmenityPayload<ExtArgs>[]
     units: Prisma.$PropertyUnitPayload<ExtArgs>[]
     media: Prisma.$PropertyVariantMediaPayload<ExtArgs>[]
+    promotions: Prisma.$PropertyPromotionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2058,6 +2234,7 @@ export interface Prisma__PropertyVariantClient<T, Null = never, ExtArgs extends 
   amenities<T extends Prisma.PropertyVariant$amenitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyVariant$amenitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyVariantAmenityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   units<T extends Prisma.PropertyVariant$unitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyVariant$unitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   media<T extends Prisma.PropertyVariant$mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyVariant$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyVariantMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  promotions<T extends Prisma.PropertyVariant$promotionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyVariant$promotionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPromotionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2518,6 +2695,30 @@ export type PropertyVariant$mediaArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.PropertyVariantMediaScalarFieldEnum | Prisma.PropertyVariantMediaScalarFieldEnum[]
+}
+
+/**
+ * PropertyVariant.promotions
+ */
+export type PropertyVariant$promotionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PropertyPromotion
+   */
+  select?: Prisma.PropertyPromotionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PropertyPromotion
+   */
+  omit?: Prisma.PropertyPromotionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyPromotionInclude<ExtArgs> | null
+  where?: Prisma.PropertyPromotionWhereInput
+  orderBy?: Prisma.PropertyPromotionOrderByWithRelationInput | Prisma.PropertyPromotionOrderByWithRelationInput[]
+  cursor?: Prisma.PropertyPromotionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PropertyPromotionScalarFieldEnum | Prisma.PropertyPromotionScalarFieldEnum[]
 }
 
 /**

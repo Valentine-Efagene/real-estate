@@ -203,6 +203,56 @@ export const PaymentStatus = {
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
 
+export const ApplicationAdjustmentType = {
+  PROMO_DISCOUNT: 'PROMO_DISCOUNT',
+  THIRD_PARTY_CREDIT: 'THIRD_PARTY_CREDIT',
+  WAIVER: 'WAIVER',
+  MANUAL_ADJUSTMENT: 'MANUAL_ADJUSTMENT',
+  SURCHARGE: 'SURCHARGE',
+  CORRECTION: 'CORRECTION'
+} as const
+
+export type ApplicationAdjustmentType = (typeof ApplicationAdjustmentType)[keyof typeof ApplicationAdjustmentType]
+
+
+export const AdjustmentDirection = {
+  REDUCTION: 'REDUCTION',
+  ADDITION: 'ADDITION'
+} as const
+
+export type AdjustmentDirection = (typeof AdjustmentDirection)[keyof typeof AdjustmentDirection]
+
+
+export const ApplicationAdjustmentStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  APPLIED: 'APPLIED',
+  REVERSED: 'REVERSED'
+} as const
+
+export type ApplicationAdjustmentStatus = (typeof ApplicationAdjustmentStatus)[keyof typeof ApplicationAdjustmentStatus]
+
+
+export const AdjustmentSourceType = {
+  MANUAL: 'MANUAL',
+  PROMO: 'PROMO',
+  RSA_PFA: 'RSA_PFA',
+  BANK_DIRECT: 'BANK_DIRECT',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type AdjustmentSourceType = (typeof AdjustmentSourceType)[keyof typeof AdjustmentSourceType]
+
+
+export const PromotionDiscountType = {
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED_AMOUNT: 'FIXED_AMOUNT'
+} as const
+
+export type PromotionDiscountType = (typeof PromotionDiscountType)[keyof typeof PromotionDiscountType]
+
+
 export const ApprovalDecision = {
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',

@@ -5,6 +5,10 @@ import {
     createPropertySchema,
     updatePropertySchema,
 } from '../validators/property.validator';
+import {
+    createPropertyPromotionSchema,
+    updatePropertyPromotionSchema,
+} from '../validators/property-promotion.validator';
 import { propertyService } from '../services/property.service';
 
 export const propertyRouter: RouterType = Router();
@@ -221,6 +225,68 @@ propertyRouter.patch('/properties/:id/unpublish', async (req, res, next) => {
         }
         const property = await propertyService.unpublishProperty(id, tenantId);
         res.json(successResponse(property));
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Property Promotions
+propertyRouter.post('/properties/:id/promotions', async (req, res, next) => {
+    try {
+        const tenantId = req.tenantContext?.tenantId;
+        const userId = req.tenantContext?.userId || 'temp-user-id';
+        if (!tenantId) {
+            return res.status(400).json({ success: false, error: 'Tenant context required' });
+        }
+
+        const data = createPropertyPromotionSchema.parse(req.body);
+        const promotion = await propertyService.createPromotion(req.params.id, data, tenantId, userId);
+        res.status(201).json(successResponse(promotion));
+    } catch (error) {
+        next(error);
+    }
+});
+
+propertyRouter.get('/properties/:id/promotions', async (req, res, next) => {
+    try {
+        const tenantId = req.tenantContext?.tenantId;
+        if (!tenantId) {
+            return res.status(400).json({ success: false, error: 'Tenant context required' });
+        }
+
+        const promotions = await propertyService.listPromotions(req.params.id, tenantId);
+        res.json(successResponse(promotions));
+    } catch (error) {
+        next(error);
+    }
+});
+
+propertyRouter.patch('/properties/:id/promotions/:promotionId', async (req, res, next) => {
+    try {
+        const tenantId = req.tenantContext?.tenantId;
+        const userId = req.tenantContext?.userId || 'temp-user-id';
+        if (!tenantId) {
+            return res.status(400).json({ success: false, error: 'Tenant context required' });
+        }
+
+        const data = updatePropertyPromotionSchema.parse(req.body);
+        const promotion = await propertyService.updatePromotion(req.params.id, req.params.promotionId, data, tenantId, userId);
+        res.json(successResponse(promotion));
+    } catch (error) {
+        next(error);
+    }
+});
+
+propertyRouter.delete('/properties/:id/promotions/:promotionId', async (req, res, next) => {
+    try {
+        const tenantId = req.tenantContext?.tenantId;
+        const userId = req.tenantContext?.userId || 'temp-user-id';
+        if (!tenantId) {
+            return res.status(400).json({ success: false, error: 'Tenant context required' });
+        }
+
+        const result = await propertyService.deletePromotion(req.params.id, req.params.promotionId, tenantId, userId);
+        res.json(successResponse(result));
     } catch (error) {
         next(error);
     }
