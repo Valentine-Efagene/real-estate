@@ -13,6 +13,51 @@ import { propertyService } from '../services/property.service';
 
 export const propertyRouter: RouterType = Router();
 
+function parseNumber(value?: string): number | undefined {
+    if (value === undefined || value === null || value === '') return undefined;
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function parsePropertyListQuery(query: Record<string, string | undefined>, tenantId?: string) {
+    const {
+        keyword,
+        category,
+        propertyType,
+        city,
+        country,
+        status,
+        minPrice,
+        maxPrice,
+        minBedrooms,
+        maxBedrooms,
+        availableUnitsOnly,
+        organizationId,
+        sortBy,
+        page,
+        limit,
+    } = query;
+
+    return {
+        tenantId,
+        keyword,
+        category,
+        propertyType,
+        city,
+        country,
+        status,
+        minPrice: parseNumber(minPrice),
+        maxPrice: parseNumber(maxPrice),
+        minBedrooms: parseNumber(minBedrooms),
+        maxBedrooms: parseNumber(maxBedrooms),
+        availableUnitsOnly: availableUnitsOnly === 'true' ? true : undefined,
+        organizationId,
+        sortBy: sortBy as 'price_asc' | 'price_desc' | 'newest' | 'oldest' | undefined,
+        page: parseNumber(page),
+        limit: parseNumber(limit),
+    };
+}
+
 // Minimal DB sanity route (uses Prisma from qshelter-common)
 propertyRouter.get('/db/ping', async (req, res, next) => {
     try {
@@ -42,7 +87,9 @@ propertyRouter.post('/properties', async (req, res, next) => {
 
 propertyRouter.get('/properties', async (req, res, next) => {
     try {
-        const properties = await propertyService.getProperties();
+        const tenantId = req.tenantContext?.tenantId;
+        const query = req.query as Record<string, string | undefined>;
+        const properties = await propertyService.getProperties(parsePropertyListQuery(query, tenantId));
         res.json(successResponse(properties));
     } catch (error) {
         next(error);
@@ -53,43 +100,8 @@ propertyRouter.get('/properties', async (req, res, next) => {
 propertyRouter.get('/properties/search', async (req, res, next) => {
     try {
         const tenantId = req.tenantContext?.tenantId;
-
-        const {
-            keyword,
-            category,
-            propertyType,
-            city,
-            country,
-            status,
-            minPrice,
-            maxPrice,
-            minBedrooms,
-            maxBedrooms,
-            availableUnitsOnly,
-            organizationId,
-            sortBy,
-            page,
-            limit,
-        } = req.query as Record<string, string | undefined>;
-
-        const results = await propertyService.searchProperties({
-            tenantId,
-            keyword,
-            category,
-            propertyType,
-            city,
-            country,
-            status,
-            minPrice: minPrice !== undefined ? Number(minPrice) : undefined,
-            maxPrice: maxPrice !== undefined ? Number(maxPrice) : undefined,
-            minBedrooms: minBedrooms !== undefined ? Number(minBedrooms) : undefined,
-            maxBedrooms: maxBedrooms !== undefined ? Number(maxBedrooms) : undefined,
-            availableUnitsOnly: availableUnitsOnly === 'true',
-            organizationId,
-            sortBy: sortBy as 'price_asc' | 'price_desc' | 'newest' | 'oldest' | undefined,
-            page: page !== undefined ? Number(page) : undefined,
-            limit: limit !== undefined ? Number(limit) : undefined,
-        });
+        const query = req.query as Record<string, string | undefined>;
+        const results = await propertyService.searchProperties(parsePropertyListQuery(query, tenantId));
 
         res.json(successResponse(results));
     } catch (error) {
@@ -100,7 +112,8 @@ propertyRouter.get('/properties/search', async (req, res, next) => {
 propertyRouter.get('/properties/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
-        const property = await propertyService.getPropertyById(id);
+        const tenantId = req.tenantContext?.tenantId;
+        const property = await propertyService.getPropertyById(id, tenantId);
         res.json(successResponse(property));
     } catch (error) {
         next(error);

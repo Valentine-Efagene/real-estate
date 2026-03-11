@@ -146,20 +146,25 @@ class PropertyService {
         return property;
     }
 
-    async getProperties(filters?: { ownerId?: string; propertyType?: string }) {
-        const properties = await prisma.property.findMany({
-            where: filters,
-            orderBy: { createdAt: 'desc' },
-            include: {
-                displayImage: {
-                    select: {
-                        id: true,
-                        url: true,
-                    },
-                },
-            },
-        });
-        return { items: properties, total: properties.length };
+    async getProperties(params?: {
+        tenantId?: string;
+        keyword?: string;
+        category?: string;
+        propertyType?: string;
+        city?: string;
+        country?: string;
+        status?: string;
+        minPrice?: number;
+        maxPrice?: number;
+        minBedrooms?: number;
+        maxBedrooms?: number;
+        availableUnitsOnly?: boolean;
+        organizationId?: string;
+        sortBy?: 'price_asc' | 'price_desc' | 'newest' | 'oldest';
+        page?: number;
+        limit?: number;
+    }) {
+        return this.searchProperties(params || {});
     }
 
     /**
@@ -212,7 +217,6 @@ class PropertyService {
         if (city) where['city'] = { contains: city };
         if (country) where['country'] = country;
         if (status) where['status'] = status;
-        else where['status'] = 'PUBLISHED'; // Default: only show published
         if (organizationId) where['organizationId'] = organizationId;
 
         // Keyword search across title, description, city, district
@@ -253,7 +257,15 @@ class PropertyService {
 
         // Sorting
         let orderBy: Record<string, unknown> = { createdAt: 'desc' };
-        if (sortBy === 'oldest') orderBy = { createdAt: 'asc' };
+        if (sortBy === 'oldest') {
+            orderBy = { createdAt: 'asc' };
+        }
+        if (sortBy === 'price_asc') {
+            orderBy = { variants: { _min: { price: 'asc' } } };
+        }
+        if (sortBy === 'price_desc') {
+            orderBy = { variants: { _max: { price: 'desc' } } };
+        }
 
         const [items, total] = await Promise.all([
             prisma.property.findMany({
@@ -462,9 +474,12 @@ class PropertyService {
         return { success: true };
     }
 
-    async getPropertyById(id: string) {
-        const property = await prisma.property.findUnique({
-            where: { id },
+    async getPropertyById(id: string, tenantId?: string) {
+        const property = await prisma.property.findFirst({
+            where: {
+                id,
+                ...(tenantId ? { tenantId } : {}),
+            },
             include: {
                 displayImage: {
                     select: {
