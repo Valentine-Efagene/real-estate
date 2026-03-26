@@ -1,13 +1,138 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { bootstrapTenantSchema } from '../validators/bootstrap.validator';
-import { AppError, ConfigService, AsyncJobStore } from '@valentine-efagene/qshelter-common';
+import {
+    AppError,
+    ConfigService,
+    AsyncJobStore,
+    extractAuthContext,
+    isPlatformAdmin,
+} from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
 import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
+import {
+    SSMClient,
+    GetParameterCommand,
+} from '@aws-sdk/client-ssm';
+import {
+    EC2Client,
+    DescribeSecurityGroupsCommand,
+    AuthorizeSecurityGroupIngressCommand,
+    RevokeSecurityGroupIngressCommand,
+    type IpPermission,
+    type IpRange,
+} from '@aws-sdk/client-ec2';
 
 const lambdaClient = new LambdaClient({ region: process.env.AWS_REGION || 'us-east-1' });
+const ssmClient = new SSMClient({ region: process.env.AWS_REGION || 'us-east-1' });
+const ec2Client = new EC2Client({ region: process.env.AWS_REGION || 'us-east-1' });
 const BOOTSTRAP_WORKER_FUNCTION = process.env.BOOTSTRAP_WORKER_FUNCTION_NAME || '';
 
 const router = Router();
+
+const IPV4_CIDR_REGEX = /^(?:\d{1,3}\.){3}\d{1,3}\/(?:[0-9]|[1-2][0-9]|3[0-2])$/;
+
+function isValidIpv4Cidr(cidr: string): boolean {
+    if (!IPV4_CIDR_REGEX.test(cidr)) return false;
+    const [ip, prefix] = cidr.split('/');
+    if (!ip || !prefix) return false;
+
+    const octets = ip.split('.').map((o) => Number(o));
+    if (octets.length !== 4 || octets.some((o) => Number.isNaN(o) || o < 0 || o > 255)) {
+        return false;
+    }
+
+    const prefixNum = Number(prefix);
+    return prefixNum >= 0 && prefixNum <= 32;
+}
+
+const requireAdminAuth = async (req: Request, _res: Response, next: NextFunction) => {
+    try {
+        const auth = extractAuthContext(req);
+        if (!auth) {
+            throw new AppError(401, 'Authentication required');
+        }
+
+        if (!isPlatformAdmin(auth) && !auth.roles?.includes('admin')) {
+            throw new AppError(403, 'Platform admin access required');
+        }
+
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
+
+async function getDbSecurityGroupId(stage: string): Promise<string> {
+    const result = await ssmClient.send(new GetParameterCommand({
+        Name: `/qshelter/${stage}/db-security-group-id`,
+    }));
+
+    const sgId = result.Parameter?.Value;
+    if (!sgId) {
+        throw new AppError(404, `db-security-group-id not found for stage: ${stage}`);
+    }
+
+    return sgId;
+}
+
+async function listDbIngressCidrs(sgId: string): Promise<string[]> {
+    const result = await ec2Client.send(new DescribeSecurityGroupsCommand({
+        GroupIds: [sgId],
+    }));
+
+    const group = result.SecurityGroups?.[0];
+    if (!group) {
+        throw new AppError(404, `Security group not found: ${sgId}`);
+    }
+
+    const cidrs = (group.IpPermissions || [])
+        .filter((rule: IpPermission) => rule.IpProtocol === 'tcp' && rule.FromPort === 3306 && rule.ToPort === 3306)
+        .flatMap((rule: IpPermission) =>
+            (rule.IpRanges || [])
+                .map((r: IpRange) => r.CidrIp)
+                .filter((c: string | undefined): c is string => Boolean(c))
+        )
+        .sort();
+
+    return Array.from(new Set(cidrs));
+}
+
+async function replaceDbIngressCidrs(sgId: string, desiredCidrs: string[]): Promise<void> {
+    const existingCidrs = await listDbIngressCidrs(sgId);
+    const desiredSet = new Set(desiredCidrs);
+    const existingSet = new Set(existingCidrs);
+
+    const toRevoke = existingCidrs.filter((c) => !desiredSet.has(c));
+    const toAuthorize = desiredCidrs.filter((c) => !existingSet.has(c));
+
+    if (toRevoke.length > 0) {
+        await ec2Client.send(new RevokeSecurityGroupIngressCommand({
+            GroupId: sgId,
+            IpPermissions: [
+                {
+                    IpProtocol: 'tcp',
+                    FromPort: 3306,
+                    ToPort: 3306,
+                    IpRanges: toRevoke.map((cidr) => ({ CidrIp: cidr })),
+                },
+            ],
+        }));
+    }
+
+    if (toAuthorize.length > 0) {
+        await ec2Client.send(new AuthorizeSecurityGroupIngressCommand({
+            GroupId: sgId,
+            IpPermissions: [
+                {
+                    IpProtocol: 'tcp',
+                    FromPort: 3306,
+                    ToPort: 3306,
+                    IpRanges: toAuthorize.map((cidr) => ({ CidrIp: cidr })),
+                },
+            ],
+        }));
+    }
+}
 
 // =============================================================================
 // BOOTSTRAP ROUTES
@@ -100,6 +225,111 @@ router.get(
                 tenantId: tenant.id,
                 tenantName: tenant.name,
                 subdomain: tenant.subdomain,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+router.get(
+    '/db-access-ips',
+    requireAdminAuth,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const stage = (req.query.stage as string) || process.env.STAGE || process.env.NODE_ENV || 'staging';
+            const sgId = await getDbSecurityGroupId(stage);
+            const cidrs = await listDbIngressCidrs(sgId);
+
+            res.json({
+                success: true,
+                data: {
+                    stage,
+                    securityGroupId: sgId,
+                    port: 3306,
+                    cidrs,
+                },
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+router.put(
+    '/db-access-ips/replace',
+    requireAdminAuth,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const stage = (req.query.stage as string) || process.env.STAGE || process.env.NODE_ENV || 'staging';
+            const rawCidrs = Array.isArray(req.body?.cidrs) ? req.body.cidrs : null;
+
+            if (!rawCidrs) {
+                throw new AppError(400, 'Request body must include cidrs: string[]');
+            }
+
+            const normalizedCidrs: string[] = Array.from(
+                new Set(
+                    rawCidrs
+                        .map((value: unknown) => (typeof value === 'string' ? value.trim() : ''))
+                        .filter((value: string): value is string => value.length > 0)
+                )
+            );
+
+            const invalid = normalizedCidrs.filter((cidr) => !isValidIpv4Cidr(cidr));
+            if (invalid.length > 0) {
+                throw new AppError(400, `Invalid CIDR values: ${invalid.join(', ')}`);
+            }
+
+            const sgId = await getDbSecurityGroupId(stage);
+            await replaceDbIngressCidrs(sgId, normalizedCidrs);
+            const updatedCidrs = await listDbIngressCidrs(sgId);
+
+            res.json({
+                success: true,
+                data: {
+                    stage,
+                    securityGroupId: sgId,
+                    port: 3306,
+                    cidrs: updatedCidrs,
+                },
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+router.delete(
+    '/db-access-ips',
+    requireAdminAuth,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const stage = (req.query.stage as string) || process.env.STAGE || process.env.NODE_ENV || 'staging';
+            const cidr = typeof req.body?.cidr === 'string' ? req.body.cidr.trim() : '';
+
+            if (!cidr) {
+                throw new AppError(400, 'Request body must include cidr');
+            }
+
+            if (!isValidIpv4Cidr(cidr)) {
+                throw new AppError(400, `Invalid CIDR value: ${cidr}`);
+            }
+
+            const sgId = await getDbSecurityGroupId(stage);
+            const existing = await listDbIngressCidrs(sgId);
+            const desired = existing.filter((value) => value !== cidr);
+            await replaceDbIngressCidrs(sgId, desired);
+            const updatedCidrs = await listDbIngressCidrs(sgId);
+
+            res.json({
+                success: true,
+                data: {
+                    stage,
+                    securityGroupId: sgId,
+                    port: 3306,
+                    cidrs: updatedCidrs,
+                },
             });
         } catch (error) {
             next(error);

@@ -62,6 +62,12 @@ provider:
             - lambda:InvokeFunction
           Resource:
             - arn:aws:lambda:${self:provider.region}:*:function:${self:service}-${self:provider.stage}-bootstrapWorker
+        - Effect: Allow
+          Action:
+            - ec2:DescribeSecurityGroups
+            - ec2:AuthorizeSecurityGroupIngress
+            - ec2:RevokeSecurityGroupIngress
+          Resource: '*'
 
 package:
   individually: true
