@@ -24,9 +24,8 @@ echo ""
 echo "Project root: $PROJECT_ROOT"
 echo ""
 
-# Services to deploy (in order - authorizer first)
+# Services to deploy
 SERVICES=(
-    "authorizer-service"
     "user-service"
     "property-service"
     "documents-service"

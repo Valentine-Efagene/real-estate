@@ -10,6 +10,13 @@ provider:
   
   httpApi:
     cors: true
+    authorizers:
+      lambdaAuthorizer:
+        type: request
+        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn, 'arn:aws:lambda:us-east-1:000000000000:function:qshelter-authorizer-placeholder'}
+        identitySource:
+          - $request.header.Authorization
+        enableSimpleResponses: true
   
   environment:
     NODE_ENV: ${self:provider.stage}
@@ -103,10 +110,12 @@ functions:
           path: /invitations/accept
           method: POST
       
-      # All routes (auth handled at app level)
+      # Protected routes (public exceptions above remain unauthenticated)
       - httpApi:
           path: /{proxy+}
           method: ANY
+          authorizer:
+            name: lambdaAuthorizer
 
   bootstrapWorker:
     handler: dist/bootstrap-worker.handler

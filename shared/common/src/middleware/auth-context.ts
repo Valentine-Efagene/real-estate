@@ -1,35 +1,24 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { ConfigService } from '../config/config.service';
 
 /**
  * Authentication context extracted from JWT tokens.
- * Services verify JWTs directly using the shared middleware —
- * no external Lambda authorizer or DynamoDB policy lookup needed.
+ * Access control is handled by the Lambda HTTP authorizer (authorizer-stack-dynamo)
+ * which validates the JWT and checks role policies before the request reaches the service.
+ * Services only need to decode (not verify) the JWT to extract user context.
  *
  * Org-scoped RBAC (Clerk-style):
  * - `orgRole` is the user's role in their active organization
  * - `activeOrgId` is the organization they're currently acting as
  * - `isPlatformOrg` indicates if the active org is the platform org (tenant-wide powers)
- * - Legacy `roles` field kept for backward compatibility during migration
- *
- * Priority:
- * 1. Verify JWT from Authorization header (all environments)
- * 2. Mock headers for unit tests (x-authorizer-* headers)
  */
 export interface AuthContext {
     userId: string;
     tenantId: string;
     email?: string;
-    /** @deprecated Use orgRole instead. Legacy flat role array for backward compatibility. */
     roles?: string[];
-    /** The user's role in the active organization (Clerk-style org-scoped role) */
     orgRole?: string;
-    /** All roles for the active organization (multi-role support) */
     orgRoles?: string[];
-    /** The active organization the user is acting within */
     activeOrgId?: string;
-    /** Whether the active organization is the platform org (grants tenant-wide visibility) */
     isPlatformOrg?: boolean;
 }
 
@@ -37,59 +26,6 @@ interface AuthenticatedRequest extends Request {
     auth?: AuthContext;
 }
 
-// ── JWT verification configuration ──────────────────────────────────────────
-
-let _jwtSecret: string | null = null;
-let _authInitialized = false;
-
-/**
- * Configure JWT verification for the auth middleware.
- * Must be called at service startup before handling requests.
- *
- * @example
- * ```typescript
- * import { configureAuth } from '@valentine-efagene/qshelter-common';
- *
- * configureAuth({ jwtSecret: 'my-secret' });
- * ```
- */
-export function configureAuth(options: {
-    /** The JWT access token secret for verification */
-    jwtSecret: string;
-}): void {
-    _jwtSecret = options.jwtSecret;
-    _authInitialized = true;
-}
-
-/**
- * Initialize auth from ConfigService (fetches JWT secret from AWS Secrets Manager).
- * Call once during Lambda cold start or server startup.
- *
- * @example
- * ```typescript
- * import { setupAuth } from '@valentine-efagene/qshelter-common';
- *
- * // In lambda.ts or server startup:
- * await setupAuth();
- * ```
- */
-export async function setupAuth(stage?: string): Promise<void> {
-    if (_authInitialized) return; // Already configured
-
-    try {
-        const configService = ConfigService.getInstance();
-        const jwtSecrets = await configService.getJwtAccessSecret(stage);
-        configureAuth({ jwtSecret: jwtSecrets.secret });
-        console.log('[auth] JWT verification configured from ConfigService');
-    } catch (error: any) {
-        console.warn(`[auth] Failed to fetch JWT secret from ConfigService: ${error.message}. JWT verification will use decode-only fallback.`);
-    }
-}
-
-/**
- * Safely decode JWT payload without verification.
- * Used as fallback when jwtVerify is not configured (dev/tests).
- */
 function decodeJwtPayload(token: string): Record<string, any> | null {
     try {
         const parts = token.split('.');
@@ -102,61 +38,31 @@ function decodeJwtPayload(token: string): Record<string, any> | null {
 }
 
 /**
- * Extracts and verifies auth context from the JWT in the Authorization header.
- *
- * Priority:
- * 1. Verify JWT signature using configured secret (production & local)
- * 2. Decode JWT without verification (fallback when secret not configured)
- * 3. Mock headers for unit tests (x-authorizer-* headers)
- *
- * @param req Express request object
- * @returns AuthContext or null if not authenticated
+ * Extracts auth context from the JWT in the Authorization header (decode only —
+ * signature verification is handled upstream by the Lambda HTTP authorizer).
+ * Falls back to mock headers for service E2E tests.
  */
 export function extractAuthContext(req: Request): AuthContext | null {
-    // Method 1: JWT from Authorization header
+    // Method 1: JWT from Authorization header — decode only (authorizer already validated)
     const authHeader = req.headers['authorization'] as string;
     if (authHeader?.startsWith('Bearer ')) {
         const token = authHeader.substring(7);
-
-        // If secret is configured, verify the token signature
-        if (_jwtSecret) {
-            try {
-                const payload = jwt.verify(token, _jwtSecret) as any;
-                if (payload?.sub && payload?.tenantId) {
-                    return {
-                        userId: payload.sub,
-                        tenantId: payload.tenantId,
-                        email: payload.email,
-                        roles: Array.isArray(payload.roles) ? payload.roles : [],
-                        orgRole: payload.orgRole,
-                        orgRoles: Array.isArray(payload.orgRoles) ? payload.orgRoles : undefined,
-                        activeOrgId: payload.activeOrgId,
-                        isPlatformOrg: payload.isPlatformOrg === true,
-                    };
-                }
-            } catch {
-                // JWT verification failed — invalid/expired token
-                return null;
-            }
-        } else {
-            // Fallback: decode without verification (dev mode, no secret configured)
-            const payload = decodeJwtPayload(token);
-            if (payload?.sub && payload?.tenantId) {
-                return {
-                    userId: payload.sub,
-                    tenantId: payload.tenantId,
-                    email: payload.email,
-                    roles: Array.isArray(payload.roles) ? payload.roles : [],
-                    orgRole: payload.orgRole,
-                    orgRoles: Array.isArray(payload.orgRoles) ? payload.orgRoles : undefined,
-                    activeOrgId: payload.activeOrgId,
-                    isPlatformOrg: payload.isPlatformOrg === true,
-                };
-            }
+        const payload = decodeJwtPayload(token);
+        if (payload?.sub && payload?.tenantId) {
+            return {
+                userId: payload.sub,
+                tenantId: payload.tenantId,
+                email: payload.email,
+                roles: Array.isArray(payload.roles) ? payload.roles : [],
+                orgRole: payload.orgRole,
+                orgRoles: Array.isArray(payload.orgRoles) ? payload.orgRoles : undefined,
+                activeOrgId: payload.activeOrgId,
+                isPlatformOrg: payload.isPlatformOrg === true,
+            };
         }
     }
 
-    // Method 2: Mock headers for unit tests without real JWTs
+    // Method 2: Mock headers for service E2E tests (no real JWT/authorizer)
     const mockUserId = req.headers['x-authorizer-user-id'] as string;
     const mockTenantId = req.headers['x-authorizer-tenant-id'] as string;
     if (mockUserId && mockTenantId) {
@@ -225,34 +131,7 @@ export function getAuthContext(req: Request): AuthContext {
 }
 
 /**
- * Test helper to generate authorization header with JWT.
- *
- * @deprecated Use `mockAuthHeaders` for E2E tests or pass Authorization header directly with JWT token.
- */
-export function authHeaders(
-    userId: string,
-    tenantId: string,
-    extras?: { email?: string; roles?: string[]; token?: string; orgRole?: string; orgRoles?: string[]; activeOrgId?: string; isPlatformOrg?: boolean }
-): Record<string, string> {
-    if (extras?.token) {
-        return { 'Authorization': `Bearer ${extras.token}` };
-    }
-
-    return {
-        'x-authorizer-user-id': userId,
-        'x-authorizer-tenant-id': tenantId,
-        ...(extras?.email && { 'x-authorizer-email': extras.email }),
-        ...(extras?.roles && { 'x-authorizer-roles': JSON.stringify(extras.roles) }),
-        ...(extras?.orgRole && { 'x-authorizer-org-role': extras.orgRole }),
-        ...(extras?.orgRoles && { 'x-authorizer-org-roles': JSON.stringify(extras.orgRoles) }),
-        ...(extras?.activeOrgId && { 'x-authorizer-active-org-id': extras.activeOrgId }),
-        ...(extras?.isPlatformOrg !== undefined && { 'x-authorizer-is-platform-org': String(extras.isPlatformOrg) }),
-    };
-}
-
-/**
- * Generate mock authorization headers for unit tests.
- * Supports both legacy roles[] and org-scoped role fields.
+ * Generate mock authorization headers for service E2E tests.
  */
 export function mockAuthHeaders(
     userId: string,

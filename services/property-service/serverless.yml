@@ -13,6 +13,13 @@ provider:
   # Create own HTTP API Gateway for this service
   httpApi:
     cors: true
+    authorizers:
+      lambdaAuthorizer:
+        type: request
+        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn, 'arn:aws:lambda:us-east-1:000000000000:function:qshelter-authorizer-placeholder'}
+        identitySource:
+          - $request.header.Authorization
+        enableSimpleResponses: true
   
   environment:
     NODE_ENV: ${self:provider.stage}
@@ -104,6 +111,8 @@ functions:
       - httpApi:
           path: /{proxy+}
           method: ANY
+          authorizer:
+            name: lambdaAuthorizer
 
 plugins:
   - serverless-localstack

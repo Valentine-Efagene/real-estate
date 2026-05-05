@@ -282,9 +282,8 @@ echo_success "Database migrations complete"
 # =============================================================================
 echo_step "Step 4: Deploying All Services"
 
-# Services to deploy (in order - authorizer first)
+# Services to deploy
 SERVICES=(
-    "authorizer-service"
     "user-service"
     "property-service"
     "documents-service"

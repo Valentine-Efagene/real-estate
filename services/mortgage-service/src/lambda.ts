@@ -1,13 +1,12 @@
 import serverlessExpress from '@codegenie/serverless-express';
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context, SQSEvent, SQSBatchResponse, SQSBatchItemFailure } from 'aws-lambda';
-import { setupAuth, PaymentEventType, PaymentPhaseCompletedPayload } from '@valentine-efagene/qshelter-common';
+import { PaymentEventType, PaymentPhaseCompletedPayload } from '@valentine-efagene/qshelter-common';
 import { app } from './app';
 import { phaseOrchestratorService } from './services/phase-orchestrator.service';
 
 let serverlessExpressInstance: any;
 
 async function initialize() {
-    await setupAuth();
     serverlessExpressInstance = serverlessExpress({ app });
     return serverlessExpressInstance;
 }
