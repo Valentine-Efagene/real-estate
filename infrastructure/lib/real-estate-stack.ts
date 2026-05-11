@@ -1,5 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as rds from 'aws-cdk-lib/aws-rds';
 import * as elasticache from 'aws-cdk-lib/aws-elasticache';
@@ -573,6 +574,20 @@ export class RealEstateStack extends cdk.Stack {
           process.env.FROM_EMAIL || process.env.MAIL_FROM_ADDRESS || 'info@qshelter.ng'
         ),
       },
+    });
+
+    // === DynamoDB: Role Policies (used by Lambda authorizer and authorizer-api) ===
+    const rolePoliciesTable = new dynamodb.Table(this, 'RolePoliciesTable', {
+      tableName: `qshelter-${stage}-role-policies`,
+      partitionKey: { name: 'roleName', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    new ssm.StringParameter(this, 'RolePoliciesTableNameParameter', {
+      parameterName: `/qshelter/${stage}/role-policies-table-name`,
+      stringValue: rolePoliciesTable.tableName,
+      description: 'DynamoDB table name for Lambda authorizer role policies',
     });
 
     // === IAM Role for Lambda Services ===

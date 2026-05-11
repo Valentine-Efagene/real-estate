@@ -93,14 +93,28 @@ functions:
           path: /auth/{proxy+}
           method: ANY
       - httpApi:
-          path: /admin/{proxy+}
-          method: ANY
-      - httpApi:
           path: /api-docs
           method: GET
       - httpApi:
           path: /openapi.json
           method: GET
+      
+      # Public admin routes — secured by x-bootstrap-secret header, not JWT
+      - httpApi:
+          path: /admin/bootstrap-tenant
+          method: POST
+      - httpApi:
+          path: /admin/bootstrap-tenant/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /admin/demo-bootstrap
+          method: POST
+      - httpApi:
+          path: /admin/demo-bootstrap/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /admin/public/{proxy+}
+          method: ANY
       
       # Public invitation routes (no authorizer - for accepting invitations)
       - httpApi:
@@ -110,7 +124,7 @@ functions:
           path: /invitations/accept
           method: POST
       
-      # Protected routes (public exceptions above remain unauthenticated)
+      # Protected routes (all other routes require the Lambda authorizer)
       - httpApi:
           path: /{proxy+}
           method: ANY

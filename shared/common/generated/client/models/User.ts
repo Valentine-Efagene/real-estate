@@ -322,7 +322,7 @@ export type UserWhereInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingListRelationFilter
   assignedQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
   approvedQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
-  documentWaivers?: Prisma.OrganizationDocumentWaiverListRelationFilter
+  documentOverrides?: Prisma.AdminDocumentOverrideListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -387,7 +387,7 @@ export type UserOrderByWithRelationInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingOrderByRelationAggregateInput
   assignedQualifications?: Prisma.PaymentMethodQualificationOrderByRelationAggregateInput
   approvedQualifications?: Prisma.PaymentMethodQualificationOrderByRelationAggregateInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverOrderByRelationAggregateInput
+  documentOverrides?: Prisma.AdminDocumentOverrideOrderByRelationAggregateInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
@@ -456,7 +456,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   approvedOnboardings?: Prisma.OrganizationOnboardingListRelationFilter
   assignedQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
   approvedQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
-  documentWaivers?: Prisma.OrganizationDocumentWaiverListRelationFilter
+  documentOverrides?: Prisma.AdminDocumentOverrideListRelationFilter
 }, "id" | "email" | "phone" | "walletId">
 
 export type UserOrderByWithAggregationInput = {
@@ -565,7 +565,7 @@ export type UserCreateInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -628,7 +628,7 @@ export type UserUncheckedCreateInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUpdateInput = {
@@ -691,7 +691,7 @@ export type UserUpdateInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -754,7 +754,7 @@ export type UserUncheckedUpdateInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1615,20 +1615,18 @@ export type UserUpdateOneWithoutApprovedQualificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApprovedQualificationsInput, Prisma.UserUpdateWithoutApprovedQualificationsInput>, Prisma.UserUncheckedUpdateWithoutApprovedQualificationsInput>
 }
 
-export type UserCreateNestedOneWithoutDocumentWaiversInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutDocumentWaiversInput, Prisma.UserUncheckedCreateWithoutDocumentWaiversInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDocumentWaiversInput
+export type UserCreateNestedOneWithoutDocumentOverridesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDocumentOverridesInput, Prisma.UserUncheckedCreateWithoutDocumentOverridesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDocumentOverridesInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneWithoutDocumentWaiversNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutDocumentWaiversInput, Prisma.UserUncheckedCreateWithoutDocumentWaiversInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDocumentWaiversInput
-  upsert?: Prisma.UserUpsertWithoutDocumentWaiversInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
+export type UserUpdateOneRequiredWithoutDocumentOverridesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDocumentOverridesInput, Prisma.UserUncheckedCreateWithoutDocumentOverridesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDocumentOverridesInput
+  upsert?: Prisma.UserUpsertWithoutDocumentOverridesInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDocumentWaiversInput, Prisma.UserUpdateWithoutDocumentWaiversInput>, Prisma.UserUncheckedUpdateWithoutDocumentWaiversInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDocumentOverridesInput, Prisma.UserUpdateWithoutDocumentOverridesInput>, Prisma.UserUncheckedUpdateWithoutDocumentOverridesInput>
 }
 
 export type UserCreateWithoutTenantMembershipsInput = {
@@ -1690,7 +1688,7 @@ export type UserCreateWithoutTenantMembershipsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTenantMembershipsInput = {
@@ -1752,7 +1750,7 @@ export type UserUncheckedCreateWithoutTenantMembershipsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTenantMembershipsInput = {
@@ -1830,7 +1828,7 @@ export type UserUpdateWithoutTenantMembershipsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTenantMembershipsInput = {
@@ -1892,7 +1890,7 @@ export type UserUncheckedUpdateWithoutTenantMembershipsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutOrganizationMembershipsInput = {
@@ -1954,7 +1952,7 @@ export type UserCreateWithoutOrganizationMembershipsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutOrganizationMembershipsInput = {
@@ -2016,7 +2014,7 @@ export type UserUncheckedCreateWithoutOrganizationMembershipsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutOrganizationMembershipsInput = {
@@ -2094,7 +2092,7 @@ export type UserUpdateWithoutOrganizationMembershipsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizationMembershipsInput = {
@@ -2156,7 +2154,7 @@ export type UserUncheckedUpdateWithoutOrganizationMembershipsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutSentInvitationsInput = {
@@ -2218,7 +2216,7 @@ export type UserCreateWithoutSentInvitationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSentInvitationsInput = {
@@ -2280,7 +2278,7 @@ export type UserUncheckedCreateWithoutSentInvitationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSentInvitationsInput = {
@@ -2358,7 +2356,7 @@ export type UserUpdateWithoutSentInvitationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentInvitationsInput = {
@@ -2420,7 +2418,7 @@ export type UserUncheckedUpdateWithoutSentInvitationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAssignedOnboardingsInput = {
@@ -2482,7 +2480,7 @@ export type UserCreateWithoutAssignedOnboardingsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAssignedOnboardingsInput = {
@@ -2544,7 +2542,7 @@ export type UserUncheckedCreateWithoutAssignedOnboardingsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAssignedOnboardingsInput = {
@@ -2611,7 +2609,7 @@ export type UserCreateWithoutApprovedOnboardingsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovedOnboardingsInput = {
@@ -2673,7 +2671,7 @@ export type UserUncheckedCreateWithoutApprovedOnboardingsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovedOnboardingsInput = {
@@ -2751,7 +2749,7 @@ export type UserUpdateWithoutAssignedOnboardingsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedOnboardingsInput = {
@@ -2813,7 +2811,7 @@ export type UserUncheckedUpdateWithoutAssignedOnboardingsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutApprovedOnboardingsInput = {
@@ -2886,7 +2884,7 @@ export type UserUpdateWithoutApprovedOnboardingsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedOnboardingsInput = {
@@ -2948,7 +2946,7 @@ export type UserUncheckedUpdateWithoutApprovedOnboardingsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutTenantInput = {
@@ -3010,7 +3008,7 @@ export type UserCreateWithoutTenantInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTenantInput = {
@@ -3072,7 +3070,7 @@ export type UserUncheckedCreateWithoutTenantInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTenantInput = {
@@ -3183,7 +3181,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -3245,7 +3243,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -3323,7 +3321,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -3385,7 +3383,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPasswordResetsInput = {
@@ -3447,7 +3445,7 @@ export type UserCreateWithoutPasswordResetsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -3509,7 +3507,7 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -3587,7 +3585,7 @@ export type UserUpdateWithoutPasswordResetsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -3649,7 +3647,7 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutSuspensionsInput = {
@@ -3711,7 +3709,7 @@ export type UserCreateWithoutSuspensionsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSuspensionsInput = {
@@ -3773,7 +3771,7 @@ export type UserUncheckedCreateWithoutSuspensionsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSuspensionsInput = {
@@ -3851,7 +3849,7 @@ export type UserUpdateWithoutSuspensionsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSuspensionsInput = {
@@ -3913,7 +3911,7 @@ export type UserUncheckedUpdateWithoutSuspensionsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutEmailPreferencesInput = {
@@ -3975,7 +3973,7 @@ export type UserCreateWithoutEmailPreferencesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutEmailPreferencesInput = {
@@ -4037,7 +4035,7 @@ export type UserUncheckedCreateWithoutEmailPreferencesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutEmailPreferencesInput = {
@@ -4115,7 +4113,7 @@ export type UserUpdateWithoutEmailPreferencesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
@@ -4177,7 +4175,7 @@ export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutDeviceEndpointsInput = {
@@ -4239,7 +4237,7 @@ export type UserCreateWithoutDeviceEndpointsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
@@ -4301,7 +4299,7 @@ export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutDeviceEndpointsInput = {
@@ -4379,7 +4377,7 @@ export type UserUpdateWithoutDeviceEndpointsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
@@ -4441,7 +4439,7 @@ export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutSocialsInput = {
@@ -4503,7 +4501,7 @@ export type UserCreateWithoutSocialsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSocialsInput = {
@@ -4565,7 +4563,7 @@ export type UserUncheckedCreateWithoutSocialsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSocialsInput = {
@@ -4643,7 +4641,7 @@ export type UserUpdateWithoutSocialsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSocialsInput = {
@@ -4705,7 +4703,7 @@ export type UserUncheckedUpdateWithoutSocialsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutWalletInput = {
@@ -4767,7 +4765,7 @@ export type UserCreateWithoutWalletInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutWalletInput = {
@@ -4829,7 +4827,7 @@ export type UserUncheckedCreateWithoutWalletInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutWalletInput = {
@@ -4907,7 +4905,7 @@ export type UserUpdateWithoutWalletInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletInput = {
@@ -4969,7 +4967,7 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPropertiesInput = {
@@ -5031,7 +5029,7 @@ export type UserCreateWithoutPropertiesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPropertiesInput = {
@@ -5093,7 +5091,7 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPropertiesInput = {
@@ -5171,7 +5169,7 @@ export type UserUpdateWithoutPropertiesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPropertiesInput = {
@@ -5233,7 +5231,7 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -5295,7 +5293,7 @@ export type UserCreateWithoutApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -5357,7 +5355,7 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -5424,7 +5422,7 @@ export type UserCreateWithoutSoldApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSoldApplicationsInput = {
@@ -5486,7 +5484,7 @@ export type UserUncheckedCreateWithoutSoldApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSoldApplicationsInput = {
@@ -5564,7 +5562,7 @@ export type UserUpdateWithoutApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -5626,7 +5624,7 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutSoldApplicationsInput = {
@@ -5699,7 +5697,7 @@ export type UserUpdateWithoutSoldApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSoldApplicationsInput = {
@@ -5761,7 +5759,7 @@ export type UserUncheckedUpdateWithoutSoldApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutCoApplicationsInput = {
@@ -5823,7 +5821,7 @@ export type UserCreateWithoutCoApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCoApplicationsInput = {
@@ -5885,7 +5883,7 @@ export type UserUncheckedCreateWithoutCoApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCoApplicationsInput = {
@@ -5952,7 +5950,7 @@ export type UserCreateWithoutRemovedCoApplicantsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutRemovedCoApplicantsInput = {
@@ -6014,7 +6012,7 @@ export type UserUncheckedCreateWithoutRemovedCoApplicantsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutRemovedCoApplicantsInput = {
@@ -6092,7 +6090,7 @@ export type UserUpdateWithoutCoApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCoApplicationsInput = {
@@ -6154,7 +6152,7 @@ export type UserUncheckedUpdateWithoutCoApplicationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutRemovedCoApplicantsInput = {
@@ -6227,7 +6225,7 @@ export type UserUpdateWithoutRemovedCoApplicantsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRemovedCoApplicantsInput = {
@@ -6289,7 +6287,7 @@ export type UserUncheckedUpdateWithoutRemovedCoApplicantsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAssignedApplicationOrgsInput = {
@@ -6351,7 +6349,7 @@ export type UserCreateWithoutAssignedApplicationOrgsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAssignedApplicationOrgsInput = {
@@ -6413,7 +6411,7 @@ export type UserUncheckedCreateWithoutAssignedApplicationOrgsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAssignedApplicationOrgsInput = {
@@ -6491,7 +6489,7 @@ export type UserUpdateWithoutAssignedApplicationOrgsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedApplicationOrgsInput = {
@@ -6553,7 +6551,7 @@ export type UserUncheckedUpdateWithoutAssignedApplicationOrgsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutRequestedRefundsInput = {
@@ -6615,7 +6613,7 @@ export type UserCreateWithoutRequestedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutRequestedRefundsInput = {
@@ -6677,7 +6675,7 @@ export type UserUncheckedCreateWithoutRequestedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutRequestedRefundsInput = {
@@ -6744,7 +6742,7 @@ export type UserCreateWithoutApprovedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovedRefundsInput = {
@@ -6806,7 +6804,7 @@ export type UserUncheckedCreateWithoutApprovedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovedRefundsInput = {
@@ -6873,7 +6871,7 @@ export type UserCreateWithoutProcessedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutProcessedRefundsInput = {
@@ -6935,7 +6933,7 @@ export type UserUncheckedCreateWithoutProcessedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutProcessedRefundsInput = {
@@ -7013,7 +7011,7 @@ export type UserUpdateWithoutRequestedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRequestedRefundsInput = {
@@ -7075,7 +7073,7 @@ export type UserUncheckedUpdateWithoutRequestedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutApprovedRefundsInput = {
@@ -7148,7 +7146,7 @@ export type UserUpdateWithoutApprovedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedRefundsInput = {
@@ -7210,7 +7208,7 @@ export type UserUncheckedUpdateWithoutApprovedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutProcessedRefundsInput = {
@@ -7283,7 +7281,7 @@ export type UserUpdateWithoutProcessedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProcessedRefundsInput = {
@@ -7345,7 +7343,7 @@ export type UserUncheckedUpdateWithoutProcessedRefundsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutQuestionnaireReviewsInput = {
@@ -7407,7 +7405,7 @@ export type UserCreateWithoutQuestionnaireReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutQuestionnaireReviewsInput = {
@@ -7469,7 +7467,7 @@ export type UserUncheckedCreateWithoutQuestionnaireReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutQuestionnaireReviewsInput = {
@@ -7547,7 +7545,7 @@ export type UserUpdateWithoutQuestionnaireReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutQuestionnaireReviewsInput = {
@@ -7609,7 +7607,7 @@ export type UserUncheckedUpdateWithoutQuestionnaireReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutGatePhaseReviewsInput = {
@@ -7671,7 +7669,7 @@ export type UserCreateWithoutGatePhaseReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutGatePhaseReviewsInput = {
@@ -7733,7 +7731,7 @@ export type UserUncheckedCreateWithoutGatePhaseReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutGatePhaseReviewsInput = {
@@ -7811,7 +7809,7 @@ export type UserUpdateWithoutGatePhaseReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGatePhaseReviewsInput = {
@@ -7873,7 +7871,7 @@ export type UserUncheckedUpdateWithoutGatePhaseReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutApplicationPaymentsInput = {
@@ -7935,7 +7933,7 @@ export type UserCreateWithoutApplicationPaymentsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutApplicationPaymentsInput = {
@@ -7997,7 +7995,7 @@ export type UserUncheckedCreateWithoutApplicationPaymentsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutApplicationPaymentsInput = {
@@ -8075,7 +8073,7 @@ export type UserUpdateWithoutApplicationPaymentsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationPaymentsInput = {
@@ -8137,7 +8135,7 @@ export type UserUncheckedUpdateWithoutApplicationPaymentsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutCreatedApplicationAdjustmentsInput = {
@@ -8199,7 +8197,7 @@ export type UserCreateWithoutCreatedApplicationAdjustmentsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedApplicationAdjustmentsInput = {
@@ -8261,7 +8259,7 @@ export type UserUncheckedCreateWithoutCreatedApplicationAdjustmentsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedApplicationAdjustmentsInput = {
@@ -8339,7 +8337,7 @@ export type UserUpdateWithoutCreatedApplicationAdjustmentsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedApplicationAdjustmentsInput = {
@@ -8401,7 +8399,7 @@ export type UserUncheckedUpdateWithoutCreatedApplicationAdjustmentsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutUploadedDocsInput = {
@@ -8463,7 +8461,7 @@ export type UserCreateWithoutUploadedDocsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutUploadedDocsInput = {
@@ -8525,7 +8523,7 @@ export type UserUncheckedCreateWithoutUploadedDocsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutUploadedDocsInput = {
@@ -8603,7 +8601,7 @@ export type UserUpdateWithoutUploadedDocsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedDocsInput = {
@@ -8665,7 +8663,7 @@ export type UserUncheckedUpdateWithoutUploadedDocsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutDocumentReviewsInput = {
@@ -8727,7 +8725,7 @@ export type UserCreateWithoutDocumentReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutDocumentReviewsInput = {
@@ -8789,7 +8787,7 @@ export type UserUncheckedCreateWithoutDocumentReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutDocumentReviewsInput = {
@@ -8867,7 +8865,7 @@ export type UserUpdateWithoutDocumentReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocumentReviewsInput = {
@@ -8929,7 +8927,7 @@ export type UserUncheckedUpdateWithoutDocumentReviewsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutCompletedStagesInput = {
@@ -8991,7 +8989,7 @@ export type UserCreateWithoutCompletedStagesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCompletedStagesInput = {
@@ -9053,7 +9051,7 @@ export type UserUncheckedCreateWithoutCompletedStagesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCompletedStagesInput = {
@@ -9131,7 +9129,7 @@ export type UserUpdateWithoutCompletedStagesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompletedStagesInput = {
@@ -9193,7 +9191,7 @@ export type UserUncheckedUpdateWithoutCompletedStagesInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutDocumentApprovalsInput = {
@@ -9255,7 +9253,7 @@ export type UserCreateWithoutDocumentApprovalsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutDocumentApprovalsInput = {
@@ -9317,7 +9315,7 @@ export type UserUncheckedCreateWithoutDocumentApprovalsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutDocumentApprovalsInput = {
@@ -9395,7 +9393,7 @@ export type UserUpdateWithoutDocumentApprovalsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocumentApprovalsInput = {
@@ -9457,7 +9455,7 @@ export type UserUncheckedUpdateWithoutDocumentApprovalsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutOfferLettersGeneratedInput = {
@@ -9519,7 +9517,7 @@ export type UserCreateWithoutOfferLettersGeneratedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutOfferLettersGeneratedInput = {
@@ -9581,7 +9579,7 @@ export type UserUncheckedCreateWithoutOfferLettersGeneratedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutOfferLettersGeneratedInput = {
@@ -9648,7 +9646,7 @@ export type UserCreateWithoutOfferLettersSentInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutOfferLettersSentInput = {
@@ -9710,7 +9708,7 @@ export type UserUncheckedCreateWithoutOfferLettersSentInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutOfferLettersSentInput = {
@@ -9788,7 +9786,7 @@ export type UserUpdateWithoutOfferLettersGeneratedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOfferLettersGeneratedInput = {
@@ -9850,7 +9848,7 @@ export type UserUncheckedUpdateWithoutOfferLettersGeneratedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutOfferLettersSentInput = {
@@ -9923,7 +9921,7 @@ export type UserUpdateWithoutOfferLettersSentInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOfferLettersSentInput = {
@@ -9985,7 +9983,7 @@ export type UserUncheckedUpdateWithoutOfferLettersSentInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutInitiatedTerminationsInput = {
@@ -10047,7 +10045,7 @@ export type UserCreateWithoutInitiatedTerminationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutInitiatedTerminationsInput = {
@@ -10109,7 +10107,7 @@ export type UserUncheckedCreateWithoutInitiatedTerminationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutInitiatedTerminationsInput = {
@@ -10176,7 +10174,7 @@ export type UserCreateWithoutReviewedTerminationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutReviewedTerminationsInput = {
@@ -10238,7 +10236,7 @@ export type UserUncheckedCreateWithoutReviewedTerminationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutReviewedTerminationsInput = {
@@ -10316,7 +10314,7 @@ export type UserUpdateWithoutInitiatedTerminationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInitiatedTerminationsInput = {
@@ -10378,7 +10376,7 @@ export type UserUncheckedUpdateWithoutInitiatedTerminationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutReviewedTerminationsInput = {
@@ -10451,7 +10449,7 @@ export type UserUpdateWithoutReviewedTerminationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedTerminationsInput = {
@@ -10513,7 +10511,7 @@ export type UserUncheckedUpdateWithoutReviewedTerminationsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -10575,7 +10573,7 @@ export type UserCreateWithoutPaymentMethodChangeRequestsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -10637,7 +10635,7 @@ export type UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
@@ -10704,7 +10702,7 @@ export type UserCreateWithoutReviewedChangeRequestsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutReviewedChangeRequestsInput = {
@@ -10766,7 +10764,7 @@ export type UserUncheckedCreateWithoutReviewedChangeRequestsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutReviewedChangeRequestsInput = {
@@ -10844,7 +10842,7 @@ export type UserUpdateWithoutPaymentMethodChangeRequestsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
@@ -10906,7 +10904,7 @@ export type UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutReviewedChangeRequestsInput = {
@@ -10979,7 +10977,7 @@ export type UserUpdateWithoutReviewedChangeRequestsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedChangeRequestsInput = {
@@ -11041,7 +11039,7 @@ export type UserUncheckedUpdateWithoutReviewedChangeRequestsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutTransferRequestsSubmittedInput = {
@@ -11103,7 +11101,7 @@ export type UserCreateWithoutTransferRequestsSubmittedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTransferRequestsSubmittedInput = {
@@ -11165,7 +11163,7 @@ export type UserUncheckedCreateWithoutTransferRequestsSubmittedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTransferRequestsSubmittedInput = {
@@ -11232,7 +11230,7 @@ export type UserCreateWithoutTransferRequestsReviewedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTransferRequestsReviewedInput = {
@@ -11294,7 +11292,7 @@ export type UserUncheckedCreateWithoutTransferRequestsReviewedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTransferRequestsReviewedInput = {
@@ -11372,7 +11370,7 @@ export type UserUpdateWithoutTransferRequestsSubmittedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransferRequestsSubmittedInput = {
@@ -11434,7 +11432,7 @@ export type UserUncheckedUpdateWithoutTransferRequestsSubmittedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutTransferRequestsReviewedInput = {
@@ -11507,7 +11505,7 @@ export type UserUpdateWithoutTransferRequestsReviewedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransferRequestsReviewedInput = {
@@ -11569,7 +11567,7 @@ export type UserUncheckedUpdateWithoutTransferRequestsReviewedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutApprovalRequestsSubmittedInput = {
@@ -11631,7 +11629,7 @@ export type UserCreateWithoutApprovalRequestsSubmittedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovalRequestsSubmittedInput = {
@@ -11693,7 +11691,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsSubmittedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovalRequestsSubmittedInput = {
@@ -11760,7 +11758,7 @@ export type UserCreateWithoutApprovalRequestsAssignedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovalRequestsAssignedInput = {
@@ -11822,7 +11820,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsAssignedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovalRequestsAssignedInput = {
@@ -11889,7 +11887,7 @@ export type UserCreateWithoutApprovalRequestsReviewedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovalRequestsReviewedInput = {
@@ -11951,7 +11949,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsReviewedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovalRequestsReviewedInput = {
@@ -12029,7 +12027,7 @@ export type UserUpdateWithoutApprovalRequestsSubmittedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovalRequestsSubmittedInput = {
@@ -12091,7 +12089,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsSubmittedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutApprovalRequestsAssignedInput = {
@@ -12164,7 +12162,7 @@ export type UserUpdateWithoutApprovalRequestsAssignedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovalRequestsAssignedInput = {
@@ -12226,7 +12224,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsAssignedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutApprovalRequestsReviewedInput = {
@@ -12299,7 +12297,7 @@ export type UserUpdateWithoutApprovalRequestsReviewedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovalRequestsReviewedInput = {
@@ -12361,7 +12359,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsReviewedInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPreferredPaymentMethodsInput = {
@@ -12423,7 +12421,7 @@ export type UserCreateWithoutPreferredPaymentMethodsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPreferredPaymentMethodsInput = {
@@ -12485,7 +12483,7 @@ export type UserUncheckedCreateWithoutPreferredPaymentMethodsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPreferredPaymentMethodsInput = {
@@ -12563,7 +12561,7 @@ export type UserUpdateWithoutPreferredPaymentMethodsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPreferredPaymentMethodsInput = {
@@ -12625,7 +12623,7 @@ export type UserUncheckedUpdateWithoutPreferredPaymentMethodsInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAssignedQualificationsInput = {
@@ -12687,7 +12685,7 @@ export type UserCreateWithoutAssignedQualificationsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAssignedQualificationsInput = {
@@ -12749,7 +12747,7 @@ export type UserUncheckedCreateWithoutAssignedQualificationsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAssignedQualificationsInput = {
@@ -12816,7 +12814,7 @@ export type UserCreateWithoutApprovedQualificationsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutAssigneeInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutApprovedQualificationsInput = {
@@ -12878,7 +12876,7 @@ export type UserUncheckedCreateWithoutApprovedQualificationsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutAssigneeInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedCreateNestedManyWithoutApprovedByInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutAssigneeInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutWaivedByInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutApprovedQualificationsInput = {
@@ -12956,7 +12954,7 @@ export type UserUpdateWithoutAssignedQualificationsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedQualificationsInput = {
@@ -13018,7 +13016,7 @@ export type UserUncheckedUpdateWithoutAssignedQualificationsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutApprovedQualificationsInput = {
@@ -13091,7 +13089,7 @@ export type UserUpdateWithoutApprovedQualificationsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedQualificationsInput = {
@@ -13153,10 +13151,10 @@ export type UserUncheckedUpdateWithoutApprovedQualificationsInput = {
   assignedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
-export type UserCreateWithoutDocumentWaiversInput = {
+export type UserCreateWithoutDocumentOverridesInput = {
   id?: string
   email: string
   password?: string | null
@@ -13218,7 +13216,7 @@ export type UserCreateWithoutDocumentWaiversInput = {
   approvedQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutApprovedByInput
 }
 
-export type UserUncheckedCreateWithoutDocumentWaiversInput = {
+export type UserUncheckedCreateWithoutDocumentOverridesInput = {
   id?: string
   email: string
   password?: string | null
@@ -13280,23 +13278,23 @@ export type UserUncheckedCreateWithoutDocumentWaiversInput = {
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
-export type UserCreateOrConnectWithoutDocumentWaiversInput = {
+export type UserCreateOrConnectWithoutDocumentOverridesInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutDocumentWaiversInput, Prisma.UserUncheckedCreateWithoutDocumentWaiversInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDocumentOverridesInput, Prisma.UserUncheckedCreateWithoutDocumentOverridesInput>
 }
 
-export type UserUpsertWithoutDocumentWaiversInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutDocumentWaiversInput, Prisma.UserUncheckedUpdateWithoutDocumentWaiversInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutDocumentWaiversInput, Prisma.UserUncheckedCreateWithoutDocumentWaiversInput>
+export type UserUpsertWithoutDocumentOverridesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDocumentOverridesInput, Prisma.UserUncheckedUpdateWithoutDocumentOverridesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDocumentOverridesInput, Prisma.UserUncheckedCreateWithoutDocumentOverridesInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutDocumentWaiversInput = {
+export type UserUpdateToOneWithWhereWithoutDocumentOverridesInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutDocumentWaiversInput, Prisma.UserUncheckedUpdateWithoutDocumentWaiversInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDocumentOverridesInput, Prisma.UserUncheckedUpdateWithoutDocumentOverridesInput>
 }
 
-export type UserUpdateWithoutDocumentWaiversInput = {
+export type UserUpdateWithoutDocumentOverridesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13358,7 +13356,7 @@ export type UserUpdateWithoutDocumentWaiversInput = {
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
 }
 
-export type UserUncheckedUpdateWithoutDocumentWaiversInput = {
+export type UserUncheckedUpdateWithoutDocumentOverridesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13498,7 +13496,7 @@ export type UserUpdateWithoutTenantInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTenantInput = {
@@ -13560,7 +13558,7 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   approvedOnboardings?: Prisma.OrganizationOnboardingUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutAssigneeNestedInput
   approvedQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutApprovedByNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutWaivedByNestedInput
+  documentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutTenantInput = {
@@ -13630,7 +13628,7 @@ export type UserCountOutputType = {
   approvedOnboardings: number
   assignedQualifications: number
   approvedQualifications: number
-  documentWaivers: number
+  documentOverrides: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -13676,7 +13674,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   approvedOnboardings?: boolean | UserCountOutputTypeCountApprovedOnboardingsArgs
   assignedQualifications?: boolean | UserCountOutputTypeCountAssignedQualificationsArgs
   approvedQualifications?: boolean | UserCountOutputTypeCountApprovedQualificationsArgs
-  documentWaivers?: boolean | UserCountOutputTypeCountDocumentWaiversArgs
+  documentOverrides?: boolean | UserCountOutputTypeCountDocumentOverridesArgs
 }
 
 /**
@@ -13986,8 +13984,8 @@ export type UserCountOutputTypeCountApprovedQualificationsArgs<ExtArgs extends r
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountDocumentWaiversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OrganizationDocumentWaiverWhereInput
+export type UserCountOutputTypeCountDocumentOverridesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdminDocumentOverrideWhereInput
 }
 
 
@@ -14053,7 +14051,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   approvedOnboardings?: boolean | Prisma.User$approvedOnboardingsArgs<ExtArgs>
   assignedQualifications?: boolean | Prisma.User$assignedQualificationsArgs<ExtArgs>
   approvedQualifications?: boolean | Prisma.User$approvedQualificationsArgs<ExtArgs>
-  documentWaivers?: boolean | Prisma.User$documentWaiversArgs<ExtArgs>
+  documentOverrides?: boolean | Prisma.User$documentOverridesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -14125,7 +14123,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   approvedOnboardings?: boolean | Prisma.User$approvedOnboardingsArgs<ExtArgs>
   assignedQualifications?: boolean | Prisma.User$assignedQualificationsArgs<ExtArgs>
   approvedQualifications?: boolean | Prisma.User$approvedQualificationsArgs<ExtArgs>
-  documentWaivers?: boolean | Prisma.User$documentWaiversArgs<ExtArgs>
+  documentOverrides?: boolean | Prisma.User$documentOverridesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -14176,7 +14174,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     approvedOnboardings: Prisma.$OrganizationOnboardingPayload<ExtArgs>[]
     assignedQualifications: Prisma.$PaymentMethodQualificationPayload<ExtArgs>[]
     approvedQualifications: Prisma.$PaymentMethodQualificationPayload<ExtArgs>[]
-    documentWaivers: Prisma.$OrganizationDocumentWaiverPayload<ExtArgs>[]
+    documentOverrides: Prisma.$AdminDocumentOverridePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -14580,7 +14578,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   approvedOnboardings<T extends Prisma.User$approvedOnboardingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedOnboardingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationOnboardingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedQualifications<T extends Prisma.User$assignedQualificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedQualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvedQualifications<T extends Prisma.User$approvedQualificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedQualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  documentWaivers<T extends Prisma.User$documentWaiversArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$documentWaiversArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationDocumentWaiverPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  documentOverrides<T extends Prisma.User$documentOverridesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$documentOverridesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminDocumentOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16016,27 +16014,27 @@ export type User$approvedQualificationsArgs<ExtArgs extends runtime.Types.Extens
 }
 
 /**
- * User.documentWaivers
+ * User.documentOverrides
  */
-export type User$documentWaiversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$documentOverridesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the OrganizationDocumentWaiver
+   * Select specific fields to fetch from the AdminDocumentOverride
    */
-  select?: Prisma.OrganizationDocumentWaiverSelect<ExtArgs> | null
+  select?: Prisma.AdminDocumentOverrideSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the OrganizationDocumentWaiver
+   * Omit specific fields from the AdminDocumentOverride
    */
-  omit?: Prisma.OrganizationDocumentWaiverOmit<ExtArgs> | null
+  omit?: Prisma.AdminDocumentOverrideOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.OrganizationDocumentWaiverInclude<ExtArgs> | null
-  where?: Prisma.OrganizationDocumentWaiverWhereInput
-  orderBy?: Prisma.OrganizationDocumentWaiverOrderByWithRelationInput | Prisma.OrganizationDocumentWaiverOrderByWithRelationInput[]
-  cursor?: Prisma.OrganizationDocumentWaiverWhereUniqueInput
+  include?: Prisma.AdminDocumentOverrideInclude<ExtArgs> | null
+  where?: Prisma.AdminDocumentOverrideWhereInput
+  orderBy?: Prisma.AdminDocumentOverrideOrderByWithRelationInput | Prisma.AdminDocumentOverrideOrderByWithRelationInput[]
+  cursor?: Prisma.AdminDocumentOverrideWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.OrganizationDocumentWaiverScalarFieldEnum | Prisma.OrganizationDocumentWaiverScalarFieldEnum[]
+  distinct?: Prisma.AdminDocumentOverrideScalarFieldEnum | Prisma.AdminDocumentOverrideScalarFieldEnum[]
 }
 
 /**

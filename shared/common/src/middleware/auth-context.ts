@@ -1,15 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 
 /**
- * Authentication context extracted from JWT tokens.
- * Access control is handled by the Lambda HTTP authorizer (authorizer-stack-dynamo)
- * which validates the JWT and checks role policies before the request reaches the service.
- * Services only need to decode (not verify) the JWT to extract user context.
- *
- * Org-scoped RBAC (Clerk-style):
- * - `orgRole` is the user's role in their active organization
- * - `activeOrgId` is the organization they're currently acting as
- * - `isPlatformOrg` indicates if the active org is the platform org (tenant-wide powers)
+ * Authentication context extracted from x-authorizer-* headers.
+ * These headers are injected by the Lambda handler from the API Gateway authorizer context.
+ * For service E2E tests, the same headers can be sent as mock values directly.
  */
 export interface AuthContext {
     userId: string;
@@ -26,57 +20,59 @@ interface AuthenticatedRequest extends Request {
     auth?: AuthContext;
 }
 
-function decodeJwtPayload(token: string): Record<string, any> | null {
-    try {
-        const parts = token.split('.');
-        if (parts.length !== 3) return null;
-        const payload = Buffer.from(parts[1], 'base64').toString('utf-8');
-        return JSON.parse(payload);
-    } catch {
-        return null;
-    }
-}
-
 /**
- * Extracts auth context from the JWT in the Authorization header (decode only —
- * signature verification is handled upstream by the Lambda HTTP authorizer).
- * Falls back to mock headers for service E2E tests.
+ * Extracts auth context from x-authorizer-* headers injected by the Lambda handler
+ * (which reads them from the API Gateway Lambda authorizer context).
+ * The same headers can be set manually in service E2E tests.
+ *
+ * LocalStack bypass: when STAGE=localstack, if no x-authorizer-* headers are present,
+ * falls back to decoding the Bearer JWT directly (no signature verification).
+ * This is safe because LocalStack is only used for local development.
  */
 export function extractAuthContext(req: Request): AuthContext | null {
-    // Method 1: JWT from Authorization header — decode only (authorizer already validated)
-    const authHeader = req.headers['authorization'] as string;
-    if (authHeader?.startsWith('Bearer ')) {
-        const token = authHeader.substring(7);
-        const payload = decodeJwtPayload(token);
-        if (payload?.sub && payload?.tenantId) {
-            return {
-                userId: payload.sub,
-                tenantId: payload.tenantId,
-                email: payload.email,
-                roles: Array.isArray(payload.roles) ? payload.roles : [],
-                orgRole: payload.orgRole,
-                orgRoles: Array.isArray(payload.orgRoles) ? payload.orgRoles : undefined,
-                activeOrgId: payload.activeOrgId,
-                isPlatformOrg: payload.isPlatformOrg === true,
-            };
-        }
-    }
+    const userId = req.headers['x-authorizer-user-id'] as string;
+    const tenantId = req.headers['x-authorizer-tenant-id'] as string;
 
-    // Method 2: Mock headers for service E2E tests (no real JWT/authorizer)
-    const mockUserId = req.headers['x-authorizer-user-id'] as string;
-    const mockTenantId = req.headers['x-authorizer-tenant-id'] as string;
-    if (mockUserId && mockTenantId) {
+    if (userId && tenantId) {
         const rolesHeader = req.headers['x-authorizer-roles'] as string;
         return {
-            userId: mockUserId,
-            tenantId: mockTenantId,
+            userId,
+            tenantId,
             email: req.headers['x-authorizer-email'] as string,
             roles: rolesHeader ? JSON.parse(rolesHeader) : [],
             orgRole: req.headers['x-authorizer-org-role'] as string,
-            orgRoles: req.headers['x-authorizer-org-roles'] ? JSON.parse(req.headers['x-authorizer-org-roles'] as string) : undefined,
+            orgRoles: req.headers['x-authorizer-org-roles']
+                ? JSON.parse(req.headers['x-authorizer-org-roles'] as string)
+                : undefined,
             activeOrgId: req.headers['x-authorizer-active-org-id'] as string,
             isPlatformOrg: req.headers['x-authorizer-is-platform-org'] === 'true',
         };
+    }
+
+    // LocalStack/local-dev bypass: decode JWT without verification
+    if (process.env.STAGE === 'localstack') {
+        const authHeader = req.headers['authorization'] as string;
+        const token = authHeader?.replace(/^Bearer\s+/i, '');
+        if (token) {
+            try {
+                const payloadB64 = token.split('.')[1];
+                const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString());
+                if (payload.sub && payload.tenantId) {
+                    return {
+                        userId: payload.sub,
+                        tenantId: payload.tenantId,
+                        email: payload.email,
+                        roles: payload.roles ?? [],
+                        orgRole: payload.orgRole,
+                        orgRoles: payload.orgRoles,
+                        activeOrgId: payload.activeOrgId,
+                        isPlatformOrg: payload.isPlatformOrg ?? false,
+                    };
+                }
+            } catch {
+                // malformed token — fall through to null
+            }
+        }
     }
 
     return null;

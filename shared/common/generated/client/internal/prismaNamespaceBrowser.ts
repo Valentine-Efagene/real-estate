@@ -141,7 +141,7 @@ export const ModelName = {
   PaymentMethodQualification: 'PaymentMethodQualification',
   QualificationPhase: 'QualificationPhase',
   PaymentMethodQualificationConfig: 'PaymentMethodQualificationConfig',
-  OrganizationDocumentWaiver: 'OrganizationDocumentWaiver',
+  AdminDocumentOverride: 'AdminDocumentOverride',
   AsyncJob: 'AsyncJob'
 } as const
 
@@ -1931,18 +1931,20 @@ export const PaymentMethodQualificationConfigScalarFieldEnum = {
 export type PaymentMethodQualificationConfigScalarFieldEnum = (typeof PaymentMethodQualificationConfigScalarFieldEnum)[keyof typeof PaymentMethodQualificationConfigScalarFieldEnum]
 
 
-export const OrganizationDocumentWaiverScalarFieldEnum = {
+export const AdminDocumentOverrideScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  organizationPaymentMethodId: 'organizationPaymentMethodId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
   documentDefinitionId: 'documentDefinitionId',
+  decision: 'decision',
   reason: 'reason',
-  waivedById: 'waivedById',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type OrganizationDocumentWaiverScalarFieldEnum = (typeof OrganizationDocumentWaiverScalarFieldEnum)[keyof typeof OrganizationDocumentWaiverScalarFieldEnum]
+export type AdminDocumentOverrideScalarFieldEnum = (typeof AdminDocumentOverrideScalarFieldEnum)[keyof typeof AdminDocumentOverrideScalarFieldEnum]
 
 
 export const AsyncJobScalarFieldEnum = {
@@ -3153,16 +3155,18 @@ export const PaymentMethodQualificationConfigOrderByRelevanceFieldEnum = {
 export type PaymentMethodQualificationConfigOrderByRelevanceFieldEnum = (typeof PaymentMethodQualificationConfigOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodQualificationConfigOrderByRelevanceFieldEnum]
 
 
-export const OrganizationDocumentWaiverOrderByRelevanceFieldEnum = {
+export const AdminDocumentOverrideOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  organizationPaymentMethodId: 'organizationPaymentMethodId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
   documentDefinitionId: 'documentDefinitionId',
+  decision: 'decision',
   reason: 'reason',
-  waivedById: 'waivedById'
+  createdById: 'createdById'
 } as const
 
-export type OrganizationDocumentWaiverOrderByRelevanceFieldEnum = (typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum)[keyof typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum]
+export type AdminDocumentOverrideOrderByRelevanceFieldEnum = (typeof AdminDocumentOverrideOrderByRelevanceFieldEnum)[keyof typeof AdminDocumentOverrideOrderByRelevanceFieldEnum]
 
 
 export const AsyncJobOrderByRelevanceFieldEnum = {

@@ -325,7 +325,7 @@ export type DocumentDefinitionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"DocumentDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentDefinition"> | Date | string
   plan?: Prisma.XOR<Prisma.DocumentationPlanScalarRelationFilter, Prisma.DocumentationPlanWhereInput>
-  waivers?: Prisma.OrganizationDocumentWaiverListRelationFilter
+  overrides?: Prisma.AdminDocumentOverrideListRelationFilter
 }
 
 export type DocumentDefinitionOrderByWithRelationInput = {
@@ -347,7 +347,7 @@ export type DocumentDefinitionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   plan?: Prisma.DocumentationPlanOrderByWithRelationInput
-  waivers?: Prisma.OrganizationDocumentWaiverOrderByRelationAggregateInput
+  overrides?: Prisma.AdminDocumentOverrideOrderByRelationAggregateInput
   _relevance?: Prisma.DocumentDefinitionOrderByRelevanceInput
 }
 
@@ -373,7 +373,7 @@ export type DocumentDefinitionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"DocumentDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentDefinition"> | Date | string
   plan?: Prisma.XOR<Prisma.DocumentationPlanScalarRelationFilter, Prisma.DocumentationPlanWhereInput>
-  waivers?: Prisma.OrganizationDocumentWaiverListRelationFilter
+  overrides?: Prisma.AdminDocumentOverrideListRelationFilter
 }, "id">
 
 export type DocumentDefinitionOrderByWithAggregationInput = {
@@ -442,7 +442,7 @@ export type DocumentDefinitionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   plan: Prisma.DocumentationPlanCreateNestedOneWithoutDocumentDefinitionsInput
-  waivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutDocumentDefinitionInput
+  overrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutDocumentDefinitionInput
 }
 
 export type DocumentDefinitionUncheckedCreateInput = {
@@ -463,7 +463,7 @@ export type DocumentDefinitionUncheckedCreateInput = {
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  waivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutDocumentDefinitionInput
+  overrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutDocumentDefinitionInput
 }
 
 export type DocumentDefinitionUpdateInput = {
@@ -484,7 +484,7 @@ export type DocumentDefinitionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   plan?: Prisma.DocumentationPlanUpdateOneRequiredWithoutDocumentDefinitionsNestedInput
-  waivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutDocumentDefinitionNestedInput
+  overrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutDocumentDefinitionNestedInput
 }
 
 export type DocumentDefinitionUncheckedUpdateInput = {
@@ -505,7 +505,7 @@ export type DocumentDefinitionUncheckedUpdateInput = {
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  waivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutDocumentDefinitionNestedInput
+  overrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutDocumentDefinitionNestedInput
 }
 
 export type DocumentDefinitionCreateManyInput = {
@@ -657,9 +657,9 @@ export type DocumentDefinitionSumOrderByAggregateInput = {
   maxFiles?: Prisma.SortOrder
 }
 
-export type DocumentDefinitionScalarRelationFilter = {
-  is?: Prisma.DocumentDefinitionWhereInput
-  isNot?: Prisma.DocumentDefinitionWhereInput
+export type DocumentDefinitionNullableScalarRelationFilter = {
+  is?: Prisma.DocumentDefinitionWhereInput | null
+  isNot?: Prisma.DocumentDefinitionWhereInput | null
 }
 
 export type DocumentDefinitionCreateNestedManyWithoutPlanInput = {
@@ -708,18 +708,20 @@ export type EnumUploadedByFieldUpdateOperationsInput = {
   set?: $Enums.UploadedBy
 }
 
-export type DocumentDefinitionCreateNestedOneWithoutWaiversInput = {
-  create?: Prisma.XOR<Prisma.DocumentDefinitionCreateWithoutWaiversInput, Prisma.DocumentDefinitionUncheckedCreateWithoutWaiversInput>
-  connectOrCreate?: Prisma.DocumentDefinitionCreateOrConnectWithoutWaiversInput
+export type DocumentDefinitionCreateNestedOneWithoutOverridesInput = {
+  create?: Prisma.XOR<Prisma.DocumentDefinitionCreateWithoutOverridesInput, Prisma.DocumentDefinitionUncheckedCreateWithoutOverridesInput>
+  connectOrCreate?: Prisma.DocumentDefinitionCreateOrConnectWithoutOverridesInput
   connect?: Prisma.DocumentDefinitionWhereUniqueInput
 }
 
-export type DocumentDefinitionUpdateOneRequiredWithoutWaiversNestedInput = {
-  create?: Prisma.XOR<Prisma.DocumentDefinitionCreateWithoutWaiversInput, Prisma.DocumentDefinitionUncheckedCreateWithoutWaiversInput>
-  connectOrCreate?: Prisma.DocumentDefinitionCreateOrConnectWithoutWaiversInput
-  upsert?: Prisma.DocumentDefinitionUpsertWithoutWaiversInput
+export type DocumentDefinitionUpdateOneWithoutOverridesNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentDefinitionCreateWithoutOverridesInput, Prisma.DocumentDefinitionUncheckedCreateWithoutOverridesInput>
+  connectOrCreate?: Prisma.DocumentDefinitionCreateOrConnectWithoutOverridesInput
+  upsert?: Prisma.DocumentDefinitionUpsertWithoutOverridesInput
+  disconnect?: Prisma.DocumentDefinitionWhereInput | boolean
+  delete?: Prisma.DocumentDefinitionWhereInput | boolean
   connect?: Prisma.DocumentDefinitionWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentDefinitionUpdateToOneWithWhereWithoutWaiversInput, Prisma.DocumentDefinitionUpdateWithoutWaiversInput>, Prisma.DocumentDefinitionUncheckedUpdateWithoutWaiversInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentDefinitionUpdateToOneWithWhereWithoutOverridesInput, Prisma.DocumentDefinitionUpdateWithoutOverridesInput>, Prisma.DocumentDefinitionUncheckedUpdateWithoutOverridesInput>
 }
 
 export type DocumentDefinitionCreateWithoutPlanInput = {
@@ -739,7 +741,7 @@ export type DocumentDefinitionCreateWithoutPlanInput = {
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  waivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutDocumentDefinitionInput
+  overrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutDocumentDefinitionInput
 }
 
 export type DocumentDefinitionUncheckedCreateWithoutPlanInput = {
@@ -759,7 +761,7 @@ export type DocumentDefinitionUncheckedCreateWithoutPlanInput = {
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  waivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutDocumentDefinitionInput
+  overrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutDocumentDefinitionInput
 }
 
 export type DocumentDefinitionCreateOrConnectWithoutPlanInput = {
@@ -811,7 +813,7 @@ export type DocumentDefinitionScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"DocumentDefinition"> | Date | string
 }
 
-export type DocumentDefinitionCreateWithoutWaiversInput = {
+export type DocumentDefinitionCreateWithoutOverridesInput = {
   id?: string
   documentType: string
   documentName: string
@@ -831,7 +833,7 @@ export type DocumentDefinitionCreateWithoutWaiversInput = {
   plan: Prisma.DocumentationPlanCreateNestedOneWithoutDocumentDefinitionsInput
 }
 
-export type DocumentDefinitionUncheckedCreateWithoutWaiversInput = {
+export type DocumentDefinitionUncheckedCreateWithoutOverridesInput = {
   id?: string
   planId: string
   documentType: string
@@ -851,23 +853,23 @@ export type DocumentDefinitionUncheckedCreateWithoutWaiversInput = {
   updatedAt?: Date | string
 }
 
-export type DocumentDefinitionCreateOrConnectWithoutWaiversInput = {
+export type DocumentDefinitionCreateOrConnectWithoutOverridesInput = {
   where: Prisma.DocumentDefinitionWhereUniqueInput
-  create: Prisma.XOR<Prisma.DocumentDefinitionCreateWithoutWaiversInput, Prisma.DocumentDefinitionUncheckedCreateWithoutWaiversInput>
+  create: Prisma.XOR<Prisma.DocumentDefinitionCreateWithoutOverridesInput, Prisma.DocumentDefinitionUncheckedCreateWithoutOverridesInput>
 }
 
-export type DocumentDefinitionUpsertWithoutWaiversInput = {
-  update: Prisma.XOR<Prisma.DocumentDefinitionUpdateWithoutWaiversInput, Prisma.DocumentDefinitionUncheckedUpdateWithoutWaiversInput>
-  create: Prisma.XOR<Prisma.DocumentDefinitionCreateWithoutWaiversInput, Prisma.DocumentDefinitionUncheckedCreateWithoutWaiversInput>
+export type DocumentDefinitionUpsertWithoutOverridesInput = {
+  update: Prisma.XOR<Prisma.DocumentDefinitionUpdateWithoutOverridesInput, Prisma.DocumentDefinitionUncheckedUpdateWithoutOverridesInput>
+  create: Prisma.XOR<Prisma.DocumentDefinitionCreateWithoutOverridesInput, Prisma.DocumentDefinitionUncheckedCreateWithoutOverridesInput>
   where?: Prisma.DocumentDefinitionWhereInput
 }
 
-export type DocumentDefinitionUpdateToOneWithWhereWithoutWaiversInput = {
+export type DocumentDefinitionUpdateToOneWithWhereWithoutOverridesInput = {
   where?: Prisma.DocumentDefinitionWhereInput
-  data: Prisma.XOR<Prisma.DocumentDefinitionUpdateWithoutWaiversInput, Prisma.DocumentDefinitionUncheckedUpdateWithoutWaiversInput>
+  data: Prisma.XOR<Prisma.DocumentDefinitionUpdateWithoutOverridesInput, Prisma.DocumentDefinitionUncheckedUpdateWithoutOverridesInput>
 }
 
-export type DocumentDefinitionUpdateWithoutWaiversInput = {
+export type DocumentDefinitionUpdateWithoutOverridesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -887,7 +889,7 @@ export type DocumentDefinitionUpdateWithoutWaiversInput = {
   plan?: Prisma.DocumentationPlanUpdateOneRequiredWithoutDocumentDefinitionsNestedInput
 }
 
-export type DocumentDefinitionUncheckedUpdateWithoutWaiversInput = {
+export type DocumentDefinitionUncheckedUpdateWithoutOverridesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -943,7 +945,7 @@ export type DocumentDefinitionUpdateWithoutPlanInput = {
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  waivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutDocumentDefinitionNestedInput
+  overrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutDocumentDefinitionNestedInput
 }
 
 export type DocumentDefinitionUncheckedUpdateWithoutPlanInput = {
@@ -963,7 +965,7 @@ export type DocumentDefinitionUncheckedUpdateWithoutPlanInput = {
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  waivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutDocumentDefinitionNestedInput
+  overrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutDocumentDefinitionNestedInput
 }
 
 export type DocumentDefinitionUncheckedUpdateManyWithoutPlanInput = {
@@ -991,11 +993,11 @@ export type DocumentDefinitionUncheckedUpdateManyWithoutPlanInput = {
  */
 
 export type DocumentDefinitionCountOutputType = {
-  waivers: number
+  overrides: number
 }
 
 export type DocumentDefinitionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  waivers?: boolean | DocumentDefinitionCountOutputTypeCountWaiversArgs
+  overrides?: boolean | DocumentDefinitionCountOutputTypeCountOverridesArgs
 }
 
 /**
@@ -1011,8 +1013,8 @@ export type DocumentDefinitionCountOutputTypeDefaultArgs<ExtArgs extends runtime
 /**
  * DocumentDefinitionCountOutputType without action
  */
-export type DocumentDefinitionCountOutputTypeCountWaiversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OrganizationDocumentWaiverWhereInput
+export type DocumentDefinitionCountOutputTypeCountOverridesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdminDocumentOverrideWhereInput
 }
 
 
@@ -1035,7 +1037,7 @@ export type DocumentDefinitionSelect<ExtArgs extends runtime.Types.Extensions.In
   createdAt?: boolean
   updatedAt?: boolean
   plan?: boolean | Prisma.DocumentationPlanDefaultArgs<ExtArgs>
-  waivers?: boolean | Prisma.DocumentDefinition$waiversArgs<ExtArgs>
+  overrides?: boolean | Prisma.DocumentDefinition$overridesArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentDefinition"]>
 
@@ -1064,7 +1066,7 @@ export type DocumentDefinitionSelectScalar = {
 export type DocumentDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "documentType" | "documentName" | "uploadedBy" | "autoApprove" | "order" | "isRequired" | "description" | "maxSizeBytes" | "allowedMimeTypes" | "expiryDays" | "minFiles" | "maxFiles" | "condition" | "createdAt" | "updatedAt", ExtArgs["result"]["documentDefinition"]>
 export type DocumentDefinitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   plan?: boolean | Prisma.DocumentationPlanDefaultArgs<ExtArgs>
-  waivers?: boolean | Prisma.DocumentDefinition$waiversArgs<ExtArgs>
+  overrides?: boolean | Prisma.DocumentDefinition$overridesArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1072,7 +1074,7 @@ export type $DocumentDefinitionPayload<ExtArgs extends runtime.Types.Extensions.
   name: "DocumentDefinition"
   objects: {
     plan: Prisma.$DocumentationPlanPayload<ExtArgs>
-    waivers: Prisma.$OrganizationDocumentWaiverPayload<ExtArgs>[]
+    overrides: Prisma.$AdminDocumentOverridePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1433,7 +1435,7 @@ readonly fields: DocumentDefinitionFieldRefs;
 export interface Prisma__DocumentDefinitionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   plan<T extends Prisma.DocumentationPlanDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPlanDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentationPlanClient<runtime.Types.Result.GetResult<Prisma.$DocumentationPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  waivers<T extends Prisma.DocumentDefinition$waiversArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentDefinition$waiversArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationDocumentWaiverPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  overrides<T extends Prisma.DocumentDefinition$overridesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentDefinition$overridesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminDocumentOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1823,27 +1825,27 @@ export type DocumentDefinitionDeleteManyArgs<ExtArgs extends runtime.Types.Exten
 }
 
 /**
- * DocumentDefinition.waivers
+ * DocumentDefinition.overrides
  */
-export type DocumentDefinition$waiversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type DocumentDefinition$overridesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the OrganizationDocumentWaiver
+   * Select specific fields to fetch from the AdminDocumentOverride
    */
-  select?: Prisma.OrganizationDocumentWaiverSelect<ExtArgs> | null
+  select?: Prisma.AdminDocumentOverrideSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the OrganizationDocumentWaiver
+   * Omit specific fields from the AdminDocumentOverride
    */
-  omit?: Prisma.OrganizationDocumentWaiverOmit<ExtArgs> | null
+  omit?: Prisma.AdminDocumentOverrideOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.OrganizationDocumentWaiverInclude<ExtArgs> | null
-  where?: Prisma.OrganizationDocumentWaiverWhereInput
-  orderBy?: Prisma.OrganizationDocumentWaiverOrderByWithRelationInput | Prisma.OrganizationDocumentWaiverOrderByWithRelationInput[]
-  cursor?: Prisma.OrganizationDocumentWaiverWhereUniqueInput
+  include?: Prisma.AdminDocumentOverrideInclude<ExtArgs> | null
+  where?: Prisma.AdminDocumentOverrideWhereInput
+  orderBy?: Prisma.AdminDocumentOverrideOrderByWithRelationInput | Prisma.AdminDocumentOverrideOrderByWithRelationInput[]
+  cursor?: Prisma.AdminDocumentOverrideWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.OrganizationDocumentWaiverScalarFieldEnum | Prisma.OrganizationDocumentWaiverScalarFieldEnum[]
+  distinct?: Prisma.AdminDocumentOverrideScalarFieldEnum | Prisma.AdminDocumentOverrideScalarFieldEnum[]
 }
 
 /**

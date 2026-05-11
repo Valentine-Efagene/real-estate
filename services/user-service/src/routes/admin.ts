@@ -588,7 +588,7 @@ router.post(
                 'qualificationPhase',
                 'onboardingPhase',
                 'organizationOnboarding',
-                'organizationDocumentWaiver',
+                'adminDocumentOverride',
                 'paymentMethodQualificationConfig',
                 'paymentMethodQualification',
                 'organizationPaymentMethod',

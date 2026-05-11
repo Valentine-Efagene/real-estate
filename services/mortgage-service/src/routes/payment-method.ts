@@ -27,8 +27,6 @@ import {
     ReviewQualificationSchema,
     UpdateQualificationStatusSchema,
     AssignQualificationFlowSchema,
-    CreateDocumentWaiverSchema,
-    BulkCreateDocumentWaiverSchema,
 } from '../validators/qualification-flow.validator';
 
 const router: Router = Router();
@@ -632,101 +630,6 @@ router.delete('/:id/qualification-configs/:orgTypeCode', requireTenant, requireR
         const { tenantId } = getAuthContext(req);
         const service = getQualificationService(req);
         const result = await service.removeQualificationConfig(req.params.id as string, req.params.orgTypeCode as string, tenantId);
-        res.json(successResponse(result));
-    } catch (error: any) {
-        next(error);
-    }
-});
-
-// =============================================================================
-// DOCUMENT WAIVERS — Docs an org considers optional for a payment method
-// =============================================================================
-
-/**
- * GET /payment-methods/:id/assignments/:assignmentId/waivable-documents
- * GET /payment-methods/:id/assignments/:assignmentId/available-documents (alias)
- * List all document definitions across all DOCUMENTATION phases that can be waived
- */
-router.get(['/:id/assignments/:assignmentId/waivable-documents', '/:id/assignments/:assignmentId/available-documents'], requireTenant, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const service = getQualificationService(req);
-        const result = await service.findWaivableDocuments(req.params.assignmentId as string);
-        res.json(successResponse(result));
-    } catch (error: any) {
-        next(error);
-    }
-});
-
-/**
- * GET /payment-methods/:id/assignments/:assignmentId/waivers
- * List document waivers for an assignment
- */
-router.get('/:id/assignments/:assignmentId/waivers', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const service = getQualificationService(req);
-        const result = await service.findDocumentWaivers(req.params.assignmentId as string);
-        res.json(successResponse(result));
-    } catch (error: any) {
-        next(error);
-    }
-});
-
-/**
- * POST /payment-methods/:id/assignments/:assignmentId/waivers
- * Create a document waiver (single)
- */
-router.post('/:id/assignments/:assignmentId/waivers', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { tenantId, userId } = getAuthContext(req);
-        const data = CreateDocumentWaiverSchema.parse(req.body);
-        const service = getQualificationService(req);
-        const result = await service.createDocumentWaiver(req.params.assignmentId as string, tenantId, userId, data);
-        res.status(201).json(successResponse(result));
-    } catch (error: any) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-/**
- * POST /payment-methods/:id/assignments/:assignmentId/waivers/bulk
- * Create multiple document waivers at once
- */
-router.post('/:id/assignments/:assignmentId/waivers/bulk', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { tenantId, userId } = getAuthContext(req);
-        const data = BulkCreateDocumentWaiverSchema.parse(req.body);
-        const service = getQualificationService(req);
-        const results = [];
-        for (const waiver of data.waivers) {
-            try {
-                const result = await service.createDocumentWaiver(req.params.assignmentId as string, tenantId, userId, waiver);
-                results.push(result);
-            } catch (error: any) {
-                results.push({ error: error.message, documentDefinitionId: waiver.documentDefinitionId });
-            }
-        }
-        res.status(201).json(successResponse(results));
-    } catch (error: any) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-/**
- * DELETE /payment-methods/:id/assignments/:assignmentId/waivers/:waiverId
- * Remove a document waiver
- */
-router.delete('/:id/assignments/:assignmentId/waivers/:waiverId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const service = getQualificationService(req);
-        const result = await service.deleteDocumentWaiver(req.params.waiverId as string);
         res.json(successResponse(result));
     } catch (error: any) {
         next(error);

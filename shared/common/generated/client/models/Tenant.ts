@@ -262,7 +262,7 @@ export type TenantWhereInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
   qualificationPhases?: Prisma.QualificationPhaseListRelationFilter
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigListRelationFilter
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverListRelationFilter
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideListRelationFilter
   coApplicants?: Prisma.CoApplicantListRelationFilter
 }
 
@@ -345,7 +345,7 @@ export type TenantOrderByWithRelationInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationOrderByRelationAggregateInput
   qualificationPhases?: Prisma.QualificationPhaseOrderByRelationAggregateInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigOrderByRelationAggregateInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverOrderByRelationAggregateInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideOrderByRelationAggregateInput
   coApplicants?: Prisma.CoApplicantOrderByRelationAggregateInput
   _relevance?: Prisma.TenantOrderByRelevanceInput
 }
@@ -432,7 +432,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationListRelationFilter
   qualificationPhases?: Prisma.QualificationPhaseListRelationFilter
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigListRelationFilter
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverListRelationFilter
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideListRelationFilter
   coApplicants?: Prisma.CoApplicantListRelationFilter
 }, "id" | "subdomain">
 
@@ -539,7 +539,7 @@ export type TenantCreateInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -622,7 +622,7 @@ export type TenantUncheckedCreateInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -705,7 +705,7 @@ export type TenantUpdateInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -788,7 +788,7 @@ export type TenantUncheckedUpdateInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -1898,18 +1898,18 @@ export type TenantUpdateOneRequiredWithoutPaymentMethodQualificationConfigsNeste
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutPaymentMethodQualificationConfigsInput, Prisma.TenantUpdateWithoutPaymentMethodQualificationConfigsInput>, Prisma.TenantUncheckedUpdateWithoutPaymentMethodQualificationConfigsInput>
 }
 
-export type TenantCreateNestedOneWithoutOrganizationDocumentWaiversInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationDocumentWaiversInput, Prisma.TenantUncheckedCreateWithoutOrganizationDocumentWaiversInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrganizationDocumentWaiversInput
+export type TenantCreateNestedOneWithoutAdminDocumentOverridesInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutAdminDocumentOverridesInput, Prisma.TenantUncheckedCreateWithoutAdminDocumentOverridesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutAdminDocumentOverridesInput
   connect?: Prisma.TenantWhereUniqueInput
 }
 
-export type TenantUpdateOneRequiredWithoutOrganizationDocumentWaiversNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationDocumentWaiversInput, Prisma.TenantUncheckedCreateWithoutOrganizationDocumentWaiversInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrganizationDocumentWaiversInput
-  upsert?: Prisma.TenantUpsertWithoutOrganizationDocumentWaiversInput
+export type TenantUpdateOneRequiredWithoutAdminDocumentOverridesNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutAdminDocumentOverridesInput, Prisma.TenantUncheckedCreateWithoutAdminDocumentOverridesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutAdminDocumentOverridesInput
+  upsert?: Prisma.TenantUpsertWithoutAdminDocumentOverridesInput
   connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOrganizationDocumentWaiversInput, Prisma.TenantUpdateWithoutOrganizationDocumentWaiversInput>, Prisma.TenantUncheckedUpdateWithoutOrganizationDocumentWaiversInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutAdminDocumentOverridesInput, Prisma.TenantUpdateWithoutAdminDocumentOverridesInput>, Prisma.TenantUncheckedUpdateWithoutAdminDocumentOverridesInput>
 }
 
 export type TenantCreateWithoutOrganizationTypesInput = {
@@ -1990,7 +1990,7 @@ export type TenantCreateWithoutOrganizationTypesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -2072,7 +2072,7 @@ export type TenantUncheckedCreateWithoutOrganizationTypesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -2170,7 +2170,7 @@ export type TenantUpdateWithoutOrganizationTypesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -2252,7 +2252,7 @@ export type TenantUncheckedUpdateWithoutOrganizationTypesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -2334,7 +2334,7 @@ export type TenantCreateWithoutUsersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -2416,7 +2416,7 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -2514,7 +2514,7 @@ export type TenantUpdateWithoutUsersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -2596,7 +2596,7 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -2678,7 +2678,7 @@ export type TenantCreateWithoutRolesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -2760,7 +2760,7 @@ export type TenantUncheckedCreateWithoutRolesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -2858,7 +2858,7 @@ export type TenantUpdateWithoutRolesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -2940,7 +2940,7 @@ export type TenantUncheckedUpdateWithoutRolesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -3022,7 +3022,7 @@ export type TenantCreateWithoutPermissionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -3104,7 +3104,7 @@ export type TenantUncheckedCreateWithoutPermissionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -3202,7 +3202,7 @@ export type TenantUpdateWithoutPermissionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -3284,7 +3284,7 @@ export type TenantUncheckedUpdateWithoutPermissionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -3366,7 +3366,7 @@ export type TenantCreateWithoutMembershipsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -3448,7 +3448,7 @@ export type TenantUncheckedCreateWithoutMembershipsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -3546,7 +3546,7 @@ export type TenantUpdateWithoutMembershipsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -3628,7 +3628,7 @@ export type TenantUncheckedUpdateWithoutMembershipsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -3710,7 +3710,7 @@ export type TenantCreateWithoutOrganizationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -3792,7 +3792,7 @@ export type TenantUncheckedCreateWithoutOrganizationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -3890,7 +3890,7 @@ export type TenantUpdateWithoutOrganizationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -3972,7 +3972,7 @@ export type TenantUncheckedUpdateWithoutOrganizationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -4054,7 +4054,7 @@ export type TenantCreateWithoutOrganizationInvitationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -4136,7 +4136,7 @@ export type TenantUncheckedCreateWithoutOrganizationInvitationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -4234,7 +4234,7 @@ export type TenantUpdateWithoutOrganizationInvitationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -4316,7 +4316,7 @@ export type TenantUncheckedUpdateWithoutOrganizationInvitationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -4398,7 +4398,7 @@ export type TenantCreateWithoutOnboardingFlowsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -4480,7 +4480,7 @@ export type TenantUncheckedCreateWithoutOnboardingFlowsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -4578,7 +4578,7 @@ export type TenantUpdateWithoutOnboardingFlowsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -4660,7 +4660,7 @@ export type TenantUncheckedUpdateWithoutOnboardingFlowsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -4742,7 +4742,7 @@ export type TenantCreateWithoutOnboardingFlowPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -4824,7 +4824,7 @@ export type TenantUncheckedCreateWithoutOnboardingFlowPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -4922,7 +4922,7 @@ export type TenantUpdateWithoutOnboardingFlowPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -5004,7 +5004,7 @@ export type TenantUncheckedUpdateWithoutOnboardingFlowPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -5086,7 +5086,7 @@ export type TenantCreateWithoutOrganizationOnboardingsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -5168,7 +5168,7 @@ export type TenantUncheckedCreateWithoutOrganizationOnboardingsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -5266,7 +5266,7 @@ export type TenantUpdateWithoutOrganizationOnboardingsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -5348,7 +5348,7 @@ export type TenantUncheckedUpdateWithoutOrganizationOnboardingsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -5430,7 +5430,7 @@ export type TenantCreateWithoutOnboardingPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -5512,7 +5512,7 @@ export type TenantUncheckedCreateWithoutOnboardingPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -5610,7 +5610,7 @@ export type TenantUpdateWithoutOnboardingPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -5692,7 +5692,7 @@ export type TenantUncheckedUpdateWithoutOnboardingPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -5774,7 +5774,7 @@ export type TenantCreateWithoutBankDocumentRequirementsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -5856,7 +5856,7 @@ export type TenantUncheckedCreateWithoutBankDocumentRequirementsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -5954,7 +5954,7 @@ export type TenantUpdateWithoutBankDocumentRequirementsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -6036,7 +6036,7 @@ export type TenantUncheckedUpdateWithoutBankDocumentRequirementsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -6118,7 +6118,7 @@ export type TenantCreateWithoutApiKeysInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -6200,7 +6200,7 @@ export type TenantUncheckedCreateWithoutApiKeysInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -6298,7 +6298,7 @@ export type TenantUpdateWithoutApiKeysInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -6380,7 +6380,7 @@ export type TenantUncheckedUpdateWithoutApiKeysInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -6462,7 +6462,7 @@ export type TenantCreateWithoutSocialsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -6544,7 +6544,7 @@ export type TenantUncheckedCreateWithoutSocialsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -6642,7 +6642,7 @@ export type TenantUpdateWithoutSocialsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -6724,7 +6724,7 @@ export type TenantUncheckedUpdateWithoutSocialsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -6806,7 +6806,7 @@ export type TenantCreateWithoutWalletsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -6888,7 +6888,7 @@ export type TenantUncheckedCreateWithoutWalletsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -6986,7 +6986,7 @@ export type TenantUpdateWithoutWalletsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -7068,7 +7068,7 @@ export type TenantUncheckedUpdateWithoutWalletsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -7150,7 +7150,7 @@ export type TenantCreateWithoutTransactionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -7232,7 +7232,7 @@ export type TenantUncheckedCreateWithoutTransactionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -7330,7 +7330,7 @@ export type TenantUpdateWithoutTransactionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -7412,7 +7412,7 @@ export type TenantUncheckedUpdateWithoutTransactionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -7494,7 +7494,7 @@ export type TenantCreateWithoutSettingsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -7576,7 +7576,7 @@ export type TenantUncheckedCreateWithoutSettingsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -7674,7 +7674,7 @@ export type TenantUpdateWithoutSettingsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -7756,7 +7756,7 @@ export type TenantUncheckedUpdateWithoutSettingsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -7838,7 +7838,7 @@ export type TenantCreateWithoutPropertiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -7920,7 +7920,7 @@ export type TenantUncheckedCreateWithoutPropertiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -8018,7 +8018,7 @@ export type TenantUpdateWithoutPropertiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -8100,7 +8100,7 @@ export type TenantUncheckedUpdateWithoutPropertiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -8182,7 +8182,7 @@ export type TenantCreateWithoutPropertyMediaInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -8264,7 +8264,7 @@ export type TenantUncheckedCreateWithoutPropertyMediaInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -8362,7 +8362,7 @@ export type TenantUpdateWithoutPropertyMediaInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -8444,7 +8444,7 @@ export type TenantUncheckedUpdateWithoutPropertyMediaInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -8526,7 +8526,7 @@ export type TenantCreateWithoutPropertyDocumentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -8608,7 +8608,7 @@ export type TenantUncheckedCreateWithoutPropertyDocumentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -8706,7 +8706,7 @@ export type TenantUpdateWithoutPropertyDocumentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -8788,7 +8788,7 @@ export type TenantUncheckedUpdateWithoutPropertyDocumentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -8870,7 +8870,7 @@ export type TenantCreateWithoutAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -8952,7 +8952,7 @@ export type TenantUncheckedCreateWithoutAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -9050,7 +9050,7 @@ export type TenantUpdateWithoutAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -9132,7 +9132,7 @@ export type TenantUncheckedUpdateWithoutAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -9214,7 +9214,7 @@ export type TenantCreateWithoutPropertyVariantsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -9296,7 +9296,7 @@ export type TenantUncheckedCreateWithoutPropertyVariantsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -9394,7 +9394,7 @@ export type TenantUpdateWithoutPropertyVariantsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -9476,7 +9476,7 @@ export type TenantUncheckedUpdateWithoutPropertyVariantsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -9558,7 +9558,7 @@ export type TenantCreateWithoutPropertyPromotionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -9640,7 +9640,7 @@ export type TenantUncheckedCreateWithoutPropertyPromotionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -9738,7 +9738,7 @@ export type TenantUpdateWithoutPropertyPromotionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -9820,7 +9820,7 @@ export type TenantUncheckedUpdateWithoutPropertyPromotionsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -9902,7 +9902,7 @@ export type TenantCreateWithoutPropertyVariantAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -9984,7 +9984,7 @@ export type TenantUncheckedCreateWithoutPropertyVariantAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -10082,7 +10082,7 @@ export type TenantUpdateWithoutPropertyVariantAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -10164,7 +10164,7 @@ export type TenantUncheckedUpdateWithoutPropertyVariantAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -10246,7 +10246,7 @@ export type TenantCreateWithoutPropertyVariantMediaInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -10328,7 +10328,7 @@ export type TenantUncheckedCreateWithoutPropertyVariantMediaInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -10426,7 +10426,7 @@ export type TenantUpdateWithoutPropertyVariantMediaInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -10508,7 +10508,7 @@ export type TenantUncheckedUpdateWithoutPropertyVariantMediaInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -10590,7 +10590,7 @@ export type TenantCreateWithoutPropertyUnitsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -10672,7 +10672,7 @@ export type TenantUncheckedCreateWithoutPropertyUnitsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -10770,7 +10770,7 @@ export type TenantUpdateWithoutPropertyUnitsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -10852,7 +10852,7 @@ export type TenantUncheckedUpdateWithoutPropertyUnitsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -10934,7 +10934,7 @@ export type TenantCreateWithoutPropertyAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -11016,7 +11016,7 @@ export type TenantUncheckedCreateWithoutPropertyAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -11114,7 +11114,7 @@ export type TenantUpdateWithoutPropertyAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -11196,7 +11196,7 @@ export type TenantUncheckedUpdateWithoutPropertyAmenitiesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -11278,7 +11278,7 @@ export type TenantCreateWithoutDocumentationPlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -11360,7 +11360,7 @@ export type TenantUncheckedCreateWithoutDocumentationPlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -11458,7 +11458,7 @@ export type TenantUpdateWithoutDocumentationPlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -11540,7 +11540,7 @@ export type TenantUncheckedUpdateWithoutDocumentationPlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -11622,7 +11622,7 @@ export type TenantCreateWithoutQuestionnairePlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -11704,7 +11704,7 @@ export type TenantUncheckedCreateWithoutQuestionnairePlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -11802,7 +11802,7 @@ export type TenantUpdateWithoutQuestionnairePlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -11884,7 +11884,7 @@ export type TenantUncheckedUpdateWithoutQuestionnairePlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -11966,7 +11966,7 @@ export type TenantCreateWithoutGatePlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -12048,7 +12048,7 @@ export type TenantUncheckedCreateWithoutGatePlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -12146,7 +12146,7 @@ export type TenantUpdateWithoutGatePlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -12228,7 +12228,7 @@ export type TenantUncheckedUpdateWithoutGatePlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -12310,7 +12310,7 @@ export type TenantCreateWithoutPaymentPlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -12392,7 +12392,7 @@ export type TenantUncheckedCreateWithoutPaymentPlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -12490,7 +12490,7 @@ export type TenantUpdateWithoutPaymentPlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -12572,7 +12572,7 @@ export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -12654,7 +12654,7 @@ export type TenantCreateWithoutPaymentMethodsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -12736,7 +12736,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -12834,7 +12834,7 @@ export type TenantUpdateWithoutPaymentMethodsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -12916,7 +12916,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -12998,7 +12998,7 @@ export type TenantCreateWithoutPropertyPaymentMethodLinksInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -13080,7 +13080,7 @@ export type TenantUncheckedCreateWithoutPropertyPaymentMethodLinksInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -13178,7 +13178,7 @@ export type TenantUpdateWithoutPropertyPaymentMethodLinksInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -13260,7 +13260,7 @@ export type TenantUncheckedUpdateWithoutPropertyPaymentMethodLinksInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -13342,7 +13342,7 @@ export type TenantCreateWithoutPropertyPaymentMethodPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -13424,7 +13424,7 @@ export type TenantUncheckedCreateWithoutPropertyPaymentMethodPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -13522,7 +13522,7 @@ export type TenantUpdateWithoutPropertyPaymentMethodPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -13604,7 +13604,7 @@ export type TenantUncheckedUpdateWithoutPropertyPaymentMethodPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -13686,7 +13686,7 @@ export type TenantCreateWithoutPhaseEventAttachmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -13768,7 +13768,7 @@ export type TenantUncheckedCreateWithoutPhaseEventAttachmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -13866,7 +13866,7 @@ export type TenantUpdateWithoutPhaseEventAttachmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -13948,7 +13948,7 @@ export type TenantUncheckedUpdateWithoutPhaseEventAttachmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -14030,7 +14030,7 @@ export type TenantCreateWithoutApplicationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -14112,7 +14112,7 @@ export type TenantUncheckedCreateWithoutApplicationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -14210,7 +14210,7 @@ export type TenantUpdateWithoutApplicationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -14292,7 +14292,7 @@ export type TenantUncheckedUpdateWithoutApplicationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -14375,7 +14375,7 @@ export type TenantCreateWithoutCoApplicantsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutCoApplicantsInput = {
@@ -14457,7 +14457,7 @@ export type TenantUncheckedCreateWithoutCoApplicantsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutCoApplicantsInput = {
@@ -14555,7 +14555,7 @@ export type TenantUpdateWithoutCoApplicantsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutCoApplicantsInput = {
@@ -14637,7 +14637,7 @@ export type TenantUncheckedUpdateWithoutCoApplicantsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationOrganizationsInput = {
@@ -14718,7 +14718,7 @@ export type TenantCreateWithoutApplicationOrganizationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -14800,7 +14800,7 @@ export type TenantUncheckedCreateWithoutApplicationOrganizationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -14898,7 +14898,7 @@ export type TenantUpdateWithoutApplicationOrganizationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -14980,7 +14980,7 @@ export type TenantUncheckedUpdateWithoutApplicationOrganizationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -15062,7 +15062,7 @@ export type TenantCreateWithoutContractRefundsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -15144,7 +15144,7 @@ export type TenantUncheckedCreateWithoutContractRefundsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -15242,7 +15242,7 @@ export type TenantUpdateWithoutContractRefundsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -15324,7 +15324,7 @@ export type TenantUncheckedUpdateWithoutContractRefundsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -15406,7 +15406,7 @@ export type TenantCreateWithoutApplicationPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -15488,7 +15488,7 @@ export type TenantUncheckedCreateWithoutApplicationPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -15586,7 +15586,7 @@ export type TenantUpdateWithoutApplicationPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -15668,7 +15668,7 @@ export type TenantUncheckedUpdateWithoutApplicationPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -15750,7 +15750,7 @@ export type TenantCreateWithoutQuestionnairePhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -15832,7 +15832,7 @@ export type TenantUncheckedCreateWithoutQuestionnairePhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -15930,7 +15930,7 @@ export type TenantUpdateWithoutQuestionnairePhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -16012,7 +16012,7 @@ export type TenantUncheckedUpdateWithoutQuestionnairePhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -16094,7 +16094,7 @@ export type TenantCreateWithoutQuestionnairePhaseReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -16176,7 +16176,7 @@ export type TenantUncheckedCreateWithoutQuestionnairePhaseReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -16274,7 +16274,7 @@ export type TenantUpdateWithoutQuestionnairePhaseReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -16356,7 +16356,7 @@ export type TenantUncheckedUpdateWithoutQuestionnairePhaseReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -16438,7 +16438,7 @@ export type TenantCreateWithoutGatePhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -16520,7 +16520,7 @@ export type TenantUncheckedCreateWithoutGatePhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -16618,7 +16618,7 @@ export type TenantUpdateWithoutGatePhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -16700,7 +16700,7 @@ export type TenantUncheckedUpdateWithoutGatePhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -16782,7 +16782,7 @@ export type TenantCreateWithoutGatePhaseReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -16864,7 +16864,7 @@ export type TenantUncheckedCreateWithoutGatePhaseReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -16962,7 +16962,7 @@ export type TenantUpdateWithoutGatePhaseReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -17044,7 +17044,7 @@ export type TenantUncheckedUpdateWithoutGatePhaseReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -17126,7 +17126,7 @@ export type TenantCreateWithoutDocumentationPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -17208,7 +17208,7 @@ export type TenantUncheckedCreateWithoutDocumentationPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -17306,7 +17306,7 @@ export type TenantUpdateWithoutDocumentationPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -17388,7 +17388,7 @@ export type TenantUncheckedUpdateWithoutDocumentationPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -17470,7 +17470,7 @@ export type TenantCreateWithoutPaymentPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -17552,7 +17552,7 @@ export type TenantUncheckedCreateWithoutPaymentPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -17650,7 +17650,7 @@ export type TenantUpdateWithoutPaymentPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -17732,7 +17732,7 @@ export type TenantUncheckedUpdateWithoutPaymentPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -17814,7 +17814,7 @@ export type TenantCreateWithoutQuestionnaireFieldsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -17896,7 +17896,7 @@ export type TenantUncheckedCreateWithoutQuestionnaireFieldsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -17994,7 +17994,7 @@ export type TenantUpdateWithoutQuestionnaireFieldsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -18076,7 +18076,7 @@ export type TenantUncheckedUpdateWithoutQuestionnaireFieldsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -18158,7 +18158,7 @@ export type TenantCreateWithoutApplicationEventsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -18240,7 +18240,7 @@ export type TenantUncheckedCreateWithoutApplicationEventsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -18338,7 +18338,7 @@ export type TenantUpdateWithoutApplicationEventsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -18420,7 +18420,7 @@ export type TenantUncheckedUpdateWithoutApplicationEventsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -18502,7 +18502,7 @@ export type TenantCreateWithoutPaymentInstallmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -18584,7 +18584,7 @@ export type TenantUncheckedCreateWithoutPaymentInstallmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -18682,7 +18682,7 @@ export type TenantUpdateWithoutPaymentInstallmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -18764,7 +18764,7 @@ export type TenantUncheckedUpdateWithoutPaymentInstallmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -18846,7 +18846,7 @@ export type TenantCreateWithoutApplicationPaymentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -18928,7 +18928,7 @@ export type TenantUncheckedCreateWithoutApplicationPaymentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -19026,7 +19026,7 @@ export type TenantUpdateWithoutApplicationPaymentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -19108,7 +19108,7 @@ export type TenantUncheckedUpdateWithoutApplicationPaymentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -19190,7 +19190,7 @@ export type TenantCreateWithoutApplicationAdjustmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -19272,7 +19272,7 @@ export type TenantUncheckedCreateWithoutApplicationAdjustmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -19370,7 +19370,7 @@ export type TenantUpdateWithoutApplicationAdjustmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -19452,7 +19452,7 @@ export type TenantUncheckedUpdateWithoutApplicationAdjustmentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -19534,7 +19534,7 @@ export type TenantCreateWithoutApplicationDocumentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -19616,7 +19616,7 @@ export type TenantUncheckedCreateWithoutApplicationDocumentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -19714,7 +19714,7 @@ export type TenantUpdateWithoutApplicationDocumentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -19796,7 +19796,7 @@ export type TenantUncheckedUpdateWithoutApplicationDocumentsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -19878,7 +19878,7 @@ export type TenantCreateWithoutDocumentReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -19960,7 +19960,7 @@ export type TenantUncheckedCreateWithoutDocumentReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -20058,7 +20058,7 @@ export type TenantUpdateWithoutDocumentReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -20140,7 +20140,7 @@ export type TenantUncheckedUpdateWithoutDocumentReviewsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -20222,7 +20222,7 @@ export type TenantCreateWithoutApprovalStageProgressInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -20304,7 +20304,7 @@ export type TenantUncheckedCreateWithoutApprovalStageProgressInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -20402,7 +20402,7 @@ export type TenantUpdateWithoutApprovalStageProgressInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -20484,7 +20484,7 @@ export type TenantUncheckedUpdateWithoutApprovalStageProgressInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -20566,7 +20566,7 @@ export type TenantCreateWithoutDocumentApprovalsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -20648,7 +20648,7 @@ export type TenantUncheckedCreateWithoutDocumentApprovalsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -20746,7 +20746,7 @@ export type TenantUpdateWithoutDocumentApprovalsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -20828,7 +20828,7 @@ export type TenantUncheckedUpdateWithoutDocumentApprovalsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -20910,7 +20910,7 @@ export type TenantCreateWithoutDocumentTemplatesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -20992,7 +20992,7 @@ export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -21090,7 +21090,7 @@ export type TenantUpdateWithoutDocumentTemplatesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -21172,7 +21172,7 @@ export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -21254,7 +21254,7 @@ export type TenantCreateWithoutOfferLettersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -21336,7 +21336,7 @@ export type TenantUncheckedCreateWithoutOfferLettersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -21434,7 +21434,7 @@ export type TenantUpdateWithoutOfferLettersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -21516,7 +21516,7 @@ export type TenantUncheckedUpdateWithoutOfferLettersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -21598,7 +21598,7 @@ export type TenantCreateWithoutContractTerminationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -21680,7 +21680,7 @@ export type TenantUncheckedCreateWithoutContractTerminationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -21778,7 +21778,7 @@ export type TenantUpdateWithoutContractTerminationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -21860,7 +21860,7 @@ export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -21942,7 +21942,7 @@ export type TenantCreateWithoutPaymentMethodChangeRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -22024,7 +22024,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -22122,7 +22122,7 @@ export type TenantUpdateWithoutPaymentMethodChangeRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -22204,7 +22204,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -22286,7 +22286,7 @@ export type TenantCreateWithoutDocumentRequirementRulesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -22368,7 +22368,7 @@ export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -22466,7 +22466,7 @@ export type TenantUpdateWithoutDocumentRequirementRulesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -22548,7 +22548,7 @@ export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -22630,7 +22630,7 @@ export type TenantCreateWithoutEventChannelsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -22712,7 +22712,7 @@ export type TenantUncheckedCreateWithoutEventChannelsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -22810,7 +22810,7 @@ export type TenantUpdateWithoutEventChannelsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -22892,7 +22892,7 @@ export type TenantUncheckedUpdateWithoutEventChannelsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -22974,7 +22974,7 @@ export type TenantCreateWithoutEventTypesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -23056,7 +23056,7 @@ export type TenantUncheckedCreateWithoutEventTypesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -23154,7 +23154,7 @@ export type TenantUpdateWithoutEventTypesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -23236,7 +23236,7 @@ export type TenantUncheckedUpdateWithoutEventTypesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -23318,7 +23318,7 @@ export type TenantCreateWithoutEventHandlersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -23400,7 +23400,7 @@ export type TenantUncheckedCreateWithoutEventHandlersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -23498,7 +23498,7 @@ export type TenantUpdateWithoutEventHandlersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -23580,7 +23580,7 @@ export type TenantUncheckedUpdateWithoutEventHandlersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -23662,7 +23662,7 @@ export type TenantCreateWithoutDomainEventsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -23744,7 +23744,7 @@ export type TenantUncheckedCreateWithoutDomainEventsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -23842,7 +23842,7 @@ export type TenantUpdateWithoutDomainEventsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -23924,7 +23924,7 @@ export type TenantUncheckedUpdateWithoutDomainEventsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -24006,7 +24006,7 @@ export type TenantCreateWithoutPropertyTransferRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -24088,7 +24088,7 @@ export type TenantUncheckedCreateWithoutPropertyTransferRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -24186,7 +24186,7 @@ export type TenantUpdateWithoutPropertyTransferRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -24268,7 +24268,7 @@ export type TenantUncheckedUpdateWithoutPropertyTransferRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -24350,7 +24350,7 @@ export type TenantCreateWithoutApprovalRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -24432,7 +24432,7 @@ export type TenantUncheckedCreateWithoutApprovalRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -24530,7 +24530,7 @@ export type TenantUpdateWithoutApprovalRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -24612,7 +24612,7 @@ export type TenantUncheckedUpdateWithoutApprovalRequestsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -24694,7 +24694,7 @@ export type TenantCreateWithoutWorkflowBlockersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -24776,7 +24776,7 @@ export type TenantUncheckedCreateWithoutWorkflowBlockersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -24874,7 +24874,7 @@ export type TenantUpdateWithoutWorkflowBlockersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -24956,7 +24956,7 @@ export type TenantUncheckedUpdateWithoutWorkflowBlockersInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -25038,7 +25038,7 @@ export type TenantCreateWithoutQualificationFlowsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -25120,7 +25120,7 @@ export type TenantUncheckedCreateWithoutQualificationFlowsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -25218,7 +25218,7 @@ export type TenantUpdateWithoutQualificationFlowsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -25300,7 +25300,7 @@ export type TenantUncheckedUpdateWithoutQualificationFlowsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -25382,7 +25382,7 @@ export type TenantCreateWithoutQualificationFlowPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -25464,7 +25464,7 @@ export type TenantUncheckedCreateWithoutQualificationFlowPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -25562,7 +25562,7 @@ export type TenantUpdateWithoutQualificationFlowPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -25644,7 +25644,7 @@ export type TenantUncheckedUpdateWithoutQualificationFlowPhasesInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -25726,7 +25726,7 @@ export type TenantCreateWithoutOrganizationPaymentMethodsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -25808,7 +25808,7 @@ export type TenantUncheckedCreateWithoutOrganizationPaymentMethodsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -25906,7 +25906,7 @@ export type TenantUpdateWithoutOrganizationPaymentMethodsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -25988,7 +25988,7 @@ export type TenantUncheckedUpdateWithoutOrganizationPaymentMethodsInput = {
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -26070,7 +26070,7 @@ export type TenantCreateWithoutPaymentMethodQualificationsInput = {
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -26152,7 +26152,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodQualificationsInput = {
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -26250,7 +26250,7 @@ export type TenantUpdateWithoutPaymentMethodQualificationsInput = {
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -26332,7 +26332,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodQualificationsInput = {
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -26414,7 +26414,7 @@ export type TenantCreateWithoutQualificationPhasesInput = {
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -26496,7 +26496,7 @@ export type TenantUncheckedCreateWithoutQualificationPhasesInput = {
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -26594,7 +26594,7 @@ export type TenantUpdateWithoutQualificationPhasesInput = {
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -26676,7 +26676,7 @@ export type TenantUncheckedUpdateWithoutQualificationPhasesInput = {
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualificationConfigs?: Prisma.PaymentMethodQualificationConfigUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -26758,7 +26758,7 @@ export type TenantCreateWithoutPaymentMethodQualificationConfigsInput = {
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodCreateNestedManyWithoutTenantInput
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
@@ -26840,7 +26840,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodQualificationConfigsInput =
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedCreateNestedManyWithoutTenantInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedCreateNestedManyWithoutTenantInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutTenantInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedCreateNestedManyWithoutTenantInput
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
@@ -26938,7 +26938,7 @@ export type TenantUpdateWithoutPaymentMethodQualificationConfigsInput = {
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUpdateManyWithoutTenantNestedInput
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
@@ -27020,11 +27020,11 @@ export type TenantUncheckedUpdateWithoutPaymentMethodQualificationConfigsInput =
   organizationPaymentMethods?: Prisma.OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodQualifications?: Prisma.PaymentMethodQualificationUncheckedUpdateManyWithoutTenantNestedInput
   qualificationPhases?: Prisma.QualificationPhaseUncheckedUpdateManyWithoutTenantNestedInput
-  organizationDocumentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutTenantNestedInput
+  adminDocumentOverrides?: Prisma.AdminDocumentOverrideUncheckedUpdateManyWithoutTenantNestedInput
   coApplicants?: Prisma.CoApplicantUncheckedUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantCreateWithoutOrganizationDocumentWaiversInput = {
+export type TenantCreateWithoutAdminDocumentOverridesInput = {
   id?: string
   name: string
   subdomain: string
@@ -27106,7 +27106,7 @@ export type TenantCreateWithoutOrganizationDocumentWaiversInput = {
   coApplicants?: Prisma.CoApplicantCreateNestedManyWithoutTenantInput
 }
 
-export type TenantUncheckedCreateWithoutOrganizationDocumentWaiversInput = {
+export type TenantUncheckedCreateWithoutAdminDocumentOverridesInput = {
   id?: string
   name: string
   subdomain: string
@@ -27188,23 +27188,23 @@ export type TenantUncheckedCreateWithoutOrganizationDocumentWaiversInput = {
   coApplicants?: Prisma.CoApplicantUncheckedCreateNestedManyWithoutTenantInput
 }
 
-export type TenantCreateOrConnectWithoutOrganizationDocumentWaiversInput = {
+export type TenantCreateOrConnectWithoutAdminDocumentOverridesInput = {
   where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationDocumentWaiversInput, Prisma.TenantUncheckedCreateWithoutOrganizationDocumentWaiversInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutAdminDocumentOverridesInput, Prisma.TenantUncheckedCreateWithoutAdminDocumentOverridesInput>
 }
 
-export type TenantUpsertWithoutOrganizationDocumentWaiversInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutOrganizationDocumentWaiversInput, Prisma.TenantUncheckedUpdateWithoutOrganizationDocumentWaiversInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationDocumentWaiversInput, Prisma.TenantUncheckedCreateWithoutOrganizationDocumentWaiversInput>
+export type TenantUpsertWithoutAdminDocumentOverridesInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutAdminDocumentOverridesInput, Prisma.TenantUncheckedUpdateWithoutAdminDocumentOverridesInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutAdminDocumentOverridesInput, Prisma.TenantUncheckedCreateWithoutAdminDocumentOverridesInput>
   where?: Prisma.TenantWhereInput
 }
 
-export type TenantUpdateToOneWithWhereWithoutOrganizationDocumentWaiversInput = {
+export type TenantUpdateToOneWithWhereWithoutAdminDocumentOverridesInput = {
   where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutOrganizationDocumentWaiversInput, Prisma.TenantUncheckedUpdateWithoutOrganizationDocumentWaiversInput>
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutAdminDocumentOverridesInput, Prisma.TenantUncheckedUpdateWithoutAdminDocumentOverridesInput>
 }
 
-export type TenantUpdateWithoutOrganizationDocumentWaiversInput = {
+export type TenantUpdateWithoutAdminDocumentOverridesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   subdomain?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27286,7 +27286,7 @@ export type TenantUpdateWithoutOrganizationDocumentWaiversInput = {
   coApplicants?: Prisma.CoApplicantUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantUncheckedUpdateWithoutOrganizationDocumentWaiversInput = {
+export type TenantUncheckedUpdateWithoutAdminDocumentOverridesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   subdomain?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27446,7 +27446,7 @@ export type TenantCountOutputType = {
   paymentMethodQualifications: number
   qualificationPhases: number
   paymentMethodQualificationConfigs: number
-  organizationDocumentWaivers: number
+  adminDocumentOverrides: number
   coApplicants: number
 }
 
@@ -27523,7 +27523,7 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   paymentMethodQualifications?: boolean | TenantCountOutputTypeCountPaymentMethodQualificationsArgs
   qualificationPhases?: boolean | TenantCountOutputTypeCountQualificationPhasesArgs
   paymentMethodQualificationConfigs?: boolean | TenantCountOutputTypeCountPaymentMethodQualificationConfigsArgs
-  organizationDocumentWaivers?: boolean | TenantCountOutputTypeCountOrganizationDocumentWaiversArgs
+  adminDocumentOverrides?: boolean | TenantCountOutputTypeCountAdminDocumentOverridesArgs
   coApplicants?: boolean | TenantCountOutputTypeCountCoApplicantsArgs
 }
 
@@ -28044,8 +28044,8 @@ export type TenantCountOutputTypeCountPaymentMethodQualificationConfigsArgs<ExtA
 /**
  * TenantCountOutputType without action
  */
-export type TenantCountOutputTypeCountOrganizationDocumentWaiversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OrganizationDocumentWaiverWhereInput
+export type TenantCountOutputTypeCountAdminDocumentOverridesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdminDocumentOverrideWhereInput
 }
 
 /**
@@ -28135,7 +28135,7 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   paymentMethodQualifications?: boolean | Prisma.Tenant$paymentMethodQualificationsArgs<ExtArgs>
   qualificationPhases?: boolean | Prisma.Tenant$qualificationPhasesArgs<ExtArgs>
   paymentMethodQualificationConfigs?: boolean | Prisma.Tenant$paymentMethodQualificationConfigsArgs<ExtArgs>
-  organizationDocumentWaivers?: boolean | Prisma.Tenant$organizationDocumentWaiversArgs<ExtArgs>
+  adminDocumentOverrides?: boolean | Prisma.Tenant$adminDocumentOverridesArgs<ExtArgs>
   coApplicants?: boolean | Prisma.Tenant$coApplicantsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
@@ -28225,7 +28225,7 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   paymentMethodQualifications?: boolean | Prisma.Tenant$paymentMethodQualificationsArgs<ExtArgs>
   qualificationPhases?: boolean | Prisma.Tenant$qualificationPhasesArgs<ExtArgs>
   paymentMethodQualificationConfigs?: boolean | Prisma.Tenant$paymentMethodQualificationConfigsArgs<ExtArgs>
-  organizationDocumentWaivers?: boolean | Prisma.Tenant$organizationDocumentWaiversArgs<ExtArgs>
+  adminDocumentOverrides?: boolean | Prisma.Tenant$adminDocumentOverridesArgs<ExtArgs>
   coApplicants?: boolean | Prisma.Tenant$coApplicantsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -28305,7 +28305,7 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     paymentMethodQualifications: Prisma.$PaymentMethodQualificationPayload<ExtArgs>[]
     qualificationPhases: Prisma.$QualificationPhasePayload<ExtArgs>[]
     paymentMethodQualificationConfigs: Prisma.$PaymentMethodQualificationConfigPayload<ExtArgs>[]
-    organizationDocumentWaivers: Prisma.$OrganizationDocumentWaiverPayload<ExtArgs>[]
+    adminDocumentOverrides: Prisma.$AdminDocumentOverridePayload<ExtArgs>[]
     coApplicants: Prisma.$CoApplicantPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -28727,7 +28727,7 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   paymentMethodQualifications<T extends Prisma.Tenant$paymentMethodQualificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$paymentMethodQualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   qualificationPhases<T extends Prisma.Tenant$qualificationPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$qualificationPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualificationPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentMethodQualificationConfigs<T extends Prisma.Tenant$paymentMethodQualificationConfigsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$paymentMethodQualificationConfigsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  organizationDocumentWaivers<T extends Prisma.Tenant$organizationDocumentWaiversArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$organizationDocumentWaiversArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationDocumentWaiverPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adminDocumentOverrides<T extends Prisma.Tenant$adminDocumentOverridesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$adminDocumentOverridesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminDocumentOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   coApplicants<T extends Prisma.Tenant$coApplicantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$coApplicantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoApplicantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -30835,27 +30835,27 @@ export type Tenant$paymentMethodQualificationConfigsArgs<ExtArgs extends runtime
 }
 
 /**
- * Tenant.organizationDocumentWaivers
+ * Tenant.adminDocumentOverrides
  */
-export type Tenant$organizationDocumentWaiversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Tenant$adminDocumentOverridesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the OrganizationDocumentWaiver
+   * Select specific fields to fetch from the AdminDocumentOverride
    */
-  select?: Prisma.OrganizationDocumentWaiverSelect<ExtArgs> | null
+  select?: Prisma.AdminDocumentOverrideSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the OrganizationDocumentWaiver
+   * Omit specific fields from the AdminDocumentOverride
    */
-  omit?: Prisma.OrganizationDocumentWaiverOmit<ExtArgs> | null
+  omit?: Prisma.AdminDocumentOverrideOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.OrganizationDocumentWaiverInclude<ExtArgs> | null
-  where?: Prisma.OrganizationDocumentWaiverWhereInput
-  orderBy?: Prisma.OrganizationDocumentWaiverOrderByWithRelationInput | Prisma.OrganizationDocumentWaiverOrderByWithRelationInput[]
-  cursor?: Prisma.OrganizationDocumentWaiverWhereUniqueInput
+  include?: Prisma.AdminDocumentOverrideInclude<ExtArgs> | null
+  where?: Prisma.AdminDocumentOverrideWhereInput
+  orderBy?: Prisma.AdminDocumentOverrideOrderByWithRelationInput | Prisma.AdminDocumentOverrideOrderByWithRelationInput[]
+  cursor?: Prisma.AdminDocumentOverrideWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.OrganizationDocumentWaiverScalarFieldEnum | Prisma.OrganizationDocumentWaiverScalarFieldEnum[]
+  distinct?: Prisma.AdminDocumentOverrideScalarFieldEnum | Prisma.AdminDocumentOverrideScalarFieldEnum[]
 }
 
 /**

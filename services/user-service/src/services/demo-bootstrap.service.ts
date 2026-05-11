@@ -240,7 +240,7 @@ export async function runDemoBootstrap(
         'property', 'propertyPaymentMethod', 'paymentPlan',
         'documentDefinition', 'approvalStage', 'documentationPlan',
         'questionnairePlanQuestion', 'questionnairePlan', 'documentTemplate', 'amenity',
-        'organizationDocumentWaiver', 'bankDocumentRequirement',
+        'adminDocumentOverride', 'bankDocumentRequirement',
         'gatePhaseReview', 'gatePhase', 'qualificationPhase',
         'paymentMethodQualification', 'organizationPaymentMethod',
         'qualificationFlowPhase', 'paymentMethodQualificationConfig',

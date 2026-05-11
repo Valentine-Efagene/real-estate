@@ -482,10 +482,10 @@ export type QualificationPhase = Prisma.QualificationPhaseModel
  */
 export type PaymentMethodQualificationConfig = Prisma.PaymentMethodQualificationConfigModel
 /**
- * Model OrganizationDocumentWaiver
+ * Model AdminDocumentOverride
  * 
  */
-export type OrganizationDocumentWaiver = Prisma.OrganizationDocumentWaiverModel
+export type AdminDocumentOverride = Prisma.AdminDocumentOverrideModel
 /**
  * Model AsyncJob
  * Async Job — Tracks long-running operations

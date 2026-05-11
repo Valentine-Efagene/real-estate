@@ -613,8 +613,8 @@ model User {
   assignedQualifications PaymentMethodQualification[] @relation("QualificationAssignee")
   approvedQualifications PaymentMethodQualification[] @relation("QualificationApprover")
 
-  // Document waivers created by this user
-  documentWaivers OrganizationDocumentWaiver[] @relation("DocumentWaiverCreator")
+  // Document overrides created by this user (admin)
+  documentOverrides AdminDocumentOverride[] @relation("DocumentOverrideCreator")
 
   @@index([email])
   @@index([tenantId])
@@ -1309,9 +1309,10 @@ model Tenant {
   paymentMethodQualifications PaymentMethodQualification[]
   qualificationPhases         QualificationPhase[]
 
-  // Per-org-type qualification configs and document waivers
   paymentMethodQualificationConfigs PaymentMethodQualificationConfig[]
-  organizationDocumentWaivers       OrganizationDocumentWaiver[]
+
+  // Admin document overrides
+  adminDocumentOverrides AdminDocumentOverride[]
 
   // Co-applicants
   coApplicants CoApplicant[]
@@ -1910,8 +1911,8 @@ model DocumentDefinition {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Organization waivers for this document definition
-  waivers OrganizationDocumentWaiver[]
+  // Admin overrides referencing this document definition
+  overrides AdminDocumentOverride[]
 
   @@index([planId])
   @@map("document_definitions")
@@ -2498,6 +2499,9 @@ model Application {
   // Co-applicants (joint mortgage / joint ownership)
   coApplicants CoApplicant[]
 
+  // Admin document overrides for this application
+  documentOverrides AdminDocumentOverride[]
+
   @@index([tenantId])
   @@index([propertyUnitId])
   @@index([buyerId])
@@ -2781,7 +2785,8 @@ model ApplicationPhase {
   adjustments ApplicationAdjustment[]
 
   // Back-relation for applications where this is the current phase
-  currentForApplications Application[] @relation("CurrentPhase")
+  currentForApplications Application[]           @relation("CurrentPhase")
+  adminDocumentOverrides AdminDocumentOverride[]
 
   @@index([tenantId])
   @@index([applicationId])
@@ -4495,9 +4500,6 @@ model OrganizationPaymentMethod {
   // One-to-one: the qualification workflow instance (if flow is required)
   qualification PaymentMethodQualification?
 
-  // Document waivers — docs this org considers optional for this payment method
-  documentWaivers OrganizationDocumentWaiver[]
-
   @@unique([organizationId, paymentMethodId])
   @@index([tenantId])
   @@index([organizationId])
@@ -4655,46 +4657,47 @@ model PaymentMethodQualificationConfig {
 }
 
 // =============================================================================
-// ORGANIZATION DOCUMENT WAIVER - Docs an org considers optional for a method
+// ADMIN DOCUMENT OVERRIDE - Per-application document requirement override
 // =============================================================================
-// After a bank (or any org) qualifies for a payment method, they can waive
-// specific DocumentDefinitions across all documentation phases. When a customer
-// application involves this bank/org, waived documents become optional (not
-// required) in the effective documentation requirements.
+// When an admin needs to waive or skip document requirements for a specific
+// application they create an override with a mandatory reason for audit trail.
+// This replaces the previous org-level exclusion list pattern.
 //
-// Example: Access Bank waives PROOF_OF_ADDRESS for the MREIF 10/90 Mortgage.
-// When Emeka's application uses Access Bank as lender, PROOF_OF_ADDRESS is
-// shown but marked optional in the preapproval documentation phase.
+// Scope hierarchy (most specific wins):
+//   - application-level: all document phases in the application
+//   - phase-level:        specific phase only
+//   - document-level:     specific document definition only
 // =============================================================================
 
-model OrganizationDocumentWaiver {
+model AdminDocumentOverride {
   id       String @id @default(cuid())
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  // The org's qualified assignment to a payment method
-  organizationPaymentMethodId String
-  organizationPaymentMethod   OrganizationPaymentMethod @relation(fields: [organizationPaymentMethodId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
-  // The document definition being waived
-  documentDefinitionId String
-  documentDefinition   DocumentDefinition @relation(fields: [documentDefinitionId], references: [id], onDelete: Cascade)
+  phaseId String?
+  phase   ApplicationPhase? @relation(fields: [phaseId], references: [id], onDelete: SetNull)
 
-  // Reason for waiving (audit trail)
-  reason String? @db.Text
+  documentDefinitionId String?
+  documentDefinition   DocumentDefinition? @relation(fields: [documentDefinitionId], references: [id], onDelete: SetNull)
 
-  // Who created this waiver
-  waivedById String?
-  waivedBy   User?   @relation("DocumentWaiverCreator", fields: [waivedById], references: [id])
+  // Currently only 'proceed' — reserved for future decisions (e.g. 'escalate')
+  decision String @default("proceed")
+  reason   String @db.Text
+
+  createdById String
+  createdBy   User   @relation("DocumentOverrideCreator", fields: [createdById], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([organizationPaymentMethodId, documentDefinitionId])
   @@index([tenantId])
-  @@index([organizationPaymentMethodId])
+  @@index([applicationId])
+  @@index([phaseId])
   @@index([documentDefinitionId])
-  @@map("organization_document_waivers")
+  @@map("admin_document_overrides")
 }
 
 // =============================================================================

@@ -6,7 +6,6 @@ import { permissionRouter } from './routes/permissions';
 import { tenantRouter } from './routes/tenants';
 import { tenantMembershipRouter } from './routes/tenant-memberships';
 import { socialRouter } from './routes/socials';
-import { apiKeyRouter } from './routes/api-keys';
 import { adminRouter } from './routes/admin';
 import { organizationRouter } from './routes/organizations';
 import { invitationRouter, publicInvitationRouter } from './routes/invitations';
@@ -85,7 +84,6 @@ app.use('/roles', roleRouter);
 app.use('/permissions', permissionRouter);
 app.use('/tenants', tenantRouter);
 app.use('/socials', socialRouter);
-app.use('/api-keys', apiKeyRouter);
 app.use('/admin', adminRouter);
 app.use('/organizations', organizationRouter);
 

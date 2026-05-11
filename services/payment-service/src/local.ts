@@ -1,11 +1,9 @@
 import { config } from 'dotenv';
 config({ path: '.env.localstack' });
 
-import { setupAuth } from '@valentine-efagene/qshelter-common';
 import { app } from './app';
 
 async function start() {
-    await setupAuth();
     const port = Number(process.env.PORT ?? 3005);
 
     app.listen(port, () => {

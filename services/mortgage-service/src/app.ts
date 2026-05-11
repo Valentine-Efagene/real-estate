@@ -24,6 +24,7 @@ import organizationReviewsRouter from './routes/organization-reviews';
 import qualificationFlowRouter from './routes/qualification-flow';
 import gatePlanRouter from './routes/gate-plan';
 import coApplicantRouter, { acceptByTokenRouter } from './routes/co-applicant';
+import adminOverrideRouter from './routes/admin-override';
 
 export const app: Application = express();
 
@@ -103,6 +104,7 @@ app.use('/payment-methods', paymentMethodRouter);
 app.use('/qualification-flows', qualificationFlowRouter);
 app.use('/gate-plans', gatePlanRouter);
 app.use('/applications/:id/co-applicants', coApplicantRouter);
+app.use('/applications/:applicationId/overrides', adminOverrideRouter);
 app.use('/applications', applicationRouter);
 app.use('/co-applicant-invites', acceptByTokenRouter);
 app.use('/offer-letters', offerLetterRouter);

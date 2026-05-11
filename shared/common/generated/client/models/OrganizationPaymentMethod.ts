@@ -251,7 +251,6 @@ export type OrganizationPaymentMethodWhereInput = {
   paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
   preferredStaff?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   qualification?: Prisma.XOR<Prisma.PaymentMethodQualificationNullableScalarRelationFilter, Prisma.PaymentMethodQualificationWhereInput> | null
-  documentWaivers?: Prisma.OrganizationDocumentWaiverListRelationFilter
 }
 
 export type OrganizationPaymentMethodOrderByWithRelationInput = {
@@ -273,7 +272,6 @@ export type OrganizationPaymentMethodOrderByWithRelationInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodOrderByWithRelationInput
   preferredStaff?: Prisma.UserOrderByWithRelationInput
   qualification?: Prisma.PaymentMethodQualificationOrderByWithRelationInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverOrderByRelationAggregateInput
   _relevance?: Prisma.OrganizationPaymentMethodOrderByRelevanceInput
 }
 
@@ -300,7 +298,6 @@ export type OrganizationPaymentMethodWhereUniqueInput = Prisma.AtLeast<{
   paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
   preferredStaff?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   qualification?: Prisma.XOR<Prisma.PaymentMethodQualificationNullableScalarRelationFilter, Prisma.PaymentMethodQualificationWhereInput> | null
-  documentWaivers?: Prisma.OrganizationDocumentWaiverListRelationFilter
 }, "id" | "organizationId_paymentMethodId">
 
 export type OrganizationPaymentMethodOrderByWithAggregationInput = {
@@ -356,7 +353,6 @@ export type OrganizationPaymentMethodCreateInput = {
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutOrganizationAssignmentsInput
   preferredStaff?: Prisma.UserCreateNestedOneWithoutPreferredPaymentMethodsInput
   qualification?: Prisma.PaymentMethodQualificationCreateNestedOneWithoutOrganizationPaymentMethodInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodUncheckedCreateInput = {
@@ -374,7 +370,6 @@ export type OrganizationPaymentMethodUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   qualification?: Prisma.PaymentMethodQualificationUncheckedCreateNestedOneWithoutOrganizationPaymentMethodInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodUpdateInput = {
@@ -392,7 +387,6 @@ export type OrganizationPaymentMethodUpdateInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutOrganizationAssignmentsNestedInput
   preferredStaff?: Prisma.UserUpdateOneWithoutPreferredPaymentMethodsNestedInput
   qualification?: Prisma.PaymentMethodQualificationUpdateOneWithoutOrganizationPaymentMethodNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodUncheckedUpdateInput = {
@@ -410,7 +404,6 @@ export type OrganizationPaymentMethodUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   qualification?: Prisma.PaymentMethodQualificationUncheckedUpdateOneWithoutOrganizationPaymentMethodNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodCreateManyInput = {
@@ -717,20 +710,6 @@ export type OrganizationPaymentMethodUpdateOneRequiredWithoutQualificationNested
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationPaymentMethodUpdateToOneWithWhereWithoutQualificationInput, Prisma.OrganizationPaymentMethodUpdateWithoutQualificationInput>, Prisma.OrganizationPaymentMethodUncheckedUpdateWithoutQualificationInput>
 }
 
-export type OrganizationPaymentMethodCreateNestedOneWithoutDocumentWaiversInput = {
-  create?: Prisma.XOR<Prisma.OrganizationPaymentMethodCreateWithoutDocumentWaiversInput, Prisma.OrganizationPaymentMethodUncheckedCreateWithoutDocumentWaiversInput>
-  connectOrCreate?: Prisma.OrganizationPaymentMethodCreateOrConnectWithoutDocumentWaiversInput
-  connect?: Prisma.OrganizationPaymentMethodWhereUniqueInput
-}
-
-export type OrganizationPaymentMethodUpdateOneRequiredWithoutDocumentWaiversNestedInput = {
-  create?: Prisma.XOR<Prisma.OrganizationPaymentMethodCreateWithoutDocumentWaiversInput, Prisma.OrganizationPaymentMethodUncheckedCreateWithoutDocumentWaiversInput>
-  connectOrCreate?: Prisma.OrganizationPaymentMethodCreateOrConnectWithoutDocumentWaiversInput
-  upsert?: Prisma.OrganizationPaymentMethodUpsertWithoutDocumentWaiversInput
-  connect?: Prisma.OrganizationPaymentMethodWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationPaymentMethodUpdateToOneWithWhereWithoutDocumentWaiversInput, Prisma.OrganizationPaymentMethodUpdateWithoutDocumentWaiversInput>, Prisma.OrganizationPaymentMethodUncheckedUpdateWithoutDocumentWaiversInput>
-}
-
 export type OrganizationPaymentMethodCreateWithoutPreferredStaffInput = {
   id?: string
   status?: $Enums.QualificationStatus
@@ -745,7 +724,6 @@ export type OrganizationPaymentMethodCreateWithoutPreferredStaffInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutPaymentMethodAssignmentsInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutOrganizationAssignmentsInput
   qualification?: Prisma.PaymentMethodQualificationCreateNestedOneWithoutOrganizationPaymentMethodInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodUncheckedCreateWithoutPreferredStaffInput = {
@@ -762,7 +740,6 @@ export type OrganizationPaymentMethodUncheckedCreateWithoutPreferredStaffInput =
   createdAt?: Date | string
   updatedAt?: Date | string
   qualification?: Prisma.PaymentMethodQualificationUncheckedCreateNestedOneWithoutOrganizationPaymentMethodInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodCreateOrConnectWithoutPreferredStaffInput = {
@@ -824,7 +801,6 @@ export type OrganizationPaymentMethodCreateWithoutOrganizationInput = {
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutOrganizationAssignmentsInput
   preferredStaff?: Prisma.UserCreateNestedOneWithoutPreferredPaymentMethodsInput
   qualification?: Prisma.PaymentMethodQualificationCreateNestedOneWithoutOrganizationPaymentMethodInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodUncheckedCreateWithoutOrganizationInput = {
@@ -841,7 +817,6 @@ export type OrganizationPaymentMethodUncheckedCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   qualification?: Prisma.PaymentMethodQualificationUncheckedCreateNestedOneWithoutOrganizationPaymentMethodInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodCreateOrConnectWithoutOrganizationInput = {
@@ -884,7 +859,6 @@ export type OrganizationPaymentMethodCreateWithoutTenantInput = {
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutOrganizationAssignmentsInput
   preferredStaff?: Prisma.UserCreateNestedOneWithoutPreferredPaymentMethodsInput
   qualification?: Prisma.PaymentMethodQualificationCreateNestedOneWithoutOrganizationPaymentMethodInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodUncheckedCreateWithoutTenantInput = {
@@ -901,7 +875,6 @@ export type OrganizationPaymentMethodUncheckedCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   qualification?: Prisma.PaymentMethodQualificationUncheckedCreateNestedOneWithoutOrganizationPaymentMethodInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodCreateOrConnectWithoutTenantInput = {
@@ -944,7 +917,6 @@ export type OrganizationPaymentMethodCreateWithoutPaymentMethodInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutPaymentMethodAssignmentsInput
   preferredStaff?: Prisma.UserCreateNestedOneWithoutPreferredPaymentMethodsInput
   qualification?: Prisma.PaymentMethodQualificationCreateNestedOneWithoutOrganizationPaymentMethodInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodUncheckedCreateWithoutPaymentMethodInput = {
@@ -961,7 +933,6 @@ export type OrganizationPaymentMethodUncheckedCreateWithoutPaymentMethodInput = 
   createdAt?: Date | string
   updatedAt?: Date | string
   qualification?: Prisma.PaymentMethodQualificationUncheckedCreateNestedOneWithoutOrganizationPaymentMethodInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodCreateOrConnectWithoutPaymentMethodInput = {
@@ -1004,7 +975,6 @@ export type OrganizationPaymentMethodCreateWithoutQualificationInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutPaymentMethodAssignmentsInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutOrganizationAssignmentsInput
   preferredStaff?: Prisma.UserCreateNestedOneWithoutPreferredPaymentMethodsInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodUncheckedCreateWithoutQualificationInput = {
@@ -1021,7 +991,6 @@ export type OrganizationPaymentMethodUncheckedCreateWithoutQualificationInput = 
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedCreateNestedManyWithoutOrganizationPaymentMethodInput
 }
 
 export type OrganizationPaymentMethodCreateOrConnectWithoutQualificationInput = {
@@ -1054,7 +1023,6 @@ export type OrganizationPaymentMethodUpdateWithoutQualificationInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutPaymentMethodAssignmentsNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutOrganizationAssignmentsNestedInput
   preferredStaff?: Prisma.UserUpdateOneWithoutPreferredPaymentMethodsNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodUncheckedUpdateWithoutQualificationInput = {
@@ -1071,91 +1039,6 @@ export type OrganizationPaymentMethodUncheckedUpdateWithoutQualificationInput = 
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutOrganizationPaymentMethodNestedInput
-}
-
-export type OrganizationPaymentMethodCreateWithoutDocumentWaiversInput = {
-  id?: string
-  status?: $Enums.QualificationStatus
-  appliedAt?: Date | string
-  qualifiedAt?: Date | string | null
-  suspendedAt?: Date | string | null
-  expiresAt?: Date | string | null
-  notes?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  tenant: Prisma.TenantCreateNestedOneWithoutOrganizationPaymentMethodsInput
-  organization: Prisma.OrganizationCreateNestedOneWithoutPaymentMethodAssignmentsInput
-  paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutOrganizationAssignmentsInput
-  preferredStaff?: Prisma.UserCreateNestedOneWithoutPreferredPaymentMethodsInput
-  qualification?: Prisma.PaymentMethodQualificationCreateNestedOneWithoutOrganizationPaymentMethodInput
-}
-
-export type OrganizationPaymentMethodUncheckedCreateWithoutDocumentWaiversInput = {
-  id?: string
-  tenantId: string
-  organizationId: string
-  paymentMethodId: string
-  preferredStaffId?: string | null
-  status?: $Enums.QualificationStatus
-  appliedAt?: Date | string
-  qualifiedAt?: Date | string | null
-  suspendedAt?: Date | string | null
-  expiresAt?: Date | string | null
-  notes?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  qualification?: Prisma.PaymentMethodQualificationUncheckedCreateNestedOneWithoutOrganizationPaymentMethodInput
-}
-
-export type OrganizationPaymentMethodCreateOrConnectWithoutDocumentWaiversInput = {
-  where: Prisma.OrganizationPaymentMethodWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationPaymentMethodCreateWithoutDocumentWaiversInput, Prisma.OrganizationPaymentMethodUncheckedCreateWithoutDocumentWaiversInput>
-}
-
-export type OrganizationPaymentMethodUpsertWithoutDocumentWaiversInput = {
-  update: Prisma.XOR<Prisma.OrganizationPaymentMethodUpdateWithoutDocumentWaiversInput, Prisma.OrganizationPaymentMethodUncheckedUpdateWithoutDocumentWaiversInput>
-  create: Prisma.XOR<Prisma.OrganizationPaymentMethodCreateWithoutDocumentWaiversInput, Prisma.OrganizationPaymentMethodUncheckedCreateWithoutDocumentWaiversInput>
-  where?: Prisma.OrganizationPaymentMethodWhereInput
-}
-
-export type OrganizationPaymentMethodUpdateToOneWithWhereWithoutDocumentWaiversInput = {
-  where?: Prisma.OrganizationPaymentMethodWhereInput
-  data: Prisma.XOR<Prisma.OrganizationPaymentMethodUpdateWithoutDocumentWaiversInput, Prisma.OrganizationPaymentMethodUncheckedUpdateWithoutDocumentWaiversInput>
-}
-
-export type OrganizationPaymentMethodUpdateWithoutDocumentWaiversInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumQualificationStatusFieldUpdateOperationsInput | $Enums.QualificationStatus
-  appliedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  qualifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationPaymentMethodsNestedInput
-  organization?: Prisma.OrganizationUpdateOneRequiredWithoutPaymentMethodAssignmentsNestedInput
-  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutOrganizationAssignmentsNestedInput
-  preferredStaff?: Prisma.UserUpdateOneWithoutPreferredPaymentMethodsNestedInput
-  qualification?: Prisma.PaymentMethodQualificationUpdateOneWithoutOrganizationPaymentMethodNestedInput
-}
-
-export type OrganizationPaymentMethodUncheckedUpdateWithoutDocumentWaiversInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumQualificationStatusFieldUpdateOperationsInput | $Enums.QualificationStatus
-  appliedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  qualifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  qualification?: Prisma.PaymentMethodQualificationUncheckedUpdateOneWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodCreateManyPreferredStaffInput = {
@@ -1187,7 +1070,6 @@ export type OrganizationPaymentMethodUpdateWithoutPreferredStaffInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutPaymentMethodAssignmentsNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutOrganizationAssignmentsNestedInput
   qualification?: Prisma.PaymentMethodQualificationUpdateOneWithoutOrganizationPaymentMethodNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodUncheckedUpdateWithoutPreferredStaffInput = {
@@ -1204,7 +1086,6 @@ export type OrganizationPaymentMethodUncheckedUpdateWithoutPreferredStaffInput =
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   qualification?: Prisma.PaymentMethodQualificationUncheckedUpdateOneWithoutOrganizationPaymentMethodNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodUncheckedUpdateManyWithoutPreferredStaffInput = {
@@ -1251,7 +1132,6 @@ export type OrganizationPaymentMethodUpdateWithoutOrganizationInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutOrganizationAssignmentsNestedInput
   preferredStaff?: Prisma.UserUpdateOneWithoutPreferredPaymentMethodsNestedInput
   qualification?: Prisma.PaymentMethodQualificationUpdateOneWithoutOrganizationPaymentMethodNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodUncheckedUpdateWithoutOrganizationInput = {
@@ -1268,7 +1148,6 @@ export type OrganizationPaymentMethodUncheckedUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   qualification?: Prisma.PaymentMethodQualificationUncheckedUpdateOneWithoutOrganizationPaymentMethodNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodUncheckedUpdateManyWithoutOrganizationInput = {
@@ -1315,7 +1194,6 @@ export type OrganizationPaymentMethodUpdateWithoutTenantInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutOrganizationAssignmentsNestedInput
   preferredStaff?: Prisma.UserUpdateOneWithoutPreferredPaymentMethodsNestedInput
   qualification?: Prisma.PaymentMethodQualificationUpdateOneWithoutOrganizationPaymentMethodNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodUncheckedUpdateWithoutTenantInput = {
@@ -1332,7 +1210,6 @@ export type OrganizationPaymentMethodUncheckedUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   qualification?: Prisma.PaymentMethodQualificationUncheckedUpdateOneWithoutOrganizationPaymentMethodNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodUncheckedUpdateManyWithoutTenantInput = {
@@ -1379,7 +1256,6 @@ export type OrganizationPaymentMethodUpdateWithoutPaymentMethodInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutPaymentMethodAssignmentsNestedInput
   preferredStaff?: Prisma.UserUpdateOneWithoutPreferredPaymentMethodsNestedInput
   qualification?: Prisma.PaymentMethodQualificationUpdateOneWithoutOrganizationPaymentMethodNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodUncheckedUpdateWithoutPaymentMethodInput = {
@@ -1396,7 +1272,6 @@ export type OrganizationPaymentMethodUncheckedUpdateWithoutPaymentMethodInput = 
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   qualification?: Prisma.PaymentMethodQualificationUncheckedUpdateOneWithoutOrganizationPaymentMethodNestedInput
-  documentWaivers?: Prisma.OrganizationDocumentWaiverUncheckedUpdateManyWithoutOrganizationPaymentMethodNestedInput
 }
 
 export type OrganizationPaymentMethodUncheckedUpdateManyWithoutPaymentMethodInput = {
@@ -1414,35 +1289,6 @@ export type OrganizationPaymentMethodUncheckedUpdateManyWithoutPaymentMethodInpu
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-
-/**
- * Count Type OrganizationPaymentMethodCountOutputType
- */
-
-export type OrganizationPaymentMethodCountOutputType = {
-  documentWaivers: number
-}
-
-export type OrganizationPaymentMethodCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  documentWaivers?: boolean | OrganizationPaymentMethodCountOutputTypeCountDocumentWaiversArgs
-}
-
-/**
- * OrganizationPaymentMethodCountOutputType without action
- */
-export type OrganizationPaymentMethodCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the OrganizationPaymentMethodCountOutputType
-   */
-  select?: Prisma.OrganizationPaymentMethodCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * OrganizationPaymentMethodCountOutputType without action
- */
-export type OrganizationPaymentMethodCountOutputTypeCountDocumentWaiversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OrganizationDocumentWaiverWhereInput
-}
 
 
 export type OrganizationPaymentMethodSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1464,8 +1310,6 @@ export type OrganizationPaymentMethodSelect<ExtArgs extends runtime.Types.Extens
   paymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
   preferredStaff?: boolean | Prisma.OrganizationPaymentMethod$preferredStaffArgs<ExtArgs>
   qualification?: boolean | Prisma.OrganizationPaymentMethod$qualificationArgs<ExtArgs>
-  documentWaivers?: boolean | Prisma.OrganizationPaymentMethod$documentWaiversArgs<ExtArgs>
-  _count?: boolean | Prisma.OrganizationPaymentMethodCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organizationPaymentMethod"]>
 
 
@@ -1493,8 +1337,6 @@ export type OrganizationPaymentMethodInclude<ExtArgs extends runtime.Types.Exten
   paymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
   preferredStaff?: boolean | Prisma.OrganizationPaymentMethod$preferredStaffArgs<ExtArgs>
   qualification?: boolean | Prisma.OrganizationPaymentMethod$qualificationArgs<ExtArgs>
-  documentWaivers?: boolean | Prisma.OrganizationPaymentMethod$documentWaiversArgs<ExtArgs>
-  _count?: boolean | Prisma.OrganizationPaymentMethodCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $OrganizationPaymentMethodPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1505,7 +1347,6 @@ export type $OrganizationPaymentMethodPayload<ExtArgs extends runtime.Types.Exte
     paymentMethod: Prisma.$PropertyPaymentMethodPayload<ExtArgs>
     preferredStaff: Prisma.$UserPayload<ExtArgs> | null
     qualification: Prisma.$PaymentMethodQualificationPayload<ExtArgs> | null
-    documentWaivers: Prisma.$OrganizationDocumentWaiverPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1866,7 +1707,6 @@ export interface Prisma__OrganizationPaymentMethodClient<T, Null = never, ExtArg
   paymentMethod<T extends Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   preferredStaff<T extends Prisma.OrganizationPaymentMethod$preferredStaffArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationPaymentMethod$preferredStaffArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   qualification<T extends Prisma.OrganizationPaymentMethod$qualificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationPaymentMethod$qualificationArgs<ExtArgs>>): Prisma.Prisma__PaymentMethodQualificationClient<runtime.Types.Result.GetResult<Prisma.$PaymentMethodQualificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  documentWaivers<T extends Prisma.OrganizationPaymentMethod$documentWaiversArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationPaymentMethod$documentWaiversArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationDocumentWaiverPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2287,30 +2127,6 @@ export type OrganizationPaymentMethod$qualificationArgs<ExtArgs extends runtime.
    */
   include?: Prisma.PaymentMethodQualificationInclude<ExtArgs> | null
   where?: Prisma.PaymentMethodQualificationWhereInput
-}
-
-/**
- * OrganizationPaymentMethod.documentWaivers
- */
-export type OrganizationPaymentMethod$documentWaiversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the OrganizationDocumentWaiver
-   */
-  select?: Prisma.OrganizationDocumentWaiverSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the OrganizationDocumentWaiver
-   */
-  omit?: Prisma.OrganizationDocumentWaiverOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.OrganizationDocumentWaiverInclude<ExtArgs> | null
-  where?: Prisma.OrganizationDocumentWaiverWhereInput
-  orderBy?: Prisma.OrganizationDocumentWaiverOrderByWithRelationInput | Prisma.OrganizationDocumentWaiverOrderByWithRelationInput[]
-  cursor?: Prisma.OrganizationDocumentWaiverWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.OrganizationDocumentWaiverScalarFieldEnum | Prisma.OrganizationDocumentWaiverScalarFieldEnum[]
 }
 
 /**

@@ -7,7 +7,6 @@ import type {
     ReviewQualificationInput,
     UpdateQualificationStatusInput,
     AssignQualificationFlowInput,
-    CreateDocumentWaiverInput,
 } from '../validators/qualification-flow.validator';
 
 type AnyPrismaClient = PrismaClient;
@@ -48,11 +47,6 @@ export interface QualificationFlowService {
     // Find all payment methods an org is assigned to (with qualification status)
     findOrgPaymentMethods(organizationId: string): Promise<any[]>;
 
-    // Document waivers — docs an org considers optional for a payment method
-    createDocumentWaiver(assignmentId: string, tenantId: string, userId: string, data: CreateDocumentWaiverInput): Promise<any>;
-    deleteDocumentWaiver(waiverId: string): Promise<{ success: boolean }>;
-    findDocumentWaivers(assignmentId: string): Promise<any[]>;
-    findWaivableDocuments(assignmentId: string): Promise<any[]>;
 }
 
 export function createQualificationFlowService(prisma: AnyPrismaClient = defaultPrisma): QualificationFlowService {
@@ -695,135 +689,6 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
     }
 
     // =========================================================================
-    // DOCUMENT WAIVERS — Docs an org considers optional for a payment method
-    // =========================================================================
-
-    async function createDocumentWaiver(assignmentId: string, tenantId: string, userId: string, data: CreateDocumentWaiverInput) {
-        // Validate assignment exists and is QUALIFIED
-        const assignment = await prisma.organizationPaymentMethod.findUnique({
-            where: { id: assignmentId },
-        });
-        if (!assignment) throw new AppError(404, 'Assignment not found');
-        if (assignment.status !== 'QUALIFIED') {
-            throw new AppError(400, 'Organization must be QUALIFIED before configuring document waivers');
-        }
-
-        // Validate document definition exists
-        const docDef = await prisma.documentDefinition.findUnique({
-            where: { id: data.documentDefinitionId },
-        });
-        if (!docDef) throw new AppError(404, 'Document definition not found');
-
-        // Verify the document definition belongs to a documentation plan used by this payment method
-        const method = await prisma.propertyPaymentMethod.findUnique({
-            where: { id: assignment.paymentMethodId },
-            include: {
-                phases: {
-                    where: { phaseCategory: 'DOCUMENTATION' },
-                    select: { documentationPlanId: true },
-                },
-            },
-        });
-        const planIds = (method?.phases || []).map((p: any) => p.documentationPlanId).filter(Boolean);
-        if (!planIds.includes(docDef.planId)) {
-            throw new AppError(400, 'Document definition does not belong to any documentation phase of this payment method');
-        }
-
-        // Check for duplicate
-        const existing = await prisma.organizationDocumentWaiver.findUnique({
-            where: {
-                organizationPaymentMethodId_documentDefinitionId: {
-                    organizationPaymentMethodId: assignmentId,
-                    documentDefinitionId: data.documentDefinitionId,
-                },
-            },
-        });
-        if (existing) throw new AppError(409, 'Waiver already exists for this document');
-
-        return prisma.organizationDocumentWaiver.create({
-            data: {
-                tenantId,
-                organizationPaymentMethodId: assignmentId,
-                documentDefinitionId: data.documentDefinitionId,
-                reason: data.reason,
-                waivedById: userId,
-            },
-            include: {
-                documentDefinition: { select: { id: true, documentType: true, documentName: true, planId: true } },
-            },
-        });
-    }
-
-    async function deleteDocumentWaiver(waiverId: string) {
-        const waiver = await prisma.organizationDocumentWaiver.findUnique({ where: { id: waiverId } });
-        if (!waiver) throw new AppError(404, 'Document waiver not found');
-        await prisma.organizationDocumentWaiver.delete({ where: { id: waiverId } });
-        return { success: true };
-    }
-
-    async function findDocumentWaivers(assignmentId: string) {
-        return prisma.organizationDocumentWaiver.findMany({
-            where: { organizationPaymentMethodId: assignmentId },
-            include: {
-                documentDefinition: {
-                    select: { id: true, documentType: true, documentName: true, planId: true, isRequired: true, uploadedBy: true },
-                },
-                waivedBy: { select: { id: true, firstName: true, lastName: true, email: true } },
-            },
-            orderBy: { createdAt: 'asc' },
-        });
-    }
-
-    /**
-     * List all document definitions across all DOCUMENTATION phases of a payment method
-     * that can be waived by this org. Returns docs with waiver status.
-     */
-    async function findWaivableDocuments(assignmentId: string) {
-        const assignment = await prisma.organizationPaymentMethod.findUnique({
-            where: { id: assignmentId },
-            include: {
-                paymentMethod: {
-                    include: {
-                        phases: {
-                            where: { phaseCategory: 'DOCUMENTATION' },
-                            include: {
-                                documentationPlan: {
-                                    include: {
-                                        documentDefinitions: { orderBy: { order: 'asc' } },
-                                    },
-                                },
-                            },
-                            orderBy: { order: 'asc' },
-                        },
-                    },
-                },
-                documentWaivers: true,
-            },
-        });
-        if (!assignment) throw new AppError(404, 'Assignment not found');
-
-        const waivedDocIds = new Set(assignment.documentWaivers.map((w: any) => w.documentDefinitionId));
-
-        // Flatten all document definitions across all doc phases
-        const result: any[] = [];
-        for (const phase of (assignment as any).paymentMethod.phases) {
-            if (!phase.documentationPlan) continue;
-            for (const docDef of phase.documentationPlan.documentDefinitions) {
-                result.push({
-                    ...docDef,
-                    phaseName: phase.name,
-                    phaseId: phase.id,
-                    planName: phase.documentationPlan.name,
-                    isWaived: waivedDocIds.has(docDef.id),
-                    waiver: assignment.documentWaivers.find((w: any) => w.documentDefinitionId === docDef.id) || null,
-                });
-            }
-        }
-
-        return result;
-    }
-
-    // =========================================================================
     // RETURN INTERFACE
     // =========================================================================
 
@@ -842,10 +707,6 @@ export function createQualificationFlowService(prisma: AnyPrismaClient = default
         reviewGatePhase,
         updateAssignmentStatus,
         findOrgPaymentMethods,
-        createDocumentWaiver,
-        deleteDocumentWaiver,
-        findDocumentWaivers,
-        findWaivableDocuments,
     };
 }
 

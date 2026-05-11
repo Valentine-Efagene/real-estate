@@ -1,0 +1,60 @@
+service: authorizer-api-dynamo
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ${opt:region, 'us-east-1'}
+  stage: ${opt:stage, 'staging'}
+  httpApi:
+    cors: true
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    STAGE: ${self:provider.stage}
+    PERMISSIONS_TABLE: ${ssm:/qshelter/${self:provider.stage}/role-policies-table-name}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Scan
+          Resource:
+            - arn:aws:dynamodb:${self:provider.region}:*:table/qshelter-${self:provider.stage}-role-policies
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+
+functions:
+  api:
+    handler: dist/lambda.handler
+    timeout: 30
+    memorySize: 256
+    events:
+      - httpApi:
+          path: /health
+          method: GET
+      - httpApi:
+          path: /openapi.json
+          method: GET
+      - httpApi:
+          path: /api-docs
+          method: GET
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+
+plugins:
+  - serverless-offline
+
+package:
+  patterns:
+    - dist/**

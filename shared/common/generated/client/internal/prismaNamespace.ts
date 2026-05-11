@@ -474,7 +474,7 @@ export const ModelName = {
   PaymentMethodQualification: 'PaymentMethodQualification',
   QualificationPhase: 'QualificationPhase',
   PaymentMethodQualificationConfig: 'PaymentMethodQualificationConfig',
-  OrganizationDocumentWaiver: 'OrganizationDocumentWaiver',
+  AdminDocumentOverride: 'AdminDocumentOverride',
   AsyncJob: 'AsyncJob'
 } as const
 
@@ -491,7 +491,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "tenantMembershipRole" | "organization" | "organizationMember" | "organizationMemberRole" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyPromotion" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationAdjustment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "organizationDocumentWaiver" | "asyncJob"
+    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "tenantMembership" | "tenantMembershipRole" | "organization" | "organizationMember" | "organizationMemberRole" | "organizationInvitation" | "onboardingFlow" | "onboardingFlowPhase" | "organizationOnboarding" | "onboardingPhase" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyPromotion" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "gatePlan" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "application" | "coApplicant" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "gatePhase" | "gatePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationAdjustment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning" | "qualificationFlow" | "qualificationFlowPhase" | "organizationPaymentMethod" | "paymentMethodQualification" | "qualificationPhase" | "paymentMethodQualificationConfig" | "adminDocumentOverride" | "asyncJob"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -6435,69 +6435,69 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    OrganizationDocumentWaiver: {
-      payload: Prisma.$OrganizationDocumentWaiverPayload<ExtArgs>
-      fields: Prisma.OrganizationDocumentWaiverFieldRefs
+    AdminDocumentOverride: {
+      payload: Prisma.$AdminDocumentOverridePayload<ExtArgs>
+      fields: Prisma.AdminDocumentOverrideFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.OrganizationDocumentWaiverFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload> | null
+          args: Prisma.AdminDocumentOverrideFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminDocumentOverridePayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.OrganizationDocumentWaiverFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+          args: Prisma.AdminDocumentOverrideFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminDocumentOverridePayload>
         }
         findFirst: {
-          args: Prisma.OrganizationDocumentWaiverFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload> | null
+          args: Prisma.AdminDocumentOverrideFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminDocumentOverridePayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.OrganizationDocumentWaiverFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+          args: Prisma.AdminDocumentOverrideFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminDocumentOverridePayload>
         }
         findMany: {
-          args: Prisma.OrganizationDocumentWaiverFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>[]
+          args: Prisma.AdminDocumentOverrideFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminDocumentOverridePayload>[]
         }
         create: {
-          args: Prisma.OrganizationDocumentWaiverCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+          args: Prisma.AdminDocumentOverrideCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminDocumentOverridePayload>
         }
         createMany: {
-          args: Prisma.OrganizationDocumentWaiverCreateManyArgs<ExtArgs>
+          args: Prisma.AdminDocumentOverrideCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.OrganizationDocumentWaiverDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+          args: Prisma.AdminDocumentOverrideDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminDocumentOverridePayload>
         }
         update: {
-          args: Prisma.OrganizationDocumentWaiverUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+          args: Prisma.AdminDocumentOverrideUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminDocumentOverridePayload>
         }
         deleteMany: {
-          args: Prisma.OrganizationDocumentWaiverDeleteManyArgs<ExtArgs>
+          args: Prisma.AdminDocumentOverrideDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.OrganizationDocumentWaiverUpdateManyArgs<ExtArgs>
+          args: Prisma.AdminDocumentOverrideUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.OrganizationDocumentWaiverUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationDocumentWaiverPayload>
+          args: Prisma.AdminDocumentOverrideUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminDocumentOverridePayload>
         }
         aggregate: {
-          args: Prisma.OrganizationDocumentWaiverAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganizationDocumentWaiver>
+          args: Prisma.AdminDocumentOverrideAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAdminDocumentOverride>
         }
         groupBy: {
-          args: Prisma.OrganizationDocumentWaiverGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OrganizationDocumentWaiverGroupByOutputType>[]
+          args: Prisma.AdminDocumentOverrideGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminDocumentOverrideGroupByOutputType>[]
         }
         count: {
-          args: Prisma.OrganizationDocumentWaiverCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OrganizationDocumentWaiverCountAggregateOutputType> | number
+          args: Prisma.AdminDocumentOverrideCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminDocumentOverrideCountAggregateOutputType> | number
         }
       }
     }
@@ -8376,18 +8376,20 @@ export const PaymentMethodQualificationConfigScalarFieldEnum = {
 export type PaymentMethodQualificationConfigScalarFieldEnum = (typeof PaymentMethodQualificationConfigScalarFieldEnum)[keyof typeof PaymentMethodQualificationConfigScalarFieldEnum]
 
 
-export const OrganizationDocumentWaiverScalarFieldEnum = {
+export const AdminDocumentOverrideScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  organizationPaymentMethodId: 'organizationPaymentMethodId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
   documentDefinitionId: 'documentDefinitionId',
+  decision: 'decision',
   reason: 'reason',
-  waivedById: 'waivedById',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type OrganizationDocumentWaiverScalarFieldEnum = (typeof OrganizationDocumentWaiverScalarFieldEnum)[keyof typeof OrganizationDocumentWaiverScalarFieldEnum]
+export type AdminDocumentOverrideScalarFieldEnum = (typeof AdminDocumentOverrideScalarFieldEnum)[keyof typeof AdminDocumentOverrideScalarFieldEnum]
 
 
 export const AsyncJobScalarFieldEnum = {
@@ -9598,16 +9600,18 @@ export const PaymentMethodQualificationConfigOrderByRelevanceFieldEnum = {
 export type PaymentMethodQualificationConfigOrderByRelevanceFieldEnum = (typeof PaymentMethodQualificationConfigOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodQualificationConfigOrderByRelevanceFieldEnum]
 
 
-export const OrganizationDocumentWaiverOrderByRelevanceFieldEnum = {
+export const AdminDocumentOverrideOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  organizationPaymentMethodId: 'organizationPaymentMethodId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
   documentDefinitionId: 'documentDefinitionId',
+  decision: 'decision',
   reason: 'reason',
-  waivedById: 'waivedById'
+  createdById: 'createdById'
 } as const
 
-export type OrganizationDocumentWaiverOrderByRelevanceFieldEnum = (typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum)[keyof typeof OrganizationDocumentWaiverOrderByRelevanceFieldEnum]
+export type AdminDocumentOverrideOrderByRelevanceFieldEnum = (typeof AdminDocumentOverrideOrderByRelevanceFieldEnum)[keyof typeof AdminDocumentOverrideOrderByRelevanceFieldEnum]
 
 
 export const AsyncJobOrderByRelevanceFieldEnum = {
@@ -10258,7 +10262,7 @@ export type GlobalOmitConfig = {
   paymentMethodQualification?: Prisma.PaymentMethodQualificationOmit
   qualificationPhase?: Prisma.QualificationPhaseOmit
   paymentMethodQualificationConfig?: Prisma.PaymentMethodQualificationConfigOmit
-  organizationDocumentWaiver?: Prisma.OrganizationDocumentWaiverOmit
+  adminDocumentOverride?: Prisma.AdminDocumentOverrideOmit
   asyncJob?: Prisma.AsyncJobOmit
 }
 
