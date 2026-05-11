@@ -24,12 +24,14 @@ import {
   ReviewQualificationSchema,
   AssignQualificationFlowSchema,
   UpdateQualificationStatusSchema,
-  CreateDocumentWaiverSchema,
-  BulkCreateDocumentWaiverSchema,
 } from '../validators/qualification-flow.validator';
 import {
   CreateGatePlanSchema,
 } from '../validators/gate-plan.validator';
+import {
+  CreateDocumentWaiverSchema,
+  BulkCreateDocumentWaiverSchema,
+} from '../validators/document-waiver.validator';
 
 extendZodWithOpenApi(z);
 

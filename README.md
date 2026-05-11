@@ -2,7 +2,7 @@
 
 Serverless backend for multi-tenant real estate sales, mortgage processing, payment orchestration, and document-driven underwriting workflows.
 
-This repository is a pnpm monorepo containing independent Lambda-backed microservices, shared infrastructure CDK stacks, and integration tests.
+This repository is a monorepo containing independent Lambda-backed microservices, shared infrastructure CDK stacks, and integration tests.
 
 ## Product Idea
 
@@ -40,30 +40,134 @@ services/
 └── uploader-service      # Presigned S3 upload URLs
 ```
 
+Each service exposes interactive API documentation.
+
+**LocalStack (after running `setup.sh`)** — services run as Lambdas behind API Gateway:
+
+| Service              | Swagger UI                                                                     | OpenAPI JSON       |
+| -------------------- | ------------------------------------------------------------------------------ | ------------------ |
+| user-service         | `http://localhost:4566/restapis/i4yzi8khcx/localstack/_user_request_/api-docs` | `.../openapi.json` |
+| property-service     | `http://localhost:4566/restapis/mdfxapvcyr/localstack/_user_request_/api-docs` | `.../openapi.json` |
+| mortgage-service     | `http://localhost:4566/restapis/ondg8oefes/localstack/_user_request_/api-docs` | `.../openapi.json` |
+| documents-service    | `http://localhost:4566/restapis/gg7g6thsgu/localstack/_user_request_/api-docs` | `.../openapi.json` |
+| payment-service      | `http://localhost:4566/restapis/vq6rto1da5/localstack/_user_request_/api-docs` | `.../openapi.json` |
+| notification-service | `http://localhost:4566/restapis/tmlknv2bup/localstack/_user_request_/api-docs` | `.../openapi.json` |
+| uploader-service     | `http://localhost:4566/restapis/gnuw1pwul6/localstack/_user_request_/api-docs` | `.../openapi.json` |
+
+> API Gateway IDs are assigned at deploy time and stay stable as long as LocalStack state is preserved. If you run `teardown.sh` + `setup.sh`, the IDs will change — recheck with `aws --endpoint-url=http://localhost:4566 apigateway get-rest-apis`.
+
+**Direct Node.js (`npm run dev`)** — ports 3001–3007 (e.g. `http://localhost:3001/api-docs`). This mode is not used by default; the standard local environment is LocalStack.
+
 ## Local Development
 
 ### Prerequisites
 
-- Docker (for LocalStack + MySQL)
-- Node.js, pnpm
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (for LocalStack + MySQL + Redis)
+- [Node.js](https://nodejs.org/) v20+
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) — needed by deploy scripts
+- [cdklocal](https://github.com/localstack/aws-cdk-local) — `npm install -g aws-cdk-local aws-cdk`
 
-### Start local environment
+### First-time setup
 
-```bash
-cd local-dev
-./scripts/start.sh
-```
-
-Boots LocalStack, MySQL, and deploys all services with LocalStack configs.
-
-### Install dependencies
+**1. Install dependencies**
 
 ```bash
-cd api
-pnpm install
+npm install
 ```
 
-## Deployment
+**2. Configure local secrets**
+
+```bash
+cp local-dev/.env.example local-dev/.env
+```
+
+Fill in `local-dev/.env` with real values for JWT secrets, SMTP credentials, and OAuth keys. The database credentials are pre-filled for the Docker MySQL container and do not need changing.
+
+**3. Full setup — boots Docker, deploys infrastructure and all service Lambdas**
+
+```bash
+cd local-dev && ./scripts/setup.sh
+```
+
+This single command:
+
+- Starts LocalStack, MySQL, and Redis via Docker Compose
+- Deploys CDK infrastructure (SSM params, SNS topics, SQS queues, S3 buckets, Secrets Manager)
+- Runs Prisma DB migrations
+- Builds the shared `qshelter-common` library
+- Builds and deploys all 7 service Lambdas to LocalStack
+- Fixes API Gateway stage names (LocalStack quirk)
+
+First run takes ~5–10 minutes. Services are available on LocalStack REST API endpoints after completion.
+
+### Subsequent restarts
+
+After a machine reboot, Docker containers need to be restarted but the Lambdas are already deployed (LocalStack persists state in `local-dev/localstack-data/`):
+
+```bash
+cd local-dev && ./scripts/start.sh
+```
+
+If you have changed service code since the last deploy, see **Redeploying after code changes** below.
+
+### Stop the environment
+
+```bash
+cd local-dev && docker compose down
+```
+
+### Redeploying after code changes
+
+Lambdas are not hot-reloaded. After editing any service, you must rebuild and redeploy it:
+
+```bash
+cd services/<service-name> && npm run deploy:localstack
+```
+
+Replace `<service-name>` with e.g. `mortgage-service`, `user-service`, `property-service`, etc.
+
+> **Note:** Changes to `shared/common` do not automatically propagate. For local development, rebuild shared first then redeploy the affected service:
+>
+> ```bash
+> cd shared/common && npm run build
+> cd services/<service-name> && npm run deploy:localstack
+> ```
+
+### Reset everything
+
+```bash
+cd local-dev && ./scripts/teardown.sh
+# Then re-run setup.sh for a clean slate
+```
+
+### Troubleshooting
+
+#### CDK stack stuck in ROLLBACK_COMPLETE
+
+If `setup.sh` fails during the CDK deploy step (Step 2), LocalStack may leave the `QShelterLocalStack` stack in a `ROLLBACK_COMPLETE` state. Subsequent runs of `setup.sh` will fail immediately because CloudFormation won't re-deploy over a rolled-back stack.
+
+**Symptom:**
+
+```
+❌  QShelterLocalStack failed: ToolkitError: The stack named QShelterLocalStack failed creation,
+it may need to be manually deleted from the AWS console: ROLLBACK_COMPLETE
+```
+
+**Fix:** Delete the stuck stack, then re-run `setup.sh`:
+
+```bash
+AWS_ENDPOINT_URL=http://localhost:4566 \
+AWS_ACCESS_KEY_ID=test \
+AWS_SECRET_ACCESS_KEY=test \
+aws cloudformation delete-stack --stack-name QShelterLocalStack --region us-east-1
+
+# Wait a few seconds, then run setup again
+cd local-dev && bash scripts/setup.sh
+```
+
+#### Missing or empty values in local-dev/.env
+
+The CDK stack reads secrets from `local-dev/.env` at deploy time. Any required variable that is empty will cause SSM parameter creation to fail with a `ValidationException`. Check `local-dev/.env.example` for the full list of required variables and ensure none are blank.
 
 ### AWS staging
 
@@ -113,7 +217,6 @@ Then update all consuming services and regenerate the root lockfile:
 
 ```bash
 cd services/<service> && npm i @valentine-efagene/qshelter-common@latest
-cd api && pnpm install                  # keeps pnpm-lock.yaml in sync
 ```
 
 ## Testing
@@ -173,7 +276,6 @@ These services exist but are not part of the canonical mortgage flow (Emeka / Su
 
 - `api-key.service.ts` — API key management via Secrets Manager, post-MVP
 - `social.service.ts` — OAuth/social login, post-MVP
-- `onboarding-flow.service.ts` — configurable onboarding questionnaires, future feature
 - `onboarding.service.ts` — overlaps with bootstrap logic
 
 ### Merge

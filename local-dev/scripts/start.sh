@@ -40,8 +40,8 @@ echo "  ✓ Redis is ready"
 # Deploy infrastructure using CDK
 echo "🔧 Deploying AWS resources via CDK..."
 cd "$REPO_ROOT/infrastructure"
-pnpm localstack:bootstrap 2>/dev/null || true
-pnpm localstack:deploy
+npm run localstack:bootstrap 2>/dev/null || true
+npm run localstack:deploy
 
 echo ""
 echo "✅ Local environment is ready!"
@@ -53,7 +53,7 @@ echo "  - Redis:       localhost:6379"
 echo "  - Adminer:     http://localhost:8080"
 echo ""
 echo "🧪 To run migrations and tests:"
-echo "  cd shared/common && pnpm prisma migrate deploy"
-echo "  cd services/mortgage-service && pnpm test:e2e"
+echo "  cd shared/common && npx prisma migrate deploy"
+echo "  cd services/mortgage-service && npm run test:e2e"
 echo ""
-echo "🛑 To stop: pnpm local:stop"
+echo "🛑 To stop: cd local-dev && npm run stop"

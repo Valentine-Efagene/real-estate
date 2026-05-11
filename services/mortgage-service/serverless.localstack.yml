@@ -1,7 +1,7 @@
 # LocalStack-specific serverless config for Mortgage Service
 # Uses REST API (v1) for better LocalStack compatibility
 # Usage: npx sls deploy --config serverless.localstack.yml --stage localstack
-# Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
+# Requires: LocalStack running with CDK deployed (cd infrastructure && npm run localstack:deploy)
 #
 # NOTE: LocalStack Community doesn't enforce API Gateway authorizers.
 # For LocalStack testing, pass auth headers manually (x-authorizer-user-id, etc.)
@@ -27,6 +27,11 @@ provider:
     NODE_ENV: ${self:provider.stage}
     STAGE: ${self:provider.stage}
     LOCALSTACK_ENDPOINT: http://host.docker.internal:4566
+    # Notification and payment config
+    PAYMENTS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/payments-topic-arn, ''}
+    OPS_EMAIL: ${ssm:/qshelter/${self:provider.stage}/ops-email, 'ops@qshelter.com'}
+    DASHBOARD_URL: ${ssm:/qshelter/${self:provider.stage}/dashboard-url, 'http://localhost:3000'}
+    PAYMENT_URL: ${ssm:/qshelter/${self:provider.stage}/dashboard-url, 'http://localhost:3000'}
     # Database credentials from SSM
     DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST}
     DB_PORT: ${ssm:/qshelter/${self:provider.stage}/DB_PORT}
@@ -91,11 +96,11 @@ functions:
           method: GET
           cors: true
       - http:
-          path: /api
+          path: /api-docs
           method: GET
           cors: true
       - http:
-          path: /api-json
+          path: /openapi.json
           method: GET
           cors: true
 

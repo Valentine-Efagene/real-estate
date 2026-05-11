@@ -1,7 +1,7 @@
 # LocalStack-specific serverless config
 # Uses REST API (v1) for better LocalStack compatibility
 # Usage: npx sls deploy --config serverless.localstack.yml --stage localstack
-# Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
+# Requires: LocalStack running with CDK deployed (cd infrastructure && npm run localstack:deploy)
 
 service: qshelter-notifications
 

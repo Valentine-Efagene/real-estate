@@ -1,7 +1,7 @@
 # LocalStack-specific serverless config for Property Service
 # Uses REST API (v1) for better LocalStack compatibility
 # Usage: npx sls deploy --config serverless.localstack.yml --stage localstack
-# Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
+# Requires: LocalStack running with CDK deployed (cd infrastructure && npm run localstack:deploy)
 #
 # NOTE: LocalStack doesn't fully support cross-service API Gateway authorizers.
 # For LocalStack testing, we pass auth headers manually (x-authorizer-user-id, etc.)
@@ -106,11 +106,11 @@ functions:
           method: GET
           cors: true
       - http:
-          path: /api
+          path: /api-docs
           method: GET
           cors: true
       - http:
-          path: /api-json
+          path: /openapi.json
           method: GET
           cors: true
 

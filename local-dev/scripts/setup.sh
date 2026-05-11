@@ -74,10 +74,10 @@ log_step "Step 2/7: Deploying CDK Infrastructure to LocalStack"
 
 cd "$REPO_ROOT/infrastructure"
 log_info "Bootstrapping CDK..."
-pnpm localstack:bootstrap 2>/dev/null || true
+npm run localstack:bootstrap 2>/dev/null || true
 
 log_info "Deploying CDK stack..."
-pnpm localstack:deploy
+npm run localstack:deploy
 
 log_success "CDK infrastructure deployed"
 
@@ -101,7 +101,7 @@ log_info "Generating Prisma client..."
 npx prisma generate
 
 log_info "Building qshelter-common..."
-pnpm run build
+npm run build
 log_success "Shared libraries built"
 
 # =============================================================================
@@ -120,7 +120,7 @@ deploy_service() {
     # Clean serverless cache to avoid stale deployments
     rm -rf .serverless
     
-    pnpm run build 2>/dev/null || npm run build
+    npm run build
     
     # Deploy with LocalStack-specific config (REST API v1 instead of HTTP API v2)
     # LocalStack Community doesn't support apigatewayv2, so we use serverless.localstack.yml
@@ -290,8 +290,8 @@ echo "  - Redis:       localhost:6379"
 echo "  - Adminer:     http://localhost:8080"
 echo ""
 echo "🧪 Run e2e tests:"
-echo "  cd local-dev && pnpm run test:e2e:mortgage"
+echo "  cd local-dev && npm run test:e2e:mortgage"
 echo ""
 echo "🛑 Stop everything:"
-echo "  cd local-dev && pnpm run stop"
+echo "  cd local-dev && npm run stop"
 echo ""

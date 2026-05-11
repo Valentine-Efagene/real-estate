@@ -1,7 +1,7 @@
 # LocalStack-specific serverless config for Payment Service
 # Uses REST API (v1) for better LocalStack compatibility
 # Usage: npx sls deploy --config serverless.localstack.yml --stage localstack
-# Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
+# Requires: LocalStack running with CDK deployed (cd infrastructure && npm run localstack:deploy)
 
 service: qshelter-payment-service
 
@@ -94,6 +94,14 @@ functions:
           cors: true
       - http:
           path: /health
+          method: GET
+          cors: true
+      - http:
+          path: /api-docs
+          method: GET
+          cors: true
+      - http:
+          path: /openapi.json
           method: GET
           cors: true
       # Webhook endpoints (no auth - verified by signature)

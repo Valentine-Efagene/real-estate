@@ -217,7 +217,7 @@ export class LocalStackStack extends cdk.Stack {
         });
 
         new ssm.StringParameter(this, 'EventBusNameParameter', {
-            parameterName: `/qshelter/${stage}/event-bus-name`,
+            parameterName: `/qshelter/${stage}/eventbridge-bus-name`,
             stringValue: eventBus.eventBusName,
             description: 'EventBridge Bus Name',
         });
@@ -452,6 +452,23 @@ export class LocalStackStack extends cdk.Stack {
                 }),
                 generateStringKey: 'unused',
             },
+        });
+
+        new secretsmanager.Secret(this, 'EncryptionSecret', {
+            secretName: `qshelter/${stage}/encryption`,
+            secretStringValue: cdk.SecretValue.unsafePlainText(
+                JSON.stringify({
+                    password: process.env.ENCRYPTION_PASSWORD || 'local-encryption-password-32chars!',
+                    salt: process.env.ENCRYPTION_SALT || 'local16charsalt!',
+                })
+            ),
+        });
+
+        new ssm.StringParameter(this, 'BudpaySecretKeyParameter', {
+            parameterName: `/qshelter/${stage}/BUDPAY_SECRET_KEY`,
+            stringValue: process.env.BUDPAY_SECRET_KEY || 'placeholder',
+            description: 'BudPay secret key for payment processing',
+            type: ssm.ParameterType.SECURE_STRING,
         });
 
         // === Outputs ===

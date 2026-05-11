@@ -12,7 +12,7 @@
 #
 # Prerequisites:
 # - Docker running
-# - pnpm/npm installed
+# - npm installed
 # - AWS CLI installed
 #
 # Usage:
@@ -232,14 +232,14 @@ cd "$PROJECT_ROOT/infrastructure"
 # Check if node_modules exists
 if [ ! -d "node_modules" ]; then
     echo "  Installing infrastructure dependencies..."
-    pnpm install || npm install
+    npm install
 fi
 
 echo "  Bootstrapping CDK for LocalStack..."
-pnpm localstack:bootstrap 2>/dev/null || npm run localstack:bootstrap 2>/dev/null || true
+npm run localstack:bootstrap 2>/dev/null || true
 
 echo "  Deploying infrastructure..."
-pnpm localstack:deploy || npm run localstack:deploy
+npm run localstack:deploy
 
 echo "  Seeding role policies..."
 ROLE_POLICIES_TABLE_NAME=qshelter-test-role-policies \

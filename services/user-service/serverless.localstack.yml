@@ -1,7 +1,7 @@
 # LocalStack-specific serverless config for User Service
 # Uses REST API (v1) for better LocalStack compatibility
 # Usage: npx sls deploy --config serverless.localstack.yml --stage localstack
-# Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
+# Requires: LocalStack running with CDK deployed (cd infrastructure && npm run localstack:deploy)
 #
 # NOTE: LocalStack doesn't fully support cross-service API Gateway authorizers.
 # For LocalStack testing, we pass auth headers manually (x-authorizer-user-id, etc.)
@@ -33,6 +33,14 @@ provider:
     FRONTEND_BASE_URL: ${ssm:/qshelter/${self:provider.stage}/frontend-base-url, 'http://localhost:3000'}
     BOOTSTRAP_SECRET: ${ssm:/qshelter/${self:provider.stage}/bootstrap-secret, 'local-bootstrap-secret'}
     BOOTSTRAP_WORKER_FUNCTION_NAME: ${self:service}-${self:provider.stage}-bootstrapWorker
+    # Google OAuth
+    GOOGLE_CLIENT_ID: ${ssm:/qshelter/${self:provider.stage}/google-client-id, ''}
+    GOOGLE_CLIENT_SECRET: ${ssm:/qshelter/${self:provider.stage}/google-client-secret, ''}
+    GOOGLE_CALLBACK_URL: http://localhost:3000/auth/google/callback
+    # Service-to-service URLs
+    PROPERTY_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/property-service-url, ''}
+    MORTGAGE_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/mortgage-service-url, ''}
+    PAYMENT_SERVICE_URL: ${ssm:/qshelter/${self:provider.stage}/payment-service-url, ''}
     # Database credentials from SSM
     DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST}
     DB_PORT: ${ssm:/qshelter/${self:provider.stage}/DB_PORT}

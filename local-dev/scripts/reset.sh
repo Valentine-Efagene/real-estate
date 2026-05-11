@@ -27,4 +27,4 @@ rm -rf localstack-data 2>/dev/null || true
 
 echo "✅ Local environment reset complete"
 echo ""
-echo "Run 'pnpm local:start' to start fresh"
+echo "Run 'npm run start' to start fresh"
